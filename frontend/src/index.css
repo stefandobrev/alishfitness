@@ -1,0 +1,30 @@
+@import 'tailwindcss';
+@config '../tailwind.config.js';
+
+/* Compatibility layer */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+.react-select__control--is-focused {
+  border-color: var(--logored) !important;
+  box-shadow: 0 0 0 2px var(--logored) !important;
+  outline: 1px solid transparent !important;
+}
+
+.react-select__option:hover,
+.react-select__option:active,
+.react-select__option--is-focused,
+.react-select__option--is-selected {
+  background-color: var(--color-gray-200) !important;
+}
+
+.react-select__option--is-selected {
+  color: #1f2937 !important;
+}
