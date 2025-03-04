@@ -8,7 +8,7 @@ class User(AbstractUser):
 
 
 class MuscleGroup(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(unique=True, max_length=30)
     slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
