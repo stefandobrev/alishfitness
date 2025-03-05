@@ -2,3 +2,5 @@ djangorestframework
 django-cors-headers
 psycopg2-binary
 djangorestframework-simplejwt
+pytest
+pytest-django

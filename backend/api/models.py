@@ -21,7 +21,7 @@ class MuscleGroup(models.Model):
 
 
 class Exercise(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(unique=True, max_length=100)
     slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
@@ -40,9 +40,9 @@ class Exercise(models.Model):
         MuscleGroup, related_name="secondary_exercises", blank=True
     )
     
-    gif_link_front = models.URLField(max_length=255, blank=True, null=True)
-    gif_link_side = models.URLField(max_length=255, blank=True, null=True)
-    video_link = models.URLField(max_length=255, blank=True, null=True)
+    gif_link_front = models.URLField(max_length=255, blank=True, null=False, default="")
+    gif_link_side = models.URLField(max_length=255, blank=True, null=False, default="")
+    video_link = models.URLField(max_length=255, blank=True, null=False, default="")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
