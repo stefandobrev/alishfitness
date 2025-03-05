@@ -5,7 +5,7 @@ from django.conf import settings
 import pytest
 
 # Configure Django settings
-os.environ['DJANGO_SETTINGS_MODULE'] = 'api.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'backend.settings'
 django.setup()
 
 @pytest.fixture(scope='session')
