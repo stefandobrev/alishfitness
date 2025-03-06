@@ -53,8 +53,7 @@ class UserController:
             Response with tokens or error message
         """
         serializer = LoginSerializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
 
         user = serializer.validated_data["user"]
         tokens = self._generate_tokens(user)

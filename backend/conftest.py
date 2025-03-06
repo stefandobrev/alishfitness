@@ -4,7 +4,6 @@ from django.conf import settings
 
 import pytest
 
-# Configure Django settings
 os.environ["DJANGO_SETTINGS_MODULE"] = "backend.settings"
 django.setup()
 
@@ -16,4 +15,5 @@ def django_db_setup():
     settings.DATABASES["default"] = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": ":memory:",
+        "ATOMIC_REQUESTS": True,
     }
