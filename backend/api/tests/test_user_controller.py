@@ -1,12 +1,13 @@
 import pytest
-from rest_framework.test import APIClient
 from rest_framework import status
+from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
-from api.models import User
 from django.urls import reverse
-
 from django.utils import timezone
+
 from datetime import timedelta
+
+from api.models import User
 
 @pytest.mark.django_db(transaction=True)
 class TestUserController:
