@@ -24,8 +24,7 @@ class UserController:
             Response with user data or error messages
         """
         serializer = UserSerializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
 
         user = serializer.save()
 
@@ -71,8 +70,7 @@ class UserController:
     def refresh_token(self, request):
         """Refresh access token using refresh token."""
         serializer = TokenRefreshSerializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
 
         token = serializer.validated_data["refresh"]
         tokens = {"access": str(token.access_token), "refresh": str(token)}
@@ -167,8 +165,7 @@ class UserController:
     def _update_settings(self, user, data):
         """Update user settings data."""
         serializer = UserSettingsSerializer(user, data=data)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
 
         user = serializer.save()
         return Response({"username": user.username, "email": user.email})
@@ -178,8 +175,7 @@ class UserController:
         serializer = UpdatePasswordSerializer(
             data=request.data, context={"request": request}
         )
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
 
         refresh_token = request.data.get("refresh")
         if refresh_token:
