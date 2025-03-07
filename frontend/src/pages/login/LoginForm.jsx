@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
@@ -6,7 +7,12 @@ import PasswordField from '../../components/inputs/PasswordField';
 import { SaveButton } from '../../components/buttons/EditButtons';
 
 const LoginForm = ({ loginUserData }) => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { handleSubmit, register } = useFormContext();
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   return (
     <form onSubmit={handleSubmit(loginUserData)} className='space-y-3'>
@@ -19,6 +25,8 @@ const LoginForm = ({ loginUserData }) => {
         label='Password'
         id='login_password'
         registration={register('login_password')}
+        isPasswordVisible={isPasswordVisible}
+        togglePasswordVisibility={togglePasswordVisibility}
       />
 
       <div className='flex flex-col items-center justify-center space-y-2'>

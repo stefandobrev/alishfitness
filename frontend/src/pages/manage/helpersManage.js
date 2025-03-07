@@ -13,10 +13,10 @@ export const fetchExerciseTitles = async ({
   muscleGroups,
 }) => {
   const response = await api('exercises/exercise-titles/', 'POST', {
-    offset,
-    search,
-    sort,
-    muscleGroups,
+    offset: offset,
+    search_query: search,
+    sort: sort,
+    muscle_groups: muscleGroups,
   });
   if (!response.ok) throw new Error('Failed to fetch exercise titles.');
   return response.json();

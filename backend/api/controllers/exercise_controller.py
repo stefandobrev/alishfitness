@@ -21,9 +21,9 @@ class ExerciseController:
         Creates and returns a filtered list of exercise titles.
         """
         offset = request.data.get("offset", 0)
-        search = request.data.get("search", "")
+        search_query = request.data.get("search_query", "")
         sort = request.data.get("sort", None)
-        muscle_groups = request.data.get("muscleGroups", [])
+        muscle_groups = request.data.get("muscle_groups", [])
 
         query = Exercise.objects.all()
 
@@ -32,8 +32,8 @@ class ExerciseController:
                 primary_group__slug__in=muscle_groups
             )
 
-        if search:
-            query = query.filter(Q(title__iexact=search) |  Q(title__icontains=search))
+        if search_query:
+            query = query.filter(Q(title__iexact=search_query) |  Q(title__icontains=search_query))
 
         if sort == "created_at":
             query = query.order_by("-created_at")
@@ -184,8 +184,8 @@ class ExerciseController:
         Return a response containing all exercises related to the muscle 
         group from the DB.
         """
-        muscle_group_id = request.data.get("selectedMuscleId")
-        search = request.data.get("searchQuery")
+        muscle_group_id = request.data.get("muscle_group_id")
+        search_query = request.data.get("search_query")
 
         if not muscle_group_id:
             return Response({"error": "Muscle group ID is required."}, status=400)
@@ -197,8 +197,8 @@ class ExerciseController:
 
         query = Exercise.objects.filter(primary_group__slug=muscle_group_id)
 
-        if search:
-            query = query.filter(Q(title__iexact=search) |  Q(title__icontains=search))
+        if search_query:
+            query = query.filter(Q(title__iexact=search_query) |  Q(title__icontains=search_query))
 
         exercises = query.values("id", "title", "gif_link_front")
 

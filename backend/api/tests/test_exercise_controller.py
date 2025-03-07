@@ -4,7 +4,7 @@ from rest_framework.test import APIClient
 from django.urls import reverse
 from django.utils.dateparse import parse_datetime
 
-from api.models import User, MuscleGroup, Exercise, Step, Mistake
+from api.models import User, MuscleGroup, Exercise, Step
 
 @pytest.mark.django_db(transaction=True)
 class TestExerciseController:
@@ -70,12 +70,12 @@ class TestExerciseController:
         url = reverse("exercise-titles")
 
         test_exercise = Exercise.objects.first()
-        response = self.client.post(url, {"search": test_exercise.title}, format="json")
+        response = self.client.post(url, {"search_query": test_exercise.title}, format="json")
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) >= 1
        
         if test_exercise.primary_group:
-            response = self.client.post(url, {"muscleGroups": [test_exercise.primary_group.slug]}, format="json")
+            response = self.client.post(url, {"muscle_groups": [test_exercise.primary_group.slug]}, format="json")
             assert response.status_code == status.HTTP_200_OK
             exercise_ids = [exercise["id"] for exercise in response.data]
             filtered_exercises = Exercise.objects.filter(primary_group__slug=test_exercise.primary_group.slug)[:10]
@@ -117,13 +117,15 @@ class TestExerciseController:
             response = self.client.post(
                 url, 
                 {
-                    "search": test_exercise.title[:4],  
-                    "muscleGroups": [test_exercise.primary_group.slug],
+                    "search_query": test_exercise.title[:4],  
+                    "muscle_groups": [test_exercise.primary_group.slug],
                     "sort": "created_at"
                 }, 
                 format="json"
             )
+
         assert response.status_code == status.HTTP_200_OK
+        assert any(ex["title"].startswith(self.test_exercise.title[:4]) for ex in response.data)
 
     def test_get_exercise(self):
         self.client.force_authenticate(user=self.test_user)
@@ -226,12 +228,12 @@ class TestExerciseController:
     def test_update_invalid(self):
         self.client.force_authenticate(user=self.test_admin)
 
-        url = reverse("create-exercise")
+        url = reverse("update-exercise", args=[self.test_exercise.id])
 
         invalid_updated_data = {
             "primary_group": "invalidgroup",
         }
-        response = self.client.post(url, invalid_updated_data, format="json")
+        response = self.client.put(url, invalid_updated_data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data["primary_group"] == "Primary group not found."
@@ -247,3 +249,94 @@ class TestExerciseController:
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data["secondary_groups"] == "You cannot select the same group as primary and secondary."
+    
+    def test_delete_success(self):
+        self.client.force_authenticate(user=self.test_admin)
+
+        url = reverse("delete-exercise", args=[self.test_exercise.id])
+
+        response = self.client.delete(url)
+
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_delete_invalid(self):
+        self.client.force_authenticate(user=self.test_admin)
+
+        url = reverse("delete-exercise", args=[999999])
+
+        response = self.client.delete(url)
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    def test_get_exercises_group_success(self):
+        self.client.force_authenticate(user=self.test_user)
+
+        url = reverse("exercises-group")
+
+        get_data = {
+            "muscle_group_id": self.test_muscle_group.slug,
+            "search_query": self.test_exercise.title[:4]
+        }
+
+        response = self.client.post(url, get_data, format="json")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert any(ex["title"].startswith(self.test_exercise.title[:4]) for ex in response.data["exercises"])
+
+    def test_get_exercises_group_missing(self):
+        self.client.force_authenticate(user=self.test_user)
+
+        url = reverse("exercises-group")
+
+        get_data = {
+            "muscle_group_id": "",
+            "search_query": self.test_exercise.title[:4]
+        }
+
+        response = self.client.post(url, get_data, format="json")
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.data["error"] == "Muscle group ID is required."
+
+    def test_get_exercises_group_invalid(self):
+        self.client.force_authenticate(user=self.test_user)
+
+        url = reverse("exercises-group")
+
+        get_data = {
+            "muscle_group_id": "invalidgroup",
+            "search_query": self.test_exercise.title[:4]
+        }
+
+        response = self.client.post(url, get_data, format="json")
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+        assert response.data["error"] == "Invalid muscle group."
+
+    def test_get_exercise_by_slug_success(self):
+        self.client.force_authenticate(user=self.test_user)
+
+        url = reverse("exercises-detail-slug", args=[self.test_muscle_group.slug, self.test_exercise.slug])
+
+        response = self.client.get(url)
+
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data["title"] == self.test_exercise.title
+        assert response.data["primary_group"] == self.test_exercise.primary_group.slug
+
+    def test_get_exercise_by_slug_invalid(self):
+        self.client.force_authenticate(user=self.test_user)
+
+        url = reverse("exercises-detail-slug", args=["invalidgroup", self.test_exercise.slug])
+
+        response = self.client.get(url)
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+        assert response.data["error"] == "Invalid muscle group."
+
+        url = reverse("exercises-detail-slug", args=[self.test_muscle_group.slug, "invalidexerciseslug"])
+
+        response = self.client.get(url)
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+        assert response.data["error"] == "Invalid exercise."
