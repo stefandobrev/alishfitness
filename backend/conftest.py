@@ -1,19 +1,11 @@
-import os
-import django
+import pytest
 from django.conf import settings
 
-import pytest
-
-os.environ["DJANGO_SETTINGS_MODULE"] = "backend.settings"
-django.setup()
-
-@pytest.fixture(scope="session")
-def django_db_setup():
-    """
-    Customize database setup for tests
-    """
+@pytest.fixture(scope="session", autouse=True)
+def _set_test_db():
+    # Override the default database with a test database
     settings.DATABASES["default"] = {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": ":memory:",
-        "ATOMIC_REQUESTS": True,
+        "NAME": settings.BASE_DIR / "test_db.sqlite3",
+        "ATOMIC_REQUESTS": True,  # Test database
     }
