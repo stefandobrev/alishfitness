@@ -103,7 +103,13 @@ class ExerciseController:
                 if group:
                     secondary_groups.append(group.id)
             
-            exercise_data["secondary_groups"] = secondary_groups
+            if primary_group and primary_group.id in secondary_groups:
+                return Response(
+                    {"secondary_groups": "You cannot select the same group as primary and secondary."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+        exercise_data["secondary_groups"] = secondary_groups
 
         serializer = ExerciseSerializer(data=exercise_data)
         if not serializer.is_valid():
@@ -140,7 +146,14 @@ class ExerciseController:
                 group = MuscleGroup.objects.filter(slug=group_name).first()
                 if group:
                     secondary_groups.append(group.id)
-            exercise_data["secondary_groups"] = secondary_groups
+
+            if primary_group and primary_group.id in secondary_groups:
+                return Response(
+                    {"secondary_groups": "You cannot select the same group as primary and secondary."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+        exercise_data["secondary_groups"] = secondary_groups
 
         serializer = ExerciseSerializer(exercise, data=exercise_data, partial=True)
         if not serializer.is_valid():
