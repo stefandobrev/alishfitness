@@ -62,3 +62,24 @@ class TestExerciseController:
         ]
 
         assert response.data == expected_data
+
+    def test_get_exercise_titles(self):
+        self.client.force_authenticate(user=self.test_user)
+
+        url = reverse("exercise-titles")
+
+        test_exercise = Exercise.objects.first()
+        response = self.client.post(url, {"search": test_exercise.title}, format="json")
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) >= 1
+       
+        if test_exercise.primary_group:
+            response = self.client.post(url, {"muscleGroups": [test_exercise.primary_group.slug]}, format="json")
+            assert response.status_code == status.HTTP_200_OK
+            exercise_ids = [exercise["id"] for exercise in response.data]
+            filtered_exercises = Exercise.objects.filter(primary_group__slug=test_exercise.primary_group.slug)[:10]
+            for exercise in filtered_exercises:
+                assert exercise.id in exercise_ids
+
+        # if len(response.data) >= 2:
+        # assert parse_datetime(response.data[0]["created_at"]) >= parse_datetime(response.data[1]["created_at"])
