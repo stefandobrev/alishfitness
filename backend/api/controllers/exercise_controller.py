@@ -185,7 +185,8 @@ class ExerciseController:
         group from the DB.
         """
         muscle_group_id = request.data.get("muscle_group_id")
-        search_query = request.data.get("search_query")
+        offset = request.data.get("offset", 0)
+        search_query = request.data.get("search_query", "")
 
         if not muscle_group_id:
             return Response({"error": "Muscle group ID is required."}, status=400)
@@ -200,7 +201,8 @@ class ExerciseController:
         if search_query:
             query = query.filter(Q(title__iexact=search_query) |  Q(title__icontains=search_query))
 
-        exercises = query.values("id", "title", "gif_link_front")
+        ITEMS_PER_PAGE = 6
+        exercises = query[offset : offset + ITEMS_PER_PAGE].values("id", "title", "gif_link_front")
 
         return Response({
             "name": muscle_group.name,

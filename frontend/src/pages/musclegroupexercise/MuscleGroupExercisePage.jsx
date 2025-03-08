@@ -9,6 +9,22 @@ import Heading from './Heading';
 import MuscleGrid from './MuscleGrid';
 import { useTitle } from '../../hooks/useTitle.hook';
 
+const Pagination = () => {
+  return (
+    <div className='flex items-center justify-center gap-4'>
+      <button className='rounded-md bg-gray-200 px-4 py-2 transition hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50'>
+        Prev
+      </button>
+
+      <span className='text-gray-700'>Page 1</span>
+
+      <button className='rounded-md bg-gray-200 px-4 py-2 transition hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50'>
+        Next
+      </button>
+    </div>
+  );
+};
+
 export const MuscleGroupExercisePage = () => {
   const { slugMuscleGroup } = useParams();
   const [exercisesData, setExercisesData] = useState(null);
@@ -17,6 +33,8 @@ export const MuscleGroupExercisePage = () => {
   const [activeTab, setActiveTab] = useState('exercises');
   const [searchQuery, setSearchQuery] = useState('');
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const offset = 0;
+  const items = 6;
   const navigate = useNavigate();
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
@@ -28,6 +46,7 @@ export const MuscleGroupExercisePage = () => {
     const loadExercisesData = async () => {
       const data = await fetchExercises({
         selectedMuscleId: slugMuscleGroup,
+        offset: offset,
         searchQuery: searchQuery,
       });
       // data.error should handle 404 only. Rest is handled by helpers.
@@ -125,9 +144,14 @@ export const MuscleGroupExercisePage = () => {
           {isLoading ? (
             <Spinner loading={isLoading} className='min-h-[70vh]' />
           ) : (
-            <div className='h-auto rounded-xl border border-gray-100 bg-gray-50 pb-8 shadow-sm lg:pb-4'>
-              <MuscleGrid exercisesData={exercisesData} />
-            </div>
+            <>
+              <div className='h-auto rounded-xl border border-gray-100 bg-gray-50 pb-2 shadow-sm'>
+                <MuscleGrid exercisesData={exercisesData} />
+                <div className='mt-2 hidden lg:block'>
+                  <Pagination />
+                </div>
+              </div>
+            </>
           )}
         </div>
 
@@ -137,7 +161,7 @@ export const MuscleGroupExercisePage = () => {
             activeTab !== 'anatomy' ? 'hidden lg:block' : ''
           }`}
         >
-          <div className='lg:sticky lg:top-20'>
+          <div className='lg:sticky lg:top-30'>
             <ToggleableMuscleView
               handleMuscleClick={handleMuscleClick}
               selectedPrimaryMuscle={slugMuscleGroup}

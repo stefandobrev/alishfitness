@@ -75,16 +75,16 @@ export const MuscleTile = ({ exercise }) => {
   return (
     <div
       key={exercise.id}
-      className='group relative cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all hover:shadow-lg dark:border-gray-700 dark:bg-gray-800'
+      className='group relative cursor-pointer rounded-xl border border-gray-200 bg-white transition-all'
       ref={tileRef}
       onClick={handleTileClick}
     >
-      <div className='p-4 pb-2'>
+      <div className='p-3 pb-2'>
         <h2 className='flex justify-center text-lg font-semibold text-gray-800 dark:text-white'>
           {exercise.title}
         </h2>
       </div>
-      <div className='aspect-video overflow-hidden'>
+      <div className='aspect-video'>
         <video
           ref={videoRef}
           src={exercise.gif_link_front}

@@ -1,8 +1,13 @@
 import api from '../../utils/api';
 
-export const fetchExercises = async ({ selectedMuscleId, searchQuery }) => {
+export const fetchExercises = async ({
+  selectedMuscleId,
+  offset,
+  searchQuery,
+}) => {
   const response = await api('exercises/exercises-group/', 'POST', {
     muscle_group_id: selectedMuscleId,
+    offset: offset,
     search_query: searchQuery,
   });
   if (!response.ok && response.status !== 404) {
