@@ -206,7 +206,8 @@ class ExerciseController:
 
         return Response({
             "name": muscle_group.name,
-            "exercises": list(exercises)
+            "exercises": list(exercises),
+            "total_count": query.count() 
         })
     
     def get_exercise_by_slug(self, request, muscle_slug, exercise_slug):

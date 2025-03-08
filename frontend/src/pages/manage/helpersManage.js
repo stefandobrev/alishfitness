@@ -8,13 +8,13 @@ export const fetchMuscleGroups = async () => {
 
 export const fetchExerciseTitles = async ({
   offset,
-  search,
+  searchQuery,
   sort,
   muscleGroups,
 }) => {
   const response = await api('exercises/exercise-titles/', 'POST', {
     offset: offset,
-    search_query: search,
+    search_query: searchQuery,
     sort: sort,
     muscle_groups: muscleGroups,
   });

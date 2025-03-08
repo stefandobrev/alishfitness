@@ -1,28 +1,24 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { ToggleableMuscleView } from '../../components/muscleviews';
+
 import { fetchExercises } from './helpersMuscleGroupExercise';
-import Spinner from '../../components/Spinner';
+import { ToggleableMuscleView } from '../../components/muscleviews';
 import TabButton from '../../components/buttons/TabButton';
+import Spinner from '../../components/Spinner';
+import PaginationMuscleGroupExercise from './PaginationMuscleGroupExercise';
+
 import Heading from './Heading';
 import MuscleGrid from './MuscleGrid';
 import { useTitle } from '../../hooks/useTitle.hook';
 
-const Pagination = () => {
-  return (
-    <div className='flex items-center justify-center gap-4'>
-      <button className='rounded-md bg-gray-200 px-4 py-2 transition hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50'>
-        Prev
-      </button>
-
-      <span className='text-gray-700'>Page 1</span>
-
-      <button className='rounded-md bg-gray-200 px-4 py-2 transition hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50'>
-        Next
-      </button>
-    </div>
-  );
+const INITIAL_OFFSET = 0;
+const ITEMS_PER_PAGE = 6;
+const defaultFilters = {
+  searchQuery: '',
+  offset: INITIAL_OFFSET,
+  hasMore: true,
+  loadMore: false,
 };
 
 export const MuscleGroupExercisePage = () => {
@@ -31,10 +27,14 @@ export const MuscleGroupExercisePage = () => {
   const [muscleGroupName, setMuscleGroupName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('exercises');
-  const [searchQuery, setSearchQuery] = useState('');
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const offset = 0;
-  const items = 6;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalExercises, setTotalExercises] = useState(0);
+
+  const [{ searchQuery, offset, hasMore, loadMore }, setExerciseGroupProps] =
+    useState(defaultFilters);
+
   const navigate = useNavigate();
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
@@ -42,26 +42,43 @@ export const MuscleGroupExercisePage = () => {
   useTitle(muscleGroupName);
 
   useEffect(() => {
+    setCurrentPage(1);
+    handleExerciseGroupPropsUpdate({
+      offset: INITIAL_OFFSET,
+      hasMore: true,
+      loadMore: false,
+    });
     setIsLoading(true);
-    const loadExercisesData = async () => {
-      const data = await fetchExercises({
-        selectedMuscleId: slugMuscleGroup,
-        offset: offset,
-        searchQuery: searchQuery,
-      });
-      // data.error should handle 404 only. Rest is handled by helpers.
-      if (data.error) {
-        navigate('/404', { replace: true });
-      }
-      setExercisesData(data.exercises);
-      setMuscleGroupName(data.name);
-      setIsLoading(false);
-    };
-    loadExercisesData();
+    loadExercisesData(INITIAL_OFFSET);
   }, [slugMuscleGroup, searchQuery, navigate]);
 
   useEffect(() => {
+    if (hasMore && loadMore) {
+      loadExercisesData(offset);
+    }
+  }, [loadMore]);
+
+  // useEffect for hiding the tabs on mobile on scrolling down
+  useEffect(() => {
     const handleScroll = () => {
+      if (window.innerWidth < 1024) {
+        const scrollPosition = window.scrollY + window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        const scrollThreshold = 200;
+
+        if (
+          documentHeight - scrollPosition < scrollThreshold &&
+          hasMore &&
+          !isLoading &&
+          !loadMore
+        ) {
+          setExerciseGroupProps((prev) => ({
+            ...prev,
+            loadMore: true,
+          }));
+        }
+      }
+
       if (!ticking.current) {
         window.requestAnimationFrame(() => {
           const currentScrollY = window.scrollY;
@@ -85,7 +102,84 @@ export const MuscleGroupExercisePage = () => {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [hasMore, isLoading, loadMore]);
+
+  const handleExerciseGroupPropsUpdate = (newValues) => {
+    setExerciseGroupProps((prevValues) => {
+      return {
+        ...prevValues,
+        ...newValues,
+      };
+    });
+  };
+
+  const loadExercisesData = async (offset) => {
+    const currentOffset = offset ?? INITIAL_OFFSET;
+    setIsLoading(true);
+
+    const scrollPosition = window.scrollY;
+
+    const data = await fetchExercises({
+      selectedMuscleId: slugMuscleGroup,
+      offset: currentOffset,
+      searchQuery: searchQuery,
+    });
+
+    // Handle errors (e.g., 404)
+    if (data.error) {
+      navigate('/404', { replace: true });
+      return;
+    }
+
+    // Update exercisesData based on screen size
+    setExercisesData((prevExercises) => {
+      if (window.innerWidth < 1024) {
+        return currentOffset === INITIAL_OFFSET
+          ? data.exercises
+          : [...prevExercises, ...data.exercises];
+      } else {
+        // Desktop: Replace exercises (pagination)
+        return data.exercises;
+      }
+    });
+
+    if (data.total_count !== undefined) {
+      setTotalExercises(data.total_count);
+      setTotalPages(Math.ceil(data.total_count / ITEMS_PER_PAGE));
+    } else {
+      // Fallback logic if total_count is not provided
+      const calculatedTotal = currentOffset + data.exercises.length;
+      setTotalExercises(calculatedTotal);
+      setTotalPages(Math.ceil(calculatedTotal / ITEMS_PER_PAGE));
+    }
+
+    handleExerciseGroupPropsUpdate({
+      offset: currentOffset + ITEMS_PER_PAGE,
+      loadMore: false,
+      hasMore: data.exercises.length >= ITEMS_PER_PAGE,
+    });
+
+    setMuscleGroupName(data.name);
+    setIsLoading(false);
+
+    // Restore the scroll position after the DOM updates
+    requestAnimationFrame(() => {
+      window.scrollTo(0, scrollPosition);
+    });
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages) return;
+
+    const newOffset = (newPage - 1) * ITEMS_PER_PAGE;
+    setCurrentPage(newPage);
+    handleExerciseGroupPropsUpdate({
+      offset: newOffset,
+      loadMore: false,
+    });
+
+    loadExercisesData(newOffset);
+  };
 
   const handleMuscleClick = (svgId) => {
     if (slugMuscleGroup !== svgId) {
@@ -135,8 +229,14 @@ export const MuscleGroupExercisePage = () => {
             <Heading
               muscleGroupName={muscleGroupName}
               exercisesData={exercisesData}
+              totalExercises={totalExercises}
               valueSearch={searchQuery}
-              onSearchChange={setSearchQuery}
+              onSearchChange={(value) =>
+                handleExerciseGroupPropsUpdate({
+                  searchQuery: value,
+                  offset: INITIAL_OFFSET,
+                })
+              }
             />
           </div>
 
@@ -147,8 +247,16 @@ export const MuscleGroupExercisePage = () => {
             <>
               <div className='h-auto rounded-xl border border-gray-100 bg-gray-50 pb-2 shadow-sm'>
                 <MuscleGrid exercisesData={exercisesData} />
-                <div className='mt-2 hidden lg:block'>
-                  <Pagination />
+
+                {/* Pagination - visible only on large screens */}
+                <div className='mt-2'>
+                  <PaginationMuscleGroupExercise
+                    ITEMS_PER_PAGE={ITEMS_PER_PAGE}
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    totalExercises={totalExercises}
+                    onPageChange={handlePageChange}
+                  />
                 </div>
               </div>
             </>
@@ -161,7 +269,7 @@ export const MuscleGroupExercisePage = () => {
             activeTab !== 'anatomy' ? 'hidden lg:block' : ''
           }`}
         >
-          <div className='lg:sticky lg:top-30'>
+          <div className='lg:sticky lg:top-20'>
             <ToggleableMuscleView
               handleMuscleClick={handleMuscleClick}
               selectedPrimaryMuscle={slugMuscleGroup}

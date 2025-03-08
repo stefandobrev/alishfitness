@@ -8,7 +8,6 @@ import {
   ExerciseListItems,
 } from './ManageComponents';
 import SearchInput from '../../components/inputs/SearchInput';
-
 import Spinner from '../../components/Spinner';
 
 const INITIAL_OFFSET = 0;
@@ -82,11 +81,12 @@ export const ExerciseList = ({
 
   const loadExerciseTitles = async (offset) => {
     const currentOffset = offset ?? INITIAL_OFFSET;
-    setIsLoading(true);
+
+    const scrollPosition = window.scrollY;
 
     const exerciseTitlesData = await fetchExerciseTitles({
       offset: currentOffset,
-      search: searchQuery,
+      searchQuery: searchQuery,
       sort: sortBy,
       muscleGroups: selectedMuscleGroups,
     });
@@ -107,6 +107,10 @@ export const ExerciseList = ({
     }
 
     setIsLoading(false);
+
+    requestAnimationFrame(() => {
+      window.scrollTo(0, scrollPosition);
+    });
   };
 
   const resetFilters = () => {

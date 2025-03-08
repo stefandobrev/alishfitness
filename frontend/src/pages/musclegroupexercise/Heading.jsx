@@ -3,11 +3,14 @@ import SearchInput from '../../components/inputs/SearchInput';
 const Heading = ({
   muscleGroupName,
   exercisesData,
+  totalExercises,
   valueSearch,
   onSearchChange,
 }) => {
-  const isPlural = exercisesData?.length !== 1;
-  const exercisesCounter = `${exercisesData?.length} exercise${isPlural ? 's' : ''} available`;
+  const exerciseCount =
+    totalExercises !== undefined ? totalExercises : exercisesData?.length;
+  const isPlural = exerciseCount !== 1;
+  const exercisesCounter = `${exerciseCount} exercise${isPlural ? 's' : ''} available`;
 
   return (
     <div className='flex flex-col'>
