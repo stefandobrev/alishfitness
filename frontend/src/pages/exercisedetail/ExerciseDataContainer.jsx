@@ -9,7 +9,7 @@ const VideoItems = ({ src }) => (
 
 const ExerciseDataContainer = ({ exerciseData }) => {
   return (
-    <div className='m-2 flex flex-col gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm lg:max-h-[650px] lg:overflow-y-auto'>
+    <div className='m-2 flex flex-col gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm'>
       <div className='flex flex-col gap-6 lg:flex-row'>
         <VideoItems src={exerciseData.gif_link_front} />
         <VideoItems src={exerciseData.gif_link_side} />
@@ -17,7 +17,6 @@ const ExerciseDataContainer = ({ exerciseData }) => {
 
       {exerciseData.steps?.length > 0 && (
         <>
-          {/* <h3 className='text-xl font-medium text-gray-800'>How to Perform</h3> */}
           <ol className='list-decimal space-y-4 text-lg text-gray-800 lg:pl-4'>
             {exerciseData.steps.map((step, index) => (
               <li key={index} className='flex items-center'>
@@ -32,6 +31,7 @@ const ExerciseDataContainer = ({ exerciseData }) => {
           </ol>
         </>
       )}
+
       {exerciseData.video_link && (
         <div className='my-2 flex justify-center'>
           <a
@@ -85,4 +85,5 @@ const ExerciseDataContainer = ({ exerciseData }) => {
     </div>
   );
 };
+
 export default ExerciseDataContainer;

@@ -77,6 +77,7 @@ export const MuscleGroupExercisePage = () => {
 
   return (
     <>
+      {/* Mobile Tabs with slide-up/down animation */}
       <div
         className={`transition-transform duration-500 ease-in-out ${
           isHeaderVisible
@@ -95,18 +96,22 @@ export const MuscleGroupExercisePage = () => {
           onClick={() => setActiveTab('anatomy')}
         />
       </div>
+
+      {/* Main Content Layout */}
       <div className='flex flex-col lg:flex-row'>
+        {/* Left Side - Exercises */}
         <div
           className={`flex w-full flex-col gap-4 lg:w-[75%] ${
             activeTab !== 'exercises' ? 'hidden lg:flex' : ''
           }`}
         >
+          {/* Sticky Header for Exercise List */}
           <div
             className={`transition-transform duration-500 ease-in-out ${
               isHeaderVisible
                 ? 'sticky top-36 translate-y-0 opacity-100'
                 : 'relative -translate-y-full opacity-0'
-            } z-30 bg-white pb-2 lg:static lg:pb-0 dark:bg-gray-900`}
+            } z-30 bg-white pb-2 lg:static lg:bg-transparent lg:pb-0`}
           >
             <Heading
               muscleGroupName={muscleGroupName}
@@ -115,23 +120,29 @@ export const MuscleGroupExercisePage = () => {
               onSearchChange={setSearchQuery}
             />
           </div>
+
+          {/* Exercise Grid Content */}
           {isLoading ? (
             <Spinner loading={isLoading} className='min-h-[70vh]' />
           ) : (
-            <div className='h-auto rounded-xl border border-gray-100 bg-gray-50 pb-8 shadow-sm lg:max-h-[650px] lg:overflow-y-auto lg:pb-4'>
+            <div className='h-auto rounded-xl border border-gray-100 bg-gray-50 pb-8 shadow-sm lg:pb-4'>
               <MuscleGrid exercisesData={exercisesData} />
             </div>
           )}
         </div>
+
+        {/* Right Side - Anatomy View with Sticky Positioning */}
         <div
           className={`w-full items-center lg:w-[25%] ${
             activeTab !== 'anatomy' ? 'hidden lg:block' : ''
           }`}
         >
-          <ToggleableMuscleView
-            handleMuscleClick={handleMuscleClick}
-            selectedPrimaryMuscle={slugMuscleGroup}
-          />
+          <div className='lg:sticky lg:top-20'>
+            <ToggleableMuscleView
+              handleMuscleClick={handleMuscleClick}
+              selectedPrimaryMuscle={slugMuscleGroup}
+            />
+          </div>
         </div>
       </div>
     </>

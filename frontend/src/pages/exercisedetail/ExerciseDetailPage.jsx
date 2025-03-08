@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-
 import { fetchExercise } from './helpersExerciseDetail';
 import { ToggleableMuscleView } from '../../components/muscleviews';
 import TabButton from '../../components/buttons/TabButton';
@@ -21,10 +20,8 @@ export const ExerciseDetailPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-
     const loadExerciseData = async () => {
       const data = await fetchExercise({ slugMuscleGroup, slugTitle });
-
       // data.error should handle 404 only. Rest is handled by helpers.
       if (data.error) {
         navigate('/404', { replace: true });
@@ -32,7 +29,6 @@ export const ExerciseDetailPage = () => {
       setExerciseData(data);
       setIsLoading(false);
     };
-
     loadExerciseData();
   }, [slugTitle]);
 
@@ -42,6 +38,7 @@ export const ExerciseDetailPage = () => {
 
   return (
     <>
+      {/* Mobile Tabs */}
       <div className='sticky top-20 z-40 flex h-16 justify-around border-t border-gray-800 bg-gray-600 p-2 lg:hidden'>
         <TabButton
           label='Exercise'
@@ -55,7 +52,9 @@ export const ExerciseDetailPage = () => {
         />
       </div>
 
+      {/* Main Content Container */}
       <div className='flex flex-col lg:flex-row'>
+        {/* Left Side - Exercise Content */}
         <div
           className={`flex w-full flex-col gap-4 lg:w-[75%] ${
             activeTab !== 'exercise' ? 'hidden lg:flex' : ''
@@ -70,19 +69,21 @@ export const ExerciseDetailPage = () => {
             </div>
           )}
         </div>
+
+        {/* Right Side - Anatomy View */}
         <div
           className={`w-full lg:w-[25%] ${
             activeTab !== 'anatomy' ? 'hidden lg:block' : ''
           }`}
         >
-          <div className='px-6'>
+          <div className='px-6 lg:sticky lg:top-20'>
             <ToggleableMuscleView
               handleMuscleClick={handleMuscleClick}
               selectedPrimaryMuscle={slugMuscleGroup}
               selectedSecondaryMuscles={exerciseData?.secondary_groups}
             />
+            <AnatomyLegend />
           </div>
-          <AnatomyLegend />
         </div>
       </div>
     </>
