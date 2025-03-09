@@ -1,21 +1,30 @@
-from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
 from django.core.validators import EmailValidator
-from ..models import User
+from rest_framework.validators import UniqueValidator
+from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+
 from rest_framework_simplejwt.token_blacklist.models import (
     BlacklistedToken,
     OutstandingToken,
 )
-
+from ..models import User
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for user registration."""
 
     confirm_password = serializers.CharField(write_only=True)
-    email = serializers.EmailField(validators=[EmailValidator()])
+    email = serializers.EmailField(
+        validators=[
+            EmailValidator(message="Enter a valid email address."),  
+            UniqueValidator(queryset=User.objects.all(), message="This email is already registered.") 
+        ]
+    )
+    username = serializers.CharField(
+        validators=[UniqueValidator(queryset=User.objects.all(), message="This username is already taken.")]
+    )
 
     class Meta:
         model = User
@@ -43,24 +52,17 @@ class UserSerializer(serializers.ModelSerializer):
 
         Checks:
         - Passwords match
-        - Username uniqueness
-        - Email uniqueness
+        - Email case sensitivity uniqeness
         """
         if data["password"] != data["confirm_password"]:
             raise serializers.ValidationError(
                 {"confirm_password": "Passwords do not match."}
             )
-
-        # Username and email uniqueness checks
-        if User.objects.filter(username=data["username"].lower()).exists():
-            raise serializers.ValidationError(
-                {"username": "This username is already taken."}
-            )
-
-        if User.objects.filter(email=data["email"].lower()).exists():
+        
+        if User.objects.filter(email__iexact=data["email"].lower()).exists():
             raise serializers.ValidationError(
                 {"email": "This email is already registered."}
-            )
+        )
 
         return data
 

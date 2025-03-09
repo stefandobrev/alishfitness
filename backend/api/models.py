@@ -4,7 +4,7 @@ from django.utils.text import slugify
 
 
 class User(AbstractUser):
-    pass
+    email = models.EmailField(unique=True)
 
 
 class MuscleGroup(models.Model):
