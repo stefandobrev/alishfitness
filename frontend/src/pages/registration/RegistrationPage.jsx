@@ -32,7 +32,7 @@ export const RegistrationPage = () => {
   };
 
   return (
-    <div className='flex h-[calc(100vh-108px)] items-center justify-center'>
+    <div className='flex h-[calc(100vh-108px)] items-center justify-center overflow-auto'>
       <div className='mx-4 w-full max-w-xs'>
         <h2 className='mb-3 text-center text-2xl font-semibold'>
           Create Profile
