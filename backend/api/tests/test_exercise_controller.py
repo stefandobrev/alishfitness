@@ -114,15 +114,12 @@ class TestExerciseController:
         assert len(response.data) > 0  
 
         if test_exercise.primary_group:
-            response = self.client.post(
-                url, 
-                {
+            filtered_titles = {
                     "search_query": test_exercise.title[:4],  
                     "muscle_groups": [test_exercise.primary_group.slug],
                     "sort": "created_at"
-                }, 
-                format="json"
-            )
+                }
+            response = self.client.post(url, filtered_titles, format="json")
 
         assert response.status_code == status.HTTP_200_OK
         assert any(ex["title"].startswith(self.test_exercise.title[:4]) for ex in response.data)
@@ -273,27 +270,30 @@ class TestExerciseController:
 
         url = reverse("exercises-group")
 
-        get_data = {
+        exercises_group = {
             "muscle_group_id": self.test_muscle_group.slug,
             "search_query": self.test_exercise.title[:4]
         }
 
-        response = self.client.post(url, get_data, format="json")
+        response = self.client.post(url, exercises_group, format="json")
 
         assert response.status_code == status.HTTP_200_OK
         assert any(ex["title"].startswith(self.test_exercise.title[:4]) for ex in response.data["exercises"])
+
+        exercise_per_group = Exercise.objects.filter(primary_group__slug=self.test_muscle_group.slug).count()
+        assert exercise_per_group == 1
 
     def test_get_exercises_group_missing(self):
         self.client.force_authenticate(user=self.test_user)
 
         url = reverse("exercises-group")
 
-        get_data = {
+        missing_excercise_group = {
             "muscle_group_id": "",
             "search_query": self.test_exercise.title[:4]
         }
 
-        response = self.client.post(url, get_data, format="json")
+        response = self.client.post(url, missing_excercise_group, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data["error"] == "Muscle group ID is required."
@@ -303,12 +303,12 @@ class TestExerciseController:
 
         url = reverse("exercises-group")
 
-        get_data = {
+        invalid_excercise_group = {
             "muscle_group_id": "invalidgroup",
             "search_query": self.test_exercise.title[:4]
         }
 
-        response = self.client.post(url, get_data, format="json")
+        response = self.client.post(url, invalid_excercise_group, format="json")
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
         assert response.data["error"] == "Invalid muscle group."
