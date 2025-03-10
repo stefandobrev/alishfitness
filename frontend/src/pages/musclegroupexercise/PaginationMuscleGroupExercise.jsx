@@ -1,37 +1,32 @@
 import { ViewButton } from '../../components/buttons/EditButtons';
 
 const PaginationMuscleGroupExercise = ({
-  ITEMS_PER_PAGE,
   currentPage,
   totalPages,
-  totalExercises,
   onPageChange,
 }) => {
-  if (totalExercises <= ITEMS_PER_PAGE) {
-    return null;
-  }
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
 
   return (
-    <div className='hidden gap-4 lg:flex lg:items-center lg:justify-center'>
-      {currentPage > 1 && (
-        <ViewButton
-          variant='white'
-          onClick={() => onPageChange(currentPage - 1)}
-        >
-          Prev
-        </ViewButton>
-      )}
+    <div className='flex items-center justify-center gap-4'>
+      <ViewButton
+        variant='white'
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={isFirstPage}
+      >
+        <span style={{ transform: 'translateY(-2px)' }}>{'<'}</span>
+      </ViewButton>
 
       <span className='text-gray-700'>Page {currentPage}</span>
 
-      {currentPage < totalPages && (
-        <ViewButton
-          variant='white'
-          onClick={() => onPageChange(currentPage + 1)}
-        >
-          Next
-        </ViewButton>
-      )}
+      <ViewButton
+        variant='white'
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={isLastPage}
+      >
+        <span style={{ transform: 'translateY(-2px)' }}>{'>'}</span>
+      </ViewButton>
     </div>
   );
 };

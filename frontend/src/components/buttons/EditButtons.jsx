@@ -85,12 +85,14 @@ export const DeleteButton = ({
 
 export const ViewButton = ({
   children = 'View',
+  disabled,
   variant = 'grayDark',
   onClick,
   className = '',
 }) => (
   <Button
     type='button'
+    disabled={disabled}
     onClick={onClick}
     variant={variant}
     className={className}

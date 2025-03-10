@@ -249,15 +249,15 @@ export const MuscleGroupExercisePage = () => {
                 <MuscleGrid exercisesData={exercisesData} />
 
                 {/* Pagination - visible only on large screens */}
-                <div className='mt-2'>
-                  <PaginationMuscleGroupExercise
-                    ITEMS_PER_PAGE={ITEMS_PER_PAGE}
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    totalExercises={totalExercises}
-                    onPageChange={handlePageChange}
-                  />
-                </div>
+                {totalExercises > ITEMS_PER_PAGE && (
+                  <div className='mt-2'>
+                    <PaginationMuscleGroupExercise
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={handlePageChange}
+                    />
+                  </div>
+                )}
               </div>
             </>
           )}
