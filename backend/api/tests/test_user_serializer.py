@@ -1,6 +1,11 @@
 import pytest
 from django.contrib.auth.hashers import check_password
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
 from rest_framework.exceptions import ValidationError, AuthenticationFailed
+
+from datetime import datetime, timezone
 
 from api.models import User
 from api.serializers.user_serializers import (
@@ -298,5 +303,43 @@ class TestUpdatePasswordSerializer:
 
 @pytest.mark.django_db(transaction=True)
 class TestTokenRefreshSerializer:
-    def test_valid_refresh(self):
-        pass
+    def test_valid_token(self, test_user):
+        refresh = RefreshToken()
+
+        OutstandingToken.objects.create(
+            jti=refresh["jti"],
+            user=test_user,
+            created_at=datetime.fromtimestamp(refresh["iat"], tz=timezone.utc).isoformat(),
+            expires_at=datetime.fromtimestamp(refresh["exp"], tz=timezone.utc).isoformat(),
+        )
+
+        serializer = TokenRefreshSerializer(data={"refresh": str(refresh)})
+        assert serializer.is_valid()
+        assert str(serializer.validated_data["refresh"]) == str(refresh)
+
+    def test_token_not_in_outstanding_tokens(self):
+        refresh = RefreshToken()
+
+        serializer = TokenRefreshSerializer(data={"refresh": str(refresh)})
+        assert not serializer.is_valid()
+        assert "Token not found in outstanding tokens" in str(serializer.errors["refresh"])
+
+    def test_blacklisted_token(self, test_user):
+        refresh = RefreshToken()
+
+        outstanding_token = OutstandingToken.objects.create(
+            jti=refresh["jti"],
+            user=test_user,
+            created_at=datetime.fromtimestamp(refresh["iat"], tz=timezone.utc).isoformat(),
+            expires_at=datetime.fromtimestamp(refresh["exp"], tz=timezone.utc).isoformat(),
+        )
+        BlacklistedToken.objects.create(token=outstanding_token)
+
+        serializer = TokenRefreshSerializer(data={"refresh": str(refresh)})
+        assert not serializer.is_valid()
+        assert "Token is blacklisted" in str(serializer.errors["refresh"])
+
+    def test_invalid_token(self):
+        serializer = TokenRefreshSerializer(data={"refresh": "invalid-token"})
+        assert not serializer.is_valid()
+        assert "Invalid or expired refresh token" in str(serializer.errors["refresh"])
