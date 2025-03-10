@@ -34,11 +34,13 @@ class TestExerciseController:
 
         self.test_user = User.objects.create_user(
             username="testuser",
+            email="testuser@example.com",
             password="testpassword"
         )
 
         self.test_admin = User.objects.create_user(
             username="testadmin",
+            email="adminuser@example.com",
             password="testadminpassword",
             is_staff=True
         )
