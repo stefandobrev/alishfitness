@@ -250,7 +250,7 @@ export const MuscleGroupExercisePage = () => {
 
                 {/* Pagination - visible only on large screens */}
                 {totalExercises > ITEMS_PER_PAGE && (
-                  <div className='mt-2'>
+                  <div className='mt-2 hidden lg:block'>
                     <PaginationMuscleGroupExercise
                       currentPage={currentPage}
                       totalPages={totalPages}
