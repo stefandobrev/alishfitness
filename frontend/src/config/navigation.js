@@ -6,7 +6,7 @@ export const getNavigation = (isAuthenticated, isAdmin) => {
   if (isAuthenticated) {
     navigation.push({ name: 'Exercises', href: '/exercises' });
     if (isAdmin) {
-      navigation.push({ name: 'Manage', href: '/manage' });
+      navigation.push({ name: 'Manage', href: '/manage/exercises' });
     }
   } else {
     navigation.push({ name: 'Member Portal', href: '/login' });

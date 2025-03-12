@@ -12,7 +12,8 @@ import {
   ExercisePage,
   HomePage,
   LoginPage,
-  ManagePage,
+  ManageExercisesPage,
+  ManageUsersPage,
   MuscleGroupExercisePage,
   NotFoundPage,
   ProfileSettingsPage,
@@ -50,7 +51,7 @@ export const router = createBrowserRouter(
         <Route path='/settings' element={<ProfileSettingsPage />} />
 
         <Route element={<AdminRoute />}>
-          <Route path='/manage' element={<ManagePage />} />
+          <Route path='/manage/exercises' element={<ManageExercisesPage />} />
         </Route>
       </Route>
 

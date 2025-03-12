@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { saveExercise } from './helpersManage';
+import { saveExercise } from './helpersManageExercises';
 import { DefaultForm } from './DefaultForm';
 
 const AddForm = ({ muscleGroups, onExerciseAdded }) => {

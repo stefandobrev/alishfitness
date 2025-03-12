@@ -7,11 +7,11 @@ import {
   saveExercise,
   fetchExerciseData,
   deleteExercise,
-} from './helpersManage';
-import { EditButton } from '../../components/buttons/EditButtons';
+} from './helpersManageExercises';
+import { EditButton } from '../../../components/buttons/EditButtons';
 import { DefaultForm } from './DefaultForm';
 import DeleteConfirmation from './DeleteConfirmation';
-import Spinner from '../../components/Spinner';
+import Spinner from '../../../components/Spinner';
 
 const EditForm = ({
   muscleGroups,

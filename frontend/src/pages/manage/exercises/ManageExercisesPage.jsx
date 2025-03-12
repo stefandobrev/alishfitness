@@ -2,16 +2,16 @@ import { useState, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 
-import { fetchMuscleGroups } from './helpersManage';
-import TabButton from '../../components/buttons/TabButton';
-import { ToggleableMuscleView } from '../../components/muscleviews';
+import { fetchMuscleGroups } from './helpersManageExercises';
+import TabButton from '../../../components/buttons/TabButton';
+import { ToggleableMuscleView } from '../../../components/muscleviews';
 import AddForm from './AddForm';
 import EditForm from './EditForm';
-import { useTitle } from '../../hooks/useTitle.hook';
+import { useTitle } from '../../../hooks/useTitle.hook';
 
 import { ExerciseList } from './ExerciseList';
 
-export const ManagePage = () => {
+export const ManageExercisesPage = () => {
   const methods = useForm();
   const location = useLocation();
   const [mode, setMode] = useState('add');
