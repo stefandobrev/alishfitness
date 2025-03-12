@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+
 import { fetchProfileData } from '../../store/slices/userSlice';
 import { logoutWithBlacklist } from '../../store/slices/authSlice';
-import { getNavigation } from '../../config/navigation';
+import { getNavigation, getManageMenuItems } from '../../config/navigation';
+import MobileMenu from './MobileMenu';
 import ProfileMenu from './ProfileMenu';
+import ManageMenu from './ManageMenu';
+import HambButton from './HambButton';
 import { classNames } from '../../utils/classNames';
 
 const Navbar = () => {
@@ -16,6 +19,8 @@ const Navbar = () => {
   const profile = useSelector((state) => state.user.profile);
   const { isAuthenticated, isAdmin } = useSelector((state) => state.auth);
 
+  const hamburgerButtonRef = useRef(null);
+
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(fetchProfileData());
@@ -23,6 +28,7 @@ const Navbar = () => {
   }, [dispatch, isAuthenticated]);
 
   const navigation = getNavigation(isAuthenticated, isAdmin);
+  const manageMenuItems = isAdmin ? getManageMenuItems() : [];
 
   const handleSignOut = async () => {
     dispatch(logoutWithBlacklist());
@@ -36,19 +42,11 @@ const Navbar = () => {
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='relative flex h-20 items-center justify-between'>
           {/* Mobile menu button */}
-          <div className='absolute inset-y-0 left-0 flex items-center sm:hidden'>
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className='group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 hover:bg-gray-700 hover:text-white focus:outline-hidden'
-            >
-              <span className='absolute -inset-0.5' />
-              <span className='sr-only'>Open main menu</span>
-              {isOpen ? (
-                <XMarkIcon className='block h-7 w-7' aria-hidden='true' />
-              ) : (
-                <Bars3Icon className='block h-7 w-7' aria-hidden='true' />
-              )}
-            </button>
+          <div
+            className='absolute inset-y-0 left-0 flex items-center sm:hidden'
+            ref={hamburgerButtonRef}
+          >
+            <HambButton isOpen={isOpen} setIsOpen={setIsOpen} />
           </div>
 
           {/* Logo and navigation */}
@@ -64,24 +62,32 @@ const Navbar = () => {
             </div>
             <div className='hidden sm:ml-8 sm:block'>
               <div className='flex space-x-6'>
-                {navigation.map((item) => (
-                  <NavLink
-                    key={item.name}
-                    to={item.href}
-                    aria-current={isCurrent(item.href)}
-                    className={({ isActive }) =>
-                      classNames(
-                        isActive
-                          ? 'bg-gray-900 text-white'
-                          : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'rounded-md px-4 py-3 text-base font-medium transition duration-150',
-                        'hover:translate-y-[-2px] hover:transform',
-                      )
-                    }
-                  >
-                    {item.name}
-                  </NavLink>
-                ))}
+                {navigation.map((item) =>
+                  item.name === 'Manage' && isAdmin ? (
+                    <ManageMenu
+                      key={item.name}
+                      menuItems={manageMenuItems}
+                      currentPath={location.pathname}
+                    />
+                  ) : (
+                    <NavLink
+                      key={item.name}
+                      to={item.href}
+                      aria-current={isCurrent(item.href)}
+                      className={({ isActive }) =>
+                        classNames(
+                          isActive
+                            ? 'bg-gray-900 text-white'
+                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                          'rounded-md px-4 py-3 text-base font-medium transition duration-150',
+                          'hover:translate-y-[-2px] hover:transform',
+                        )
+                      }
+                    >
+                      {item.name}
+                    </NavLink>
+                  ),
+                )}
               </div>
             </div>
           </div>
@@ -102,26 +108,13 @@ const Navbar = () => {
       {/* Mobile menu */}
       {isOpen && (
         <div className='sm:hidden'>
-          <div className='space-y-2 px-3 pt-2 pb-4'>
-            {navigation.map((item) => (
-              <NavLink
-                key={item.name}
-                to={item.href}
-                onClick={() => setIsOpen(false)} // Close menu when clicking a link
-                className={({ isActive }) =>
-                  classNames(
-                    isActive
-                      ? 'bg-gray-900 text-white'
-                      : 'bg-gray-800 text-gray-300 hover:bg-gray-600 hover:text-white',
-                    'block rounded-md px-4 py-3 text-base font-medium transition duration-150',
-                    'hover:translate-x-2 hover:transform',
-                  )
-                }
-              >
-                {item.name}
-              </NavLink>
-            ))}
-          </div>
+          <MobileMenu
+            navigation={navigation}
+            location={location}
+            manageMenuItems={manageMenuItems}
+            setIsOpen={setIsOpen}
+            hamburgerButtonRef={hamburgerButtonRef}
+          />
         </div>
       )}
     </nav>

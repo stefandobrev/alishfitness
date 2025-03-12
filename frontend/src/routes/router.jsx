@@ -52,6 +52,7 @@ export const router = createBrowserRouter(
 
         <Route element={<AdminRoute />}>
           <Route path='/manage/exercises' element={<ManageExercisesPage />} />
+          <Route path='/manage/users' element={<ManageUsersPage />} />
         </Route>
       </Route>
 
