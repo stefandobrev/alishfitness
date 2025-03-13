@@ -13,7 +13,7 @@ export const getNavItemStyles = (isActive) => {
 
 export const getNavMobileItemStyles = (isActive) => {
   return classNames(
-    isActive ? 'bg-gray-600 text-white' : 'bg-gray-800 text-gray-300',
+    isActive ? 'bg-gray-500 text-white' : 'bg-gray-700 text-gray-300',
     'flex w-full cursor-pointer block rounded-md px-4 py-3',
   );
 };
