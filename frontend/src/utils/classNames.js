@@ -10,3 +10,10 @@ export const getNavItemStyles = (isActive) => {
     'cursor-pointer rounded-md px-4 py-3 text-base font-medium',
   );
 };
+
+export const getNavMobileItemStyles = (isActive) => {
+  return classNames(
+    isActive ? 'bg-gray-600 text-white' : 'bg-gray-800 text-gray-300',
+    'flex w-full cursor-pointer block rounded-md px-4 py-3',
+  );
+};

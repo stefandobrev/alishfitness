@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
-import { classNames } from '../../utils/classNames';
+import { getNavMobileItemStyles } from '../../utils/classNames';
 
 const MobileMenu = ({
   navigation,
@@ -33,25 +33,23 @@ const MobileMenu = ({
   }, [setIsOpen, hamburgerButtonRef]);
 
   return (
-    <div className='space-y-2 px-3 pt-2 pb-4' ref={menuRef}>
+    <div className='space-y-2 bg-gray-800 px-3 pt-2 pb-4' ref={menuRef}>
       {navigation.map((item) =>
         item.menuItems ? (
           <div key={item.name}>
             <button
               onClick={() => toggleMobileSubMenu(item.name)}
-              className={classNames(
-                // Check if current path starts with any of the submenu hrefs
-                item.menuItems.some((subItem) =>
-                  location.pathname.startsWith(subItem.href),
-                )
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-gray-800 text-gray-300',
-                'flex w-full cursor-pointer items-center justify-between rounded-md px-4 py-3 text-base font-medium',
+              className={getNavMobileItemStyles(
+                item.menuItems.some(
+                  (subItem) => location.pathname === subItem.href,
+                ),
               )}
             >
               <span>{item.name}</span>
               <svg
-                className={`h-5 w-5 transition-transform ${openMobileSubMenu === item.name ? 'rotate-180' : ''}`}
+                className={`ml-auto h-5 w-5 transition-transform ${
+                  openMobileSubMenu === item.name ? 'rotate-180' : ''
+                }`}
                 xmlns='http://www.w3.org/2000/svg'
                 viewBox='0 0 20 20'
                 fill='currentColor'
@@ -71,12 +69,7 @@ const MobileMenu = ({
                     to={subItem.href}
                     onClick={() => setIsOpen(false)}
                     className={({ isActive }) =>
-                      classNames(
-                        isActive
-                          ? 'bg-gray-900 text-white'
-                          : 'bg-gray-800 text-gray-300',
-                        'block rounded-md px-4 py-2 text-sm',
-                      )
+                      getNavMobileItemStyles(isActive) + ' px-4 py-3 text-sm'
                     }
                   >
                     {subItem.name}
@@ -91,12 +84,7 @@ const MobileMenu = ({
             to={item.href}
             onClick={() => setIsOpen(false)}
             className={({ isActive }) =>
-              classNames(
-                isActive
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-gray-800 text-gray-300',
-                'block rounded-md px-4 py-3 text-base font-medium',
-              )
+              getNavMobileItemStyles(isActive) + ' text-base font-medium'
             }
           >
             {item.name}
