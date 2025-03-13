@@ -4,12 +4,12 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 import { fetchProfileData } from '../../store/slices/userSlice';
 import { logoutWithBlacklist } from '../../store/slices/authSlice';
-import { getNavigation, getManageMenuItems } from '../../config/navigation';
+import { getNavigation } from '../../config/navigation';
 import MobileMenu from './MobileMenu';
 import ProfileMenu from './ProfileMenu';
-import ManageMenu from './ManageMenu';
+import DropdownMenu from './DropdownMenu';
 import HambButton from './HambButton';
-import { classNames } from '../../utils/classNames';
+import { getNavItemStyles } from '../../utils/classNames';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +28,6 @@ const Navbar = () => {
   }, [dispatch, isAuthenticated]);
 
   const navigation = getNavigation(isAuthenticated, isAdmin);
-  const manageMenuItems = isAdmin ? getManageMenuItems() : [];
 
   const handleSignOut = async () => {
     dispatch(logoutWithBlacklist());
@@ -63,10 +62,10 @@ const Navbar = () => {
             <div className='hidden sm:ml-8 sm:block'>
               <div className='flex space-x-6'>
                 {navigation.map((item) =>
-                  item.name === 'Manage' && isAdmin ? (
-                    <ManageMenu
+                  item.menuItems ? (
+                    <DropdownMenu
                       key={item.name}
-                      menuItems={manageMenuItems}
+                      item={item}
                       currentPath={location.pathname}
                     />
                   ) : (
@@ -74,15 +73,7 @@ const Navbar = () => {
                       key={item.name}
                       to={item.href}
                       aria-current={isCurrent(item.href)}
-                      className={({ isActive }) =>
-                        classNames(
-                          isActive
-                            ? 'bg-gray-900 text-white'
-                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'rounded-md px-4 py-3 text-base font-medium transition duration-150',
-                          'hover:translate-y-[-2px] hover:transform',
-                        )
-                      }
+                      className={({ isActive }) => getNavItemStyles(isActive)}
                     >
                       {item.name}
                     </NavLink>
@@ -111,7 +102,6 @@ const Navbar = () => {
           <MobileMenu
             navigation={navigation}
             location={location}
-            manageMenuItems={manageMenuItems}
             setIsOpen={setIsOpen}
             hamburgerButtonRef={hamburgerButtonRef}
           />

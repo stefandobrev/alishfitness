@@ -29,7 +29,7 @@ const ProfileMenu = ({ profile, onSignOut }) => {
       {/* Profile Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className='flex cursor-pointer items-center gap-3 rounded-lg bg-gray-700 p-2 transition duration-150 hover:bg-gray-600 sm:px-4 sm:py-2'
+        className='flex cursor-pointer items-center gap-3 rounded-lg border-2 border-gray-600 bg-gray-700 p-2 hover:bg-gray-600 sm:px-4 sm:py-2'
       >
         <img
           alt='User Avatar'

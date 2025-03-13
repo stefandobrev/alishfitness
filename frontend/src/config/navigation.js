@@ -5,19 +5,18 @@ export const getNavigation = (isAuthenticated, isAdmin) => {
   if (isAuthenticated) {
     navigation.push({ name: 'Exercises', href: '/exercises' });
     if (isAdmin) {
-      navigation.push({ name: 'Manage', href: '/manage' });
+      navigation.push({
+        name: 'Manage',
+        menuItems: [
+          { name: 'Exercises', href: '/manage/exercises' },
+          { name: 'Users', href: '/manage/users' },
+        ],
+      });
     }
   } else {
     navigation.push({ name: 'Member Portal', href: '/login' });
   }
   return navigation;
-};
-
-export const getManageMenuItems = () => {
-  return [
-    { name: 'Exercises', href: '/manage/exercises' },
-    { name: 'Users', href: '/manage/users' },
-  ];
 };
 
 export const profileMenuItems = [
