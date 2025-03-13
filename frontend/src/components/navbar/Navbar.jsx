@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 import { fetchProfileData } from '../../store/slices/userSlice';
-import { logoutWithBlacklist } from '../../store/slices/authSlice';
 import { getNavigation } from '../../config/navigation';
 import MobileMenu from './MobileMenu';
 import ProfileMenu from './ProfileMenu';
@@ -14,9 +13,8 @@ import { getNavItemStyles } from '../../utils/classNames';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
-  const profile = useSelector((state) => state.user.profile);
+
   const { isAuthenticated, isAdmin } = useSelector((state) => state.auth);
 
   const hamburgerButtonRef = useRef(null);
@@ -28,11 +26,6 @@ const Navbar = () => {
   }, [dispatch, isAuthenticated]);
 
   const navigation = getNavigation(isAuthenticated, isAdmin);
-
-  const handleSignOut = async () => {
-    dispatch(logoutWithBlacklist());
-    navigate('/login');
-  };
 
   const isCurrent = (href) => (href === location.pathname ? 'page' : undefined);
 
@@ -86,11 +79,7 @@ const Navbar = () => {
           {/* Profile menu */}
           <div className='absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
             {isAuthenticated && (
-              <ProfileMenu
-                profile={profile}
-                onSignOut={handleSignOut}
-                className='transition duration-150 hover:opacity-90'
-              />
+              <ProfileMenu className='transition duration-150 hover:opacity-90' />
             )}
           </div>
         </div>

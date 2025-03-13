@@ -1,15 +1,22 @@
 import { useState, useEffect, useRef } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { logoutWithBlacklist } from '../../store/slices/authSlice';
 import { profileMenuItems } from '../../config/navigation';
 import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
 
-const ProfileMenu = ({ profile, onSignOut }) => {
+const ProfileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const profile = useSelector((state) => state.user.profile);
   const menuRef = useRef(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     setIsOpen(false);
-    onSignOut();
+    dispatch(logoutWithBlacklist());
+    navigate('/login');
   };
 
   useEffect(() => {
