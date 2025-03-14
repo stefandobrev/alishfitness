@@ -4,4 +4,4 @@ export {
   MuscleGroupFilter,
   SortFilter,
   ExerciseListItems,
-} from './ManageExercisesComponents';
+} from './ExerciseListComponents';
