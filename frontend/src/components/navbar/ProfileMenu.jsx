@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
 
 import { logoutWithBlacklist } from '../../store/slices/authSlice';
 import { profileMenuItems } from '../../config/navigation';
-import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
+import { getNavMobileItemStyles } from '../../utils/classNames';
 
 const ProfileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,9 @@ const ProfileMenu = () => {
   const menuRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const isMobile = window.innerWidth < 640;
 
   const handleSignOut = async () => {
     setIsOpen(false);
@@ -48,27 +52,32 @@ const ProfileMenu = () => {
         </span>
       </button>
 
-      {/* Dropdown Menu */}
-      {isOpen && (
-        <div className='absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-lg bg-gray-800 shadow-lg ring-1 ring-gray-700'>
-          {profileMenuItems.map((item, index) => (
-            <NavLink
-              key={item.name}
-              to={item.href}
-              onClick={() => setIsOpen(false)}
-              className={`flex w-full items-center px-4 py-3 text-sm text-gray-300 transition duration-150 hover:bg-gray-700 hover:text-white ${
-                index === 0 ? 'rounded-t-lg' : ''
-              }`}
-            >
-              {item.icon && (
-                <item.icon
-                  className='mr-3 h-5 w-5 text-gray-400'
-                  aria-hidden='true'
-                />
-              )}
-              {item.name}
-            </NavLink>
-          ))}
+      {/* Dropdown Menu - Desktop version */}
+      {isOpen && !isMobile && (
+        <div className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-lg bg-gray-800 shadow-lg ring-1 ring-gray-700'>
+          {profileMenuItems.map((item, index) => {
+            const isItemActive = currentPath === item.href;
+            return (
+              <NavLink
+                key={item.name}
+                to={item.href}
+                onClick={() => setIsOpen(false)}
+                className={`flex w-full items-center px-4 py-3 text-sm ${
+                  isItemActive
+                    ? 'bg-gray-700 text-white'
+                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                } transition duration-150 ${index === 0 ? 'rounded-t-lg' : ''}`}
+              >
+                {item.icon && (
+                  <item.icon
+                    className={`mr-3 h-5 w-5 ${isItemActive ? 'text-white' : 'text-gray-400'}`}
+                    aria-hidden='true'
+                  />
+                )}
+                {item.name}
+              </NavLink>
+            );
+          })}
           <div className='my-1 border-t border-gray-700' />
           <button
             onClick={handleSignOut}
@@ -78,9 +87,54 @@ const ProfileMenu = () => {
               className='mr-3 h-5 w-5 text-gray-400'
               aria-hidden='true'
             />
-            {/* Sign Out icon */}
             Sign out
           </button>
+        </div>
+      )}
+
+      {/* Mobile Dropdown Menu*/}
+      {isOpen && isMobile && (
+        <div className='fixed inset-x-0 top-16 z-10 mt-4 bg-gray-800'>
+          <div className='space-y-2 bg-gray-800 px-3 pt-2 pb-4'>
+            {/* Profile Menu Items */}
+            {profileMenuItems.map((item) => (
+              <NavLink
+                key={item.name}
+                to={item.href}
+                onClick={() => setIsOpen(false)}
+                className={({ isActive }) =>
+                  getNavMobileItemStyles(isActive) + ' text-base font-medium'
+                }
+              >
+                <div className='flex w-full items-center'>
+                  {item.icon && (
+                    <item.icon
+                      className='mr-3 h-5 w-5 text-gray-400'
+                      aria-hidden='true'
+                    />
+                  )}
+                  {item.name}
+                </div>
+              </NavLink>
+            ))}
+
+            {/* Sign Out Button */}
+            <div className='my-5 border-t border-gray-700' />
+            <button
+              onClick={handleSignOut}
+              className={
+                getNavMobileItemStyles(false) + ' text-base font-medium'
+              }
+            >
+              <div className='flex w-full items-center'>
+                <ArrowRightStartOnRectangleIcon
+                  className='mr-3 h-5 w-5 text-gray-400'
+                  aria-hidden='true'
+                />
+                Sign out
+              </div>
+            </button>
+          </div>
         </div>
       )}
     </div>
