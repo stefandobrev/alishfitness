@@ -39,7 +39,7 @@ const ProfileMenu = ({ isOpen, setIsOpen }) => {
       {/* Profile Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className='flex cursor-pointer items-center gap-3 rounded-lg border-2 border-gray-600 bg-gray-700 p-2 hover:bg-gray-600 sm:px-4 sm:py-2'
+        className='flex cursor-pointer items-center gap-3 rounded-lg border-2 border-gray-600 p-2 hover:bg-gray-600 sm:bg-gray-700 sm:px-4 sm:py-2'
       >
         <img
           alt='User Avatar'
@@ -93,7 +93,7 @@ const ProfileMenu = ({ isOpen, setIsOpen }) => {
 
       {/* Mobile Dropdown Menu*/}
       {isOpen && isMobile && (
-        <div className='fixed inset-x-0 top-16 z-10 mt-4 bg-gray-800'>
+        <div className='fixed inset-x-0 top-16 z-10 mt-4'>
           <div className='space-y-2 bg-gray-800 px-3 pt-2 pb-4'>
             {/* Profile Menu Items */}
             {profileMenuItems.map((item) => (
