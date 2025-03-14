@@ -6,7 +6,7 @@ import {
   MuscleGroupFilter,
   SortFilter,
   ExerciseListItems,
-} from './ManageExercisesComponents';
+} from './components/ManageExercisesComponents';
 import SearchInput from '../../../components/inputs/SearchInput';
 import Spinner from '../../../components/Spinner';
 

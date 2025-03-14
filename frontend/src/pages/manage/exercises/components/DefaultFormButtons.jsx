@@ -2,7 +2,7 @@ import {
   SaveButton,
   DeleteButton,
   ViewButton,
-} from '../../../components/buttons/EditButtons';
+} from '../../../../components/buttons/EditButtons';
 
 // For large screens - all buttons in one row, not sticky
 export const MdScreenButtons = ({

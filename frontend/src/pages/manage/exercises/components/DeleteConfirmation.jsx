@@ -3,7 +3,7 @@ import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import {
   DeleteButton,
   CancelButton,
-} from '../../../components/buttons/EditButtons';
+} from '../../../../components/buttons/EditButtons';
 
 const DeleteConfirmation = ({ onClose, onConfirm, title }) => {
   return (

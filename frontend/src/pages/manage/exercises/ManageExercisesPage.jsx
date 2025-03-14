@@ -5,8 +5,8 @@ import { useLocation } from 'react-router-dom';
 import { fetchMuscleGroups } from './helpersManageExercises';
 import TabButton from '../../../components/buttons/TabButton';
 import { ToggleableMuscleView } from '../../../components/muscleviews';
-import AddForm from './AddForm';
-import EditForm from './EditForm';
+import AddForm from './forms/AddForm';
+import EditForm from './forms/EditForm';
 import { useTitle } from '../../../hooks/useTitle.hook';
 
 import { ExerciseList } from './ExerciseList';
