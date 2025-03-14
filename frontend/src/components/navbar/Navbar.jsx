@@ -1,23 +1,31 @@
-import { useState, useEffect, useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useLocation } from 'react-router-dom';
 
 import { fetchProfileData } from '../../store/slices/userSlice';
 import { getNavigation } from '../../config/navigation';
+import { useNavbarState } from './hooks/useNavbarState';
+import { useNavbarStyles } from './hooks/useNavbarStyles';
+
 import MobileMenu from './MobileMenu';
 import ProfileMenu from './ProfileMenu';
-import DropdownMenu from './DropdownMenu';
 import HambButton from './HambButton';
-import { getNavItemStyles } from '../../utils/classNames';
+import NavigationItems from './NavigationItems';
+import NavbarLogo from './NavbarLogo';
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, setIsOpen, isScrolled, isHomePage, location } =
+    useNavbarState();
+  const { navClasses, getTransparentTextClass } = useNavbarStyles(
+    isHomePage,
+    isScrolled,
+    isOpen,
+  );
+
   const dispatch = useDispatch();
-  const location = useLocation();
-
   const { isAuthenticated, isAdmin } = useSelector((state) => state.auth);
-
   const hamburgerButtonRef = useRef(null);
+  const navigation = getNavigation(isAuthenticated, isAdmin);
+  const isTransparent = isHomePage && !isScrolled && !isOpen;
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -25,17 +33,13 @@ const Navbar = () => {
     }
   }, [dispatch, isAuthenticated]);
 
-  const navigation = getNavigation(isAuthenticated, isAdmin);
-
-  const isCurrent = (href) => (href === location.pathname ? 'page' : undefined);
-
   return (
-    <nav className='sticky top-0 z-50 h-20 bg-gray-800 shadow-lg'>
+    <nav className={navClasses}>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='relative flex h-20 items-center justify-between'>
           {/* Mobile menu button */}
           <div
-            className='absolute inset-y-0 left-0 flex items-center sm:hidden'
+            className={`absolute inset-y-0 left-0 flex items-center sm:hidden ${getTransparentTextClass()}`}
             ref={hamburgerButtonRef}
           >
             <HambButton isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -43,41 +47,20 @@ const Navbar = () => {
 
           {/* Logo and navigation */}
           <div className='flex flex-1 items-center justify-center sm:items-stretch sm:justify-start'>
-            <div className='flex shrink-0 items-center'>
-              <NavLink to='/'>
-                <img
-                  alt='Alish Fitness'
-                  src='/AlishLogo.png'
-                  className='h-12 w-auto transition-transform duration-200 hover:scale-110'
-                />
-              </NavLink>
-            </div>
+            <NavbarLogo />
             <div className='hidden sm:ml-8 sm:block'>
-              <div className='flex space-x-6'>
-                {navigation.map((item) =>
-                  item.menuItems ? (
-                    <DropdownMenu
-                      key={item.name}
-                      item={item}
-                      currentPath={location.pathname}
-                    />
-                  ) : (
-                    <NavLink
-                      key={item.name}
-                      to={item.href}
-                      aria-current={isCurrent(item.href)}
-                      className={({ isActive }) => getNavItemStyles(isActive)}
-                    >
-                      {item.name}
-                    </NavLink>
-                  ),
-                )}
-              </div>
+              <NavigationItems
+                navigation={navigation}
+                currentPath={location.pathname}
+                isTransparent={isTransparent}
+              />
             </div>
           </div>
 
           {/* Profile menu */}
-          <div className='absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
+          <div
+            className={`absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 ${getTransparentTextClass()}`}
+          >
             {isAuthenticated && (
               <ProfileMenu className='transition duration-150 hover:opacity-90' />
             )}
