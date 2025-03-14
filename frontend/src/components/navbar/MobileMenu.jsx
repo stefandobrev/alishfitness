@@ -15,22 +15,22 @@ const MobileMenu = ({
     setOpenMobileSubMenu(openMobileSubMenu === name ? null : name);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(event.target) &&
-        hamburgerButtonRef.current &&
-        !hamburgerButtonRef.current.contains(event.target)
-      ) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [setIsOpen, hamburgerButtonRef]);
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (
+  //       menuRef.current &&
+  //       !menuRef.current.contains(event.target) &&
+  //       hamburgerButtonRef.current &&
+  //       !hamburgerButtonRef.current.contains(event.target)
+  //     ) {
+  //       setIsOpen(false);
+  //     }
+  //   };
+  //   document.addEventListener('click', handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener('click', handleClickOutside);
+  //   };
+  // }, [setIsOpen, hamburgerButtonRef]);
 
   return (
     <div className='space-y-2 bg-gray-800 px-3 pt-2 pb-4' ref={menuRef}>

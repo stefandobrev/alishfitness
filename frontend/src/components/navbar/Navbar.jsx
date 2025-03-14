@@ -13,19 +13,27 @@ import NavigationItems from './NavigationItems';
 import NavbarLogo from './NavbarLogo';
 
 const Navbar = () => {
-  const { isOpen, setIsOpen, isScrolled, isHomePage, location } =
-    useNavbarState();
-  const { navClasses, getTransparentTextClass } = useNavbarStyles(
+  const {
+    isMenuOpen,
+    setIsMenuOpen,
+    isProfileOpen,
+    setIsProfileOpen,
+    isScrolled,
+    isHomePage,
+    location,
+  } = useNavbarState();
+  const { navClasses, getTransparentTextClass } = useNavbarStyles({
     isHomePage,
     isScrolled,
-    isOpen,
-  );
+    isOpen: isMenuOpen || isProfileOpen,
+  });
 
   const dispatch = useDispatch();
   const { isAuthenticated, isAdmin } = useSelector((state) => state.auth);
   const hamburgerButtonRef = useRef(null);
   const navigation = getNavigation(isAuthenticated, isAdmin);
-  const isTransparent = isHomePage && !isScrolled && !isOpen;
+  const isTransparent =
+    isHomePage && !isScrolled && !isMenuOpen && !isProfileOpen;
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -42,7 +50,7 @@ const Navbar = () => {
             className={`absolute inset-y-0 left-0 flex items-center sm:hidden ${getTransparentTextClass()}`}
             ref={hamburgerButtonRef}
           >
-            <HambButton isOpen={isOpen} setIsOpen={setIsOpen} />
+            <HambButton isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
           </div>
 
           {/* Logo and navigation */}
@@ -62,19 +70,23 @@ const Navbar = () => {
             className={`absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 ${getTransparentTextClass()}`}
           >
             {isAuthenticated && (
-              <ProfileMenu className='transition duration-150 hover:opacity-90' />
+              <ProfileMenu
+                isOpen={isProfileOpen}
+                setIsOpen={setIsProfileOpen}
+                className='transition duration-150 hover:opacity-90'
+              />
             )}
           </div>
         </div>
       </div>
 
       {/* Mobile menu */}
-      {isOpen && (
+      {isMenuOpen && (
         <div className='sm:hidden'>
           <MobileMenu
             navigation={navigation}
             location={location}
-            setIsOpen={setIsOpen}
+            setIsOpen={setIsMenuOpen}
             hamburgerButtonRef={hamburgerButtonRef}
           />
         </div>

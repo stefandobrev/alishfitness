@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
@@ -7,8 +7,7 @@ import { logoutWithBlacklist } from '../../store/slices/authSlice';
 import { profileMenuItems } from '../../config/navigation';
 import { getNavMobileItemStyles } from '../../utils/classNames';
 
-const ProfileMenu = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const ProfileMenu = ({ isOpen, setIsOpen }) => {
   const profile = useSelector((state) => state.user.profile);
   const menuRef = useRef(null);
   const dispatch = useDispatch();
