@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "concurrently \"npm run be\" \"npm run fe\"",
-    "be": "powershell -Command \"& {. .\\env\\Scripts\\Activate.ps1; python backend/manage.py runserver}\"",
+    "be": "python backend/manage.py runserver",
     "fe": "cd frontend && npm run dev"
   },
   "dependencies": {
