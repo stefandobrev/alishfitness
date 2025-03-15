@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 
-import { fetchExerciseTitles } from './helpersManageExercises';
-import { EditButton } from '../../../components/buttons/EditButtons';
+import { fetchExerciseTitles } from '../helpersManageExercises';
+import { EditButton } from '../../../../components/buttons/EditButtons';
 import {
   MuscleGroupFilter,
   SortFilter,
   ExerciseListItems,
-} from './components/ExerciseListComponents';
-import SearchInput from '../../../components/inputs/SearchInput';
-import Spinner from '../../../components/Spinner';
+} from './ExerciseListComponents';
+import SearchInput from '../../../../components/inputs/SearchInput';
+import Spinner from '../../../../components/Spinner';
 
 const INITIAL_OFFSET = 0;
 const ITEMS_PER_PAGE = 10;

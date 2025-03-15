@@ -1,4 +1,4 @@
-import { ExerciseList } from '../ExerciseList';
+import { ExerciseList } from './ExerciseList';
 
 export const ExerciseListPanel = ({
   activeTab,
