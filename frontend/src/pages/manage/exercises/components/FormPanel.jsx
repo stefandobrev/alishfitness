@@ -26,7 +26,7 @@ export const FormPanel = ({
           exerciseId={selectedExercise}
           onExerciseUpdated={onExerciseChange}
           mode={mode}
-          onAddNew={onAddNew}
+          launchAddMode={onAddNew}
         />
       )}
     </div>

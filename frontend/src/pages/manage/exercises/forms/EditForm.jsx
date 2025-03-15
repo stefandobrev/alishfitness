@@ -19,7 +19,6 @@ const EditForm = ({
   onExerciseUpdated,
   mode,
   launchAddMode,
-  handleAddButtonClick,
 }) => {
   const [message, setMessage] = useState('');
   const [exerciseData, setExerciseData] = useState(null);
@@ -117,7 +116,7 @@ const EditForm = ({
       <h2 className='sticky top-0 z-10 mb-3 bg-white text-center text-2xl font-semibold'>
         Edit Exercise
       </h2>
-      <EditButton onClick={handleAddButtonClick}>Add New Exercise</EditButton>
+      <EditButton onClick={launchAddMode}>Add New Exercise</EditButton>
     </div>
   );
 
