@@ -1,4 +1,4 @@
-import { MuscleTile } from '../sections/MuscleTile';
+import { MuscleTile } from './MuscleTile';
 
 export const MuscleGrid = ({ exercisesData }) => {
   return (

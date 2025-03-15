@@ -6,9 +6,12 @@ import { fetchExercises } from './helpersMuscleGroupExercise';
 import { ToggleableMuscleView } from '../../components/muscleviews';
 import TabButton from '../../components/buttons/TabButton';
 import Spinner from '../../components/Spinner';
-import { PaginationMuscleGroupExercise, MuscleGrid } from './components';
+import {
+  PaginationMuscleGroupExercise,
+  MuscleGrid,
+  Heading,
+} from './components';
 
-import { Heading } from './sections';
 import { useTitle } from '../../hooks/useTitle.hook';
 
 const INITIAL_OFFSET = 0;
