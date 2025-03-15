@@ -1,8 +1,11 @@
 import { useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
-import PasswordField from '../../components/inputs/PasswordField';
-import { SaveButton, CancelButton } from '../../components/buttons/EditButtons';
+import PasswordField from '../../../components/inputs/PasswordField';
+import {
+  SaveButton,
+  CancelButton,
+} from '../../../components/buttons/EditButtons';
 
 export const PasswordForm = ({ onSubmit, onCancel }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);

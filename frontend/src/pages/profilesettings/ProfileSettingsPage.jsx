@@ -11,8 +11,7 @@ import {
 } from './helpersProfileSettings';
 import { setLoading } from '../../store/slices/loadingSlice';
 import { logoutWithBlacklist } from '../../store/slices/authSlice';
-import { SettingsForm } from './SettingsForm';
-import { PasswordForm } from './PasswordForm';
+import { PasswordForm, SettingsForm } from './forms';
 import { useTitle } from '../../hooks/useTitle.hook';
 import userValidationResolver from '../../utils/userValidationResolver';
 import Spinner from '../../components/Spinner';

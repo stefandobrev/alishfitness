@@ -1,6 +1,6 @@
-import MuscleTile from './MuscleTile';
+import { MuscleTile } from '../sections/MuscleTile';
 
-const MuscleGrid = ({ exercisesData }) => {
+export const MuscleGrid = ({ exercisesData }) => {
   return (
     <div className='grid grid-cols-1 gap-2 px-3 md:grid-cols-2 lg:grid-cols-3'>
       {exercisesData?.map((exercise) => (
@@ -9,5 +9,3 @@ const MuscleGrid = ({ exercisesData }) => {
     </div>
   );
 };
-
-export default MuscleGrid;

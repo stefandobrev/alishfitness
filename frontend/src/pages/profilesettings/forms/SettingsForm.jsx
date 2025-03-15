@@ -1,12 +1,13 @@
 import { useFormContext } from 'react-hook-form';
-import InputField from '../../components/inputs/InputField';
-import PasswordField from '../../components/inputs/PasswordField';
-import Button from '../../components/buttons/Button';
+
+import InputField from '../../../components/inputs/InputField';
+import PasswordField from '../../../components/inputs/PasswordField';
+import Button from '../../../components/buttons/Button';
 import {
   SaveButton,
   CancelButton,
   EditButton,
-} from '../../components/buttons/EditButtons';
+} from '../../../components/buttons/EditButtons';
 
 export const SettingsForm = ({
   isEditing,

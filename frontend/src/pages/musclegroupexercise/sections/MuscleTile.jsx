@@ -98,5 +98,3 @@ export const MuscleTile = ({ exercise }) => {
     </div>
   );
 };
-
-export default MuscleTile;

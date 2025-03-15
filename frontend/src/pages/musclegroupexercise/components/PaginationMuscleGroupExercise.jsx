@@ -1,6 +1,6 @@
-import { ViewButton } from '../../components/buttons/EditButtons';
+import { ViewButton } from '../../../components/buttons/EditButtons';
 
-const PaginationMuscleGroupExercise = ({
+export const PaginationMuscleGroupExercise = ({
   currentPage,
   totalPages,
   onPageChange,
@@ -30,5 +30,3 @@ const PaginationMuscleGroupExercise = ({
     </div>
   );
 };
-
-export default PaginationMuscleGroupExercise;

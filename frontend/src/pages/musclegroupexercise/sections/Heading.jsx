@@ -1,6 +1,6 @@
-import SearchInput from '../../components/inputs/SearchInput';
+import SearchInput from '../../../components/inputs/SearchInput';
 
-const Heading = ({
+export const Heading = ({
   muscleGroupName,
   exercisesData,
   totalExercises,
@@ -32,5 +32,3 @@ const Heading = ({
     </div>
   );
 };
-
-export default Heading;
