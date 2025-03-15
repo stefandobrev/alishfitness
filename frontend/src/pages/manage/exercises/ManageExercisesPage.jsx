@@ -3,11 +3,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 
 import { fetchMuscleGroups } from './helpersManageExercises';
-import TabButton from '../../../components/buttons/TabButton';
 import { ToggleableMuscleView } from '../../../components/muscleviews';
 import AddForm from './forms/AddForm';
 import EditForm from './forms/EditForm';
 import { useTitle } from '../../../hooks/useTitle.hook';
+import { MobileTabs } from './components';
 
 import { ExerciseList } from './ExerciseList';
 
@@ -95,25 +95,13 @@ export const ManageExercisesPage = () => {
     return () => subscription.unsubscribe();
   }, [methods]);
 
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
   return (
     <>
-      <div className='sticky top-20 z-40 flex h-16 justify-around border-t border-gray-800 bg-gray-600 p-2 lg:hidden'>
-        <TabButton
-          label='Exercises'
-          isActive={activeTab === 'exercise'}
-          onClick={() => setActiveTab('exercise')}
-        />
-        <TabButton
-          label='Form'
-          isActive={activeTab === 'form'}
-          onClick={() => setActiveTab('form')}
-        />
-        <TabButton
-          label='Anatomy'
-          isActive={activeTab === 'anatomy'}
-          onClick={() => setActiveTab('anatomy')}
-        />
-      </div>
+      <MobileTabs activeTab={activeTab} onTabChange={handleTabChange} />
 
       <div className='flex flex-col lg:flex-row'>
         <div
