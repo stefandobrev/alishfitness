@@ -9,7 +9,7 @@ const ExerciseDataHeading = ({ exerciseData }) => {
   const navigate = useNavigate();
 
   const handleViewClick = () => {
-    navigate('/manage', { state: { exerciseId: exerciseData.id } });
+    navigate('/manage/exercises', { state: { exerciseId: exerciseData.id } });
   };
 
   return (
