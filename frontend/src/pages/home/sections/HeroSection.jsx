@@ -7,7 +7,7 @@ export const HeroSection = ({ blurAmount }) => {
       <div
         className='absolute inset-0 bg-cover bg-center'
         style={{
-          backgroundImage: `url('https://www.thirdspace.london/wp-content/uploads/2024/09/Third_Space-PT-17_Alish_Hamdi-2944-e1731335946511-1920x809.webp')`,
+          backgroundImage: `url('/images/alishfitness-hero.webp')`,
         }}
       />
 
@@ -15,7 +15,7 @@ export const HeroSection = ({ blurAmount }) => {
       <div
         className='absolute inset-0 bg-cover bg-center transition-all duration-300'
         style={{
-          backgroundImage: `url('https://www.thirdspace.london/wp-content/uploads/2024/09/Third_Space-PT-17_Alish_Hamdi-2944-e1731335946511-1920x809.webp')`,
+          backgroundImage: `url('/images/alishfitness-hero.webp')`,
           filter: `blur(${blurAmount}px)`,
           transform: 'scale(1.1)', // Prevent blur edges from showing
         }}

@@ -9,3 +9,4 @@ export {
   SortFilter,
   ExerciseListItems,
 } from './ExerciseListComponents';
+export { ExerciseList } from './ExerciseList';

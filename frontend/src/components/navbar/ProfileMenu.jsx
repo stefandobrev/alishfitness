@@ -43,7 +43,7 @@ const ProfileMenu = ({ isOpen, setIsOpen }) => {
       >
         <img
           alt='User Avatar'
-          src='/defaultProfile.png'
+          src='/images/defaultProfile.png'
           className='h-8 w-8 rounded-full border-2 border-gray-600 object-cover'
         />
         <span className='hidden text-base font-medium text-white sm:inline'>

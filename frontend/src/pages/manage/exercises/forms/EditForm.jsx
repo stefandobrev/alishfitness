@@ -3,17 +3,17 @@ import { useFormContext } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { DefaultForm } from './';
 import {
   saveExercise,
   fetchExerciseData,
   deleteExercise,
 } from '../helpersManageExercises';
 import { EditButton } from '../../../../components/buttons/EditButtons';
-import { DefaultForm } from './DefaultForm';
 import { DeleteConfirmation } from '../components/DeleteConfirmation';
 import Spinner from '../../../../components/Spinner';
 
-const EditForm = ({
+export const EditForm = ({
   muscleGroups,
   exerciseId,
   onExerciseUpdated,

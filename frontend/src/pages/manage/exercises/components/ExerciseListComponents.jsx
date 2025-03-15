@@ -1,4 +1,5 @@
 import Select from 'react-select';
+
 import { formatDistanceToNow } from 'date-fns';
 
 export const MuscleGroupFilter = ({

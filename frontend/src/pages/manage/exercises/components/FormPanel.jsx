@@ -1,5 +1,4 @@
-import AddForm from '../forms/AddForm';
-import EditForm from '../forms/EditForm';
+import { AddForm, EditForm } from '../forms';
 
 export const FormPanel = ({
   activeTab,

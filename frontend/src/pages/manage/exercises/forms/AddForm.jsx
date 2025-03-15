@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
+import { DefaultForm } from './';
 import { saveExercise } from '../helpersManageExercises';
-import { DefaultForm } from './DefaultForm';
 
-const AddForm = ({ muscleGroups, onExerciseAdded }) => {
+export const AddForm = ({ muscleGroups, onExerciseAdded }) => {
   const { reset } = useFormContext();
   const [message, setMessage] = useState(null);
 
@@ -43,5 +43,3 @@ const AddForm = ({ muscleGroups, onExerciseAdded }) => {
     />
   );
 };
-
-export default AddForm;
