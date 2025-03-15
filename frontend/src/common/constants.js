@@ -29,3 +29,5 @@ export const backMuscleGroupNames = {
   trapsUpper: 'traps-upper',
   triceps: 'triceps',
 };
+
+export const isMobile = window.innerWidth <= 768;

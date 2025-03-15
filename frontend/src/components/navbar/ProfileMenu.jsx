@@ -39,7 +39,7 @@ const ProfileMenu = ({ isOpen, setIsOpen }) => {
       {/* Profile Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className='flex cursor-pointer items-center gap-3 rounded-lg border-2 border-gray-600 p-2 hover:bg-gray-600 sm:bg-gray-700 sm:px-4 sm:py-2'
+        className='flex cursor-pointer items-center gap-3 rounded-lg p-2 hover:bg-gray-600 sm:border-2 sm:border-gray-600 sm:bg-gray-700 sm:px-4 sm:py-2'
       >
         <img
           alt='User Avatar'

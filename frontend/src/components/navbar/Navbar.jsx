@@ -11,6 +11,7 @@ import ProfileMenu from './ProfileMenu';
 import HambButton from './HambButton';
 import NavigationItems from './NavigationItems';
 import NavbarLogo from './NavbarLogo';
+import { isMobile } from '../../common/constants';
 
 const Navbar = () => {
   const {
@@ -25,7 +26,7 @@ const Navbar = () => {
   const { navClasses, getTransparentTextClass } = useNavbarStyles({
     isHomePage,
     isScrolled,
-    isOpen: isMenuOpen || isProfileOpen,
+    isOpen: (isMenuOpen || isProfileOpen) && isMobile,
   });
 
   const dispatch = useDispatch();
