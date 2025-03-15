@@ -5,7 +5,7 @@ import {
   CancelButton,
 } from '../../../../components/buttons/EditButtons';
 
-const DeleteConfirmation = ({ onClose, onConfirm, title }) => {
+export const DeleteConfirmation = ({ onClose, onConfirm, title }) => {
   return (
     <Dialog open={true} onClose={onClose} className='relative z-50'>
       <div className='fixed inset-0 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs'>
@@ -30,5 +30,3 @@ const DeleteConfirmation = ({ onClose, onConfirm, title }) => {
     </Dialog>
   );
 };
-
-export default DeleteConfirmation;

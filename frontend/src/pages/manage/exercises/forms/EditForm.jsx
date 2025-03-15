@@ -10,7 +10,7 @@ import {
 } from '../helpersManageExercises';
 import { EditButton } from '../../../../components/buttons/EditButtons';
 import { DefaultForm } from './DefaultForm';
-import DeleteConfirmation from '../components/DeleteConfirmation';
+import { DeleteConfirmation } from '../components/DeleteConfirmation';
 import Spinner from '../../../../components/Spinner';
 
 const EditForm = ({
