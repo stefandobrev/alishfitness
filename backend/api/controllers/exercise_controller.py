@@ -133,25 +133,32 @@ class ExerciseController:
         steps_data = request.data.get("steps")
         mistakes_data = request.data.get("mistakes")
 
-        if "primary_group" in exercise_data: 
+        new_primary_group = None
+        secondary_groups = []
+
+        if "primary_group" in exercise_data:
             primary_group_name = exercise_data["primary_group"]
-            primary_group = MuscleGroup.objects.filter(slug=primary_group_name).first()
-            if not primary_group:
+            new_primary_group = MuscleGroup.objects.filter(slug=primary_group_name).first()
+            if not new_primary_group:
                 return Response({"primary_group": "Primary group not found."}, status=status.HTTP_400_BAD_REQUEST)
-            exercise_data["primary_group"] = primary_group.id
+            exercise_data["primary_group"] = new_primary_group.id
 
         if "secondary_groups" in exercise_data:
-            secondary_groups = []
             for group_name in exercise_data["secondary_groups"]:
                 group = MuscleGroup.objects.filter(slug=group_name).first()
                 if group:
                     secondary_groups.append(group.id)
 
-            if primary_group and primary_group.id in secondary_groups:
-                return Response(
-                    {"secondary_groups": "You cannot select the same group as primary and secondary."},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
+        if new_primary_group and new_primary_group.id in secondary_groups:
+            return Response(
+                {"secondary_groups": "You cannot select the same group as primary and secondary."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        elif not new_primary_group and exercise.primary_group.id in secondary_groups:
+            return Response(
+                {"secondary_groups": "You cannot select the same group as primary and secondary."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         exercise_data["secondary_groups"] = secondary_groups
 

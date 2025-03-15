@@ -248,6 +248,15 @@ class TestExerciseController:
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data["secondary_groups"] == "You cannot select the same group as primary and secondary."
+
+        invalid_updated_data = {
+            "secondary_groups": [self.test_exercise.primary_group.slug]
+        }
+
+        response = self.client.put(url, invalid_updated_data, format="json")
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.data["secondary_groups"] == "You cannot select the same group as primary and secondary."
     
     def test_delete_success(self):
         self.client.force_authenticate(user=self.test_admin)

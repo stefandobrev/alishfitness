@@ -3,11 +3,13 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 
 import { fetchMuscleGroups } from './helpersManageExercises';
-import { ToggleableMuscleView } from '../../../components/muscleviews';
-import AddForm from './forms/AddForm';
-import EditForm from './forms/EditForm';
 import { useTitle } from '../../../hooks/useTitle.hook';
-import { MobileTabs, ExerciseListPanel } from './components';
+import {
+  MobileTabs,
+  ExerciseListPanel,
+  FormPanel,
+  AnatomyPanel,
+} from './components';
 
 export const ManageExercisesPage = () => {
   const methods = useForm();
@@ -17,10 +19,6 @@ export const ManageExercisesPage = () => {
   const [muscleGroups, setMuscleGroups] = useState([]);
   const [refreshTitleListKey, setRefreshTitleListKey] = useState(0);
   const [activeTab, setActiveTab] = useState('form');
-  const [selectedPrimaryMuscleSVG, setSelectedPrimaryMuscleSVG] =
-    useState(null);
-  const [selectedSecondaryMusclesSVG, setSelectedSecondaryMusclesSVG] =
-    useState([]);
   useTitle('Manage');
 
   useEffect(() => {
@@ -56,43 +54,6 @@ export const ManageExercisesPage = () => {
     setActiveTab('form');
   };
 
-  const handleAddButtonClick = () => {
-    launchAddMode();
-  };
-
-  const handleMuscleClick = (muscle) => {
-    const currentPrimaryMuscle = methods.getValues('primary_group');
-    const currentSecondaryMuscles = methods.getValues('secondary_groups') || [];
-
-    if (!currentPrimaryMuscle) {
-      methods.setValue('primary_group', muscle);
-      setSelectedPrimaryMuscleSVG(muscle);
-    } else if (currentPrimaryMuscle === muscle) {
-      methods.setValue('primary_group', null);
-      setSelectedPrimaryMuscleSVG(null);
-    } else {
-      if (currentSecondaryMuscles.includes(muscle)) {
-        const updatedSecondaries = currentSecondaryMuscles.filter(
-          (m) => m !== muscle,
-        );
-        methods.setValue('secondary_groups', updatedSecondaries);
-        setSelectedSecondaryMusclesSVG(updatedSecondaries);
-      } else {
-        const updatedSecondaries = [...currentSecondaryMuscles, muscle];
-        methods.setValue('secondary_groups', updatedSecondaries);
-        setSelectedSecondaryMusclesSVG(updatedSecondaries);
-      }
-    }
-  };
-
-  useEffect(() => {
-    const subscription = methods.watch((values) => {
-      setSelectedPrimaryMuscleSVG(values.primary_group || null);
-      setSelectedSecondaryMusclesSVG(values.secondary_groups || []);
-    });
-    return () => subscription.unsubscribe();
-  }, [methods]);
-
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -109,41 +70,18 @@ export const ManageExercisesPage = () => {
           onSelectExercise={handleSelectExercise}
         />
 
-        <div
-          className={`flex w-full justify-center bg-white p-5 lg:w-1/2 ${
-            activeTab !== 'form' ? 'hidden lg:flex' : ''
-          }`}
-        >
-          <FormProvider {...methods}>
-            {mode === 'add' ? (
-              <AddForm
-                muscleGroups={muscleGroups}
-                onExerciseAdded={triggerRefresh}
-              />
-            ) : (
-              <EditForm
-                muscleGroups={muscleGroups}
-                exerciseId={selectedExercise}
-                onExerciseUpdated={triggerRefresh}
-                mode={mode}
-                launchAddMode={launchAddMode}
-                handleAddButtonClick={handleAddButtonClick}
-              />
-            )}
-          </FormProvider>
-        </div>
-
-        <div
-          className={`w-full items-center lg:w-1/4 ${
-            activeTab !== 'anatomy' ? 'hidden lg:block' : ''
-          }`}
-        >
-          <ToggleableMuscleView
-            handleMuscleClick={handleMuscleClick}
-            selectedPrimaryMuscle={selectedPrimaryMuscleSVG}
-            selectedSecondaryMuscles={selectedSecondaryMusclesSVG}
+        <FormProvider {...methods}>
+          <FormPanel
+            activeTab={activeTab}
+            mode={mode}
+            muscleGroups={muscleGroups}
+            selectedExercise={selectedExercise}
+            onExerciseChange={triggerRefresh}
+            onAddNew={launchAddMode}
           />
-        </div>
+
+          <AnatomyPanel activeTab={activeTab} methods={methods} />
+        </FormProvider>
       </div>
     </>
   );
