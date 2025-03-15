@@ -7,9 +7,7 @@ import { ToggleableMuscleView } from '../../../components/muscleviews';
 import AddForm from './forms/AddForm';
 import EditForm from './forms/EditForm';
 import { useTitle } from '../../../hooks/useTitle.hook';
-import { MobileTabs } from './components';
-
-import { ExerciseList } from './ExerciseList';
+import { MobileTabs, ExerciseListPanel } from './components';
 
 export const ManageExercisesPage = () => {
   const methods = useForm();
@@ -104,17 +102,12 @@ export const ManageExercisesPage = () => {
       <MobileTabs activeTab={activeTab} onTabChange={handleTabChange} />
 
       <div className='flex flex-col lg:flex-row'>
-        <div
-          className={`flex w-full flex-col items-center p-4 lg:w-1/4 ${
-            activeTab !== 'exercise' ? 'hidden lg:block' : ''
-          }`}
-        >
-          <ExerciseList
-            refreshTitlesKey={refreshTitleListKey}
-            onSelectExercise={handleSelectExercise}
-            muscleGroups={muscleGroups}
-          />
-        </div>
+        <ExerciseListPanel
+          activeTab={activeTab}
+          refreshTitlesKey={refreshTitleListKey}
+          muscleGroups={muscleGroups}
+          onSelectExercise={handleSelectExercise}
+        />
 
         <div
           className={`flex w-full justify-center bg-white p-5 lg:w-1/2 ${
