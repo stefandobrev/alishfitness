@@ -24,8 +24,9 @@ import {
 } from '../pages';
 
 // Route Guards
-import ProtectedRoute from '../components/ProtectedRoute';
+import AuthRoute from '../components/AuthRoute';
 import AdminRoute from '../components/AdminRoute';
+import MemberRoute from '../components/MemberRoute';
 import PublicRoute from '../components/PublicRoute';
 
 export const router = createBrowserRouter(
@@ -38,7 +39,7 @@ export const router = createBrowserRouter(
         <Route path='/login' element={<LoginPage />} />
       </Route>
 
-      <Route element={<ProtectedRoute />}>
+      <Route element={<AuthRoute />}>
         <Route path='/exercises' element={<ExercisePage />} />
         <Route
           path='/exercises/:slugMuscleGroup'
@@ -48,13 +49,16 @@ export const router = createBrowserRouter(
           path='/exercises/:slugMuscleGroup/:slugTitle'
           element={<ExerciseDetailPage />}
         />
-        <Route path='/training-program' element={<TrainingProgramPage />} />
         <Route path='/profile' element={<YourProfilePage />} />
         <Route path='/settings' element={<ProfileSettingsPage />} />
 
         <Route element={<AdminRoute />}>
           <Route path='/manage/exercises' element={<ManageExercisesPage />} />
           <Route path='/manage/users' element={<ManageUsersPage />} />
+        </Route>
+
+        <Route element={<MemberRoute />}>
+          <Route path='/training-program' element={<TrainingProgramPage />} />
         </Route>
       </Route>
 

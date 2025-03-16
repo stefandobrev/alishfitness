@@ -10,6 +10,14 @@ export const adminPages = [
       { name: 'Users', href: '/manage/users' },
     ],
   },
+  {
+    name: 'Training Program',
+    menuItems: [
+      { name: 'View All', href: '/training-program/view-all' },
+      { name: 'Create', href: '/training-program/create' },
+      { name: 'Templates', href: '/training-program/templates' },
+    ],
+  },
 ];
 
 export const traineePages = [

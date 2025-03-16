@@ -8,14 +8,14 @@ import {
 
 export const getNavigation = (isAuthenticated, isAdmin) => {
   let navigation = [...basePages];
-
   if (isAuthenticated) {
-    navigation = [
-      ...navigation,
-      ...authenticatedPages,
-      ...(isAdmin ? adminPages : []),
-      ...(!isAdmin ? traineePages : []),
-    ];
+    navigation = [...navigation, ...authenticatedPages];
+
+    if (isAdmin) {
+      navigation = [...navigation, ...adminPages];
+    } else {
+      navigation = [...navigation, ...traineePages];
+    }
   } else {
     navigation.push({ name: 'Member Portal', href: '/login' });
   }
