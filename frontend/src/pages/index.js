@@ -8,3 +8,4 @@ export * from './profilesettings';
 export * from './registration';
 export * from './yourprofile';
 export * from './exercisedetail';
+export * from './training-program';

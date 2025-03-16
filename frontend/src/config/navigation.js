@@ -1,18 +1,21 @@
 import { UserCircleIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
+import {
+  adminPages,
+  authenticatedPages,
+  basePages,
+  traineePages,
+} from './pages';
 
 export const getNavigation = (isAuthenticated, isAdmin) => {
-  const navigation = [{ name: 'Home', href: '/' }];
+  let navigation = [...basePages];
+
   if (isAuthenticated) {
-    navigation.push({ name: 'Exercises', href: '/exercises' });
-    if (isAdmin) {
-      navigation.push({
-        name: 'Manage',
-        menuItems: [
-          { name: 'Exercises', href: '/manage/exercises' },
-          { name: 'Users', href: '/manage/users' },
-        ],
-      });
-    }
+    navigation = [
+      ...navigation,
+      ...authenticatedPages,
+      ...(isAdmin ? adminPages : []),
+      ...(!isAdmin ? traineePages : []),
+    ];
   } else {
     navigation.push({ name: 'Member Portal', href: '/login' });
   }

@@ -6,6 +6,7 @@ import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
 import { logoutWithBlacklist } from '../../store/slices/authSlice';
 import { profileMenuItems } from '../../config/navigation';
 import { getNavMobileItemStyles } from '../../utils/classNames';
+import { isMobile } from '../../common/constants';
 
 const ProfileMenu = ({ isOpen, setIsOpen }) => {
   const profile = useSelector((state) => state.user.profile);
@@ -14,7 +15,6 @@ const ProfileMenu = ({ isOpen, setIsOpen }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
-  const isMobile = window.innerWidth < 640;
 
   const handleSignOut = async () => {
     setIsOpen(false);

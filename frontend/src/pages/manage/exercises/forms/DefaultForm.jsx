@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import InputField from '../../../../components/inputs/InputField';
@@ -9,6 +9,7 @@ import {
   MdScreenButtons,
   SmScreenButtons,
 } from '../components/DefaultFormButtons';
+import { isMobile } from '../../../../common/constants';
 
 export const DefaultForm = ({
   submittedExerciseData,
@@ -24,7 +25,6 @@ export const DefaultForm = ({
   const { handleSubmit, register, watch, setValue } = useFormContext();
   const textAreaRefs = useRef([]);
   const exerciseDataRef = useRef(exerciseData);
-  const [isMdScreen, setIsMdScreen] = useState(false);
 
   const primaryGroupValue = watch('primary_group');
 
@@ -74,13 +74,6 @@ export const DefaultForm = ({
   const gifSide = watch('gif_link_side');
 
   const areUrlsInvalid = gifFront && gifSide && gifFront === gifSide;
-
-  useEffect(() => {
-    const handleResize = () => setIsMdScreen(window.innerWidth >= 768);
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   return (
     <div className='flex w-full max-w-sm flex-col md:max-w-md lg:max-w-lg'>
@@ -135,8 +128,8 @@ export const DefaultForm = ({
         {message && <p className='text-red-500'>{message.text}</p>}
       </form>
 
-      {isMdScreen ? (
-        <MdScreenButtons
+      {isMobile ? (
+        <SmScreenButtons
           mode={mode}
           hasChanges={hasChanges}
           areUrlsInvalid={areUrlsInvalid}
@@ -144,7 +137,7 @@ export const DefaultForm = ({
           handleViewButton={handleViewButton}
         />
       ) : (
-        <SmScreenButtons
+        <MdScreenButtons
           mode={mode}
           hasChanges={hasChanges}
           areUrlsInvalid={areUrlsInvalid}
