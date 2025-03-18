@@ -6,7 +6,10 @@ const DropdownFieldWithTags = ({ label, id, options, placeholder = '--' }) => {
 
   return (
     <div>
-      <label htmlFor={id} className='mb-2 block text-lg font-semibold'>
+      <label
+        htmlFor={id}
+        className='mb-2 block text-lg font-semibold text-gray-700'
+      >
         {label}:
       </label>
       <Controller

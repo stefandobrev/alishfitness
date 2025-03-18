@@ -24,7 +24,7 @@ const DynamicTextFieldList = ({
     <div className='space-y-3'>
       {fields.map((fieldValue, index) => (
         <div key={fieldValue.id} className='block'>
-          <label className='text-lg font-semibold'>{`${singularize(
+          <label className='text-lg font-semibold text-gray-700'>{`${singularize(
             labelPrefix,
           )} ${index + 1}`}</label>
           <div className='flex items-center space-x-2'>

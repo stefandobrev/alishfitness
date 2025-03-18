@@ -15,7 +15,7 @@ const PasswordField = ({
 
   return (
     <div>
-      <label htmlFor={id} className='block text-lg font-semibold'>
+      <label htmlFor={id} className='block text-lg font-semibold text-gray-700'>
         {label}:
         <div className='relative'>
           <input
