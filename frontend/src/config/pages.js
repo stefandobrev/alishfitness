@@ -20,6 +20,4 @@ export const adminPages = [
   },
 ];
 
-export const traineePages = [
-  { name: 'Training Program', href: '/training-program' },
-];
+export const traineePages = [{ name: 'My Program', href: '/my-program' }];

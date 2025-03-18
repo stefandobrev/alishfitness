@@ -1,1 +1,0 @@
-export { TrainingProgramPage } from './trainingProgramPage';

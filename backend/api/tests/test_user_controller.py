@@ -229,7 +229,7 @@ class TestUserController:
     def test_get_profile(self):
         self.client.force_authenticate(user=self.test_user)
 
-        url = reverse("profile")
+        url = reverse("my-profile")
         response = self.client.get(url)
 
         assert response.status_code == status.HTTP_200_OK
@@ -244,7 +244,7 @@ class TestUserController:
             "last_name": "updated-last",
         }
 
-        url = reverse("profile")
+        url = reverse("my-profile")
         response = self.client.put(url, data=update_data, format="json")
 
         assert response.status_code == status.HTTP_200_OK

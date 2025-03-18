@@ -18,9 +18,9 @@ import {
   NotFoundPage,
   ProfileSettingsPage,
   RegistrationPage,
-  YourProfilePage,
+  MyProfilePage,
   ExerciseDetailPage,
-  TrainingProgramPage,
+  MyProgramPage,
 } from '../pages';
 
 // Route Guards
@@ -49,7 +49,7 @@ export const router = createBrowserRouter(
           path='/exercises/:slugMuscleGroup/:slugTitle'
           element={<ExerciseDetailPage />}
         />
-        <Route path='/profile' element={<YourProfilePage />} />
+        <Route path='/my-profile' element={<MyProfilePage />} />
         <Route path='/settings' element={<ProfileSettingsPage />} />
 
         <Route element={<AdminRoute />}>
@@ -58,7 +58,7 @@ export const router = createBrowserRouter(
         </Route>
 
         <Route element={<MemberRoute />}>
-          <Route path='/training-program' element={<TrainingProgramPage />} />
+          <Route path='/my-program' element={<MyProgramPage />} />
         </Route>
       </Route>
 

@@ -24,8 +24,8 @@ export const getNavigation = (isAuthenticated, isAdmin) => {
 
 export const profileMenuItems = [
   {
-    name: 'Your Profile',
-    href: '/profile',
+    name: 'My Profile',
+    href: '/my-profile',
     icon: UserCircleIcon,
   },
   {

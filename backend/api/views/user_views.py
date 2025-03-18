@@ -18,7 +18,7 @@ def login_user(request):
 
 @api_view(["GET", "PUT"])
 @permission_classes([IsAuthenticated])
-def your_profile(request):
+def my_profile(request):
     user_controller = UserController()
     return user_controller.handle_profile(request)
 

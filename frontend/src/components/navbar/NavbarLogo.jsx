@@ -6,7 +6,7 @@ const NavbarLogo = () => {
       <NavLink to='/'>
         <img
           alt='Alish Fitness'
-          src='/images/AlishLogo.png'
+          src='/images/alish-logo.png'
           className='h-12 w-auto transition-transform duration-200 hover:scale-110'
         />
       </NavLink>

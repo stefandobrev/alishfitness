@@ -5,7 +5,7 @@ import {
 } from '../../components/buttons/EditButtons';
 import InputField from '../../components/inputs/InputField';
 
-export const YourProfileForm = ({ isEditing, setIsEditing, onSubmit }) => {
+export const MyProfileForm = ({ isEditing, setIsEditing, onSubmit }) => {
   return (
     <form onSubmit={onSubmit}>
       <div className='mb-4'>

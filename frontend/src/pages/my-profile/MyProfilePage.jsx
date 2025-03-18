@@ -3,13 +3,13 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import { updateUserProfile } from './helpersYourProfile';
+import { updateUserProfile } from './helpersMyProfile';
 import { setLoading } from '../../store/slices/loadingSlice';
 import { fetchProfileData } from '../../store/slices/userSlice';
 import { useTitle } from '../../hooks/useTitle.hook';
-import { YourProfileForm } from './YourProfileForm';
+import { MyProfileForm } from './MyProfileForm';
 
-export const YourProfilePage = () => {
+export const MyProfilePage = () => {
   const dispatch = useDispatch();
   const profile = useSelector((state) => state.user.profile);
   const methods = useForm();
@@ -42,9 +42,9 @@ export const YourProfilePage = () => {
   return (
     <div className='flex h-[calc(100vh-108px)] items-center justify-center'>
       <div className='w-full max-w-xs'>
-        <h1 className='mb-4 text-2xl font-semibold'>Your Profile</h1>
+        <h1 className='mb-4 text-2xl font-semibold'>My Profile</h1>
         <FormProvider {...methods}>
-          <YourProfileForm
+          <MyProfileForm
             isEditing={isEditing}
             setIsEditing={setIsEditing}
             onSubmit={handleSubmit(handleSave)}

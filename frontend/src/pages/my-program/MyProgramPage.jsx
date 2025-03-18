@@ -6,7 +6,7 @@ import {
   ArrowPathIcon,
 } from '@heroicons/react/24/outline';
 
-export const TrainingProgramPage = () => {
+export const MyProgramPage = () => {
   // Add ref for the current day's card
   const currentDayRef = useRef(null);
 
