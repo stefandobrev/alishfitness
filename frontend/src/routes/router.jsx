@@ -21,6 +21,9 @@ import {
   MyProfilePage,
   ExerciseDetailPage,
   MyProgramPage,
+  ViewAllPage,
+  CreatePage,
+  TemplatesPage,
 } from '../pages';
 
 // Route Guards
@@ -55,6 +58,13 @@ export const router = createBrowserRouter(
         <Route element={<AdminRoute />}>
           <Route path='/manage/exercises' element={<ManageExercisesPage />} />
           <Route path='/manage/users' element={<ManageUsersPage />} />
+
+          <Route path='/training-programs/view-all' element={<ViewAllPage />} />
+          <Route path='/training-programs/create' element={<CreatePage />} />
+          <Route
+            path='/training-programs/templates'
+            element={<TemplatesPage />}
+          />
         </Route>
 
         <Route element={<MemberRoute />}>

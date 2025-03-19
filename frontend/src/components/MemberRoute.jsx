@@ -8,7 +8,7 @@ const MemberRoute = () => {
   return isAuthenticated && !isAdmin ? (
     <Outlet />
   ) : (
-    <Navigate to={'/training-program/view-all'} />
+    <Navigate to={'/my-program'} />
   );
 };
 export default MemberRoute;

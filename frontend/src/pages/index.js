@@ -1,6 +1,6 @@
 export * from './home';
 export * from './login';
-export * from './exercise';
+export * from './exercises';
 export * from './muscle-group-exercise';
 export * from './manage';
 export * from './not-found';
@@ -9,3 +9,4 @@ export * from './registration';
 export * from './my-profile';
 export * from './exercise-detail';
 export * from './my-program';
+export * from './training-programs';

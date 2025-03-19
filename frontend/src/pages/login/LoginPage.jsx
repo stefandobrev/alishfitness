@@ -40,9 +40,9 @@ export const LoginPage = () => {
 
     toast.success('User logged in successfully!');
     if (data.is_admin) {
-      navigate('/manage');
+      navigate('/training-programs/view-all');
     } else {
-      navigate('/exercises');
+      navigate('/my-program');
     }
 
     dispatch(setLoading(false));
