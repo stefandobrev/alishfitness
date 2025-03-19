@@ -1,4 +1,7 @@
 import { useFormContext, Controller, useFieldArray } from 'react-hook-form';
+
+import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+
 import { EditButton } from '../buttons/EditButtons';
 
 export const DynamicTextFieldList = ({
@@ -27,7 +30,7 @@ export const DynamicTextFieldList = ({
           <label className='text-lg font-semibold text-gray-700'>{`${singularize(
             labelPrefix,
           )} ${index + 1}`}</label>
-          <div className='flex items-center space-x-2'>
+          <div className='mt-1 flex items-center space-x-1'>
             <Controller
               name={`${labelPrefix.toLowerCase()}[${index}]`}
               control={control}
@@ -50,7 +53,7 @@ export const DynamicTextFieldList = ({
               onClick={() => remove(index)}
               className='text-red-500 hover:text-red-700'
             >
-              &times;
+              <TrashIcon className='h-5 w-5 cursor-pointer' />
             </button>
           </div>
         </div>
@@ -58,8 +61,9 @@ export const DynamicTextFieldList = ({
       <EditButton
         onClick={() => append('')}
         variant='white'
-        className='w-full md:w-auto'
+        className='flex w-full flex-row items-center gap-1 md:w-auto'
       >
+        <PlusIcon className='h-4 w-4' />
         Add {singularize(labelPrefix)}
       </EditButton>
     </div>
