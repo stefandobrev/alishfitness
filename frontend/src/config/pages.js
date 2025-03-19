@@ -13,9 +13,9 @@ export const adminPages = [
   {
     name: 'Training Programs',
     menuItems: [
-      { name: 'View All', href: '/training-program/view-all' },
-      { name: 'Create', href: '/training-program/create' },
-      { name: 'Templates', href: '/training-program/templates' },
+      { name: 'View All', href: '/training-programs/view-all' },
+      { name: 'Create', href: '/training-programs/create' },
+      { name: 'Templates', href: '/training-programs/templates' },
     ],
   },
 ];
