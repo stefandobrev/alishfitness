@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-import InputField from '../../components/inputs/InputField';
-import PasswordField from '../../components/inputs/PasswordField';
+import { InputField, PasswordField } from '../../components/inputs';
 import { SaveButton } from '../../components/buttons/EditButtons';
 
 const LoginForm = ({ loginUserData }) => {

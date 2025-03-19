@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 
-const PasswordField = ({
+export const PasswordField = ({
   label,
   id,
   required = true,
@@ -44,4 +44,3 @@ const PasswordField = ({
     </div>
   );
 };
-export default PasswordField;

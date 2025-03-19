@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 
-const InputField = ({
+export const InputField = ({
   label,
   id,
   type = 'text',
@@ -42,5 +42,3 @@ const InputField = ({
     </div>
   );
 };
-
-export default InputField;

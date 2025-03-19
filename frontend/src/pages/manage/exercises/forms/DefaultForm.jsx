@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import InputField from '../../../../components/inputs/InputField';
-import DropdownField from '../../../../components/inputs/DropdownField';
-import DropdownFieldWithTags from '../../../../components/inputs/DropdownWithTagsField';
-import DynamicTextFieldList from '../../../../components/inputs/DynamicTextFieldList';
+import {
+  InputField,
+  DropdownField,
+  DropdownFieldWithTags,
+  DynamicTextFieldList,
+} from '../../../../components/inputs';
 import {
   MdScreenButtons,
   SmScreenButtons,

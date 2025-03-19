@@ -1,7 +1,7 @@
 import { useFormContext, Controller, useFieldArray } from 'react-hook-form';
 import { EditButton } from '../buttons/EditButtons';
 
-const DynamicTextFieldList = ({
+export const DynamicTextFieldList = ({
   labelPrefix = 'Item',
   textAreaRefs,
   autoResize,
@@ -65,5 +65,3 @@ const DynamicTextFieldList = ({
     </div>
   );
 };
-
-export default DynamicTextFieldList;

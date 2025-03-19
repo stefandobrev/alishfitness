@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
-import PasswordField from '../../../components/inputs/PasswordField';
+import { PasswordField } from '../../../components/inputs';
 import {
   SaveButton,
   CancelButton,

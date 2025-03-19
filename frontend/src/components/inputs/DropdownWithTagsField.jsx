@@ -1,7 +1,12 @@
 import { useFormContext, Controller } from 'react-hook-form';
 import Select from 'react-select';
 
-const DropdownFieldWithTags = ({ label, id, options, placeholder = '--' }) => {
+export const DropdownFieldWithTags = ({
+  label,
+  id,
+  options,
+  placeholder = '--',
+}) => {
   const { control } = useFormContext();
 
   return (
@@ -35,5 +40,3 @@ const DropdownFieldWithTags = ({ label, id, options, placeholder = '--' }) => {
     </div>
   );
 };
-
-export default DropdownFieldWithTags;

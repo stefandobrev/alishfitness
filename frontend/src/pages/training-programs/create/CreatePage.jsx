@@ -1,3 +1,3 @@
 export const CreatePage = () => {
-  return <div>CreatePage</div>;
+  return <div className='flex flex-col lg:flex-row'>asf</div>;
 };

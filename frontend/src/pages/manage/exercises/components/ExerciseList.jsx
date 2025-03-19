@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { fetchExerciseTitles } from '../helpersManageExercises';
 import { EditButton } from '../../../../components/buttons/EditButtons';
 import { MuscleGroupFilter, SortFilter, ExerciseListItems } from './';
-import SearchInput from '../../../../components/inputs/SearchInput';
+import { SearchInput } from '../../../../components/inputs';
 import Spinner from '../../../../components/Spinner';
 
 const INITIAL_OFFSET = 0;

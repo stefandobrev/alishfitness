@@ -3,7 +3,7 @@ import {
   CancelButton,
   EditButton,
 } from '../../components/buttons/EditButtons';
-import InputField from '../../components/inputs/InputField';
+import { InputField } from '../../components/inputs';
 
 export const MyProfileForm = ({ isEditing, setIsEditing, onSubmit }) => {
   return (

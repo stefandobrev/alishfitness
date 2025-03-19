@@ -1,4 +1,4 @@
-import SearchInput from '../../../components/inputs/SearchInput';
+import { SearchInput } from '../../../components/inputs';
 
 export const Heading = ({
   muscleGroupName,

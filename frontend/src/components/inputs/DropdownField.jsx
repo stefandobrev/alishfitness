@@ -1,7 +1,7 @@
 import { useFormContext, Controller } from 'react-hook-form';
 import Select from 'react-select';
 
-const DropdownField = ({
+export const DropdownField = ({
   label,
   id,
   options,
@@ -44,5 +44,3 @@ const DropdownField = ({
     </div>
   );
 };
-
-export default DropdownField;
