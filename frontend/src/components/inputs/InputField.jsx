@@ -1,4 +1,5 @@
 import { useFormContext } from 'react-hook-form';
+import { classNames } from '../../utils/classNames';
 
 export const InputField = ({
   label,
@@ -8,13 +9,15 @@ export const InputField = ({
   className = '',
   ...rest
 }) => {
+  console.log({ className });
+
   const {
     register,
     formState: { errors },
   } = useFormContext();
 
   return (
-    <div className='mb-3'>
+    <div className='w-full'>
       <label
         htmlFor={id}
         className='mb-1 block text-lg font-semibold text-gray-700'
@@ -26,11 +29,14 @@ export const InputField = ({
           id={id}
           type={type}
           {...register(id, { required })}
-          className={`flex w-full rounded-sm p-2.5 transition-all duration-200 ${
+          className={classNames(
+            'flex w-full rounded-sm p-2.5 transition-all duration-200 focus:outline-none',
             rest.readOnly
               ? 'border-none bg-transparent focus:ring-0'
-              : 'focus:ring-logored focus:border-logored border border-gray-300 focus:ring-2'
-          } focus:outline-none ${errors && errors[id] ? 'border-red-500' : ''} ${className} `}
+              : 'focus:ring-logored focus:border-logored border border-gray-300 focus:ring-2',
+            errors && errors[id] ? 'border-red-500' : '',
+            className,
+          )}
           {...rest}
         />
       </div>
