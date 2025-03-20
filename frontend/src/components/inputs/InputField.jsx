@@ -9,8 +9,6 @@ export const InputField = ({
   className = '',
   ...rest
 }) => {
-  console.log({ className });
-
   const {
     register,
     formState: { errors },
@@ -18,12 +16,14 @@ export const InputField = ({
 
   return (
     <div className='w-full'>
-      <label
-        htmlFor={id}
-        className='mb-1 block text-lg font-semibold text-gray-700'
-      >
-        {label}:
-      </label>
+      {label && (
+        <label
+          htmlFor={id}
+          className='mb-1 block text-lg font-semibold text-gray-700'
+        >
+          {label}
+        </label>
+      )}
       <div className='relative'>
         <input
           id={id}

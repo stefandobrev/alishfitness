@@ -51,7 +51,7 @@ export const DynamicTextFieldList = ({
             <button
               type='button'
               onClick={() => remove(index)}
-              className='text-red-500 hover:text-red-700'
+              className='text-logored hover:text-logored-hover'
             >
               <TrashIcon className='h-5 w-5 cursor-pointer' />
             </button>

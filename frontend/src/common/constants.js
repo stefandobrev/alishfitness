@@ -30,4 +30,22 @@ export const backMuscleGroupNames = {
   triceps: 'triceps',
 };
 
+export const getLightColors = (index) => {
+  const bgColors = [
+    'bg-red-300',
+    'bg-yellow-300',
+    'bg-green-300',
+    'bg-blue-300',
+    'bg-orange-300',
+    'bg-purple-300',
+    'bg-teal-300',
+    'bg-pink-300',
+    'bg-gray-300',
+    'bg-violet-300',
+    'bg-rose-300',
+    'bg-stone-300',
+  ];
+  return bgColors[index % bgColors.length];
+};
+
 export const isMobile = window.innerWidth <= 768;

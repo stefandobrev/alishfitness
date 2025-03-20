@@ -15,7 +15,7 @@ export const DropdownFieldWithTags = ({
         htmlFor={id}
         className='mb-2 block text-lg font-semibold text-gray-700'
       >
-        {label}:
+        {label}
       </label>
       <Controller
         name={id}

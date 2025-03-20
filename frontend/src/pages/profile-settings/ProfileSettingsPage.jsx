@@ -66,8 +66,6 @@ export const ProfileSettingsPage = () => {
       navigate('/login');
       toast.success('Password updated successfully. Please log in again.');
     } catch (error) {
-      console.log(error.response);
-
       const errorMessages = Object.values(error.response || {}).flat();
       const errorMessage =
         errorMessages.length > 0
