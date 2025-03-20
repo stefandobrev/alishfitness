@@ -9,8 +9,11 @@ export const AddSessionButton = () => {
     <button
       type='button'
       onClick={() => {
-        const currentDays = getValues('days') || [];
-        setValue('days', [...currentDays, { title: '', exercises: [] }]);
+        const currentSessions = getValues('sessions') || [];
+        setValue('sessions', [
+          ...currentSessions,
+          { title: '', exercises: [] },
+        ]);
       }}
       className='my-4 flex h-auto w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-2 transition-colors hover:border-gray-400'
     >
