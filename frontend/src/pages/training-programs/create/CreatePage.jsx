@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FormProvider, useForm, Controller, useWatch } from 'react-hook-form';
 
-import { PlusIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 import { AddSessionButton } from './components';
 import { classNames } from '../../../utils/classNames';
@@ -18,7 +18,7 @@ export const CreatePage = () => {
   const scheduleOptions =
     sessions?.map((_, index) => {
       return {
-        label: `Session ${index + 1}: ${sessions[index].title}`,
+        label: `Session ${index + 1}${sessions[index].title ? ` : ${sessions[index].title}` : ''}`,
         value: index,
       };
     }) || [];
@@ -28,9 +28,19 @@ export const CreatePage = () => {
     name: 'schedule',
   });
 
+  const handleRemoveSession = (index) => {
+    const currentSessions = methods.getValues('sessions') || [];
+
+    methods.setValue(
+      'sessions',
+      currentSessions.filter((_, i) => i !== index),
+    );
+  };
+
   useEffect(() => {
     if (selectedSession !== null && selectedSession !== undefined) {
       setSchedule((prev) => [...prev, selectedSession]);
+      methods.setValue('schedule', null);
     }
   }, [selectedSession]);
 
@@ -79,29 +89,8 @@ export const CreatePage = () => {
                       className='max-w-lg flex-1 bg-white'
                     />
 
-                    <button
-                      onClick={() => {
-                        const currentSessions =
-                          methods.getValues('sessions') || [];
-                        methods.setValue(
-                          'sessions',
-                          currentSessions.filter((_, i) => i !== index),
-                        );
-                      }}
-                      className='hover:text-logored cursor-pointer text-gray-400 transition-colors duration-200'
-                    >
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        className='h-5 w-5'
-                        viewBox='0 0 20 20'
-                        fill='currentColor'
-                      >
-                        <path
-                          fillRule='evenodd'
-                          d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
-                          clipRule='evenodd'
-                        />
-                      </svg>
+                    <button onClick={() => handleRemoveSession(index)}>
+                      <XMarkIcon className='hover:text-logored h-5 w-5 cursor-pointer text-gray-400 transition-colors duration-200' />
                     </button>
                   </div>
 
@@ -137,7 +126,7 @@ export const CreatePage = () => {
                                 }}
                                 className='text-logored hover:text-logored-hover'
                               >
-                                <TrashIcon className='h-4 w-4' />
+                                <XMarkIcon className='h-4 w-4' />
                               </button>
                             </div>
                           </div>
@@ -179,6 +168,7 @@ export const CreatePage = () => {
                 id='schedule'
                 options={scheduleOptions}
                 placeholder='Add session to schedule'
+                value={selectedSession ?? null}
               />
             </div>
           </div>

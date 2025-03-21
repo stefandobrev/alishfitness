@@ -7,6 +7,7 @@ export const DropdownField = ({
   options,
   required = true,
   placeholder = '--',
+  ...props
 }) => {
   const {
     control,
@@ -37,6 +38,7 @@ export const DropdownField = ({
             }
             classNamePrefix='react-select'
             className='w-full font-semibold'
+            {...props}
           />
         )}
       />
