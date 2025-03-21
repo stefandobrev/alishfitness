@@ -1,12 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FormProvider, useForm, Controller, useWatch } from 'react-hook-form';
 
-import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 import { AddSessionButton } from './components';
 import { classNames } from '../../../utils/classNames';
 import { DropdownField, InputField } from '../../../components/inputs';
-import { EditButton } from '../../../components/buttons/EditButtons';
 import { useTitle } from '../../../hooks/useTitle.hook';
 import { getLightColors } from '../../../common/constants';
 
@@ -19,7 +18,7 @@ export const CreatePage = () => {
   const scheduleOptions =
     sessions?.map((_, index) => {
       return {
-        label: `Session ${index + 1}`,
+        label: `Session ${index + 1}: ${sessions[index].title}`,
         value: index,
       };
     }) || [];
@@ -29,11 +28,11 @@ export const CreatePage = () => {
     name: 'schedule',
   });
 
-  const addToSchedule = () => {
-    setSchedule((prev) => {
-      return [...prev, selectedSession];
-    });
-  };
+  useEffect(() => {
+    if (selectedSession !== null && selectedSession !== undefined) {
+      setSchedule((prev) => [...prev, selectedSession]);
+    }
+  }, [selectedSession]);
 
   return (
     <FormProvider {...methods}>
@@ -81,7 +80,6 @@ export const CreatePage = () => {
                     />
 
                     <button
-                      type='button'
                       onClick={() => {
                         const currentSessions =
                           methods.getValues('sessions') || [];
@@ -90,9 +88,20 @@ export const CreatePage = () => {
                           currentSessions.filter((_, i) => i !== index),
                         );
                       }}
-                      className='text-logored hover:text-logored-hover'
+                      className='hover:text-logored cursor-pointer text-gray-400 transition-colors duration-200'
                     >
-                      <TrashIcon className='h-5 w-5 cursor-pointer' />
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        className='h-5 w-5'
+                        viewBox='0 0 20 20'
+                        fill='currentColor'
+                      >
+                        <path
+                          fillRule='evenodd'
+                          d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+                          clipRule='evenodd'
+                        />
+                      </svg>
                     </button>
                   </div>
 
@@ -162,47 +171,59 @@ export const CreatePage = () => {
         </div>
 
         {/* Schedule section */}
-        <div className='h-[calc(100vh-108px)] w-full border-l-2 lg:sticky lg:top-25 lg:w-[20%]'>
+        <div className='min-h-[calc(100vh-108px)] w-full border-l-2 lg:sticky lg:top-25 lg:w-[20%]'>
           <div className='z-40 flex items-end gap-2 px-6 lg:sticky lg:top-25'>
             <div className='w-full'>
               <DropdownField
                 label='Schedule'
                 id='schedule'
                 options={scheduleOptions}
+                placeholder='Add session to schedule'
               />
             </div>
-            <EditButton
-              onClick={addToSchedule}
-              variant='white'
-              className='flex h-10 items-center gap-1'
-            >
-              <PlusIcon className='size-4' />
-              Add
-            </EditButton>
           </div>
-          <div className='flex flex-col gap-2 px-6 lg:sticky lg:top-50'>
-            {schedule.map((sessionId) => {
-              const session = sessions.find(
-                (session) => session.id === sessionId,
-              );
-              return (
-                <span
-                  className={classNames(
-                    'flex h-full w-full items-center rounded border',
-                  )}
-                >
-                  <div
-                    className={classNames(
-                      'mr-2 h-10 w-2 rounded',
-                      getLightColors(session.id),
-                    )}
-                  ></div>
-                  <p className='p-2'>
-                    {`Session ${session.id + 1} ${session.title ?? ''}`}
-                  </p>
-                </span>
-              );
-            })}
+
+          <div className='flex flex-col gap-3 px-6 pt-4 lg:sticky lg:top-50'>
+            {schedule.length === 0 ? (
+              <div className='py-6 text-center text-gray-400 italic'>
+                No sessions added to schedule yet
+              </div>
+            ) : (
+              <>
+                <h3 className='mb-1 text-sm font-semibold tracking-wider text-gray-500 uppercase'>
+                  Session Order
+                </h3>
+                {schedule.map((sessionId, index) => {
+                  const session = sessions.find(
+                    (session) => session.id === sessionId,
+                  );
+                  return (
+                    <div
+                      key={`${sessionId}-${index}`}
+                      className='flex h-full w-full items-center overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md'
+                    >
+                      <div
+                        className={`w-2 self-stretch ${getLightColors(session.id)}`}
+                      ></div>
+                      <div className='flex w-full items-center justify-between px-3 py-3'>
+                        <div className='flex items-center gap-2'>
+                          <p className='font-medium'>{`Session ${session.id + 1}${session.title ? `: ${session.title}` : ''}`}</p>
+                        </div>
+                        <button
+                          onClick={() => {
+                            setSchedule((prev) =>
+                              prev.filter((_, idx) => idx !== index),
+                            );
+                          }}
+                        >
+                          <XMarkIcon className='hover:text-logored h-5 w-5 cursor-pointer text-gray-400 transition-colors duration-200' />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { useFormContext, Controller, useFieldArray } from 'react-hook-form';
 
-import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 import { EditButton } from '../buttons/EditButtons';
 
@@ -48,12 +48,8 @@ export const DynamicTextFieldList = ({
                 />
               )}
             />
-            <button
-              type='button'
-              onClick={() => remove(index)}
-              className='text-logored hover:text-logored-hover'
-            >
-              <TrashIcon className='h-5 w-5 cursor-pointer' />
+            <button onClick={() => remove(index)}>
+              <XMarkIcon className='hover:text-logored h-5 w-5 cursor-pointer text-gray-400 transition-colors duration-200' />
             </button>
           </div>
         </div>

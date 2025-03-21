@@ -1,3 +1,5 @@
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+
 const VideoItems = ({ src }) => (
   <video
     src={src}
@@ -62,19 +64,7 @@ const ExerciseDataContainer = ({ exerciseData }) => {
             {exerciseData.mistakes.map((mistake, index) => (
               <li key={index} className='flex items-start'>
                 <div className='mt-1 mr-3 flex-shrink-0'>
-                  <svg
-                    className='text-logored h-5 w-5'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M6 18L18 6M6 6l12 12'
-                    />
-                  </svg>
+                  <ExclamationTriangleIcon className='text-logored h-5 w-5' />
                 </div>
                 <span className='text-gray-700'>{mistake}</span>
               </li>
