@@ -3,9 +3,9 @@ import { NavLink } from 'react-router-dom';
 
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
-import { getNavMobileItemStyles } from '../../utils/classNames';
+import { getNavMobileItemStyles } from '../../../utils/classNames';
 
-const MobileMenu = ({
+export const MobileMenu = ({
   navigation,
   location,
   setIsOpen,
@@ -88,5 +88,3 @@ const MobileMenu = ({
     </div>
   );
 };
-
-export default MobileMenu;

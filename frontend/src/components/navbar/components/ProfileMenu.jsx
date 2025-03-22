@@ -3,12 +3,12 @@ import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
 
-import { logoutWithBlacklist } from '../../store/slices/authSlice';
-import { profileMenuItems } from '../../config/navigation';
-import { getNavMobileItemStyles } from '../../utils/classNames';
-import { isMobile } from '../../common/constants';
+import { logoutWithBlacklist } from '../../../store/slices/authSlice';
+import { profileMenuItems } from '../../../config/navigation';
+import { getNavMobileItemStyles } from '../../../utils/classNames';
+import { isMobile } from '../../../common/constants';
 
-const ProfileMenu = ({ isOpen, setIsOpen }) => {
+export const ProfileMenu = ({ isOpen, setIsOpen }) => {
   const profile = useSelector((state) => state.user.profile);
   const menuRef = useRef(null);
   const dispatch = useDispatch();
@@ -139,5 +139,3 @@ const ProfileMenu = ({ isOpen, setIsOpen }) => {
     </div>
   );
 };
-
-export default ProfileMenu;

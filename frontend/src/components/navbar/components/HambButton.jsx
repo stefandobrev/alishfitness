@@ -1,6 +1,6 @@
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
-const HambButton = ({ isOpen, setIsOpen }) => {
+export const HambButton = ({ isOpen, setIsOpen }) => {
   return (
     <button
       onClick={() => setIsOpen(!isOpen)}
@@ -16,4 +16,3 @@ const HambButton = ({ isOpen, setIsOpen }) => {
     </button>
   );
 };
-export default HambButton;

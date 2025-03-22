@@ -1,8 +1,9 @@
 import { NavLink } from 'react-router-dom';
-import DropdownMenu from './DropdownMenu';
-import { getNavItemStyles } from '../../utils/classNames';
 
-const NavigationItems = ({ navigation, currentPath, isTransparent }) => {
+import { DropdownMenu } from './';
+import { getNavItemStyles } from '../../../utils/classNames';
+
+export const NavigationItems = ({ navigation, currentPath, isTransparent }) => {
   const isCurrent = (href) => (href === currentPath ? 'page' : undefined);
 
   return (
@@ -31,5 +32,3 @@ const NavigationItems = ({ navigation, currentPath, isTransparent }) => {
     </div>
   );
 };
-
-export default NavigationItems;

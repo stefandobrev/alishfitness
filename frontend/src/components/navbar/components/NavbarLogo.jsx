@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
-const NavbarLogo = () => {
+export const NavbarLogo = () => {
   return (
     <div className='flex shrink-0 items-center'>
       <NavLink to='/'>
@@ -13,5 +13,3 @@ const NavbarLogo = () => {
     </div>
   );
 };
-
-export default NavbarLogo;

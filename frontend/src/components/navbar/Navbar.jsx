@@ -6,11 +6,13 @@ import { getNavigation } from '../../config/navigation';
 import { useNavbarState } from './hooks/useNavbarState';
 import { useNavbarStyles } from './hooks/useNavbarStyles';
 
-import MobileMenu from './MobileMenu';
-import ProfileMenu from './ProfileMenu';
-import HambButton from './HambButton';
-import NavigationItems from './NavigationItems';
-import NavbarLogo from './NavbarLogo';
+import {
+  MobileMenu,
+  ProfileMenu,
+  HambButton,
+  NavigationItems,
+  NavbarLogo,
+} from './components';
 import { isMobile } from '../../common/constants';
 
 const Navbar = () => {
