@@ -1,18 +1,22 @@
+import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { PlusIcon } from '@heroicons/react/24/outline';
 
 export const AddSessionButton = () => {
+  const [counter, setCounter] = useState(1);
   const { getValues, setValue } = useFormContext();
 
   const handleAddSession = () => {
     const currentSessions = getValues('sessions') || [];
-    const newId = Date.now();
+    const newId = `${counter}`;
 
     setValue('sessions', [
       ...currentSessions,
-      { id: newId, title: '', exercises: [] },
+      { tempId: newId, title: '', exercises: [] },
     ]);
+
+    setCounter(counter + 1);
 
     console.log({ updatedSessions: getValues('sessions') });
   };
