@@ -5,16 +5,22 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 export const AddSessionButton = () => {
   const { getValues, setValue } = useFormContext();
 
+  const handleAddSession = () => {
+    const currentSessions = getValues('sessions') || [];
+    const newId = Date.now();
+
+    setValue('sessions', [
+      ...currentSessions,
+      { id: newId, title: '', exercises: [] },
+    ]);
+
+    console.log({ updatedSessions: getValues('sessions') });
+  };
+
   return (
     <button
       type='button'
-      onClick={() => {
-        const currentSessions = getValues('sessions') || [];
-        setValue('sessions', [
-          ...currentSessions,
-          { title: '', exercises: [] },
-        ]);
-      }}
+      onClick={handleAddSession}
       className='my-4 flex h-auto w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-2 transition-colors hover:border-gray-400'
     >
       <div className='flex flex-col items-center justify-center'>

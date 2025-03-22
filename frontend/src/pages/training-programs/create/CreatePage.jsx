@@ -16,10 +16,10 @@ export const CreatePage = () => {
 
   const sessions = methods.watch('sessions');
   const scheduleOptions =
-    sessions?.map((_, index) => {
+    sessions?.map((session, index) => {
       return {
-        label: `Session ${index + 1}${sessions[index].title ? ` : ${sessions[index].title}` : ''}`,
-        value: index,
+        label: `Session ${index + 1}${session.title ? ` : ${session.title}` : ''}`,
+        value: session.id,
       };
     }) || [];
 
@@ -30,11 +30,19 @@ export const CreatePage = () => {
 
   const handleRemoveSession = (index) => {
     const currentSessions = methods.getValues('sessions') || [];
+    const sessionId = currentSessions[index]?.id;
 
-    methods.setValue(
-      'sessions',
-      currentSessions.filter((_, i) => i !== index),
-    );
+    const newSessions = currentSessions.filter((_, i) => i !== index);
+
+    methods.setValue('sessions', newSessions);
+
+    methods.reset({ ...methods.getValues(), sessions: newSessions });
+
+    if (sessionId !== undefined) {
+      setSchedule((prev) =>
+        prev.filter((scheduleSessionId) => scheduleSessionId !== sessionId),
+      );
+    }
   };
 
   useEffect(() => {
@@ -60,9 +68,9 @@ export const CreatePage = () => {
 
           {/* Sessions grid */}
           <div className='flex flex-wrap gap-2'>
-            {sessions?.map((_, index) => (
+            {sessions?.map((session, index) => (
               <div
-                key={index}
+                key={session.id}
                 className='w-full rounded-lg border p-4 shadow-sm sm:w-[calc(50%-0.5rem)]'
               >
                 <div className='space-y-3'>
@@ -77,7 +85,7 @@ export const CreatePage = () => {
                     <Controller
                       name={`sessions.${index}.id`}
                       control={methods.control}
-                      defaultValue={index}
+                      defaultValue={session.id}
                       render={({ field }) => (
                         <input {...field} className='hidden h-0 w-0' />
                       )}
@@ -184,20 +192,28 @@ export const CreatePage = () => {
                   Session Order
                 </h3>
                 {schedule.map((sessionId, index) => {
-                  const session = sessions.find(
+                  const session = sessions?.find(
                     (session) => session.id === sessionId,
                   );
+
+                  if (!session) return null;
+
+                  // Find the index of this session in the sessions array
+                  const sessionIndex = sessions.findIndex(
+                    (s) => s.id === sessionId,
+                  );
+
                   return (
                     <div
                       key={`${sessionId}-${index}`}
                       className='flex h-full w-full items-center overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md'
                     >
                       <div
-                        className={`w-2 self-stretch ${getLightColors(session.id)}`}
+                        className={`w-2 self-stretch ${getLightColors(sessionIndex)}`}
                       ></div>
                       <div className='flex w-full items-center justify-between px-3 py-3'>
                         <div className='flex items-center gap-2'>
-                          <p className='font-medium'>{`Session ${session.id + 1}${session.title ? `: ${session.title}` : ''}`}</p>
+                          <p className='font-medium'>{`Session ${sessionIndex + 1}${session.title ? `: ${session.title}` : ''}`}</p>
                         </div>
                         <button
                           onClick={() => {
