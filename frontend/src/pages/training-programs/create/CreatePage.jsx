@@ -19,7 +19,7 @@ export const CreatePage = () => {
     sessions?.map((session, index) => {
       return {
         label: `Session ${index + 1}${session.title ? ` : ${session.title}` : ''}`,
-        value: session.id,
+        value: session.tempId,
       };
     }) || [];
 
@@ -30,7 +30,7 @@ export const CreatePage = () => {
 
   const handleRemoveSession = (index) => {
     const currentSessions = methods.getValues('sessions') || [];
-    const sessionId = currentSessions[index]?.id;
+    const sessionId = currentSessions[index]?.tempId;
 
     const newSessions = currentSessions.filter((_, i) => i !== index);
 
@@ -70,7 +70,7 @@ export const CreatePage = () => {
           <div className='flex flex-wrap gap-2'>
             {sessions?.map((session, index) => (
               <div
-                key={session.id}
+                key={session.tempId}
                 className='w-full rounded-lg border p-4 shadow-sm sm:w-[calc(50%-0.5rem)]'
               >
                 <div className='space-y-3'>
@@ -193,14 +193,14 @@ export const CreatePage = () => {
                 </h3>
                 {schedule.map((sessionId, index) => {
                   const session = sessions?.find(
-                    (session) => session.id === sessionId,
+                    (session) => session.tempId === sessionId,
                   );
 
                   if (!session) return null;
 
                   // Find the index of this session in the sessions array
                   const sessionIndex = sessions.findIndex(
-                    (s) => s.id === sessionId,
+                    (s) => s.tempId === sessionId,
                   );
 
                   return (
