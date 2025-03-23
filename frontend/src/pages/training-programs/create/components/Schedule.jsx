@@ -6,7 +6,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { DropdownField } from '../../../../components/inputs';
 import { getLightColors } from '../../../../common/constants';
 
-export const Schedule = ({ sessions, control, setValue }) => {
+export const Schedule = ({ activeTab, sessions, control, setValue }) => {
   const [schedule, setSchedule] = useState([]);
 
   const selectedSession = useWatch({
@@ -36,9 +36,13 @@ export const Schedule = ({ sessions, control, setValue }) => {
   };
 
   return (
-    <div className='min-h-[calc(100vh-108px)] w-full border-l-2 lg:sticky lg:top-25 lg:w-[20%]'>
+    <div
+      className={`mt-4 w-full lg:sticky lg:top-25 lg:min-h-[calc(100vh-108px)] lg:w-[20%] lg:border-l-2 ${
+        activeTab !== 'schedule' ? 'hidden lg:block' : ''
+      }`}
+    >
       <div className='z-40 flex items-end gap-2 px-6 lg:sticky lg:top-25'>
-        <div className='w-full'>
+        <div className='top-40 w-full'>
           <DropdownField
             label='Schedule'
             id='schedule'
@@ -46,6 +50,7 @@ export const Schedule = ({ sessions, control, setValue }) => {
             placeholder='Add session to schedule'
             value={selectedSession ?? null}
             control={control}
+            className='max-w-md'
           />
         </div>
       </div>
@@ -67,7 +72,6 @@ export const Schedule = ({ sessions, control, setValue }) => {
 
               if (!session) return null;
 
-              // Find the index of this session in the sessions array
               const sessionIndex = sessions.findIndex(
                 (s) => s.tempId === sessionId,
               );

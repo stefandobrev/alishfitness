@@ -37,7 +37,7 @@ export const SessionsGrid = ({
       {sessions?.map((session, index) => (
         <div
           key={session.tempId}
-          className='w-full rounded-lg border p-4 shadow-sm sm:w-[calc(50%-0.5rem)]'
+          className='w-full rounded-lg border p-4 shadow-sm lg:w-[calc(50%-0.5rem)]'
         >
           <div className='space-y-3'>
             <div className='flex items-start'>

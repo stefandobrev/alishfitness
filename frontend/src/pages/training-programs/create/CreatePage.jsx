@@ -1,10 +1,11 @@
+import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { AddSessionButton, Schedule, SessionsGrid } from './components';
-import { InputField } from '../../../components/inputs';
+import { Schedule, SessionsPanel, MobileTabs } from './components';
 import { useTitle } from '../../../hooks/useTitle.hook';
 
 export const CreatePage = () => {
+  const [activeTab, setActiveTab] = useState('sessions');
   const methods = useForm();
   useTitle('Create');
 
@@ -18,29 +19,18 @@ export const CreatePage = () => {
     methods.reset({ ...methods.getValues(), sessions: newSessions });
   };
 
-  // This function will be called when the schedule changes in the Schedule component
-  const handleScheduleChange = (newSchedule) => {
-    // You can perform actions based on schedule changes if needed
-    console.log('Schedule updated:', newSchedule);
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
   };
 
   return (
-    <FormProvider {...methods}>
-      <div className='flex'>
-        <div className='w-full px-4 lg:w-[80%]'>
-          <h1 className='p-4 text-2xl font-bold md:text-3xl'>
-            Create Training Program
-          </h1>
+    <>
+      <MobileTabs activeTab={activeTab} onTabChange={handleTabChange} />
 
-          {/* Head section */}
-          <div className='mb-4 px-4'>
-            <div className='w-full max-w-xs'>
-              <InputField label='Name' id='programName' />
-            </div>
-          </div>
-
-          {/* Sessions grid component */}
-          <SessionsGrid
+      <FormProvider {...methods}>
+        <div className='flex w-full flex-col lg:flex-row'>
+          <SessionsPanel
+            activeTab={activeTab}
             sessions={sessions}
             control={methods.control}
             watch={methods.watch}
@@ -49,17 +39,14 @@ export const CreatePage = () => {
             onRemoveSession={handleRemoveSession}
           />
 
-          <AddSessionButton />
+          <Schedule
+            activeTab={activeTab}
+            sessions={sessions}
+            control={methods.control}
+            setValue={methods.setValue}
+          />
         </div>
-
-        {/* Schedule component */}
-        <Schedule
-          sessions={sessions}
-          control={methods.control}
-          setValue={methods.setValue}
-          onScheduleChange={handleScheduleChange}
-        />
-      </div>
-    </FormProvider>
+      </FormProvider>
+    </>
   );
 };
