@@ -1,56 +1,26 @@
-import { useState, useEffect } from 'react';
-import { FormProvider, useForm, Controller, useWatch } from 'react-hook-form';
+import { FormProvider, useForm, Controller } from 'react-hook-form';
 
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
-import { AddSessionButton } from './components';
+import { AddSessionButton, Schedule } from './components';
 import { classNames } from '../../../utils/classNames';
-import { DropdownField, InputField } from '../../../components/inputs';
+import { InputField } from '../../../components/inputs';
 import { useTitle } from '../../../hooks/useTitle.hook';
 import { getLightColors } from '../../../common/constants';
 
 export const CreatePage = () => {
-  const [schedule, setSchedule] = useState([]);
   const methods = useForm();
   useTitle('Create');
 
   const sessions = methods.watch('sessions');
-  const scheduleOptions =
-    sessions?.map((session, index) => {
-      return {
-        label: `Session ${index + 1}${session.title ? ` : ${session.title}` : ''}`,
-        value: session.tempId,
-      };
-    }) || [];
-
-  const selectedSession = useWatch({
-    control: methods.control,
-    name: 'schedule',
-  });
 
   const handleRemoveSession = (index) => {
     const currentSessions = methods.getValues('sessions') || [];
-    const sessionId = currentSessions[index]?.tempId;
-
     const newSessions = currentSessions.filter((_, i) => i !== index);
 
     methods.setValue('sessions', newSessions);
-
     methods.reset({ ...methods.getValues(), sessions: newSessions });
-
-    if (sessionId !== undefined) {
-      setSchedule((prev) =>
-        prev.filter((scheduleSessionId) => scheduleSessionId !== sessionId),
-      );
-    }
   };
-
-  useEffect(() => {
-    if (selectedSession !== null && selectedSession !== undefined) {
-      setSchedule((prev) => [...prev, selectedSession]);
-      methods.setValue('schedule', null);
-    }
-  }, [selectedSession]);
 
   return (
     <FormProvider {...methods}>
@@ -62,7 +32,7 @@ export const CreatePage = () => {
 
           <div className='mb-4 px-4'>
             <div className='w-full max-w-xs'>
-              <InputField label='Name' id='name' />
+              <InputField label='Name' id='programName' />
             </div>
           </div>
 
@@ -167,71 +137,11 @@ export const CreatePage = () => {
           <AddSessionButton />
         </div>
 
-        {/* Schedule section */}
-        <div className='min-h-[calc(100vh-108px)] w-full border-l-2 lg:sticky lg:top-25 lg:w-[20%]'>
-          <div className='z-40 flex items-end gap-2 px-6 lg:sticky lg:top-25'>
-            <div className='w-full'>
-              <DropdownField
-                label='Schedule'
-                id='schedule'
-                options={scheduleOptions}
-                placeholder='Add session to schedule'
-                value={selectedSession ?? null}
-              />
-            </div>
-          </div>
-
-          <div className='flex flex-col gap-3 px-6 pt-4 lg:sticky lg:top-50'>
-            {schedule.length === 0 ? (
-              <div className='py-6 text-center text-gray-400 italic'>
-                No sessions added to schedule yet
-              </div>
-            ) : (
-              <>
-                <h3 className='mb-1 text-sm font-semibold tracking-wider text-gray-500 uppercase'>
-                  Session Order
-                </h3>
-                {schedule.map((sessionId, index) => {
-                  const session = sessions?.find(
-                    (session) => session.tempId === sessionId,
-                  );
-
-                  if (!session) return null;
-
-                  // Find the index of this session in the sessions array
-                  const sessionIndex = sessions.findIndex(
-                    (s) => s.tempId === sessionId,
-                  );
-
-                  return (
-                    <div
-                      key={`${sessionId}-${index}`}
-                      className='flex h-full w-full items-center overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md'
-                    >
-                      <div
-                        className={`w-2 self-stretch ${getLightColors(sessionIndex)}`}
-                      ></div>
-                      <div className='flex w-full items-center justify-between px-3 py-3'>
-                        <div className='flex items-center gap-2'>
-                          <p className='font-medium'>{`Session ${sessionIndex + 1}${session.title ? `: ${session.title}` : ''}`}</p>
-                        </div>
-                        <button
-                          onClick={() => {
-                            setSchedule((prev) =>
-                              prev.filter((_, idx) => idx !== index),
-                            );
-                          }}
-                        >
-                          <XMarkIcon className='hover:text-logored h-5 w-5 cursor-pointer text-gray-400 transition-colors duration-200' />
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </>
-            )}
-          </div>
-        </div>
+        <Schedule
+          sessions={sessions}
+          control={methods.control}
+          setValue={methods.setValue}
+        />
       </div>
     </FormProvider>
   );
