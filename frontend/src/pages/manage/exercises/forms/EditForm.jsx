@@ -9,7 +9,7 @@ import {
   fetchExerciseData,
   deleteExercise,
 } from '../helpersManageExercises';
-import { EditButton } from '../../../../components/buttons/EditButtons';
+import { ActionButton } from '../../../../components/buttons';
 import { DeleteConfirmation } from '../components/DeleteConfirmation';
 import Spinner from '../../../../components/Spinner';
 
@@ -116,7 +116,7 @@ export const EditForm = ({
       <h2 className='sticky top-0 z-10 mb-3 bg-white text-center text-2xl font-semibold'>
         Edit Exercise
       </h2>
-      <EditButton onClick={launchAddMode}>Add New Exercise</EditButton>
+      <ActionButton onClick={launchAddMode}>Add New Exercise</ActionButton>
     </div>
   );
 

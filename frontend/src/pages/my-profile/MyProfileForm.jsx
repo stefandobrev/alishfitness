@@ -1,8 +1,4 @@
-import {
-  SaveButton,
-  CancelButton,
-  EditButton,
-} from '../../components/buttons/EditButtons';
+import { ActionButton, SubmitButton } from '../../components/buttons';
 import { InputField } from '../../components/inputs';
 
 export const MyProfileForm = ({ isEditing, setIsEditing, onSubmit }) => {
@@ -17,11 +13,16 @@ export const MyProfileForm = ({ isEditing, setIsEditing, onSubmit }) => {
       <div className='flex space-x-4'>
         {isEditing ? (
           <>
-            <SaveButton />
-            <CancelButton onClick={() => setIsEditing(false)} />
+            <SubmitButton>Save</SubmitButton>
+            <ActionButton
+              variant='grayDark'
+              onClick={() => setIsEditing(false)}
+            >
+              Cancel
+            </ActionButton>
           </>
         ) : (
-          <EditButton onClick={() => setIsEditing(true)} />
+          <ActionButton onClick={() => setIsEditing(true)}>Edit</ActionButton>
         )}
       </div>
     </form>

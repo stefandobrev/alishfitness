@@ -1,4 +1,4 @@
-import { ViewButton } from '../../../components/buttons/EditButtons';
+import { ActionButton } from '../../../components/buttons';
 
 export const BioSection = () => {
   return (
@@ -27,13 +27,12 @@ export const BioSection = () => {
           </p>
         </div>
         <div className='mt-8 text-center sm:mt-12'>
-          <ViewButton
-            variant='red'
+          <ActionButton
             onClick={() => (window.location.href = '/contact')}
             className='w-full px-8 py-3 text-lg transition-transform hover:scale-105 sm:w-auto sm:px-12 sm:py-4'
           >
             Book a Consultation
-          </ViewButton>
+          </ActionButton>
         </div>
       </div>
     </section>

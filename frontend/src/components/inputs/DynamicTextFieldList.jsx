@@ -2,7 +2,7 @@ import { useFormContext, Controller, useFieldArray } from 'react-hook-form';
 
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
-import { EditButton } from '../buttons/EditButtons';
+import { ActionButton } from '../buttons';
 
 export const DynamicTextFieldList = ({
   labelPrefix = 'Item',
@@ -54,14 +54,14 @@ export const DynamicTextFieldList = ({
           </div>
         </div>
       ))}
-      <EditButton
+      <ActionButton
         onClick={() => append('')}
         variant='white'
         className='flex w-full flex-row items-center gap-1 md:w-auto'
       >
         <PlusIcon className='h-4 w-4' />
         Add {singularize(labelPrefix)}
-      </EditButton>
+      </ActionButton>
     </div>
   );
 };

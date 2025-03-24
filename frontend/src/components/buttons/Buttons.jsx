@@ -6,7 +6,7 @@ const variants = {
     'bg-white hover:bg-gray-300 text-gray-800 hover:text-gray-900 disabled:bg-gray-300 disabled:text-gray-700',
 };
 
-const Button = ({
+const BaseButton = ({
   children,
   type = 'button',
   variant = 'red',
@@ -28,4 +28,6 @@ const Button = ({
   </button>
 );
 
-export default Button;
+export const SubmitButton = (props) => <BaseButton {...props} type='submit' />;
+
+export const ActionButton = (props) => <BaseButton {...props} type='button' />;

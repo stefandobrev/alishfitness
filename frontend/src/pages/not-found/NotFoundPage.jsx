@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 
-import { ViewButton } from '../../components/buttons/EditButtons';
+import { ActionButton } from '../../components/buttons';
 import { useTitle } from '../../hooks/useTitle.hook';
 
 export const NotFoundPage = () => {
@@ -23,9 +23,9 @@ export const NotFoundPage = () => {
       <ExclamationTriangleIcon className='mb-4 h-24 w-24 text-yellow-400' />
       <h1 className='mb-4 text-6xl font-bold'>404 Not Found</h1>
       <p className='mb-5 text-xl'>This page does not exist</p>
-      <ViewButton variant='red' onClick={handleGoBack}>
+      <ActionButton onClick={handleGoBack}>
         {location.key !== 'default' ? 'Go Back' : 'Go Home'}
-      </ViewButton>
+      </ActionButton>
     </section>
   );
 };

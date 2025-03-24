@@ -1,12 +1,7 @@
 import { useFormContext } from 'react-hook-form';
 
 import { InputField, PasswordField } from '../../../components/inputs';
-import Button from '../../../components/buttons/Button';
-import {
-  SaveButton,
-  CancelButton,
-  EditButton,
-} from '../../../components/buttons/EditButtons';
+import { ActionButton, SubmitButton } from '../../../components/buttons';
 
 export const SettingsForm = ({
   isEditing,
@@ -50,13 +45,20 @@ export const SettingsForm = ({
         <div className='flex space-x-4'>
           {isEditing ? (
             <>
-              <SaveButton disabled={isPasswordInvalid()} />
-              <CancelButton onClick={() => setIsEditing(false)} />
+              <SubmitButton disabled={isPasswordInvalid()}>Save</SubmitButton>
+              <ActionButton
+                variant='grayDark'
+                onClick={() => setIsEditing(false)}
+              >
+                Cancel
+              </ActionButton>
             </>
           ) : (
             <>
-              <EditButton onClick={() => setIsEditing(true)} />
-              <Button
+              <ActionButton onClick={() => setIsEditing(true)}>
+                Edit
+              </ActionButton>
+              <ActionButton
                 variant='grayDark'
                 onClick={(e) => {
                   e.preventDefault();
@@ -64,10 +66,9 @@ export const SettingsForm = ({
                     onPasswordChange();
                   }
                 }}
-                aria-label='Change Password'
               >
                 Change Password
-              </Button>
+              </ActionButton>
             </>
           )}
         </div>

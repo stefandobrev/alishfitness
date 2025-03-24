@@ -1,4 +1,4 @@
-import { ViewButton } from '../../../components/buttons/EditButtons';
+import { ActionButton } from '../../../components/buttons';
 
 export const HeroSection = ({ blurAmount }) => {
   return (
@@ -36,13 +36,12 @@ export const HeroSection = ({ blurAmount }) => {
             Transform your physique with London's premier personal trainer.
             Specialized in resistance training and nutrition coaching.
           </p>
-          <ViewButton
-            variant='red'
+          <ActionButton
             onClick={() => (window.location.href = '/signup')}
             className='w-full px-8 py-3 text-lg transition-transform hover:scale-105 sm:w-auto sm:px-12 sm:py-4'
           >
             Start Your Journey
-          </ViewButton>
+          </ActionButton>
         </div>
       </div>
     </section>

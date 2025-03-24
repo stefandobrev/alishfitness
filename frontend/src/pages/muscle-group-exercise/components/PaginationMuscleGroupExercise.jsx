@@ -1,4 +1,4 @@
-import { ViewButton } from '../../../components/buttons/EditButtons';
+import { ActionButton } from '../../../components/buttons';
 
 export const PaginationMuscleGroupExercise = ({
   currentPage,
@@ -10,23 +10,23 @@ export const PaginationMuscleGroupExercise = ({
 
   return (
     <div className='flex items-center justify-center gap-4'>
-      <ViewButton
+      <ActionButton
         variant='white'
         onClick={() => onPageChange(currentPage - 1)}
         disabled={isFirstPage}
       >
         <span style={{ transform: 'translateY(-2px)' }}>{'<'}</span>
-      </ViewButton>
+      </ActionButton>
 
       <span className='text-gray-700'>Page {currentPage}</span>
 
-      <ViewButton
+      <ActionButton
         variant='white'
         onClick={() => onPageChange(currentPage + 1)}
         disabled={isLastPage}
       >
         <span style={{ transform: 'translateY(-2px)' }}>{'>'}</span>
-      </ViewButton>
+      </ActionButton>
     </div>
   );
 };

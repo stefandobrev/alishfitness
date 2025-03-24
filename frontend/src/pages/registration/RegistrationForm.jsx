@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { InputField, PasswordField } from '../../components/inputs';
-import { SaveButton } from '../../components/buttons/EditButtons';
+import { SubmitButton } from '../../components/buttons';
 
 const RegistrationForm = ({ registerUser, message }) => {
   const { handleSubmit, watch } = useFormContext();
@@ -44,7 +44,7 @@ const RegistrationForm = ({ registerUser, message }) => {
       {message && <p className={'text-red-500'}>{message.text}</p>}
 
       <div className='flex justify-center'>
-        <SaveButton disabled={isPasswordInvalid}>Add User</SaveButton>
+        <SubmitButton disabled={isPasswordInvalid}>Create User</SubmitButton>
       </div>
     </form>
   );
