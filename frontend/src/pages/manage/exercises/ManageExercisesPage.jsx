@@ -4,12 +4,8 @@ import { useLocation } from 'react-router-dom';
 
 import { fetchMuscleGroups } from './helpersManageExercises';
 import { useTitle } from '../../../hooks/useTitle.hook';
-import {
-  MobileTabs,
-  ExerciseListPanel,
-  FormPanel,
-  AnatomyPanel,
-} from './components';
+import { ExerciseListPanel, FormPanel, AnatomyPanel } from './components';
+import { MobileTabs } from '../../../components/buttons';
 
 export const ManageExercisesPage = () => {
   const methods = useForm();
@@ -58,9 +54,21 @@ export const ManageExercisesPage = () => {
     setActiveTab(tab);
   };
 
+  const tabs = [
+    { label: 'Exercises', value: 'exercises' },
+    { label: 'Form', value: 'form' },
+    { label: 'Anatomy', value: 'anatomy' },
+  ];
+
   return (
     <>
-      <MobileTabs activeTab={activeTab} onTabChange={handleTabChange} />
+      <div className='sticky top-20 z-40 flex h-16 justify-around border-t border-gray-800 bg-gray-600 p-2 lg:hidden'>
+        <MobileTabs
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          tabs={tabs}
+        />
+      </div>
 
       <div className='flex flex-col lg:flex-row'>
         <ExerciseListPanel

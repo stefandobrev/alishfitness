@@ -9,7 +9,7 @@ export const ExerciseListPanel = ({
   return (
     <div
       className={`flex w-full flex-col items-center p-4 lg:w-1/4 ${
-        activeTab !== 'exercise' ? 'hidden lg:block' : ''
+        activeTab !== 'exercises' ? 'hidden lg:block' : ''
       }`}
     >
       <ExerciseList

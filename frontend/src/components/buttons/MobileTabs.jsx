@@ -9,4 +9,17 @@ const TabButton = ({ label, isActive, onClick }) => (
   </button>
 );
 
-export default TabButton;
+export const MobileTabs = ({ activeTab, onTabChange, tabs }) => {
+  return (
+    <>
+      {tabs.map((tab) => (
+        <TabButton
+          key={tab.value}
+          label={tab.label}
+          isActive={activeTab === tab.value}
+          onClick={() => onTabChange(tab.value)}
+        />
+      ))}
+    </>
+  );
+};

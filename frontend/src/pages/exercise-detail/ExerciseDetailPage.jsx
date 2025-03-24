@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+
 import { fetchExercise } from './helpersExerciseDetail';
 import { ToggleableMuscleView } from '../../components/muscleviews';
-import TabButton from '../../components/buttons/TabButton';
+import { MobileTabs } from '../../components/buttons';
 import ExerciseDataHeading from './ExerciseDataHeading';
 import ExerciseDataContainer from './ExerciseDataContainer';
 import AnatomyLegend from './AnatomyLegend';
@@ -36,19 +37,22 @@ export const ExerciseDetailPage = () => {
     navigate(`/exercises/${svgId}`);
   };
 
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
+  const tabs = [
+    { label: 'Exercise', value: 'exercise' },
+    { label: 'Anatomy', value: 'anatomy' },
+  ];
+
   return (
     <>
-      {/* Mobile Tabs */}
       <div className='sticky top-20 z-40 flex h-16 justify-around border-t border-gray-800 bg-gray-600 p-2 lg:hidden'>
-        <TabButton
-          label='Exercise'
-          isActive={activeTab === 'exercise'}
-          onClick={() => setActiveTab('exercise')}
-        />
-        <TabButton
-          label='Anatomy'
-          isActive={activeTab === 'anatomy'}
-          onClick={() => setActiveTab('anatomy')}
+        <MobileTabs
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          tabs={tabs}
         />
       </div>
 

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { fetchExercises } from './helpersMuscleGroupExercise';
 import { ToggleableMuscleView } from '../../components/muscleviews';
-import TabButton from '../../components/buttons/TabButton';
+import { MobileTabs } from '../../components/buttons';
 import Spinner from '../../components/Spinner';
 import {
   PaginationMuscleGroupExercise,
@@ -190,6 +190,15 @@ export const MuscleGroupExercisePage = () => {
     }
   };
 
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
+  const tabs = [
+    { label: 'Exercises', value: 'exercises' },
+    { label: 'Anatomy', value: 'anatomy' },
+  ];
+
   return (
     <>
       {/* Mobile Tabs with slide-up/down animation */}
@@ -200,15 +209,10 @@ export const MuscleGroupExercisePage = () => {
             : 'relative -translate-y-full opacity-0'
         } z-40 flex h-16 justify-around border-t border-gray-800 bg-gray-600 p-2 lg:hidden`}
       >
-        <TabButton
-          label='Exercises'
-          isActive={activeTab === 'exercises'}
-          onClick={() => setActiveTab('exercises')}
-        />
-        <TabButton
-          label='Anatomy'
-          isActive={activeTab === 'anatomy'}
-          onClick={() => setActiveTab('anatomy')}
+        <MobileTabs
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          tabs={tabs}
         />
       </div>
 

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { Schedule, SessionsPanel, MobileTabs } from './components';
+import { Schedule, SessionsPanel } from './components';
+import { MobileTabs } from '../../../components/buttons';
 import { useTitle } from '../../../hooks/useTitle.hook';
 
 export const CreatePage = () => {
@@ -23,9 +24,20 @@ export const CreatePage = () => {
     setActiveTab(tab);
   };
 
+  const tabs = [
+    { label: 'Sessions', value: 'sessions' },
+    { label: 'Schedule', value: 'schedule' },
+  ];
+
   return (
     <>
-      <MobileTabs activeTab={activeTab} onTabChange={handleTabChange} />
+      <div className='sticky top-20 z-40 flex h-16 justify-around border-t border-gray-800 bg-gray-600 p-2 lg:hidden'>
+        <MobileTabs
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          tabs={tabs}
+        />
+      </div>
 
       <FormProvider {...methods}>
         <div className='flex w-full flex-col lg:flex-row'>
