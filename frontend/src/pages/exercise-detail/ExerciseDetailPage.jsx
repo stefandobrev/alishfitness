@@ -4,9 +4,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { fetchExercise } from './helpersExerciseDetail';
 import { ToggleableMuscleView } from '../../components/muscleviews';
 import { MobileTabs } from '../../components/buttons';
-import ExerciseDataHeading from './ExerciseDataHeading';
-import ExerciseDataContainer from './ExerciseDataContainer';
-import AnatomyLegend from './AnatomyLegend';
+import {
+  AnatomyLegend,
+  ExerciseDataHeading,
+  ExerciseDataContainer,
+} from './components';
+
 import Spinner from '../../components/Spinner';
 import { useTitle } from '../../hooks/useTitle.hook';
 

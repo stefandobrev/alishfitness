@@ -9,7 +9,7 @@ const VideoItems = ({ src }) => (
   />
 );
 
-const ExerciseDataContainer = ({ exerciseData }) => {
+export const ExerciseDataContainer = ({ exerciseData }) => {
   return (
     <div className='m-2 flex flex-col gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm'>
       <div className='flex flex-col gap-6 lg:flex-row'>
@@ -75,5 +75,3 @@ const ExerciseDataContainer = ({ exerciseData }) => {
     </div>
   );
 };
-
-export default ExerciseDataContainer;

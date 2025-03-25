@@ -1,4 +1,4 @@
-const AnatomyLegend = () => {
+export const AnatomyLegend = () => {
   return (
     <div className='flex flex-col gap-2 text-sm'>
       <div className='flex flex-row justify-center gap-4'>
@@ -17,4 +17,3 @@ const AnatomyLegend = () => {
     </div>
   );
 };
-export default AnatomyLegend;

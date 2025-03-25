@@ -2,9 +2,9 @@ import { useNavigate } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
 
-import { ActionButton } from '../../components/buttons';
+import { ActionButton } from '../../../components/buttons';
 
-const ExerciseDataHeading = ({ exerciseData }) => {
+export const ExerciseDataHeading = ({ exerciseData }) => {
   const isAdmin = useSelector((state) => state.auth.isAdmin);
   const navigate = useNavigate();
 
@@ -30,4 +30,3 @@ const ExerciseDataHeading = ({ exerciseData }) => {
     </div>
   );
 };
-export default ExerciseDataHeading;
