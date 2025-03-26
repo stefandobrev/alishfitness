@@ -1,11 +1,5 @@
 import api from '../../../utils/api';
 
-export const fetchMuscleGroups = async () => {
-  const response = await api('exercises/muscle-groups/', 'GET');
-  if (!response.ok) throw new Error('Failed to fetch muscle groups.');
-  return response.json();
-};
-
 export const fetchExerciseTitles = async ({
   offset,
   searchQuery,
