@@ -24,12 +24,28 @@ export const SessionsGrid = ({
   const handleAddExercise = (sessionIndex) => {
     const currentExercises =
       getValues(`sessions.${sessionIndex}.exercises`) || [];
+    let newSequence = 'A';
+
+    if (currentExercises.length > 0) {
+      const lastSequence =
+        currentExercises[currentExercises.length - 1].sequence;
+
+      if (lastSequence.length === 1) {
+        newSequence = String.fromCharCode(lastSequence.charCodeAt(0) + 1);
+      } else if (/^[A-Z]\d+$/.test(lastSequence)) {
+        const letter = lastSequence.charAt(0);
+        const number = parseInt(lastSequence.slice(1)) + 1;
+        newSequence = `${letter}${number}`;
+      }
+    }
+
     setValue(`sessions.${sessionIndex}.exercises`, [
       ...currentExercises,
       {
-        name: '',
+        sequence: newSequence,
         muscleGroup: '',
-        sets: '',
+        name: '',
+        sets: '3',
         reps: '',
       },
     ]);
@@ -70,107 +86,128 @@ export const SessionsGrid = ({
               </button>
             </div>
             {/* Exercises section */}
-            <div className='p-3'>
-              <div className='overflow-x-auto'>
-                <table className='w-full'>
-                  <thead>
-                    <tr className='bg-gray-50'>
-                      <th className='border p-2 text-center'>Seq</th>
-                      <th className='border p-2 text-center'>Muscle Group</th>
-                      <th className='border p-2 text-center'>Exercise</th>
-                      <th className='border p-2 text-center'>Sets</th>
-                      <th className='border p-2 text-center'>Reps</th>
-                      <th className='border p-2 text-center'></th>
+
+            <div className='overflow-x-auto text-center'>
+              <table className='w-full'>
+                <thead>
+                  <tr className='bg-gray-50'>
+                    <th className='border p-2 text-center'>Seq</th>
+                    <th className='border p-2 text-center'>Muscle Group</th>
+                    <th className='border p-2 text-center'>Exercise</th>
+                    <th className='border p-2 text-center'>Sets</th>
+                    <th className='border p-2 text-center'>Reps</th>
+                    <th className='border p-2 text-center'></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {session.exercises.map((exercise, exerciseIndex) => (
+                    <tr key={exerciseIndex}>
+                      <td className='border p-2'>
+                        <Controller
+                          name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.sequence`}
+                          control={control}
+                          render={({ field }) => (
+                            <input
+                              {...field}
+                              className='w-7 p-1 text-center'
+                              onChange={(e) => {
+                                // Convert input to uppercase before saving
+                                field.onChange(e.target.value.toUpperCase());
+                              }}
+                            />
+                          )}
+                        />
+                      </td>
+                      <td className='border p-2'>
+                        <Controller
+                          name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`}
+                          control={control}
+                          render={({ field }) => (
+                            <select {...field} className='w-full p-1'>
+                              <option value=''>Select Muscle Group</option>
+                              {muscleGroups.map((group) => (
+                                <option key={group} value={group}>
+                                  {group}
+                                </option>
+                              ))}
+                            </select>
+                          )}
+                        />
+                      </td>
+                      <td className='border p-2'>
+                        <Controller
+                          name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.name`}
+                          control={control}
+                          render={({ field }) => (
+                            <input
+                              {...field}
+                              placeholder='Exercise Name'
+                              className='w-full p-1'
+                            />
+                          )}
+                        />
+                      </td>
+                      <td className='border p-2'>
+                        <Controller
+                          name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.sets`}
+                          control={control}
+                          render={({ field }) => (
+                            <input
+                              {...field}
+                              type='text'
+                              pattern='\d*'
+                              inputMode='numeric'
+                              onChange={(e) => {
+                                // prevents other chars but ints
+                                const value = e.target.value.replace(
+                                  /[^0-9]/g,
+                                  '',
+                                );
+                                field.onChange(value);
+                              }}
+                              className='w-10 p-1 text-center'
+                            />
+                          )}
+                        />
+                      </td>
+                      <td className='border p-2'>
+                        <Controller
+                          name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.reps`}
+                          control={control}
+                          render={({ field }) => (
+                            <input
+                              {...field}
+                              placeholder='Reps'
+                              className='w-15 p-1 text-center'
+                            />
+                          )}
+                        />
+                      </td>
+                      <td className='border p-2'>
+                        <button
+                          type='button'
+                          onClick={() =>
+                            handleRemoveExercise(sessionIndex, exerciseIndex)
+                          }
+                          className='text-logored hover:text-logored-hover cursor-pointer'
+                        >
+                          <XMarkIcon className='mt-1 h-5 w-5' />
+                        </button>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {session.exercises.map((exercise, exerciseIndex) => (
-                      <tr key={exerciseIndex}>
-                        <td className='border p-2 text-center'>
-                          {exerciseIndex + 1}
-                        </td>
-                        <td className='border p-2'>
-                          <Controller
-                            name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`}
-                            control={control}
-                            render={({ field }) => (
-                              <select {...field} className='w-full p-1'>
-                                <option value=''>Select Muscle Group</option>
-                                {muscleGroups.map((group) => (
-                                  <option key={group} value={group}>
-                                    {group}
-                                  </option>
-                                ))}
-                              </select>
-                            )}
-                          />
-                        </td>
-                        <td className='border p-2'>
-                          <Controller
-                            name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.name`}
-                            control={control}
-                            render={({ field }) => (
-                              <input
-                                {...field}
-                                placeholder='Exercise Name'
-                                className='w-full p-1'
-                              />
-                            )}
-                          />
-                        </td>
-                        <td className='border p-2'>
-                          <Controller
-                            name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.sets`}
-                            control={control}
-                            render={({ field }) => (
-                              <input
-                                {...field}
-                                type='number'
-                                placeholder='Sets'
-                                className='w-full p-1'
-                              />
-                            )}
-                          />
-                        </td>
-                        <td className='border p-2'>
-                          <Controller
-                            name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.reps`}
-                            control={control}
-                            render={({ field }) => (
-                              <input
-                                {...field}
-                                placeholder='Reps'
-                                className='w-full p-1'
-                              />
-                            )}
-                          />
-                        </td>
-                        <td className='border p-2 text-center'>
-                          <button
-                            type='button'
-                            onClick={() =>
-                              handleRemoveExercise(sessionIndex, exerciseIndex)
-                            }
-                            className='text-logored hover:text-logored-hover cursor-pointer'
-                          >
-                            <XMarkIcon className='mt-1 h-5 w-5' />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className='mt-3'>
-                <button
-                  type='button'
-                  onClick={() => handleAddExercise(sessionIndex)}
-                  className='flex w-full cursor-pointer items-center justify-center rounded border border-dashed border-gray-300 bg-white p-2 text-sm hover:border-gray-400'
-                >
-                  <PlusIcon className='mr-1 h-4 w-4 text-gray-400' />
-                  <span className='text-gray-500'>Add Exercise</span>
-                </button>
-              </div>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className='mt-3'>
+              <button
+                type='button'
+                onClick={() => handleAddExercise(sessionIndex)}
+                className='flex w-full cursor-pointer items-center justify-center rounded border border-dashed border-gray-300 bg-white p-2 text-sm hover:border-gray-400'
+              >
+                <PlusIcon className='mr-1 h-4 w-4 text-gray-400' />
+                <span className='text-gray-500'>Add Exercise</span>
+              </button>
             </div>
           </div>
         </div>
