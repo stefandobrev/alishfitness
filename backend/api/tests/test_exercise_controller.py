@@ -48,7 +48,7 @@ class TestExerciseController:
     def test_get_muscle_groups(self):
         self.client.force_authenticate(user=self.test_user)
 
-        url = reverse("muscle-groups")
+        url = reverse("exercises-muscle-groups")
         response = self.client.get(url)
 
         assert response.status_code == status.HTTP_200_OK

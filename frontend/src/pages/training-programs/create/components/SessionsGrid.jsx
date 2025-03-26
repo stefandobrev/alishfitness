@@ -1,5 +1,10 @@
+import { useState, useEffect } from 'react';
+import Select from 'react-select';
+
 import { Controller } from 'react-hook-form';
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
+
+import { fetchMuscleGroups } from '../../../../common/helpersCommon';
 import { InputField } from '../../../../components/inputs';
 import { classNames } from '../../../../utils/classNames';
 import { getLightColors } from '../../../../common/constants';
@@ -7,11 +12,25 @@ import { getLightColors } from '../../../../common/constants';
 export const SessionsGrid = ({
   sessions,
   control,
-  watch,
   setValue,
   getValues,
   onRemoveSession,
 }) => {
+  const [muscleGroups, setMuscleGroups] = useState([]);
+
+  useEffect(() => {
+    const loadMuscleGroups = async () => {
+      const muscleGroupsData = await fetchMuscleGroups('training-programs');
+      const transformedMuscleGroups = muscleGroupsData.map((group) => ({
+        label: group.name,
+        value: group.slug,
+      }));
+      setMuscleGroups(transformedMuscleGroups);
+    };
+
+    loadMuscleGroups();
+  }, []);
+
   const handleRemoveExercise = (sessionIndex, exerciseIndex) => {
     const currentExercises =
       getValues(`sessions.${sessionIndex}.exercises`) || [];
@@ -51,8 +70,6 @@ export const SessionsGrid = ({
     ]);
   };
 
-  const muscleGroups = ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core'];
-
   return (
     <div className='flex flex-wrap gap-2'>
       {sessions?.map((session, sessionIndex) => (
@@ -88,9 +105,9 @@ export const SessionsGrid = ({
             {/* Exercises section */}
 
             <div className='overflow-x-auto text-center'>
-              <table className='w-full'>
+              <table className='w-full border-separate overflow-hidden border'>
                 <thead>
-                  <tr className='bg-gray-50'>
+                  <tr className='bg-gray-200'>
                     <th className='border p-2 text-center'>Seq</th>
                     <th className='border p-2 text-center'>Muscle Group</th>
                     <th className='border p-2 text-center'>Exercise</th>
@@ -123,14 +140,29 @@ export const SessionsGrid = ({
                           name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`}
                           control={control}
                           render={({ field }) => (
-                            <select {...field} className='w-full p-1'>
-                              <option value=''>Select Muscle Group</option>
-                              {muscleGroups.map((group) => (
-                                <option key={group} value={group}>
-                                  {group}
-                                </option>
-                              ))}
-                            </select>
+                            <Select
+                              {...field}
+                              options={muscleGroups}
+                              isClearable
+                              placeholder='Select Muscle Group'
+                              onChange={(selected) =>
+                                field.onChange(selected?.value ?? null)
+                              }
+                              value={
+                                muscleGroups.find(
+                                  (option) => option.value === field.value,
+                                ) || null
+                              }
+                              menuPortalTarget={document.body}
+                              styles={{
+                                menuPortal: (base) => ({
+                                  ...base,
+                                  zIndex: 9999,
+                                }),
+                              }}
+                              className='w-full'
+                              classNamePrefix='react-select'
+                            />
                           )}
                         />
                       </td>
