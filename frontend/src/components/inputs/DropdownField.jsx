@@ -36,6 +36,7 @@ export const DropdownField = ({
             value={
               options.find((option) => option.value === field.value) || null
             }
+            menuPortalTarget={document.body}
             classNamePrefix='react-select'
             className='w-full font-semibold'
             {...props}

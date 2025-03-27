@@ -32,6 +32,7 @@ export const DropdownFieldWithTags = ({
             value={options.filter((option) =>
               field.value?.includes(option.value),
             )}
+            menuPortalTarget={document.body}
             classNamePrefix='react-select'
             className='w-full'
           />
