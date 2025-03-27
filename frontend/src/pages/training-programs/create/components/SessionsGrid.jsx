@@ -1,22 +1,18 @@
 import { useState, useEffect } from 'react';
 import Select from 'react-select';
 
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 import { fetchMuscleGroups } from '../../../../common/helpersCommon';
+import { fetchExercisesByMuscle } from '../helpersCreate';
 import { InputField } from '../../../../components/inputs';
 import { classNames } from '../../../../utils/classNames';
 import { getLightColors } from '../../../../common/constants';
 
-export const SessionsGrid = ({
-  sessions,
-  control,
-  setValue,
-  getValues,
-  onRemoveSession,
-}) => {
+export const SessionsGrid = ({ sessions, onRemoveSession }) => {
   const [muscleGroups, setMuscleGroups] = useState([]);
+  const { control, setValue, getValues } = useFormContext();
 
   useEffect(() => {
     const loadMuscleGroups = async () => {
@@ -68,6 +64,10 @@ export const SessionsGrid = ({
         reps: '',
       },
     ]);
+  };
+
+  const shouldDisableExerciseDropdown = (key) => {
+    return !getValues(key);
   };
 
   return (
@@ -171,10 +171,37 @@ export const SessionsGrid = ({
                           name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.name`}
                           control={control}
                           render={({ field }) => (
-                            <input
+                            <Select
                               {...field}
-                              placeholder='Exercise Name'
-                              className='w-full p-1'
+                              options={[
+                                { value: 'your_mom', label: 'Your Mom' },
+                                { value: 'my_mom', label: 'My Mom' },
+                              ]}
+                              isClearable
+                              placeholder={'Select Exercise'}
+                              isDisabled={shouldDisableExerciseDropdown(
+                                `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`,
+                              )}
+                              onChange={(selected) =>
+                                field.onChange(selected?.value ?? null)
+                              }
+                              value={
+                                [
+                                  { value: 'your_mom', label: 'Your Mom' },
+                                  { value: 'my_mom', label: 'My Mom' },
+                                ].find(
+                                  (option) => option.value === field.value,
+                                ) || null
+                              }
+                              menuPortalTarget={document.body}
+                              styles={{
+                                menuPortal: (base) => ({
+                                  ...base,
+                                  zIndex: 9999,
+                                }),
+                              }}
+                              className='w-full'
+                              classNamePrefix='react-select'
                             />
                           )}
                         />

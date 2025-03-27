@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useWatch } from 'react-hook-form';
+import { useWatch, useFormContext } from 'react-hook-form';
 
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 import { DropdownField } from '../../../../components/inputs';
 import { getLightColors } from '../../../../common/constants';
 
-export const Schedule = ({ activeTab, sessions, control, setValue }) => {
+export const Schedule = ({ activeTab, sessions }) => {
   const [schedule, setSchedule] = useState([]);
+  const { control, setValue } = useFormContext();
 
   const selectedSession = useWatch({
     control,

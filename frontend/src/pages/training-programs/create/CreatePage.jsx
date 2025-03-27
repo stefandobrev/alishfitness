@@ -44,19 +44,10 @@ export const CreatePage = () => {
           <SessionsPanel
             activeTab={activeTab}
             sessions={sessions}
-            control={methods.control}
-            watch={methods.watch}
-            setValue={methods.setValue}
-            getValues={methods.getValues}
             onRemoveSession={handleRemoveSession}
           />
 
-          <Schedule
-            activeTab={activeTab}
-            sessions={sessions}
-            control={methods.control}
-            setValue={methods.setValue}
-          />
+          <Schedule activeTab={activeTab} sessions={sessions} />
         </div>
       </FormProvider>
     </>
