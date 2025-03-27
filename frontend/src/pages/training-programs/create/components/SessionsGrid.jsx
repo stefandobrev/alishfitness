@@ -1,38 +1,45 @@
 import { useState, useEffect } from 'react';
-import Select from 'react-select';
 
+import Select from 'react-select';
 import { Controller, useFormContext } from 'react-hook-form';
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
-import { fetchMuscleGroups } from '../../../../common/helpersCommon';
-import { fetchExercisesByMuscle } from '../helpersCreate';
+import { fetchMuscleGroupsWithExercises } from '../helpersCreate';
 import { InputField } from '../../../../components/inputs';
 import { classNames } from '../../../../utils/classNames';
 import { getLightColors } from '../../../../common/constants';
 
 export const SessionsGrid = ({ sessions, onRemoveSession }) => {
-  const [muscleGroups, setMuscleGroups] = useState([]);
   const { control, setValue, getValues } = useFormContext();
+  const [muscleGroupsAndExercises, setMuscleGroupsAndExercises] = useState({});
+  const [muscleGroups, setMuscleGroups] = useState([]);
 
   useEffect(() => {
-    const loadMuscleGroups = async () => {
-      const muscleGroupsData = await fetchMuscleGroups('training-programs');
-      const transformedMuscleGroups = muscleGroupsData.map((group) => ({
-        label: group.name,
-        value: group.slug,
-      }));
+    const loadMuscleGroupsAndExercises = async () => {
+      const muscleGroupData = await fetchMuscleGroupsWithExercises();
+      setMuscleGroupsAndExercises(muscleGroupData);
+
+      const transformedMuscleGroups = Object.values(muscleGroupData).map(
+        (group) => ({
+          label: group.name,
+          value: group.slug,
+        }),
+      );
       setMuscleGroups(transformedMuscleGroups);
     };
 
-    loadMuscleGroups();
+    loadMuscleGroupsAndExercises();
   }, []);
 
-  const handleRemoveExercise = (sessionIndex, exerciseIndex) => {
-    const currentExercises =
-      getValues(`sessions.${sessionIndex}.exercises`) || [];
-    setValue(
-      `sessions.${sessionIndex}.exercises`,
-      currentExercises.filter((_, i) => i !== exerciseIndex),
+  const getExerciseOptionsForMuscleGroup = (muscleGroupSlug) => {
+    if (!muscleGroupSlug) return [];
+
+    const muscleGroup = muscleGroupsAndExercises[muscleGroupSlug];
+    return (
+      muscleGroup?.excercises.map((exercise) => ({
+        label: exercise.title,
+        value: exercise.slug,
+      })) || []
     );
   };
 
@@ -59,15 +66,11 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
       {
         sequence: newSequence,
         muscleGroup: '',
-        name: '',
+        slug: '',
         sets: '3',
         reps: '',
       },
     ]);
-  };
-
-  const shouldDisableExerciseDropdown = (key) => {
-    return !getValues(key);
   };
 
   return (
@@ -116,145 +119,155 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
                     <th className='border p-2 text-center'></th>
                   </tr>
                 </thead>
+
                 <tbody>
-                  {session.exercises.map((exercise, exerciseIndex) => (
-                    <tr key={exerciseIndex}>
-                      <td className='border p-2'>
-                        <Controller
-                          name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.sequence`}
-                          control={control}
-                          render={({ field }) => (
-                            <input
-                              {...field}
-                              className='w-7 p-1 text-center'
-                              onChange={(e) => {
-                                // Convert input to uppercase before saving
-                                field.onChange(e.target.value.toUpperCase());
-                              }}
-                            />
-                          )}
-                        />
-                      </td>
-                      <td className='border p-2'>
-                        <Controller
-                          name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`}
-                          control={control}
-                          render={({ field }) => (
-                            <Select
-                              {...field}
-                              options={muscleGroups}
-                              isClearable
-                              placeholder='Select Muscle Group'
-                              onChange={(selected) =>
-                                field.onChange(selected?.value ?? null)
-                              }
-                              value={
-                                muscleGroups.find(
-                                  (option) => option.value === field.value,
-                                ) || null
-                              }
-                              menuPortalTarget={document.body}
-                              styles={{
-                                menuPortal: (base) => ({
-                                  ...base,
-                                  zIndex: 9999,
-                                }),
-                              }}
-                              className='w-full'
-                              classNamePrefix='react-select'
-                            />
-                          )}
-                        />
-                      </td>
-                      <td className='border p-2'>
-                        <Controller
-                          name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.name`}
-                          control={control}
-                          render={({ field }) => (
-                            <Select
-                              {...field}
-                              options={[
-                                { value: 'your_mom', label: 'Your Mom' },
-                                { value: 'my_mom', label: 'My Mom' },
-                              ]}
-                              isClearable
-                              placeholder={'Select Exercise'}
-                              isDisabled={shouldDisableExerciseDropdown(
-                                `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`,
-                              )}
-                              onChange={(selected) =>
-                                field.onChange(selected?.value ?? null)
-                              }
-                              value={
-                                [
-                                  { value: 'your_mom', label: 'Your Mom' },
-                                  { value: 'my_mom', label: 'My Mom' },
-                                ].find(
-                                  (option) => option.value === field.value,
-                                ) || null
-                              }
-                              menuPortalTarget={document.body}
-                              styles={{
-                                menuPortal: (base) => ({
-                                  ...base,
-                                  zIndex: 9999,
-                                }),
-                              }}
-                              className='w-full'
-                              classNamePrefix='react-select'
-                            />
-                          )}
-                        />
-                      </td>
-                      <td className='border p-2'>
-                        <Controller
-                          name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.sets`}
-                          control={control}
-                          render={({ field }) => (
-                            <input
-                              {...field}
-                              type='text'
-                              pattern='\d*'
-                              inputMode='numeric'
-                              onChange={(e) => {
-                                // prevents other chars but ints
-                                const value = e.target.value.replace(
-                                  /[^0-9]/g,
-                                  '',
-                                );
-                                field.onChange(value);
-                              }}
-                              className='w-10 p-1 text-center'
-                            />
-                          )}
-                        />
-                      </td>
-                      <td className='border p-2'>
-                        <Controller
-                          name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.reps`}
-                          control={control}
-                          render={({ field }) => (
-                            <input
-                              {...field}
-                              placeholder='Reps'
-                              className='w-15 p-1 text-center'
-                            />
-                          )}
-                        />
-                      </td>
-                      <td className='border p-2'>
-                        <button
-                          type='button'
-                          onClick={() =>
-                            handleRemoveExercise(sessionIndex, exerciseIndex)
-                          }
-                          className='text-logored hover:text-logored-hover cursor-pointer'
-                        >
-                          <XMarkIcon className='mt-1 h-5 w-5' />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                  {session.exercises.map((exercise, exerciseIndex) => {
+                    const exerciseOptions = getExerciseOptionsForMuscleGroup(
+                      getValues(
+                        `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`,
+                      ),
+                    );
+
+                    return (
+                      <tr key={exerciseIndex}>
+                        <td className='border p-2'>
+                          <Controller
+                            name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.sequence`}
+                            control={control}
+                            render={({ field }) => (
+                              <input
+                                {...field}
+                                className='w-7 p-1 text-center'
+                                onChange={(e) => {
+                                  // Convert input to uppercase before saving
+                                  field.onChange(e.target.value.toUpperCase());
+                                }}
+                              />
+                            )}
+                          />
+                        </td>
+                        <td className='border p-2'>
+                          <Controller
+                            name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`}
+                            control={control}
+                            render={({ field }) => (
+                              <Select
+                                {...field}
+                                options={muscleGroups}
+                                isClearable
+                                placeholder='Select Muscle Group'
+                                onChange={(selected) => {
+                                  field.onChange(selected?.value ?? null);
+                                  // Reset exercise when muscle group changes
+                                  setValue(
+                                    `sessions.${sessionIndex}.exercises.${exerciseIndex}.slug`,
+                                    null,
+                                  );
+                                }}
+                                value={
+                                  muscleGroups.find(
+                                    (option) => option.value === field.value,
+                                  ) || null
+                                }
+                                menuPortalTarget={document.body}
+                                styles={{
+                                  menuPortal: (base) => ({
+                                    ...base,
+                                    zIndex: 9999,
+                                  }),
+                                }}
+                                className='w-full'
+                                classNamePrefix='react-select'
+                              />
+                            )}
+                          />
+                        </td>
+                        <td className='border p-2'>
+                          <Controller
+                            name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.slug`}
+                            control={control}
+                            render={({ field }) => (
+                              <Select
+                                {...field}
+                                options={exerciseOptions}
+                                isClearable
+                                placeholder='Select Exercise'
+                                isDisabled={
+                                  !getValues(
+                                    `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`,
+                                  )
+                                }
+                                onChange={(selected) =>
+                                  field.onChange(selected?.value ?? null)
+                                }
+                                value={
+                                  exerciseOptions.find(
+                                    (option) => option.value === field.value,
+                                  ) || null
+                                }
+                                menuPortalTarget={document.body}
+                                styles={{
+                                  menuPortal: (base) => ({
+                                    ...base,
+                                    zIndex: 9999,
+                                  }),
+                                }}
+                                className='w-full'
+                                classNamePrefix='react-select'
+                              />
+                            )}
+                          />
+                        </td>
+                        <td className='border p-2'>
+                          <Controller
+                            name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.sets`}
+                            control={control}
+                            render={({ field }) => (
+                              <input
+                                {...field}
+                                type='text'
+                                pattern='\d*'
+                                inputMode='numeric'
+                                onChange={(e) => {
+                                  // prevents other chars but ints
+                                  const value = e.target.value.replace(
+                                    /[^0-9]/g,
+                                    '',
+                                  );
+                                  field.onChange(value);
+                                }}
+                                className='w-10 p-1 text-center'
+                              />
+                            )}
+                          />
+                        </td>
+                        <td className='border p-2'>
+                          <Controller
+                            name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.reps`}
+                            control={control}
+                            render={({ field }) => (
+                              <input
+                                {...field}
+                                placeholder='Reps'
+                                className='w-15 p-1 text-center'
+                              />
+                            )}
+                          />
+                        </td>
+                        <td className='border p-2'>
+                          <button
+                            type='button'
+                            onClick={() =>
+                              handleRemoveExercise(sessionIndex, exerciseIndex)
+                            }
+                            className='text-logored hover:text-logored-hover cursor-pointer'
+                          >
+                            <XMarkIcon className='mt-1 h-5 w-5' />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

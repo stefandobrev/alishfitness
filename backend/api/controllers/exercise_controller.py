@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
 from ..models import Exercise, MuscleGroup, Step, Mistake
-from ..serializers.exercise_serializers import ExerciseSerializer, MuscleGroupSerializer
+from ..serializers.common_serializers import MuscleGroupTitleSerializer
 
 
 class ExerciseController:
@@ -13,7 +13,7 @@ class ExerciseController:
     def get_muscle_groups(self, request):
         """Return a response containing all muscle groups from the DB."""
         muscle_groups = MuscleGroup.objects.all().order_by("name")
-        serializer = MuscleGroupSerializer(muscle_groups, many=True)
+        serializer = MuscleGroupTitleSerializer(muscle_groups, many=True)
         return Response(serializer.data)
     
     def get_exercise_titles(self, request):

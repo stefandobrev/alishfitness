@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import user_views, exercise_views
+from .views import user_views, exercise_views, training_program_views
 
 
 urlpatterns = [
@@ -24,4 +24,5 @@ urlpatterns = [
 
     # training programs paths
     path("training-programs/muscle-groups/", exercise_views.muscle_groups, name="training-muscle-groups"),
+    path("training-programs/muscle-groups-with-exercises/", training_program_views.muscle_groups_and_exercises, name="muscle-groups-with-exercises"),
 ]

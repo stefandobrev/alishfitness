@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Exercise, MuscleGroup
+from ..models import Exercise
 
 import re
 
@@ -51,8 +51,3 @@ class ExerciseSerializer(serializers.ModelSerializer):
                 )
 
         return data
-    
-class MuscleGroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MuscleGroup
-        fields = ["name", "slug"]

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 
-import { fetchMuscleGroups } from '../../../common/helpersCommon';
+import { fetchMuscleGroups } from './helpersManageExercises';
 import { useTitle } from '../../../hooks/useTitle.hook';
 import { ExerciseListPanel, FormPanel, AnatomyPanel } from './components';
 import { MobileTabs } from '../../../components/buttons';
@@ -19,7 +19,7 @@ export const ManageExercisesPage = () => {
 
   useEffect(() => {
     const loadMuscleGroups = async () => {
-      const muscleGroupsData = await fetchMuscleGroups('exercises');
+      const muscleGroupsData = await fetchMuscleGroups();
       const transformedMuscleGroups = muscleGroupsData.map((group) => ({
         label: group.name,
         value: group.slug,
