@@ -8,7 +8,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ActionButton, ButtonVariant } from '../../../../components/buttons';
 
 export const ExercisesTable = ({ sessionIndex, session }) => {
-  const { getValues, control } = useFormContext();
+  const { setValue, getValues, control } = useFormContext();
 
   const [muscleGroupsAndExercises, setMuscleGroupsAndExercises] = useState({});
   const [muscleGroups, setMuscleGroups] = useState([]);
