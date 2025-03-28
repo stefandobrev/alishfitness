@@ -2,7 +2,11 @@ import { useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 import { PasswordField } from '../../../components/inputs';
-import { ActionButton, SubmitButton } from '../../../components/buttons';
+import {
+  ActionButton,
+  ButtonVariant,
+  SubmitButton,
+} from '../../../components/buttons';
 
 export const PasswordForm = ({ onSubmit, onCancel }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -53,7 +57,7 @@ export const PasswordForm = ({ onSubmit, onCancel }) => {
 
       <div className='flex space-x-4'>
         <SubmitButton disabled={isPasswordInvalid()}>Save</SubmitButton>
-        <ActionButton variant='grayDark' onClick={onCancel}>
+        <ActionButton variant={ButtonVariant.GRAY_DARK} onClick={onCancel}>
           Cancel
         </ActionButton>
       </div>

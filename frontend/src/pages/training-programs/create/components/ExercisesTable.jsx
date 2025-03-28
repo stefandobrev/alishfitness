@@ -5,6 +5,7 @@ import Select from 'react-select';
 
 import { fetchMuscleGroupsWithExercises } from '../helpersCreate';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { ActionButton, ButtonVariant } from '../../../../components/buttons';
 
 export const ExercisesTable = ({ sessionIndex, session }) => {
   const { getValues, control } = useFormContext();
@@ -44,6 +45,7 @@ export const ExercisesTable = ({ sessionIndex, session }) => {
   const handleRemoveExercise = (sessionIndex, exerciseIndex) => {
     const currentExercises =
       getValues(`sessions.${sessionIndex}.exercises`) || [];
+
     setValue(
       `sessions.${sessionIndex}.exercises`,
       currentExercises.filter((_, i) => i !== exerciseIndex),
@@ -196,15 +198,15 @@ export const ExercisesTable = ({ sessionIndex, session }) => {
                   />
                 </td>
                 <td className='border p-2'>
-                  <button
-                    type='button'
+                  <ActionButton
+                    variant={ButtonVariant.BLANK}
                     onClick={() =>
                       handleRemoveExercise(sessionIndex, exerciseIndex)
                     }
                     className='text-logored hover:text-logored-hover cursor-pointer'
                   >
                     <XMarkIcon className='mt-1 h-5 w-5' />
-                  </button>
+                  </ActionButton>
                 </td>
               </tr>
             );

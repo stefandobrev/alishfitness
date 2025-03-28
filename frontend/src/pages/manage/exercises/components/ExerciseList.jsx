@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 import { fetchExerciseTitles } from '../helpersManageExercises';
-import { ActionButton } from '../../../../components/buttons';
+import { ActionButton, ButtonVariant } from '../../../../components/buttons';
 import { MuscleGroupFilter, SortFilter, ExerciseListItems } from './';
 import { SearchInput } from '../../../../components/inputs';
 import Spinner from '../../../../components/Spinner';
@@ -118,7 +118,10 @@ export const ExerciseList = ({
       <div className='flex w-full flex-col gap-4 rounded-lg bg-white px-6 sm:max-w-sm'>
         <div className='flex items-center justify-between px-2'>
           <h2 className='text-xl font-semibold text-gray-800'>Exercise List</h2>
-          <ActionButton onClick={resetFilters} variant='grayDark'>
+          <ActionButton
+            onClick={resetFilters}
+            variant={ButtonVariant.GRAY_DARK}
+          >
             Reset
           </ActionButton>
         </div>

@@ -1,4 +1,8 @@
-import { ActionButton, SubmitButton } from '../../components/buttons';
+import {
+  ActionButton,
+  ButtonVariant,
+  SubmitButton,
+} from '../../components/buttons';
 import { InputField } from '../../components/inputs';
 
 export const MyProfileForm = ({ isEditing, setIsEditing, onSubmit }) => {
@@ -15,7 +19,7 @@ export const MyProfileForm = ({ isEditing, setIsEditing, onSubmit }) => {
           <>
             <SubmitButton>Save</SubmitButton>
             <ActionButton
-              variant='grayDark'
+              variant={ButtonVariant.GRAY_DARK}
               onClick={() => setIsEditing(false)}
             >
               Cancel

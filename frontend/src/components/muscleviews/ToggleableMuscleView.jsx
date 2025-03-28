@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { ActionButton } from '../buttons';
+import { ActionButton, ButtonVariant } from '../buttons';
 import FrontAnatomy from '../anatomy/FrontAnatomy';
 import BackAnatomy from '../anatomy/BackAnatomy';
 import { frontMuscleGroupNames } from '../../common/constants';
@@ -27,7 +27,10 @@ export const ToggleableMuscleView = ({
   return (
     <div className='flex flex-col items-center justify-center py-2 lg:px-4 lg:py-0'>
       <div className='mt-4'>
-        <ActionButton variant='grayDark' onClick={toggleIsFrontView}>
+        <ActionButton
+          variant={ButtonVariant.GRAY_DARK}
+          onClick={toggleIsFrontView}
+        >
           {isFrontView ? 'Show Back' : 'Show Front'}
         </ActionButton>
       </div>

@@ -1,15 +1,29 @@
+import { classNames } from '../../utils/classNames';
+import { ButtonVariant } from './constants';
+
+const baseStyle =
+  'rounded-md border border-gray-800 px-4 py-2 shadow-md hover:border-gray-600 disabled:border-gray-300 cursor-pointer';
+
 const variants = {
-  red: 'bg-logored hover:bg-logored-hover disabled:bg-logored-disabled text-white disabled:text-gray-300',
-  grayDark:
+  [ButtonVariant.RED]: classNames(
+    baseStyle,
+    'bg-logored hover:bg-logored-hover disabled:bg-logored-disabled text-white disabled:text-gray-300',
+  ),
+  [ButtonVariant.GRAY_DARK]: classNames(
+    baseStyle,
     'bg-gray-600 hover:bg-gray-900 disabled:bg-gray-300 text-white disabled:text-gray-300',
-  white:
+  ),
+  [ButtonVariant.WHITE]: classNames(
+    baseStyle,
     'bg-white hover:bg-gray-300 text-gray-800 hover:text-gray-900 disabled:bg-gray-300 disabled:text-gray-700',
+  ),
+  [ButtonVariant.BLANK]: '',
 };
 
 const BaseButton = ({
   children,
   type = 'button',
-  variant = 'red',
+  variant = ButtonVariant.RED,
   className = '',
   disabled = false,
   onClick,
@@ -19,9 +33,7 @@ const BaseButton = ({
     type={type}
     disabled={disabled}
     onClick={onClick}
-    className={`${variants[variant]} ${
-      disabled ? '' : 'cursor-pointer'
-    } rounded-md border border-gray-800 px-4 py-2 shadow-md hover:border-gray-600 disabled:border-gray-300 ${className}`}
+    className={`${variants[variant]} ${className}`}
     {...props}
   >
     {children}

@@ -1,7 +1,11 @@
 import { useFormContext } from 'react-hook-form';
 
 import { InputField, PasswordField } from '../../../components/inputs';
-import { ActionButton, SubmitButton } from '../../../components/buttons';
+import {
+  ActionButton,
+  ButtonVariant,
+  SubmitButton,
+} from '../../../components/buttons';
 
 export const SettingsForm = ({
   isEditing,
@@ -47,7 +51,7 @@ export const SettingsForm = ({
             <>
               <SubmitButton disabled={isPasswordInvalid()}>Save</SubmitButton>
               <ActionButton
-                variant='grayDark'
+                variant={ButtonVariant.GRAY_DARK}
                 onClick={() => setIsEditing(false)}
               >
                 Cancel
@@ -59,7 +63,7 @@ export const SettingsForm = ({
                 Edit
               </ActionButton>
               <ActionButton
-                variant='grayDark'
+                variant={ButtonVariant.GRAY_DARK}
                 onClick={(e) => {
                   e.preventDefault();
                   if (onPasswordChange) {

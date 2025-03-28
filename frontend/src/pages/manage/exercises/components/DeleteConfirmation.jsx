@@ -1,6 +1,6 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 
-import { ActionButton } from '../../../../components/buttons';
+import { ActionButton, ButtonVariant } from '../../../../components/buttons';
 
 export const DeleteConfirmation = ({ onClose, onConfirm, title }) => {
   return (
@@ -14,7 +14,7 @@ export const DeleteConfirmation = ({ onClose, onConfirm, title }) => {
             Are you sure you want to delete the exercise?
           </p>
           <div className='flex justify-end gap-4'>
-            <ActionButton variant='grayDark' onClick={onClose}>
+            <ActionButton variant={ButtonVariant.GRAY_DARK} onClick={onClose}>
               Cancel
             </ActionButton>
             <ActionButton

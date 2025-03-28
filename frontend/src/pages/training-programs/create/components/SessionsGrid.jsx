@@ -5,6 +5,7 @@ import { ExercisesTable } from './';
 import { InputField } from '../../../../components/inputs';
 import { classNames } from '../../../../utils/classNames';
 import { getLightColors, isMobile } from '../../../../common/constants';
+import { ActionButton, ButtonVariant } from '../../../../components/buttons';
 
 export const SessionsGrid = ({ sessions, onRemoveSession }) => {
   const { control, setValue, getValues } = useFormContext();
@@ -67,23 +68,26 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
                 id={`sessions.${sessionIndex}.title`}
                 className='max-w-lg flex-1 bg-white'
               />
-              <button onClick={() => onRemoveSession(sessionIndex)}>
+              <ActionButton
+                variant={ButtonVariant.BLANK}
+                onClick={() => onRemoveSession(sessionIndex)}
+              >
                 <XMarkIcon className='text-logored hover:text-logored-hover h-5 w-5 cursor-pointer transition-colors duration-200' />
-              </button>
+              </ActionButton>
             </div>
             {/* Exercises section */}
 
             <ExercisesTable sessionIndex={sessionIndex} session={session} />
           </div>
           <div className='mt-3'>
-            <button
-              type='button'
+            <ActionButton
               onClick={() => handleAddExercise(sessionIndex)}
+              variant={ButtonVariant.BLANK}
               className='flex w-full cursor-pointer items-center justify-center rounded border border-dashed border-gray-300 bg-white p-2 text-sm hover:border-gray-400'
             >
               <PlusIcon className='mr-1 h-4 w-4 text-gray-400' />
               <span className='text-gray-500'>Add Exercise</span>
-            </button>
+            </ActionButton>
           </div>
         </div>
       ))}

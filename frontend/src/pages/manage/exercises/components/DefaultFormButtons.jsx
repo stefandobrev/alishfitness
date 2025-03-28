@@ -1,4 +1,4 @@
-import { ActionButton } from '../../../../components/buttons';
+import { ActionButton, ButtonVariant } from '../../../../components/buttons';
 
 // For large screens - all buttons in one row, not sticky
 export const MdScreenButtons = ({
@@ -23,14 +23,14 @@ export const MdScreenButtons = ({
       <>
         <ActionButton
           onClick={handleDeleteButton}
-          variant='grayDark'
+          variant={ButtonVariant.GRAY_DARK}
           className='w-auto'
         >
           Delete Exercise
         </ActionButton>
         <ActionButton
           onClick={handleViewButton}
-          variant='grayDark'
+          variant={ButtonVariant.GRAY_DARK}
           className='w-auto'
         >
           View Exercise
@@ -67,14 +67,14 @@ export const SmScreenButtons = ({
       <div className='flex justify-center gap-2 bg-white py-2'>
         <ActionButton
           onClick={handleDeleteButton}
-          variant='grayDark'
+          variant={ButtonVariant.GRAY_DARK}
           className='w-full'
         >
           Delete Exercise
         </ActionButton>
         <ActionButton
           onClick={handleViewButton}
-          variant='grayDark'
+          variant={ButtonVariant.GRAY_DARK}
           className='w-full'
         >
           View Exercise
