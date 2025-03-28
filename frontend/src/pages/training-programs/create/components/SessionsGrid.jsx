@@ -73,6 +73,15 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
     ]);
   };
 
+  const handleRemoveExercise = (sessionIndex, exerciseIndex) => {
+    const currentExercises =
+      getValues(`sessions.${sessionIndex}.exercises`) || [];
+    setValue(
+      `sessions.${sessionIndex}.exercises`,
+      currentExercises.filter((_, i) => i !== exerciseIndex),
+    );
+  };
+
   return (
     <div className='flex flex-wrap gap-2'>
       {sessions?.map((session, sessionIndex) => (
