@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
-import { ExercisesTable } from './';
+import { ExercisesTable } from './exercises-table';
 import { InputField } from '../../../../components/inputs';
 import { classNames } from '../../../../utils/classNames';
 import { getLightColors, isMobile } from '../../../../common/constants';
