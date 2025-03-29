@@ -1,9 +1,10 @@
 import { useFormContext } from 'react-hook-form';
 
 import { useMuscleGroupsAndExercises } from './hooks/useMuscleGroupsAndExercises ';
-import { ExerciseRow } from './';
+import { ExerciseRow, ExerciseMobileRow } from './';
+import { isMobile } from '../../../../../common/constants';
 
-export const ExercisesTable = ({ sessionIndex, session, loading }) => {
+export const ExercisesTable = ({ sessionIndex, session }) => {
   const { setValue, getValues } = useFormContext();
   const { muscleGroups, getExerciseOptionsForMuscleGroup } =
     useMuscleGroupsAndExercises();
@@ -16,6 +17,31 @@ export const ExercisesTable = ({ sessionIndex, session, loading }) => {
       currentExercises.filter((_, i) => i !== exerciseIndex),
     );
   };
+
+  if (isMobile) {
+    return (
+      <div className='space-y-4'>
+        {session.exercises.map((exercise, exerciseIndex) => {
+          const exerciseOptions = getExerciseOptionsForMuscleGroup(
+            getValues(
+              `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`,
+            ),
+          );
+
+          return (
+            <ExerciseMobileRow
+              key={exerciseIndex}
+              sessionIndex={sessionIndex}
+              exerciseIndex={exerciseIndex}
+              muscleGroups={muscleGroups}
+              exerciseOptions={exerciseOptions}
+              onRemove={handleRemoveExercise}
+            />
+          );
+        })}
+      </div>
+    );
+  }
 
   return (
     <div className='overflow-x-auto text-center'>

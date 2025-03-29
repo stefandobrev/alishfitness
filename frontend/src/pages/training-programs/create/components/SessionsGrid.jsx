@@ -4,7 +4,7 @@ import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { ExercisesTable } from './exercises-table';
 import { InputField } from '../../../../components/inputs';
 import { classNames } from '../../../../utils/classNames';
-import { getLightColors, isMobile } from '../../../../common/constants';
+import { getLightColors } from '../../../../common/constants';
 import { ActionButton, ButtonVariant } from '../../../../components/buttons';
 
 export const SessionsGrid = ({ sessions, onRemoveSession }) => {
