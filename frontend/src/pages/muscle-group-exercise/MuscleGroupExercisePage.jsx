@@ -3,16 +3,9 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 import { fetchExercises } from './helpersMuscleGroupExercise';
-import { ToggleableMuscleView } from '../../components/muscleviews';
 import { MobileTabs, MobileTabVariant } from '../../components/buttons';
-import Spinner from '../../components/Spinner';
-import {
-  PaginationMuscleGroupExercise,
-  MuscleGrid,
-  Heading,
-} from './components';
+import { ExerciseSection, AnatomySection } from './components';
 
-import { useScrollVisibility } from '../../hooks/useScrollVisibility';
 import { useTitle } from '../../hooks/useTitle.hook';
 
 const INITIAL_OFFSET = 0;
@@ -37,8 +30,6 @@ export const MuscleGroupExercisePage = () => {
   const [{ searchQuery, offset, hasMore, loadMore }, setExerciseGroupProps] =
     useState(defaultFilters);
 
-  const isHeaderVisible = useScrollVisibility();
-
   const navigate = useNavigate();
 
   useTitle(muscleGroupName);
@@ -60,7 +51,7 @@ export const MuscleGroupExercisePage = () => {
     }
   }, [loadMore]);
 
-  // useEffect for hiding the tabs on mobile on scrolling down
+  // Infinite scroll for mobile
   useEffect(() => {
     const handleScroll = () => {
       if (window.innerWidth < 1024) {
@@ -174,6 +165,13 @@ export const MuscleGroupExercisePage = () => {
     setActiveTab(tab);
   };
 
+  const handleSearchChange = (value) => {
+    handleExerciseGroupPropsUpdate({
+      searchQuery: value,
+      offset: INITIAL_OFFSET,
+    });
+  };
+
   const tabs = [
     { label: 'Exercises', value: 'exercises' },
     { label: 'Anatomy', value: 'anatomy' },
@@ -181,7 +179,6 @@ export const MuscleGroupExercisePage = () => {
 
   return (
     <>
-      {/* Mobile Tabs with slide-up/down animation */}
       <MobileTabs
         activeTab={activeTab}
         onTabChange={handleTabChange}
@@ -189,72 +186,26 @@ export const MuscleGroupExercisePage = () => {
         variant={MobileTabVariant.HIDE}
       />
 
-      {/* Main Content Layout */}
       <div className='flex flex-col lg:flex-row'>
-        {/* Left Side - Exercises */}
-        <div
-          className={`flex w-full flex-col gap-4 lg:w-[75%] ${
-            activeTab !== 'exercises' ? 'hidden lg:flex' : ''
-          }`}
-        >
-          {/* Sticky Header for Exercise List */}
-          <div
-            className={`transition-transform duration-500 ease-in-out ${
-              isHeaderVisible
-                ? 'sticky top-36 translate-y-0 opacity-100'
-                : 'relative -translate-y-full opacity-0'
-            } z-30 bg-white pb-2 lg:static lg:bg-transparent lg:pb-0`}
-          >
-            <Heading
-              muscleGroupName={muscleGroupName}
-              exercisesData={exercisesData}
-              totalExercises={totalExercises}
-              valueSearch={searchQuery}
-              onSearchChange={(value) =>
-                handleExerciseGroupPropsUpdate({
-                  searchQuery: value,
-                  offset: INITIAL_OFFSET,
-                })
-              }
-            />
-          </div>
+        <ExerciseSection
+          activeTab={activeTab}
+          muscleGroupName={muscleGroupName}
+          exercisesData={exercisesData}
+          totalExercises={totalExercises}
+          searchQuery={searchQuery}
+          onSearchChange={handleSearchChange}
+          isLoading={isLoading}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          itemsPerPage={ITEMS_PER_PAGE}
+        />
 
-          {/* Exercise Grid Content */}
-          {isLoading ? (
-            <Spinner loading={isLoading} className='min-h-[70vh]' />
-          ) : (
-            <>
-              <div className='h-auto rounded-xl border border-gray-100 bg-gray-50 pb-2 shadow-sm'>
-                <MuscleGrid exercisesData={exercisesData} />
-
-                {/* Pagination - visible only on large screens */}
-                {totalExercises > ITEMS_PER_PAGE && (
-                  <div className='mt-2 hidden lg:block'>
-                    <PaginationMuscleGroupExercise
-                      currentPage={currentPage}
-                      totalPages={totalPages}
-                      onPageChange={handlePageChange}
-                    />
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-        </div>
-
-        {/* Right Side - Anatomy View with Sticky Positioning */}
-        <div
-          className={`w-full items-center lg:w-[25%] ${
-            activeTab !== 'anatomy' ? 'hidden lg:block' : ''
-          }`}
-        >
-          <div className='lg:sticky lg:top-20'>
-            <ToggleableMuscleView
-              handleMuscleClick={handleMuscleClick}
-              selectedPrimaryMuscle={slugMuscleGroup}
-            />
-          </div>
-        </div>
+        <AnatomySection
+          activeTab={activeTab}
+          handleMuscleClick={handleMuscleClick}
+          selectedPrimaryMuscle={slugMuscleGroup}
+        />
       </div>
     </>
   );
