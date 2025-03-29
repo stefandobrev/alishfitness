@@ -4,3 +4,8 @@ export const ButtonVariant = {
   WHITE: 'white',
   BLANK: 'blank',
 };
+
+export const MobileTabVariant = {
+  STATIC: 'static',
+  HIDE: 'hide',
+};

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { Schedule, SessionsPanel } from './components';
-import { MobileTabs } from '../../../components/buttons';
+import { MobileTabs, MobileTabVariant } from '../../../components/buttons';
 import { useTitle } from '../../../hooks/useTitle.hook';
 
 export const CreatePage = () => {
@@ -31,13 +31,12 @@ export const CreatePage = () => {
 
   return (
     <>
-      <div className='sticky top-20 z-40 flex h-16 justify-around border-t border-gray-800 bg-gray-600 p-2 lg:hidden'>
-        <MobileTabs
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-          tabs={tabs}
-        />
-      </div>
+      <MobileTabs
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+        tabs={tabs}
+        variant={MobileTabVariant.HIDE}
+      />
 
       <FormProvider {...methods}>
         <div className='flex w-full flex-col lg:flex-row'>

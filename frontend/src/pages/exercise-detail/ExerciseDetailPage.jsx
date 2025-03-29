@@ -51,13 +51,11 @@ export const ExerciseDetailPage = () => {
 
   return (
     <>
-      <div className='sticky top-20 z-40 flex h-16 justify-around border-t border-gray-800 bg-gray-600 p-2 lg:hidden'>
-        <MobileTabs
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-          tabs={tabs}
-        />
-      </div>
+      <MobileTabs
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+        tabs={tabs}
+      />
 
       {/* Main Content Container */}
       <div className='flex flex-col lg:flex-row'>

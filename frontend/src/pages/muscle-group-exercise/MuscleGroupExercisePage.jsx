@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 import { fetchExercises } from './helpersMuscleGroupExercise';
 import { ToggleableMuscleView } from '../../components/muscleviews';
-import { MobileTabs } from '../../components/buttons';
+import { MobileTabs, MobileTabVariant } from '../../components/buttons';
 import Spinner from '../../components/Spinner';
 import {
   PaginationMuscleGroupExercise,
@@ -12,6 +12,7 @@ import {
   Heading,
 } from './components';
 
+import { useScrollVisibility } from '../../hooks/useScrollVisibility';
 import { useTitle } from '../../hooks/useTitle.hook';
 
 const INITIAL_OFFSET = 0;
@@ -29,7 +30,6 @@ export const MuscleGroupExercisePage = () => {
   const [muscleGroupName, setMuscleGroupName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('exercises');
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalExercises, setTotalExercises] = useState(0);
@@ -37,9 +37,9 @@ export const MuscleGroupExercisePage = () => {
   const [{ searchQuery, offset, hasMore, loadMore }, setExerciseGroupProps] =
     useState(defaultFilters);
 
+  const isHeaderVisible = useScrollVisibility();
+
   const navigate = useNavigate();
-  const lastScrollY = useRef(0);
-  const ticking = useRef(false);
 
   useTitle(muscleGroupName);
 
@@ -79,26 +79,6 @@ export const MuscleGroupExercisePage = () => {
             loadMore: true,
           }));
         }
-      }
-
-      if (!ticking.current) {
-        window.requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
-          const scrollThreshold = 20; // Minimum scroll difference to trigger change
-
-          if (currentScrollY <= 10) {
-            setIsHeaderVisible(true);
-          } else if (currentScrollY < lastScrollY.current - scrollThreshold) {
-            setIsHeaderVisible(true); // Scrolling up
-          } else if (currentScrollY > lastScrollY.current + scrollThreshold) {
-            setIsHeaderVisible(false); // Scrolling down
-          }
-
-          lastScrollY.current = currentScrollY;
-          ticking.current = false;
-        });
-
-        ticking.current = true;
       }
     };
 
@@ -202,19 +182,12 @@ export const MuscleGroupExercisePage = () => {
   return (
     <>
       {/* Mobile Tabs with slide-up/down animation */}
-      <div
-        className={`transition-transform duration-500 ease-in-out ${
-          isHeaderVisible
-            ? 'sticky top-20 translate-y-0 opacity-100'
-            : 'relative -translate-y-full opacity-0'
-        } z-40 flex h-16 justify-around border-t border-gray-800 bg-gray-600 p-2 lg:hidden`}
-      >
-        <MobileTabs
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-          tabs={tabs}
-        />
-      </div>
+      <MobileTabs
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+        tabs={tabs}
+        variant={MobileTabVariant.HIDE}
+      />
 
       {/* Main Content Layout */}
       <div className='flex flex-col lg:flex-row'>
