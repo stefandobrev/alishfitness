@@ -4,8 +4,8 @@ export const SequenceInput = ({ field }) => {
   return (
     <input
       {...field}
-      className={`focus:border-logored focus:ring-logored rounded-sm p-1 text-center focus:ring-2 focus:outline-none ${
-        isMobile ? 'w-full' : 'w-7'
+      className={`focus:border-logored focus:ring-logored border p-1 text-center focus:ring-2 focus:outline-none ${
+        isMobile ? 'w-full' : 'w-8'
       }`}
       onChange={(e) => {
         field.onChange(e.target.value.toUpperCase());
