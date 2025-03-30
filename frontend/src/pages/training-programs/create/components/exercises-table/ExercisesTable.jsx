@@ -3,10 +3,11 @@ import { useFormContext } from 'react-hook-form';
 import { useMuscleGroupsAndExercises } from './hooks/useMuscleGroupsAndExercises ';
 import { ExerciseRow, ExerciseMobileRow } from './';
 import { isMobile } from '../../../../../common/constants';
+import Spinner from '../../../../../components/Spinner';
 
 export const ExercisesTable = ({ sessionIndex, session }) => {
   const { setValue, getValues } = useFormContext();
-  const { muscleGroups, getExerciseOptionsForMuscleGroup } =
+  const { muscleGroups, getExerciseOptionsForMuscleGroup, isLoading } =
     useMuscleGroupsAndExercises();
 
   const handleRemoveExercise = (sessionIndex, exerciseIndex) => {
@@ -18,32 +19,30 @@ export const ExercisesTable = ({ sessionIndex, session }) => {
     );
   };
 
-  if (isMobile) {
-    return (
-      <div className='space-y-4'>
-        {session.exercises.map((exercise, exerciseIndex) => {
-          const exerciseOptions = getExerciseOptionsForMuscleGroup(
-            getValues(
-              `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`,
-            ),
-          );
+  return isLoading ? (
+    <Spinner loading={isLoading} />
+  ) : isMobile ? (
+    <div className='space-y-4'>
+      {session.exercises.map((exercise, exerciseIndex) => {
+        const exerciseOptions = getExerciseOptionsForMuscleGroup(
+          getValues(
+            `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`,
+          ),
+        );
 
-          return (
-            <ExerciseMobileRow
-              key={exerciseIndex}
-              sessionIndex={sessionIndex}
-              exerciseIndex={exerciseIndex}
-              muscleGroups={muscleGroups}
-              exerciseOptions={exerciseOptions}
-              onRemove={handleRemoveExercise}
-            />
-          );
-        })}
-      </div>
-    );
-  }
-
-  return (
+        return (
+          <ExerciseMobileRow
+            key={exerciseIndex}
+            sessionIndex={sessionIndex}
+            exerciseIndex={exerciseIndex}
+            muscleGroups={muscleGroups}
+            exerciseOptions={exerciseOptions}
+            onRemove={handleRemoveExercise}
+          />
+        );
+      })}
+    </div>
+  ) : (
     <div className='overflow-x-auto text-center'>
       <table className='w-full border-separate overflow-hidden border'>
         <thead>
