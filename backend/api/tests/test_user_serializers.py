@@ -16,17 +16,6 @@ from api.serializers.user_serializers import (
     TokenRefreshSerializer,
 )
 
-@pytest.fixture
-def test_user():
-    user = User.objects.create_user(
-        first_name="test",
-        last_name="user",
-        username="testuser",
-        email="test@example.com",
-        password="Securepass123",
-    )
-    return user
-
 @pytest.mark.django_db(transaction=True)
 class TestUserSerializer:
     @pytest.fixture
@@ -96,10 +85,10 @@ class TestUserSerializer:
 @pytest.mark.django_db(transaction=True)
 class TestLoginSerializer:
     @pytest.fixture
-    def valid_login_data(self, ):
+    def valid_login_data(self, test_user):
        return {
             "login_username": "testuser",
-            "login_password": "Securepass123"
+            "login_password": "securepassword123"
        } 
     
     def test_valid_login(self, valid_login_data, test_user):
@@ -112,7 +101,7 @@ class TestLoginSerializer:
 
     def test_case_insensitive_username(self, valid_login_data, test_user):
         data = valid_login_data.copy()
-        data["login_username"] = "TestUser" 
+        data["login_username"] = "testuser" 
         
         serializer = LoginSerializer(data=data)
         assert serializer.is_valid()
@@ -157,10 +146,10 @@ class TestUserProfileSerializer:
 class TestUserSettingsSerializer:    
     def test_valid_settings(self, test_user):
         valid_data = {
-            "username": "testuser",
-            "email": "test@example.com",
-            "password": "Securepass123",
-            "confirm_password": "Securepass123",
+            "username": "new_testuser",
+            "email": "newtest@example.com",
+            "password": "securepassword123",
+            "confirm_password": "securepassword123",
         }
         serializer = UserSettingsSerializer(instance=test_user, data=valid_data)
         assert serializer.is_valid()
@@ -168,7 +157,7 @@ class TestUserSettingsSerializer:
     def test_incorrect_password(self, test_user):
         invalid_data = {
             "username": "testuser",
-            "email": "test@example.com",
+            "email": "test@email.com",
             "password": "WrongPassword123",  
             "confirm_password": "WrongPassword123",
         }
@@ -180,7 +169,7 @@ class TestUserSettingsSerializer:
         invalid_data = {
             "username": "testuser",
             "email": "test@example.com",
-            "password": "Securepass123",  
+            "password": "securepassword123",  
             "confirm_password": "wrongconfirm",  
         }
         serializer = UserSettingsSerializer(instance=test_user, data=invalid_data)
@@ -193,8 +182,8 @@ class TestUserSettingsSerializer:
         invalid_data = {
             "username": "existinguser",  
             "email": "test@example.com",
-            "password": "Securepass123",
-            "confirm_password": "Securepass123",
+            "password": "securepassword123",
+            "confirm_password": "securepassword123",
         }
         serializer = UserSettingsSerializer(instance=test_user, data=invalid_data)
         assert not serializer.is_valid()
@@ -206,8 +195,8 @@ class TestUserSettingsSerializer:
         invalid_data = {
             "username": "testuser",
             "email": "taken@example.com",  
-            "password": "Securepass123",
-            "confirm_password": "Securepass123",
+            "password": "securepassword123",
+            "confirm_password": "securepassword123",
         }
         serializer = UserSettingsSerializer(instance=test_user, data=invalid_data)
         assert not serializer.is_valid()
@@ -217,8 +206,8 @@ class TestUserSettingsSerializer:
         valid_update_data = {
             "username": "UpdatedUser",
             "email": "updated@example.com",  
-            "password": "Securepass123",
-            "confirm_password": "Securepass123",
+            "password": "securepassword123",
+            "confirm_password": "securepassword123",
         }
 
         serializer = UserSettingsSerializer(instance=test_user, data=valid_update_data)
@@ -241,7 +230,7 @@ class TestUpdatePasswordSerializer:
         request = type("Request", (), {"user": test_user})()
 
         valid_data = {
-            "current_password": "Securepass123",
+            "current_password": "securepassword123",
             "new_password": "NewSecurepass123",
             "confirm_password": "NewSecurepass123",
         }
@@ -270,9 +259,9 @@ class TestUpdatePasswordSerializer:
         assert "current_password" in serializer.errors
 
         same_password_data = {
-            "current_password": "Securepass123", 
-            "new_password": "Securepass123",
-            "confirm_password": "Securepass123",
+            "current_password": "securepassword123", 
+            "new_password": "securepassword123",
+            "confirm_password": "securepassword123",
         }
 
         serializer = UpdatePasswordSerializer(
@@ -287,7 +276,7 @@ class TestUpdatePasswordSerializer:
         request = type('Request', (), {'user': test_user})()
         
         invalid_data = {
-            "current_password": "Securepass123",  
+            "current_password": "securepassword123",  
             "new_password": "NewSecurepass123",
             "confirm_password": "DifferentPassword123", 
         }
