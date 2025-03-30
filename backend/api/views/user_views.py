@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
-from ..controllers.user_controller import UserController
+from api.controllers.user_controller import UserController
 
 
 @api_view(["POST"])

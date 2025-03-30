@@ -1,8 +1,8 @@
 from rest_framework import status
 from rest_framework.response import Response
 
-from ..models import MuscleGroup, Exercise
-from ..serializers.common_serializers import ExerciseTitleSerializer
+from api.models import MuscleGroup, Exercise
+from api.serializers.common_serializers import ExerciseTitleSerializer
 
 
 class TrainingProgramController:

@@ -3,8 +3,10 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
-from ..models import Exercise, MuscleGroup, Step, Mistake
-from ..serializers.common_serializers import MuscleGroupTitleSerializer
+from api.models import Exercise, MuscleGroup, Step, Mistake
+
+from api.serializers.exercise_serializers import ExerciseSerializer
+from api.serializers.common_serializers import MuscleGroupTitleSerializer
 
 
 class ExerciseController:

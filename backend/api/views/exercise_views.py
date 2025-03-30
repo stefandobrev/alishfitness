@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
-from ..controllers.exercise_controller import ExerciseController
+from api.controllers.exercise_controller import ExerciseController
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])

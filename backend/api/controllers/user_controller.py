@@ -1,7 +1,8 @@
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from rest_framework.response import Response
-from ..serializers.user_serializers import (
+
+from api.serializers.user_serializers import (
     UserSerializer,
     LoginSerializer,
     UserSettingsSerializer,

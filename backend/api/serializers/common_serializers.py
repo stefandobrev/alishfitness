@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ..models import MuscleGroup, Exercise
+from api.models import MuscleGroup, Exercise
 
 class MuscleGroupTitleSerializer(serializers.ModelSerializer):
     class Meta:
