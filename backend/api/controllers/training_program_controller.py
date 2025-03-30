@@ -15,13 +15,13 @@ class TrainingProgramController:
         data = {}
 
         for muscle_group in muscle_groups:
-            excercises = Exercise.objects.filter(primary_group=muscle_group)
+            exercises = Exercise.objects.filter(primary_group=muscle_group)
 
-            exercise_data = ExerciseTitleSerializer(excercises, many=True).data
+            exercise_data = ExerciseTitleSerializer(exercises, many=True).data
 
             data[muscle_group.slug] = {
                 "name": muscle_group.name,
                 "slug": muscle_group.slug,
-                "excercises": exercise_data
+                "exercises": exercise_data
             }
         return Response(data)

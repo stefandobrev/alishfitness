@@ -36,7 +36,7 @@ export const useMuscleGroupsAndExercises = () => {
 
     const muscleGroup = muscleGroupsAndExercises[muscleGroupSlug];
     return (
-      muscleGroup?.excercises.map((exercise) => ({
+      muscleGroup?.exercises.map((exercise) => ({
         label: exercise.title,
         value: exercise.slug,
       })) || []
