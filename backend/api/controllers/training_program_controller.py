@@ -10,12 +10,12 @@ class TrainingProgramController:
 
     def get_muscle_groups_and_exercises(self, request):
         """Returns all muscle groups and exercises in a tree structure"""
-        muscle_groups = MuscleGroup.objects.all()
+        muscle_groups = MuscleGroup.objects.all().order_by("name")
 
         data = {}
 
         for muscle_group in muscle_groups:
-            exercises = Exercise.objects.filter(primary_group=muscle_group)
+            exercises = Exercise.objects.filter(primary_group=muscle_group).order_by("title")
 
             exercise_data = ExerciseTitleSerializer(exercises, many=True).data
 

@@ -20,6 +20,12 @@ export const useMuscleGroupsAndExercises = () => {
             value: group.slug,
           }),
         );
+
+        transformedMuscleGroups.push({
+          label: 'Custom',
+          value: 'custom',
+        });
+
         setMuscleGroups(transformedMuscleGroups);
       } catch (error) {
         console.error('Error loading muscle groups and exercises:', error);
