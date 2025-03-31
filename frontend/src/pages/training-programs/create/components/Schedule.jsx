@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useWatch, useFormContext } from 'react-hook-form';
 
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import {
+  XMarkIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
+} from '@heroicons/react/24/outline';
 
 import { DropdownField } from '../../../../components/inputs';
 import { getLightColors } from '../../../../common/constants';
+import { ActionButton, ButtonVariant } from '../../../../components/buttons';
 
 export const Schedule = ({ activeTab, sessions }) => {
   const [schedule, setSchedule] = useState([]);
   const { control, setValue } = useFormContext();
-
   const selectedSession = useWatch({
     control,
     name: 'schedule',
@@ -36,6 +40,24 @@ export const Schedule = ({ activeTab, sessions }) => {
     setSchedule(newSchedule);
   };
 
+  const moveSessionUp = (index) => {
+    if (index === 0) return; // Can't move the first item up
+    const newSchedule = [...schedule];
+    const temp = newSchedule[index];
+    newSchedule[index] = newSchedule[index - 1];
+    newSchedule[index - 1] = temp;
+    setSchedule(newSchedule);
+  };
+
+  const moveSessionDown = (index) => {
+    if (index === schedule.length - 1) return; // Can't move the last item down
+    const newSchedule = [...schedule];
+    const temp = newSchedule[index];
+    newSchedule[index] = newSchedule[index + 1];
+    newSchedule[index + 1] = temp;
+    setSchedule(newSchedule);
+  };
+
   return (
     <div
       className={`mt-4 w-full lg:sticky lg:top-25 lg:min-h-[calc(100vh-108px)] lg:w-[20%] lg:border-l-2 ${
@@ -55,7 +77,6 @@ export const Schedule = ({ activeTab, sessions }) => {
           />
         </div>
       </div>
-
       <div className='flex flex-col gap-3 px-6 pt-4 lg:sticky lg:top-50'>
         {schedule.length === 0 ? (
           <div className='py-6 text-center text-gray-400 italic'>
@@ -70,13 +91,10 @@ export const Schedule = ({ activeTab, sessions }) => {
               const session = sessions?.find(
                 (session) => session.tempId === sessionId,
               );
-
               if (!session) return null;
-
               const sessionIndex = sessions.findIndex(
                 (s) => s.tempId === sessionId,
               );
-
               return (
                 <div
                   key={`${sessionId}-${index}`}
@@ -89,9 +107,37 @@ export const Schedule = ({ activeTab, sessions }) => {
                     <div className='flex items-center gap-2'>
                       <p className='font-medium'>{`Session ${sessionIndex + 1}${session.title ? `: ${session.title}` : ''}`}</p>
                     </div>
-                    <button onClick={() => handleRemoveFromSchedule(index)}>
-                      <XMarkIcon className='hover:text-logored h-5 w-5 cursor-pointer text-gray-400 transition-colors duration-200' />
-                    </button>
+                    <div className='flex items-center'>
+                      {/* Reordering buttons group */}
+                      <div className='mr-3 flex items-center border-r pr-3'>
+                        <ActionButton
+                          variant={ButtonVariant.BLANK}
+                          onClick={() => moveSessionUp(index)}
+                          disabled={index === 0}
+                          className={index === 0 ? 'hidden' : ''}
+                        >
+                          <ArrowUpIcon className='h-4 w-4 cursor-pointer text-gray-400 transition-colors duration-200 hover:text-gray-600' />
+                        </ActionButton>
+                        <ActionButton
+                          variant={ButtonVariant.BLANK}
+                          onClick={() => moveSessionDown(index)}
+                          disabled={index === schedule.length - 1}
+                          className={
+                            index === schedule.length - 1 ? 'hidden' : ''
+                          }
+                        >
+                          <ArrowDownIcon className='h-4 w-4 cursor-pointer text-gray-400 transition-colors duration-200 hover:text-gray-600' />
+                        </ActionButton>
+                      </div>
+
+                      {/* Delete button */}
+                      <ActionButton
+                        variant={ButtonVariant.BLANK}
+                        onClick={() => handleRemoveFromSchedule(index)}
+                      >
+                        <XMarkIcon className='hover:text-logored h-5 w-5 cursor-pointer text-gray-400 transition-colors duration-200' />
+                      </ActionButton>
+                    </div>
                   </div>
                 </div>
               );

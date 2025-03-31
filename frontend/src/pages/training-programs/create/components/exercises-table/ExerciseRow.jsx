@@ -9,6 +9,7 @@ import {
   SequenceInput,
   SetsInput,
   RepsInput,
+  CustomInput,
 } from './';
 
 export const ExerciseRow = ({
@@ -53,17 +54,23 @@ export const ExerciseRow = ({
         <Controller
           name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.slug`}
           control={control}
-          render={({ field }) => (
-            <ExerciseSelect
-              field={field}
-              options={exerciseOptions}
-              isDisabled={
-                !getValues(
-                  `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`,
-                )
-              }
-            />
-          )}
+          render={({ field }) => {
+            const muscleGroupValue = getValues(
+              `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`,
+            );
+
+            if (muscleGroupValue === 'custom') {
+              return <CustomInput field={field} />;
+            } else {
+              return (
+                <ExerciseSelect
+                  field={field}
+                  options={exerciseOptions}
+                  isDisabled={!muscleGroupValue}
+                />
+              );
+            }
+          }}
         />
       </td>
       <td className='border p-2'>

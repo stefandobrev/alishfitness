@@ -12,7 +12,12 @@ export const MyProfileForm = ({ isEditing, setIsEditing, onSubmit }) => {
         <InputField label='First Name' id='first_name' readOnly={!isEditing} />
       </div>
       <div className='mb-4'>
-        <InputField label='Last Name' id='last_name' readOnly={!isEditing} />
+        <InputField
+          label='Last Name'
+          id='last_name'
+          readOnly={!isEditing}
+          className='w-15'
+        />
       </div>
       <div className='flex space-x-4'>
         {isEditing ? (
