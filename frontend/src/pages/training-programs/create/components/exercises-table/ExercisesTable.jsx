@@ -3,11 +3,10 @@ import { useFormContext } from 'react-hook-form';
 import { useMuscleGroupsAndExercises } from './hooks/useMuscleGroupsAndExercises ';
 import { ExerciseRow, ExerciseMobileRow } from './';
 import { isMobile } from '../../../../../common/constants';
-import Spinner from '../../../../../components/Spinner';
 
 export const ExercisesTable = ({ sessionIndex, session }) => {
   const { setValue, getValues } = useFormContext();
-  const { muscleGroups, getExerciseOptionsForMuscleGroup, isLoading } =
+  const { muscleGroups, getExerciseOptionsForMuscleGroup } =
     useMuscleGroupsAndExercises();
 
   const handleRemoveExercise = (sessionIndex, exerciseIndex) => {
@@ -19,9 +18,7 @@ export const ExercisesTable = ({ sessionIndex, session }) => {
     );
   };
 
-  return isLoading ? (
-    <Spinner loading={isLoading} />
-  ) : isMobile ? (
+  return isMobile ? (
     <div className='space-y-4'>
       {session.exercises.map((exercise, exerciseIndex) => {
         const exerciseOptions = getExerciseOptionsForMuscleGroup(
