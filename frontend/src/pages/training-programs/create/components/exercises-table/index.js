@@ -7,4 +7,9 @@ export {
   RepsInput,
   CustomInput,
 } from './InputComponents';
-export { MuscleGroupSelect, ExerciseSelect } from './SelectComponents';
+export {
+  MuscleGroupSelect,
+  ExerciseSelect,
+  DateSelect,
+  UserSelect,
+} from './SelectComponents';

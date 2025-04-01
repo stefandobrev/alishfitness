@@ -1,4 +1,9 @@
-import { Heading, SessionsGrid, AddSessionButton } from './';
+import {
+  Heading,
+  SessionsGrid,
+  AddSessionButton,
+  ProgramActivationBar,
+} from './';
 import { useMuscleGroupsAndExercises } from './exercises-table/hooks/useMuscleGroupsAndExercises ';
 import Spinner from '../../../../components/Spinner';
 
@@ -17,6 +22,8 @@ export const SessionsPanel = ({ activeTab, sessions, onRemoveSession }) => {
       )}
 
       <AddSessionButton />
+
+      <ProgramActivationBar />
     </div>
   );
 };

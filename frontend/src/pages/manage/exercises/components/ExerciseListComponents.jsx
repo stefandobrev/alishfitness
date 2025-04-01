@@ -9,10 +9,11 @@ export const MuscleGroupFilter = ({
 }) => (
   <div>
     <label className='mb-2 block font-semibold text-gray-700'>
-      Filter by Muscle Group
+      Filter by Muscle Groups
     </label>
     <Select
       isMulti
+      placeholder='Select muscle groups'
       options={muscleGroups}
       onChange={(selectedOptions) =>
         onChange(selectedOptions ? selectedOptions.map((opt) => opt.value) : [])
@@ -46,7 +47,7 @@ export const SortFilter = ({ sortBy, onChange }) => (
           : null
       }
       isClearable
-      placeholder='--'
+      placeholder='Sort by date'
       classNamePrefix='react-select'
       className='max-w-md'
     />

@@ -24,10 +24,30 @@
 .react-select__option--is-selected {
   background-color: var(--color-gray-200) !important;
   color: #020303 !important;
+  cursor: pointer;
 }
 
 .react-select__option--is-focused:not(.react-select__option--is-selected):not(
     :hover
   ) {
   background-color: transparent !important;
+}
+
+.react-datepicker__input-container input {
+  height: 38px;
+}
+
+.react-datepicker__input-container input:focus {
+  border-color: var(--logored) !important;
+  box-shadow: 0 0 0 2px var(--logored) !important;
+  outline: none;
+}
+
+.react-datepicker__day--selected {
+  background-color: var(--logored) !important;
+  border: 1px solid black !important;
+}
+
+.react-datepicker__day:hover:not(.react-datepicker__day--selected) {
+  background-color: var(--color-gray-200) !important;
 }

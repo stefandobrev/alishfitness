@@ -86,7 +86,12 @@ export const DefaultForm = ({
         onSubmit={handleSubmit(submittedExerciseData)}
         className='flex flex-col space-y-3 overflow-y-auto px-2 lg:max-h-[67vh]'
       >
-        <InputField label='Title' id='title' registration={register('title')} />
+        <InputField
+          label='Title'
+          id='title'
+          registration={register('title')}
+          placeholder='Exercise title'
+        />
         <DropdownField
           label='Primary Group'
           id='primary_group'
@@ -98,6 +103,7 @@ export const DefaultForm = ({
           id='secondary_groups'
           options={filteredMuscleGroups}
           key={primaryGroupValue}
+          placeholder='Select secondary groups'
         />
         <DynamicTextFieldList
           labelPrefix='Steps'
@@ -110,13 +116,21 @@ export const DefaultForm = ({
             id='gif_link_front'
             type='url'
             required
+            placeholder='Enter front gif'
           />
-          <InputField label='Gif Side' id='gif_link_side' type='url' required />
+          <InputField
+            label='Gif Side'
+            id='gif_link_side'
+            type='url'
+            required
+            placeholder='Enter side gif'
+          />
           <InputField
             label='Video'
             id='video_link'
             type='url'
             required={false}
+            placeholder='Enter video'
           />
         </div>
         <DynamicTextFieldList

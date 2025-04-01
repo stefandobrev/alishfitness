@@ -1,12 +1,15 @@
 import Select from 'react-select';
 
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
 export const MuscleGroupSelect = ({ field, options, onChange }) => {
   return (
     <Select
       {...field}
       options={options}
       isClearable
-      placeholder='Select Muscle Group'
+      placeholder='Select muscle group'
       onChange={
         onChange || ((selected) => field.onChange(selected?.value ?? null))
       }
@@ -30,7 +33,7 @@ export const ExerciseSelect = ({ field, options, isDisabled }) => {
       {...field}
       options={options}
       isClearable
-      placeholder='Select Exercise'
+      placeholder='Select exercise'
       isDisabled={isDisabled}
       onChange={(selected) => field.onChange(selected?.value ?? null)}
       value={options.find((option) => option.value === field.value) || null}
@@ -43,6 +46,39 @@ export const ExerciseSelect = ({ field, options, isDisabled }) => {
       }}
       className='w-full'
       classNamePrefix='react-select'
+    />
+  );
+};
+
+export const DateSelect = ({ field, userSelected }) => {
+  return (
+    <DatePicker
+      selected={field.value}
+      onChange={(date) => field.onChange(date)}
+      dateFormat='yyyy-MM-dd'
+      className='w-full rounded-md border border-gray-300 p-2'
+      classNamePrefix='react-datepicker'
+      disabled={!userSelected}
+      placeholderText='Select start date'
+      minDate={new Date()}
+    />
+  );
+};
+
+export const UserSelect = ({ field, userOptions, setUserSelected }) => {
+  return (
+    <Select
+      options={userOptions}
+      placeholder='Select user'
+      className='basic-single'
+      classNamePrefix='react-select'
+      menuPlacement='auto'
+      menuPosition='fixed'
+      onChange={(selected) => {
+        field.onChange(selected);
+        setUserSelected(!!selected);
+      }}
+      value={field.value}
     />
   );
 };

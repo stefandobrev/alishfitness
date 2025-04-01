@@ -42,7 +42,7 @@ export const DynamicTextFieldList = ({
                     if (el) autoResize({ target: el }); // Trigger auto-resize immediately
                   }}
                   onInput={autoResize}
-                  placeholder={`Enter ${singularize(labelPrefix)}`}
+                  placeholder={`Enter ${singularize(labelPrefix).toLowerCase()}`}
                   className='focus:border-logored focus:ring-logored w-full resize-none overflow-hidden rounded-sm border border-gray-300 p-2 focus:ring-2 focus:outline-hidden'
                   rows={1}
                 />

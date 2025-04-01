@@ -50,7 +50,7 @@ export const CustomInput = ({ field }) => {
     <input
       {...field}
       type='text'
-      placeholder='Exercise Name'
+      placeholder='Exercise name'
       className={`focus:ring-logored focus:border-logored rounded-sm border border-gray-300 p-1 text-center focus:ring-2 focus:outline-none ${
         isMobile ? 'w-full' : 'w-auto'
       }`}
