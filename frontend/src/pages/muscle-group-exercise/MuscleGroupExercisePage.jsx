@@ -92,48 +92,50 @@ export const MuscleGroupExercisePage = () => {
 
     const scrollPosition = window.scrollY;
 
-    const data = await fetchExercises({
-      selectedMuscleId: slugMuscleGroup,
-      offset: currentOffset,
-      searchQuery: searchQuery,
-    });
+    try {
+      const data = await fetchExercises({
+        selectedMuscleId: slugMuscleGroup,
+        offset: currentOffset,
+        searchQuery: searchQuery,
+      });
 
-    // Handle errors (e.g., 404)
-    if (data.error) {
-      navigate('/404', { replace: true });
-      return;
-    }
-
-    // Update exercisesData based on screen size
-    setExercisesData((prevExercises) => {
-      if (window.innerWidth < 1024) {
-        return currentOffset === INITIAL_OFFSET
-          ? data.exercises
-          : [...prevExercises, ...data.exercises];
-      } else {
-        // Desktop: Replace exercises (pagination)
-        return data.exercises;
+      // data.error should handle 404 only. Rest is handled by helpers.
+      if (data.error) {
+        navigate('/404', { replace: true });
       }
-    });
 
-    if (data.total_count !== undefined) {
-      setTotalExercises(data.total_count);
-      setTotalPages(Math.ceil(data.total_count / ITEMS_PER_PAGE));
-    } else {
-      // Fallback logic if total_count is not provided
-      const calculatedTotal = currentOffset + data.exercises.length;
-      setTotalExercises(calculatedTotal);
-      setTotalPages(Math.ceil(calculatedTotal / ITEMS_PER_PAGE));
+      // Update exercisesData based on screen size
+      setExercisesData((prevExercises) => {
+        if (window.innerWidth < 1024) {
+          return currentOffset === INITIAL_OFFSET
+            ? data.exercises
+            : [...prevExercises, ...data.exercises];
+        } else {
+          // Desktop: Replace exercises (pagination)
+          return data.exercises;
+        }
+      });
+
+      if (data.total_count !== undefined) {
+        setTotalExercises(data.total_count);
+        setTotalPages(Math.ceil(data.total_count / ITEMS_PER_PAGE));
+      } else {
+        // Fallback logic if total_count is not provided
+        const calculatedTotal = currentOffset + data.exercises.length;
+        setTotalExercises(calculatedTotal);
+        setTotalPages(Math.ceil(calculatedTotal / ITEMS_PER_PAGE));
+      }
+
+      handleExerciseGroupPropsUpdate({
+        offset: currentOffset + ITEMS_PER_PAGE,
+        loadMore: false,
+        hasMore: data.exercises.length >= ITEMS_PER_PAGE,
+      });
+
+      setMuscleGroupName(data.name);
+    } finally {
+      setIsLoading(false);
     }
-
-    handleExerciseGroupPropsUpdate({
-      offset: currentOffset + ITEMS_PER_PAGE,
-      loadMore: false,
-      hasMore: data.exercises.length >= ITEMS_PER_PAGE,
-    });
-
-    setMuscleGroupName(data.name);
-    setIsLoading(false);
 
     // Restore the scroll position after the DOM updates
     requestAnimationFrame(() => {

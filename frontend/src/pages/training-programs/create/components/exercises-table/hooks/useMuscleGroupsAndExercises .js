@@ -10,6 +10,7 @@ export const useMuscleGroupsAndExercises = () => {
   useEffect(() => {
     const loadMuscleGroupsAndExercises = async () => {
       setIsLoading(true);
+
       try {
         const muscleGroupData = await fetchMuscleGroupsWithExercises();
         setMuscleGroupsAndExercises(muscleGroupData);
@@ -27,8 +28,6 @@ export const useMuscleGroupsAndExercises = () => {
         });
 
         setMuscleGroups(transformedMuscleGroups);
-      } catch (error) {
-        console.error('Error loading muscle groups and exercises:', error);
       } finally {
         setIsLoading(false);
       }

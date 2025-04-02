@@ -37,7 +37,6 @@ export const ExerciseList = ({
       hasMore: true,
       loadMore: false,
     });
-    setIsLoading(true);
     loadExerciseTitles();
   }, [searchQuery, sortBy, selectedMuscleGroups, refreshTitlesKey]);
 
@@ -77,32 +76,37 @@ export const ExerciseList = ({
 
   const loadExerciseTitles = async (offset) => {
     const currentOffset = offset ?? INITIAL_OFFSET;
-
     const scrollPosition = window.scrollY;
 
-    const exerciseTitlesData = await fetchExerciseTitles({
-      offset: currentOffset,
-      searchQuery: searchQuery,
-      sort: sortBy,
-      muscleGroups: selectedMuscleGroups,
-    });
+    setIsLoading(true);
+    try {
+      const exerciseTitlesData = await fetchExerciseTitles({
+        offset: currentOffset,
+        searchQuery: searchQuery,
+        sort: sortBy,
+        muscleGroups: selectedMuscleGroups,
+      });
 
-    handleExercisePropsUpdate({
-      offset: currentOffset + ITEMS_PER_PAGE,
-      loadMore: false,
-    });
+      handleExercisePropsUpdate({
+        offset: currentOffset + ITEMS_PER_PAGE,
+        loadMore: false,
+      });
 
-    if (exerciseTitlesData.length < ITEMS_PER_PAGE) {
-      handleExercisePropsUpdate({ hasMore: false });
+      if (exerciseTitlesData.length < ITEMS_PER_PAGE) {
+        handleExercisePropsUpdate({ hasMore: false });
+      }
+
+      if (currentOffset === INITIAL_OFFSET) {
+        setExerciseTitles(exerciseTitlesData);
+      } else if (exerciseTitlesData.length > 0) {
+        setExerciseTitles((prevTitles) => [
+          ...prevTitles,
+          ...exerciseTitlesData,
+        ]);
+      }
+    } finally {
+      setIsLoading(false);
     }
-
-    if (currentOffset === INITIAL_OFFSET) {
-      setExerciseTitles(exerciseTitlesData);
-    } else if (exerciseTitlesData.length > 0) {
-      setExerciseTitles((prevTitles) => [...prevTitles, ...exerciseTitlesData]);
-    }
-
-    setIsLoading(false);
 
     requestAnimationFrame(() => {
       window.scrollTo(0, scrollPosition);

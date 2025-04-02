@@ -29,12 +29,17 @@ export const EditForm = ({
   const { watch } = useFormContext();
 
   useEffect(() => {
-    setIsLoading(true);
-
     const loadExerciseData = async () => {
-      const data = await fetchExerciseData(exerciseId);
-      setExerciseData(data);
-      setIsLoading(false);
+      setIsLoading(true);
+
+      try {
+        const exerciseData = await fetchExerciseData(exerciseId);
+        setExerciseData(exerciseData);
+      } catch (error) {
+        console.log('Error loading exercise:', error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     loadExerciseData();

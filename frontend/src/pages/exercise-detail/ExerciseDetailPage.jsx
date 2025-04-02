@@ -23,18 +23,22 @@ export const ExerciseDetailPage = () => {
   useTitle(exerciseData?.title);
 
   useEffect(() => {
-    setIsLoading(true);
     const loadExerciseData = async () => {
-      const data = await fetchExercise({ slugMuscleGroup, slugTitle });
-      // data.error should handle 404 only. Rest is handled by helpers.
-      if (data.error) {
-        navigate('/404', { replace: true });
+      setIsLoading(true);
+      try {
+        const data = await fetchExercise({ slugMuscleGroup, slugTitle });
+
+        // data.error should handle 404 only. Rest is handled by helpers.
+        if (data.error) {
+          navigate('/404', { replace: true });
+        }
+        setExerciseData(data);
+      } finally {
+        setIsLoading(false);
       }
-      setExerciseData(data);
-      setIsLoading(false);
     };
     loadExerciseData();
-  }, [slugTitle]);
+  }, [slugTitle, navigate]);
 
   const handleMuscleClick = (svgId) => {
     navigate(`/exercises/${svgId}`);
