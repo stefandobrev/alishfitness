@@ -1,13 +1,13 @@
 import { useFormContext } from 'react-hook-form';
 
-import { useMuscleGroupsAndExercises } from './hooks/useMuscleGroupsAndExercises ';
+import { useTrainingSetupData } from './';
 import { ExerciseRow, ExerciseMobileRow } from './';
 import { isMobile } from '../../../../../common/constants';
 
 export const ExercisesTable = ({ sessionIndex, session }) => {
   const { setValue, getValues } = useFormContext();
   const { muscleGroups, getExerciseOptionsForMuscleGroup } =
-    useMuscleGroupsAndExercises();
+    useTrainingSetupData();
 
   const handleRemoveExercise = (sessionIndex, exerciseIndex) => {
     const currentExercises =

@@ -23,6 +23,5 @@ urlpatterns = [
     path("exercises/<str:muscle_slug>/<str:exercise_slug>/", exercise_views.exercise_detail_slug, name="exercises-detail-slug"),
 
     # training programs paths
-    path("training-programs/muscle-groups/", exercise_views.muscle_groups, name="training-muscle-groups"),
-    path("training-programs/muscle-groups-with-exercises/", training_program_views.muscle_groups_and_exercises, name="muscle-groups-with-exercises"),
+    path("training-programs/training-setup-data/", training_program_views.training_setup_data, name="training-setup-data"),
 ]

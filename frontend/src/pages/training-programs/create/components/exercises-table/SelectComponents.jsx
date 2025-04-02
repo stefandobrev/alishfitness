@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+
+import { useFormContext } from 'react-hook-form';
 import Select from 'react-select';
 
 import DatePicker from 'react-datepicker';
@@ -51,9 +54,18 @@ export const ExerciseSelect = ({ field, options, isDisabled }) => {
 };
 
 export const DateSelect = ({ field, userSelected }) => {
+  const { setValue } = useFormContext();
+
+  useEffect(() => {
+    if (!userSelected && field.value) {
+      setValue('activationDate', null);
+    }
+  }, [userSelected, setValue, field.value]);
+
   return (
     <DatePicker
       selected={field.value}
+      isClearable
       onChange={(date) => field.onChange(date)}
       dateFormat='yyyy-MM-dd'
       className='w-full rounded-md border border-gray-300 p-2'
@@ -70,7 +82,8 @@ export const UserSelect = ({ field, userOptions, setUserSelected }) => {
     <Select
       options={userOptions}
       placeholder='Select user'
-      className='basic-single'
+      isClearable
+      className='md:w-70'
       classNamePrefix='react-select'
       menuPlacement='auto'
       menuPosition='fixed'

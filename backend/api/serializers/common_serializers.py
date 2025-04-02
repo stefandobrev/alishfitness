@@ -1,6 +1,11 @@
 from rest_framework import serializers
 
-from api.models import MuscleGroup, Exercise
+from api.models import User, MuscleGroup, Exercise
+
+class UserNamesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "username"]
 
 class MuscleGroupTitleSerializer(serializers.ModelSerializer):
     class Meta:

@@ -72,7 +72,7 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
                 variant={ButtonVariant.BLANK}
                 onClick={() => onRemoveSession(sessionIndex)}
               >
-                <XMarkIcon className='text-logored hover:text-logored-hover h-5 w-5 cursor-pointer transition-colors duration-200' />
+                <XMarkIcon className='hover:text-logored-hover h-5 w-5 cursor-pointer text-gray-400 transition-colors duration-200' />
               </ActionButton>
             </div>
             {/* Exercises section */}

@@ -2,19 +2,16 @@ import { useState } from 'react';
 
 import { useFormContext, Controller } from 'react-hook-form';
 
+import { useTrainingSetupData } from './exercises-table';
 import { DateSelect, UserSelect } from './exercises-table';
 import { SubmitButton } from '../../../../components/buttons';
 
 export const ProgramActivationBar = () => {
   const { control } = useFormContext();
   const [userSelected, setUserSelected] = useState(false);
+  const { usersData } = useTrainingSetupData();
 
-  // Mock data for users - replace with your actual data source
-  const userOptions = [
-    { value: 'user1', label: 'John Doe' },
-    { value: 'user2', label: 'Jane Smith' },
-    { value: 'user3', label: 'Mike Johnson' },
-  ];
+  const userOptions = usersData;
 
   return (
     <div className='my-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>

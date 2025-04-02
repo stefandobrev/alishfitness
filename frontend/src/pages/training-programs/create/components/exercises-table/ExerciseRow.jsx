@@ -91,7 +91,7 @@ export const ExerciseRow = ({
         <ActionButton
           variant={ButtonVariant.BLANK}
           onClick={() => onRemove(sessionIndex, exerciseIndex)}
-          className='text-logored hover:text-logored-hover cursor-pointer'
+          className='hover:text-logored-hover cursor-pointer text-gray-400'
         >
           <XMarkIcon className='mt-1 h-5 w-5' />
         </ActionButton>
