@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useWatch, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
+import Select from 'react-select';
 
 import {
   XMarkIcon,
@@ -7,25 +8,30 @@ import {
   ArrowDownIcon,
 } from '@heroicons/react/24/outline';
 
-import { DropdownField } from '../../../../components/inputs';
 import { getLightColors } from '../../../../common/constants';
 import { ActionButton, ButtonVariant } from '../../../../components/buttons';
 
 export const Schedule = ({ activeTab, sessions }) => {
   const [schedule, setSchedule] = useState([]);
-  const { control, setValue } = useFormContext();
-  const selectedSession = useWatch({
-    control,
-    name: 'schedule',
-  });
+  const [selectedSession, setSelectedSession] = useState(null);
+  const { register, setValue } = useFormContext();
 
   useEffect(() => {
-    if (selectedSession !== null && selectedSession !== undefined) {
-      const newSchedule = [...schedule, selectedSession];
+    register('scheduleArray');
+    setValue('scheduleArray', schedule);
+  }, [register]);
+
+  useEffect(() => {
+    setValue('scheduleArray', schedule);
+  }, [schedule, setValue]);
+
+  const handleSessionSelect = (selected) => {
+    if (selected) {
+      const newSchedule = [...schedule, selected.value];
       setSchedule(newSchedule);
-      setValue('schedule', null);
+      setSelectedSession(null); // Reset dropdown after selection
     }
-  }, [selectedSession, setValue]);
+  };
 
   const scheduleOptions =
     sessions?.map((session, index) => {
@@ -41,7 +47,7 @@ export const Schedule = ({ activeTab, sessions }) => {
   };
 
   const moveSessionUp = (index) => {
-    if (index === 0) return; // Can't move the first item up
+    if (index === 0) return;
     const newSchedule = [...schedule];
     const temp = newSchedule[index];
     newSchedule[index] = newSchedule[index - 1];
@@ -50,7 +56,7 @@ export const Schedule = ({ activeTab, sessions }) => {
   };
 
   const moveSessionDown = (index) => {
-    if (index === schedule.length - 1) return; // Can't move the last item down
+    if (index === schedule.length - 1) return;
     const newSchedule = [...schedule];
     const temp = newSchedule[index];
     newSchedule[index] = newSchedule[index + 1];
@@ -66,15 +72,21 @@ export const Schedule = ({ activeTab, sessions }) => {
     >
       <div className='z-40 flex items-end gap-2 px-6 lg:sticky lg:top-25'>
         <div className='top-40 w-full'>
-          <DropdownField
-            label='Schedule'
-            id='schedule'
-            options={scheduleOptions}
-            placeholder='Add session to schedule'
-            value={selectedSession ?? null}
-            control={control}
-            className='max-w-md'
-          />
+          <div className='mb-4'>
+            <label className='text-m mb-2 block font-semibold text-gray-700'>
+              Schedule
+            </label>
+            <Select
+              options={scheduleOptions}
+              placeholder='Add session to schedule'
+              isClearable
+              value={selectedSession}
+              onChange={handleSessionSelect}
+              menuPortalTarget={document.body}
+              classNamePrefix='react-select'
+              className='w-full max-w-md font-semibold'
+            />
+          </div>
         </div>
       </div>
       <div className='flex flex-col gap-3 px-6 pt-4 lg:sticky lg:top-50'>
@@ -84,8 +96,8 @@ export const Schedule = ({ activeTab, sessions }) => {
           </div>
         ) : (
           <>
-            <h3 className='mb-1 text-sm font-semibold tracking-wider text-gray-500 uppercase'>
-              Session Order
+            <h3 className='text-m text-m mb-1 font-semibold text-gray-700'>
+              Schedule order
             </h3>
             {schedule.map((sessionId, index) => {
               const session = sessions?.find(
@@ -105,11 +117,15 @@ export const Schedule = ({ activeTab, sessions }) => {
                   ></div>
                   <div className='flex w-full items-center justify-between px-3 py-3'>
                     <div className='flex items-center gap-2'>
-                      <p className='font-medium'>{`Session ${sessionIndex + 1}${session.title ? `: ${session.title}` : ''}`}</p>
+                      <div className='flex size-6 items-center justify-center rounded-full border border-gray-300 bg-gray-100 text-sm font-semibold text-gray-700 shadow-sm'>
+                        {index + 1}
+                      </div>
+                      <p className='max-w-40 truncate font-medium'>{`${session.title ? `${session.title}` : `Session ${sessionIndex + 1}`}`}</p>
                     </div>
+
                     <div className='flex items-center'>
                       {/* Reordering buttons group */}
-                      <div className='mr-3 flex items-center border-r pr-3'>
+                      <div className='mr-3 flex items-center gap-3 border-r pr-3'>
                         <ActionButton
                           variant={ButtonVariant.BLANK}
                           onClick={() => moveSessionUp(index)}

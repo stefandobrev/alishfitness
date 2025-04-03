@@ -9,7 +9,7 @@ export const MuscleGroupFilter = ({
 }) => (
   <div>
     <label className='mb-2 block font-semibold text-gray-700'>
-      Filter by Muscle Groups
+      Filter by muscle groups
     </label>
     <Select
       isMulti

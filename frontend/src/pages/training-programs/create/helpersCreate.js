@@ -5,3 +5,9 @@ export const fetchTrainingSetupData = async () => {
   if (!response.ok) throw new Error('Failed to fetch training setup data.');
   return response.json();
 };
+
+export const helpersCreate = async () => {
+  const response = await api('/training-programs/create-program');
+  if (!response.ok) throw new Error('Failed to create program.');
+  return response.json();
+};

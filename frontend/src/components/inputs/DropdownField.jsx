@@ -5,7 +5,7 @@ export const DropdownField = ({
   label,
   id,
   options,
-  required = true,
+  required = false,
   placeholder = '--',
   ...props
 }) => {

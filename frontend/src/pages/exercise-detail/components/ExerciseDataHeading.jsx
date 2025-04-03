@@ -24,7 +24,7 @@ export const ExerciseDataHeading = ({ exerciseData }) => {
 
       {isAdmin && (
         <div className='mt-2 flex justify-center lg:absolute lg:top-1/2 lg:right-0 lg:mt-0 lg:mr-2 lg:-translate-y-1/2'>
-          <ActionButton onClick={handleViewClick}>Edit Exercise</ActionButton>
+          <ActionButton onClick={handleViewClick}>Edit exercise</ActionButton>
         </div>
       )}
     </div>

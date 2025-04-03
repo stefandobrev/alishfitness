@@ -93,13 +93,13 @@ export const DefaultForm = ({
           placeholder='Exercise title'
         />
         <DropdownField
-          label='Primary Group'
+          label='Primary group'
           id='primary_group'
           options={muscleGroups}
           placeholder='Select primary group'
         />
         <DropdownFieldWithTags
-          label='Secondary Groups'
+          label='Secondary groups'
           id='secondary_groups'
           options={filteredMuscleGroups}
           key={primaryGroupValue}
@@ -112,14 +112,14 @@ export const DefaultForm = ({
         />
         <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
           <InputField
-            label='Gif Front'
+            label='Gif front'
             id='gif_link_front'
             type='url'
             required
             placeholder='Enter front gif'
           />
           <InputField
-            label='Gif Side'
+            label='Gif side'
             id='gif_link_side'
             type='url'
             required

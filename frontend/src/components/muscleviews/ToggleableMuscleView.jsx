@@ -31,7 +31,7 @@ export const ToggleableMuscleView = ({
           variant={ButtonVariant.GRAY_DARK}
           onClick={toggleIsFrontView}
         >
-          {isFrontView ? 'Show Back' : 'Show Front'}
+          {isFrontView ? 'Show back' : 'Show front'}
         </ActionButton>
       </div>
 

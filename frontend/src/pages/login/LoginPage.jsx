@@ -17,35 +17,37 @@ export const LoginPage = () => {
 
   const onSubmit = async (userData) => {
     dispatch(setLoading(true));
-    const { type, text } = await loginUser(userData);
 
-    if (type === 'error') {
-      toast.error(text);
+    try {
+      const { type, text } = await loginUser(userData);
+
+      if (type === 'error') {
+        toast.error(text);
+        return;
+      }
+
+      const data = text;
+      dispatch(
+        setUser({
+          isAuthenticated: true,
+          isAdmin: data.is_admin,
+          user: {
+            username: data.username,
+          },
+          accessToken: data.access,
+          refreshToken: data.refresh,
+        }),
+      );
+
+      toast.success('User logged in successfully!');
+      if (data.is_admin) {
+        navigate('/training-programs/view-all');
+      } else {
+        navigate('/my-program');
+      }
+    } finally {
       dispatch(setLoading(false));
-      return;
     }
-
-    const data = text;
-    dispatch(
-      setUser({
-        isAuthenticated: true,
-        isAdmin: data.is_admin,
-        user: {
-          username: data.username,
-        },
-        accessToken: data.access,
-        refreshToken: data.refresh,
-      }),
-    );
-
-    toast.success('User logged in successfully!');
-    if (data.is_admin) {
-      navigate('/training-programs/view-all');
-    } else {
-      navigate('/my-program');
-    }
-
-    dispatch(setLoading(false));
   };
 
   return (

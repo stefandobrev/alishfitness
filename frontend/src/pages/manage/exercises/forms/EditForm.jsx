@@ -121,7 +121,7 @@ export const EditForm = ({
       <h2 className='sticky top-0 z-10 mb-3 bg-white text-center text-2xl font-semibold'>
         Edit Exercise
       </h2>
-      <ActionButton onClick={launchAddMode}>Add New Exercise</ActionButton>
+      <ActionButton onClick={launchAddMode}>Add new exercise</ActionButton>
     </div>
   );
 

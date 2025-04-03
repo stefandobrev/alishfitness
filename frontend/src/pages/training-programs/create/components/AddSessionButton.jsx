@@ -31,7 +31,7 @@ export const AddSessionButton = () => {
       <div className='flex flex-col items-center justify-center'>
         <PlusIcon className='h-8 w-8 text-gray-400' />
         <span className='mt-2 text-sm font-medium text-gray-500'>
-          Add Session
+          Add session
         </span>
       </div>
     </ActionButton>

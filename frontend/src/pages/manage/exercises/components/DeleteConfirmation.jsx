@@ -8,7 +8,7 @@ export const DeleteConfirmation = ({ onClose, onConfirm, title }) => {
       <div className='fixed inset-0 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs'>
         <DialogPanel className='w-full max-w-lg transform space-y-6 rounded-lg border bg-white p-8 shadow-xl transition-all'>
           <DialogTitle className='truncate text-2xl font-semibold text-gray-900'>
-            Delete Exercise: {title}
+            Delete exercise: {title}
           </DialogTitle>
           <p className='text-lg text-gray-700'>
             Are you sure you want to delete the exercise?

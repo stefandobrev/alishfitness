@@ -16,7 +16,7 @@ export const MdScreenButtons = ({
       form='exercise-form'
       className='w-auto'
     >
-      {mode === 'add' ? 'Add Exercise' : 'Edit Exercise'}
+      {mode === 'add' ? 'Add exercise' : 'Edit exercise'}
     </ActionButton>
 
     {mode === 'edit' && (
@@ -26,14 +26,14 @@ export const MdScreenButtons = ({
           variant={ButtonVariant.GRAY_DARK}
           className='w-auto'
         >
-          Delete Exercise
+          Delete exercise
         </ActionButton>
         <ActionButton
           onClick={handleViewButton}
           variant={ButtonVariant.GRAY_DARK}
           className='w-auto'
         >
-          View Exercise
+          View exercise
         </ActionButton>
       </>
     )}

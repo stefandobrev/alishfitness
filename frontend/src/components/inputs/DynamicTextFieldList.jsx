@@ -60,7 +60,7 @@ export const DynamicTextFieldList = ({
         className='flex w-full flex-row items-center gap-1 md:w-auto'
       >
         <PlusIcon className='h-4 w-4' />
-        Add {singularize(labelPrefix)}
+        Add {singularize(labelPrefix).toLowerCase()}
       </ActionButton>
     </div>
   );

@@ -86,7 +86,7 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
               className='flex w-full cursor-pointer items-center justify-center rounded border border-dashed border-gray-300 bg-white p-2 text-sm hover:border-gray-400'
             >
               <PlusIcon className='mr-1 h-4 w-4 text-gray-400' />
-              <span className='text-gray-500'>Add Exercise</span>
+              <span className='text-gray-500'>Add exercise</span>
             </ActionButton>
           </div>
         </div>
