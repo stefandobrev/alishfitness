@@ -15,3 +15,4 @@ export {
   DateSelect,
   UserSelect,
 } from './SelectComponents';
+export { TableHeadLg } from './TableHeadLg';

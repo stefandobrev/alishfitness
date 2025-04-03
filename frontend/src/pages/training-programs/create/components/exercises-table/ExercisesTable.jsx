@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 
-import { useTrainingSetupData } from './';
+import { TableHeadLg, useTrainingSetupData } from './';
 import { ExerciseRow, ExerciseMobileRow } from './';
 import { isMobile } from '../../../../../common/constants';
 
@@ -42,16 +42,7 @@ export const ExercisesTable = ({ sessionIndex, session }) => {
   ) : (
     <div className='overflow-x-auto text-center'>
       <table className='w-full border-separate overflow-hidden border'>
-        <thead>
-          <tr className='bg-gray-200'>
-            <th className='border p-2 text-center'>Seq</th>
-            <th className='border p-2 text-center'>Muscle Group</th>
-            <th className='border p-2 text-center'>Exercise</th>
-            <th className='border p-2 text-center'>Sets</th>
-            <th className='border p-2 text-center'>Reps</th>
-            <th className='border p-2 text-center'></th>
-          </tr>
-        </thead>
+        <TableHeadLg />
 
         <tbody>
           {session.exercises.map((exercise, exerciseIndex) => {

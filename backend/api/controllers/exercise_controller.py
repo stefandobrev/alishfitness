@@ -14,7 +14,7 @@ class ExerciseController:
 
     def get_muscle_groups(self, request):
         """Return a response containing all muscle groups from the DB."""
-        muscle_groups = MuscleGroup.objects.all().order_by("name")
+        muscle_groups = MuscleGroup.objects.all().order_by("name").only("name")
         serializer = MuscleGroupTitleSerializer(muscle_groups, many=True)
         return Response(serializer.data)
     

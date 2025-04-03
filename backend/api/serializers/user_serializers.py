@@ -19,11 +19,11 @@ class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         validators=[
             EmailValidator(message="Enter a valid email address."),  
-            UniqueValidator(queryset=User.objects.all(), message="This email is already registered.") 
+            UniqueValidator(queryset=User.objects.all().only("email"), message="This email is already registered.") 
         ]
     )
     username = serializers.CharField(
-        validators=[UniqueValidator(queryset=User.objects.all(), message="This username is already taken.")]
+        validators=[UniqueValidator(queryset=User.objects.all().only("username"), message="This username is already taken.")]
     )
 
     class Meta:
