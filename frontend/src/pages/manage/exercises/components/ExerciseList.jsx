@@ -4,7 +4,7 @@ import { fetchExerciseTitles } from '../helpersManageExercises';
 import { ActionButton, ButtonVariant } from '../../../../components/buttons';
 import { MuscleGroupFilter, SortFilter, ExerciseListItems } from './';
 import { SearchInput } from '../../../../components/inputs';
-import Spinner from '../../../../components/Spinner';
+import { Spinner } from '../../../../components/common';
 
 const INITIAL_OFFSET = 0;
 const ITEMS_PER_PAGE = 10;

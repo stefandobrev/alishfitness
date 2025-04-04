@@ -1,4 +1,4 @@
-import { MuscleGroup } from '../MuscleGroup';
+import { MuscleGroup } from '../common';
 import { frontMuscleGroupNames } from '../../common/constants';
 
 const FrontAnatomy = ({

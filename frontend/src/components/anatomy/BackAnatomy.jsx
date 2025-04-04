@@ -1,4 +1,4 @@
-import { MuscleGroup } from '../MuscleGroup';
+import { MuscleGroup } from '../common';
 import { backMuscleGroupNames } from '../../common/constants';
 
 const BackAnatomy = ({

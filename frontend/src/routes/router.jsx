@@ -27,10 +27,12 @@ import {
 } from '../pages';
 
 // Route Guards
-import AuthRoute from '../components/AuthRoute';
-import AdminRoute from '../components/AdminRoute';
-import MemberRoute from '../components/MemberRoute';
-import PublicRoute from '../components/PublicRoute';
+import {
+  AuthRoute,
+  AdminRoute,
+  MemberRoute,
+  PublicRoute,
+} from '../components/routes';
 
 export const router = createBrowserRouter(
   createRoutesFromElements(

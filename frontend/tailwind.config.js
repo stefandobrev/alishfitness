@@ -5,9 +5,9 @@ export default {
     extend: {
       colors: {
         logored: {
-          DEFAULT: '#C32A2A',
-          hover: '#AA1E1E',
-          disabled: 'rgba(195,42,42,0.5)',
+          DEFAULT: 'hsl(0, 66%, 44%)',
+          hover: 'hsl(0, 71%, 39%)',
+          disabled: 'hsl(0, 66%, 44%, 0.5)',
         },
       },
     },

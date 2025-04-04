@@ -3,8 +3,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store/store';
 import { router } from './routes/router';
-import AuthWrapper from './components/AuthWrapper';
-import Spinner from './components/Spinner';
+import { AuthWrapper, Spinner } from './components/common';
 
 const App = () => {
   return (

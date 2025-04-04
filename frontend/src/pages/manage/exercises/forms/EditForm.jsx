@@ -11,7 +11,7 @@ import {
 } from '../helpersManageExercises';
 import { ActionButton } from '../../../../components/buttons';
 import { DeleteConfirmation } from '../components/DeleteConfirmation';
-import Spinner from '../../../../components/Spinner';
+import { Spinner } from '../../../../components/common';
 
 export const EditForm = ({
   muscleGroups,

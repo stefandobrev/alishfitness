@@ -12,9 +12,9 @@ import {
 import { setLoading } from '../../store/slices/loadingSlice';
 import { logoutWithBlacklist } from '../../store/slices/authSlice';
 import { PasswordForm, SettingsForm } from './forms';
-import { useTitle } from '../../hooks/useTitle.hook';
 import userValidationResolver from '../../utils/userValidationResolver';
-import Spinner from '../../components/Spinner';
+import { Spinner } from '../../components/common';
+import { useTitle } from '../../hooks/useTitle.hook';
 
 export const ProfileSettingsPage = () => {
   const dispatch = useDispatch();

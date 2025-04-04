@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout, setTokens } from '../store/slices/authSlice';
-import api from '../utils/api';
+import { logout, setTokens } from '../../store/slices/authSlice';
+import api from '../../utils/api';
 
-const AuthWrapper = ({ children }) => {
+export const AuthWrapper = ({ children }) => {
   const dispatch = useDispatch();
   const { accessToken, refreshToken } = useSelector((state) => state.auth);
 
@@ -33,5 +33,3 @@ const AuthWrapper = ({ children }) => {
 
   return children;
 };
-
-export default AuthWrapper;

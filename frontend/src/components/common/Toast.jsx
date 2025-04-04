@@ -13,6 +13,4 @@ const TOAST_CONFIG = {
   theme: 'colored',
 };
 
-const Toast = () => <ToastContainer {...TOAST_CONFIG} />;
-
-export default Toast;
+export const Toast = () => <ToastContainer {...TOAST_CONFIG} />;

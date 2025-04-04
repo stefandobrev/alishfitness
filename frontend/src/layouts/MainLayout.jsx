@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+
 import 'react-toastify/dist/ReactToastify.css';
 
 import Navbar from '../components/navbar/Navbar';
-import Spinner from '../components/Spinner';
-import Toast from '../components/Toast';
+import { Spinner, Toast } from '../components/common';
 
 const MainLayout = () => {
   const isLoading = useSelector((state) => state.loading.loading);

@@ -9,8 +9,7 @@ import {
   ExerciseDataHeading,
   ExerciseDataContainer,
 } from './components';
-
-import Spinner from '../../components/Spinner';
+import { Spinner } from '../../components/common';
 import { useTitle } from '../../hooks/useTitle.hook';
 
 export const ExerciseDetailPage = () => {

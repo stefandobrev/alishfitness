@@ -3,9 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchProfileData } from '../../store/slices/userSlice';
 import { getNavigation } from '../../config/navigation';
-import { useNavbarState } from './hooks/useNavbarState';
-import { useNavbarStyles } from './hooks/useNavbarStyles';
-
+import { useNavbarState, useNavbarStyles } from './hooks';
 import {
   MobileMenu,
   ProfileMenu,

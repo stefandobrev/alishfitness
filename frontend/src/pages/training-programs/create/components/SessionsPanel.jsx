@@ -5,7 +5,7 @@ import {
   ProgramActivationBar,
 } from './';
 import { useTrainingSetupData } from './exercises-table';
-import Spinner from '../../../../components/Spinner';
+import { Spinner } from '../../../../components/common';
 
 export const SessionsPanel = ({
   activeTab,
