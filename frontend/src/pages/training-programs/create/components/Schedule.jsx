@@ -66,7 +66,7 @@ export const Schedule = ({ activeTab, sessions }) => {
 
   return (
     <div
-      className={`mt-4 w-full lg:sticky lg:top-25 lg:min-h-[calc(100vh-108px)] lg:w-[30%] lg:border-l-2 xl:w-[20%] ${
+      className={`w-full lg:sticky lg:top-25 lg:min-h-[calc(100vh-108px)] lg:w-[30%] lg:border-l-2 xl:w-[20%] ${
         activeTab !== 'schedule' ? 'hidden lg:block' : ''
       }`}
     >

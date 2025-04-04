@@ -6,6 +6,7 @@ import { MobileTabs, MobileTabVariant } from '../../../components/buttons';
 import { useTitle } from '../../../hooks/useTitle.hook';
 
 export const CreatePage = () => {
+  const [newProgramMode, setNewProgramMode] = useState(true);
   const [activeTab, setActiveTab] = useState('sessions');
   const methods = useForm();
   useTitle('Create');
@@ -44,6 +45,8 @@ export const CreatePage = () => {
             activeTab={activeTab}
             sessions={sessions}
             onRemoveSession={handleRemoveSession}
+            newProgramMode={newProgramMode}
+            setNewProgramMode={setNewProgramMode}
           />
 
           <Schedule activeTab={activeTab} sessions={sessions} />

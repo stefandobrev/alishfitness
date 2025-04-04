@@ -7,14 +7,23 @@ import {
 import { useTrainingSetupData } from './exercises-table';
 import Spinner from '../../../../components/Spinner';
 
-export const SessionsPanel = ({ activeTab, sessions, onRemoveSession }) => {
+export const SessionsPanel = ({
+  activeTab,
+  sessions,
+  onRemoveSession,
+  newProgramMode,
+  setNewProgramMode,
+}) => {
   const { isLoading } = useTrainingSetupData();
   return (
     <div
       className={`flex w-full flex-col lg:w-[70%] xl:w-[80%] ${activeTab !== 'sessions' ? 'hidden lg:block' : ''}`}
     >
       <div className='flex flex-col px-4'>
-        <Heading />
+        <Heading
+          newProgramMode={newProgramMode}
+          setNewProgramMode={setNewProgramMode}
+        />
         <div className='mt-4'>
           {isLoading ? (
             <Spinner isLoading={isLoading} />
@@ -28,9 +37,8 @@ export const SessionsPanel = ({ activeTab, sessions, onRemoveSession }) => {
           ) : null}
           <AddSessionButton />
         </div>
-        <div className='mt-4'>
-          <ProgramActivationBar />
-        </div>
+
+        <ProgramActivationBar newProgramMode={newProgramMode} />
       </div>
     </div>
   );

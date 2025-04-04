@@ -1,11 +1,6 @@
-import { useState } from 'react';
-
-import { ActionButton, ButtonVariant } from '../../../../components/buttons';
 import { InputField } from '../../../../components/inputs';
 
-export const Heading = () => {
-  const [newProgramMode, setNewProgramMode] = useState(true);
-
+export const Heading = ({ newProgramMode, setNewProgramMode }) => {
   const toggleIsNewProgramMode = () => {
     setNewProgramMode((prev) => !prev);
   };
