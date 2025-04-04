@@ -26,13 +26,11 @@ export const AddSessionButton = () => {
     <ActionButton
       variant='blank'
       onClick={handleAddSession}
-      className='my-4 flex h-auto w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-2 transition-colors hover:border-gray-400'
+      className='flex w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-2 transition-colors hover:border-gray-400'
     >
       <div className='flex flex-col items-center justify-center'>
         <PlusIcon className='h-8 w-8 text-gray-400' />
-        <span className='mt-2 text-sm font-medium text-gray-500'>
-          Add session
-        </span>
+        <span className='text-sm font-medium text-gray-500'>Add session</span>
       </div>
     </ActionButton>
   );

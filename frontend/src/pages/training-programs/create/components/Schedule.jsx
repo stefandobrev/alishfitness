@@ -66,7 +66,7 @@ export const Schedule = ({ activeTab, sessions }) => {
 
   return (
     <div
-      className={`mt-4 w-full lg:sticky lg:top-25 lg:min-h-[calc(100vh-108px)] lg:w-[20%] lg:border-l-2 ${
+      className={`mt-4 w-full lg:sticky lg:top-25 lg:min-h-[calc(100vh-108px)] lg:w-[30%] lg:border-l-2 xl:w-[20%] ${
         activeTab !== 'schedule' ? 'hidden lg:block' : ''
       }`}
     >
@@ -120,12 +120,12 @@ export const Schedule = ({ activeTab, sessions }) => {
                       <div className='flex size-6 items-center justify-center rounded-full border border-gray-300 bg-gray-100 text-sm font-semibold text-gray-700 shadow-sm'>
                         {index + 1}
                       </div>
-                      <p className='max-w-40 truncate font-medium'>{`${session.title ? `${session.title}` : `Session ${sessionIndex + 1}`}`}</p>
+                      <p className='line-clamp-2 max-w-20 font-medium break-words'>{`${session.title ? `${session.title}` : `Session ${sessionIndex + 1}`}`}</p>{' '}
                     </div>
 
                     <div className='flex items-center'>
                       {/* Reordering buttons group */}
-                      <div className='mr-3 flex items-center gap-3 border-r pr-3'>
+                      <div className='mr-3 flex items-center gap-2 border-r pr-3'>
                         <ActionButton
                           variant={ButtonVariant.BLANK}
                           onClick={() => moveSessionUp(index)}

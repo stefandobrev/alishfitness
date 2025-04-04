@@ -41,11 +41,11 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
   };
 
   return (
-    <div className='flex flex-wrap gap-2'>
+    <div className='flex flex-wrap gap-[0.4rem] md:justify-between'>
       {sessions?.map((session, sessionIndex) => (
         <div
           key={session.tempId}
-          className='w-full rounded-lg border p-4 shadow-sm lg:w-[calc(50%-0.5rem)]'
+          className='w-full rounded-lg border p-4 shadow-sm xl:w-[calc(50%-0.2rem)]'
         >
           <div className='space-y-3'>
             <div className='flex items-start'>

@@ -54,7 +54,7 @@ export const ProgramActivationBar = () => {
       <div className='mt-6'>
         <form onSubmit={handleSubmit(onSubmit)}>
           <SubmitButton className='w-full md:w-auto'>
-            Create New Program
+            Create new program
           </SubmitButton>
         </form>
       </div>
