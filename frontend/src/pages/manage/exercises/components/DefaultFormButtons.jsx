@@ -1,4 +1,8 @@
-import { ActionButton, ButtonVariant } from '../../../../components/buttons';
+import {
+  ActionButton,
+  ButtonVariant,
+  SubmitButton,
+} from '../../../../components/buttons';
 
 // For large screens - all buttons in one row, not sticky
 export const MdScreenButtons = ({
@@ -9,7 +13,7 @@ export const MdScreenButtons = ({
   handleViewButton,
 }) => (
   <div className='mt-4 flex flex-row justify-center gap-2 bg-white py-2'>
-    <ActionButton
+    <SubmitButton
       disabled={
         mode === 'edit' ? !hasChanges || areUrlsInvalid : areUrlsInvalid
       }
@@ -17,7 +21,7 @@ export const MdScreenButtons = ({
       className='w-auto'
     >
       {mode === 'add' ? 'Add exercise' : 'Edit exercise'}
-    </ActionButton>
+    </SubmitButton>
 
     {mode === 'edit' && (
       <>
@@ -51,7 +55,7 @@ export const SmScreenButtons = ({
   <>
     {/* Sticky Save/Add button */}
     <div className='sticky bottom-0 z-10 mt-2 flex justify-center border-t border-gray-200 bg-white py-2'>
-      <ActionButton
+      <SubmitButton
         disabled={
           mode === 'edit' ? !hasChanges || areUrlsInvalid : areUrlsInvalid
         }
@@ -59,7 +63,7 @@ export const SmScreenButtons = ({
         className='w-full'
       >
         {mode === 'add' ? 'Add Exercise' : 'Edit Exercise'}
-      </ActionButton>
+      </SubmitButton>
     </div>
 
     {/* Non-sticky Delete and View buttons */}
