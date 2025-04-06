@@ -35,8 +35,8 @@ export const SessionsPanel = ({
               />
             </div>
           ) : null}
-          <AddSessionButton />
         </div>
+        <AddSessionButton />
 
         <ProgramActivationBar newProgramMode={newProgramMode} />
       </div>
