@@ -5,9 +5,9 @@ import { toast } from 'react-toastify';
 
 import { loginUser } from './helpersLogin';
 import LoginForm from './LoginForm';
-import { setUser } from '../../store/slices/authSlice';
-import { setLoading } from '../../store/slices/loadingSlice';
-import { useTitle } from '../../hooks/useTitle.hook';
+import { setUser } from '@/store/slices/authSlice';
+import { setLoading } from '@/store/slices/loadingSlice';
+import { useTitle } from '@/hooks/useTitle.hook';
 
 export const LoginPage = () => {
   const methods = useForm();

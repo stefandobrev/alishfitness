@@ -1,5 +1,5 @@
-import api from '../../utils/api';
-import { store } from '../../store/store';
+import api from '@/utils/api';
+import { store } from '@/store/store';
 
 export const fetchUserSettings = async () => {
   const response = await api('user/settings/', 'GET');

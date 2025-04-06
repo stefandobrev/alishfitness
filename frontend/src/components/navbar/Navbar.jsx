@@ -1,8 +1,8 @@
 import { useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchProfileData } from '../../store/slices/userSlice';
-import { getNavigation } from '../../config/navigation';
+import { fetchProfileData } from '@/store/slices/userSlice';
+import { getNavigation } from '@/config/navigation';
 import { useNavbarState, useNavbarStyles } from './hooks';
 import {
   MobileMenu,

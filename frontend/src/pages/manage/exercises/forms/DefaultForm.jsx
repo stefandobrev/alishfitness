@@ -6,12 +6,12 @@ import {
   DropdownField,
   DropdownFieldWithTags,
   DynamicTextFieldList,
-} from '../../../../components/inputs';
+} from '@/components/inputs';
 import {
   MdScreenButtons,
   SmScreenButtons,
 } from '../components/DefaultFormButtons';
-import { isMobile } from '../../../../common/constants';
+import { isMobile } from '@/common/constants';
 
 export const DefaultForm = ({
   submittedExerciseData,

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { ActionButton } from '../../../../components/buttons';
+import { ActionButton } from '@/components/buttons';
 
 export const AddSessionButton = () => {
   const [counter, setCounter] = useState(1);

@@ -3,9 +3,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 
 import { fetchMuscleGroups } from './helpersManageExercises';
-import { useTitle } from '../../../hooks/useTitle.hook';
+import { useTitle } from '@/hooks/useTitle.hook';
 import { ExerciseListPanel, FormPanel, AnatomyPanel } from './components';
-import { MobileTabs } from '../../../components/buttons';
+import { MobileTabs } from '@/components/buttons';
 
 export const ManageExercisesPage = () => {
   const methods = useForm();

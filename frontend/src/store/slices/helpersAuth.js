@@ -1,4 +1,4 @@
-import { makeRequest } from '../../utils/api';
+import { makeRequest } from '@/utils/api';
 
 export const refreshAccessToken = async (refreshToken) => {
   try {

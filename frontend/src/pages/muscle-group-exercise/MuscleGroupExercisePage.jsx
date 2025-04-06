@@ -3,10 +3,9 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 import { fetchExercises } from './helpersMuscleGroupExercise';
-import { MobileTabs, MobileTabVariant } from '../../components/buttons';
+import { MobileTabs, MobileTabVariant } from '@/components/buttons';
 import { ExerciseSection, AnatomySection } from './components';
-
-import { useTitle } from '../../hooks/useTitle.hook';
+import { useTitle } from '@/hooks/useTitle.hook';
 
 const INITIAL_OFFSET = 0;
 const ITEMS_PER_PAGE = 6;

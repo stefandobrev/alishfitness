@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout, setTokens } from '../../store/slices/authSlice';
-import api from '../../utils/api';
+import { logout, setTokens } from '@/store/slices/authSlice';
+import api from '@/utils/api';
 
 export const AuthWrapper = ({ children }) => {
   const dispatch = useDispatch();

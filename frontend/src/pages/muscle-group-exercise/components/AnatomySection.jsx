@@ -1,4 +1,4 @@
-import { ToggleableMuscleView } from '../../../components/muscleviews';
+import { ToggleableMuscleView } from '@/components/muscleviews';
 
 export const AnatomySection = ({
   activeTab,

@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import {
   FullBodyMuscleView,
   ToggleableMuscleView,
-} from '../../components/muscleviews';
-import { useTitle } from '../../hooks/useTitle.hook';
+} from '@/components/muscleviews';
+import { useTitle } from '@/hooks/useTitle.hook';
 
 export const ExercisePage = () => {
   const navigate = useNavigate();

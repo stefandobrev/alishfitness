@@ -1,4 +1,4 @@
-import { isMobile } from '../../../../../common/constants';
+import { isMobile } from '@/common/constants';
 
 export const SequenceInput = ({ field }) => {
   return (

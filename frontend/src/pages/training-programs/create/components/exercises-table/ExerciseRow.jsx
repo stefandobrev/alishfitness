@@ -2,7 +2,7 @@ import { useFormContext, Controller } from 'react-hook-form';
 
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-import { ActionButton, ButtonVariant } from '../../../../../components/buttons';
+import { ActionButton, ButtonVariant } from '@/components/buttons';
 import {
   MuscleGroupSelect,
   ExerciseSelect,

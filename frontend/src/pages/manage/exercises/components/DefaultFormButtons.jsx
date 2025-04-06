@@ -2,7 +2,7 @@ import {
   ActionButton,
   ButtonVariant,
   SubmitButton,
-} from '../../../../components/buttons';
+} from '@/components/buttons';
 
 // For large screens - all buttons in one row, not sticky
 export const MdScreenButtons = ({

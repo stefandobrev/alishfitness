@@ -1,4 +1,4 @@
-import { ActionButton, ButtonVariant } from '../../../components/buttons';
+import { ActionButton, ButtonVariant } from '@/components/buttons';
 
 export const PaginationMuscleGroupExercise = ({
   currentPage,

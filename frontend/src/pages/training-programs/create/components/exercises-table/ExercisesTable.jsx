@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { TableHeadLg, useTrainingSetupData } from './';
 import { ExerciseRow, ExerciseMobileRow } from './';
-import { isMobile } from '../../../../../common/constants';
+import { isMobile } from '@/common/constants';
 
 export const ExercisesTable = ({ sessionIndex, session }) => {
   const { setValue, getValues } = useFormContext();

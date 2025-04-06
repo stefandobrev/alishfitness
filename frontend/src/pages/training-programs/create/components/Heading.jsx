@@ -1,4 +1,4 @@
-import { InputField } from '../../../../components/inputs';
+import { InputField } from '@/components/inputs';
 
 export const Heading = ({ newProgramMode, setNewProgramMode }) => {
   const toggleIsNewProgramMode = () => {

@@ -8,8 +8,8 @@ import {
   ArrowDownIcon,
 } from '@heroicons/react/24/outline';
 
-import { getLightColors } from '../../../../common/constants';
-import { ActionButton, ButtonVariant } from '../../../../components/buttons';
+import { getLightColors } from '@/common/constants';
+import { ActionButton, ButtonVariant } from '@/components/buttons';
 
 export const Schedule = ({ activeTab, sessions }) => {
   const [schedule, setSchedule] = useState([]);

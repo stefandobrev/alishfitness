@@ -1,6 +1,6 @@
-import { useScrollVisibility } from '../../../hooks/useScrollVisibility';
+import { useScrollVisibility } from '@/hooks/useScrollVisibility';
 import { Heading, MuscleGrid, PaginationMuscleGroupExercise } from './';
-import { Spinner } from '../../../components/common';
+import { Spinner } from '@/components/common';
 
 export const ExerciseSection = ({
   activeTab,

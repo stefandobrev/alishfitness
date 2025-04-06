@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { InputField, PasswordField } from '../../components/inputs';
-import { SubmitButton } from '../../components/buttons';
+import { InputField, PasswordField } from '@/components/inputs';
+import { SubmitButton } from '@/components/buttons';
 
 const RegistrationForm = ({ registerUser, message }) => {
   const { handleSubmit, watch } = useFormContext();

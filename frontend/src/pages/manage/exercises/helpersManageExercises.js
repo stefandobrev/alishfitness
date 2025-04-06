@@ -1,4 +1,4 @@
-import api from '../../../utils/api';
+import api from '@/utils/api';
 
 export const fetchMuscleGroups = async () => {
   const response = await api('exercises/muscle-groups/', 'GET');

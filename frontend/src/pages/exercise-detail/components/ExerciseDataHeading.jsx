@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
 
-import { ActionButton } from '../../../components/buttons';
+import { ActionButton } from '@/components/buttons';
 
 export const ExerciseDataHeading = ({ exerciseData }) => {
   const isAdmin = useSelector((state) => state.auth.isAdmin);

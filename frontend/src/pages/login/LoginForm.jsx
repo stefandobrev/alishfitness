@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-import { InputField, PasswordField } from '../../components/inputs';
-import { SubmitButton } from '../../components/buttons';
+import { InputField, PasswordField } from '@/components/inputs';
+import { SubmitButton } from '@/components/buttons';
 
 const LoginForm = ({ loginUserData }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);

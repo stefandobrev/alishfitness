@@ -1,4 +1,4 @@
-import { useTitle } from '../../../hooks/useTitle.hook';
+import { useTitle } from '@/hooks/useTitle.hook';
 
 export const ViewAllPage = () => {
   useTitle('All Programs');

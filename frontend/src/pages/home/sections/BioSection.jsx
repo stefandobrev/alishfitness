@@ -1,4 +1,4 @@
-import { ActionButton } from '../../../components/buttons';
+import { ActionButton } from '@/components/buttons';
 
 export const BioSection = () => {
   return (

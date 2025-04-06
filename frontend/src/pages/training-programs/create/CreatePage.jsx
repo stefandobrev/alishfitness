@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { Schedule, SessionsPanel } from './components';
-import { MobileTabs, MobileTabVariant } from '../../../components/buttons';
-import { useTitle } from '../../../hooks/useTitle.hook';
+import { MobileTabs, MobileTabVariant } from '@/components/buttons';
+import { useTitle } from '@/hooks/useTitle.hook';
 
 export const CreatePage = () => {
   const [newProgramMode, setNewProgramMode] = useState(true);

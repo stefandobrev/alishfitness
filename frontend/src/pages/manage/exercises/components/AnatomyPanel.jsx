@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { ToggleableMuscleView } from '../../../../components/muscleviews';
+import { ToggleableMuscleView } from '@/components/muscleviews';
 
 export const AnatomyPanel = ({ activeTab, methods }) => {
   const [muscleSelection, setMuscleSelection] = useState({

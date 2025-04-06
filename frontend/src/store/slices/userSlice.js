@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchUserProfile } from '../../pages/my-profile/helpersMyProfile';
+import { fetchUserProfile } from '@/pages/my-profile/helpersMyProfile';
 
 const initialState = {
   profile: {

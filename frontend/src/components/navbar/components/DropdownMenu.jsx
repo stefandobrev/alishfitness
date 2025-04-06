@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { getNavItemStyles } from '../../../utils/classNames';
+import { getNavItemStyles } from '@/utils/classNames';
 
 export const DropdownMenu = ({ item, currentPath }) => {
   const [isOpen, setIsOpen] = useState(false);

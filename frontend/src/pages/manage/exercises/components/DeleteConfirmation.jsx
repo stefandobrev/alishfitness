@@ -1,6 +1,6 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 
-import { ActionButton, ButtonVariant } from '../../../../components/buttons';
+import { ActionButton, ButtonVariant } from '@/components/buttons';
 
 export const DeleteConfirmation = ({ onClose, onConfirm, title }) => {
   return (

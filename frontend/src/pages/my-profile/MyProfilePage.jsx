@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { updateUserProfile } from './helpersMyProfile';
-import { setLoading } from '../../store/slices/loadingSlice';
-import { fetchProfileData } from '../../store/slices/userSlice';
-import { useTitle } from '../../hooks/useTitle.hook';
+import { setLoading } from '@/store/slices/loadingSlice';
+import { fetchProfileData } from '@/store/slices/userSlice';
+import { useTitle } from '@/hooks/useTitle.hook';
 import { MyProfileForm } from './MyProfileForm';
 
 export const MyProfilePage = () => {

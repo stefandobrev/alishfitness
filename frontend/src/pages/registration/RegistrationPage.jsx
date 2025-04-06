@@ -5,8 +5,8 @@ import { toast } from 'react-toastify';
 
 import { registerUser } from './helpersRegistration';
 import RegistrationForm from './RegistrationForm';
-import userValidationResolver from '../../utils/userValidationResolver';
-import { useTitle } from '../../hooks/useTitle.hook';
+import userValidationResolver from '@/utils/userValidationResolver';
+import { useTitle } from '@/hooks/useTitle.hook';
 
 export const RegistrationPage = () => {
   const [message, setMessage] = useState('');

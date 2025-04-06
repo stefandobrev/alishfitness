@@ -4,7 +4,7 @@ import { useFormContext, Controller } from 'react-hook-form';
 
 import { useTrainingSetupData } from './exercises-table';
 import { DateSelect, UserSelect } from './exercises-table';
-import { SubmitButton } from '../../../../components/buttons';
+import { SubmitButton } from '@/components/buttons';
 
 export const ProgramActivationBar = ({ newProgramMode }) => {
   const { control, handleSubmit } = useFormContext();

@@ -1,4 +1,4 @@
-import api from '../../utils/api';
+import api from '@/utils/api';
 
 export const fetchExercise = async ({ slugMuscleGroup, slugTitle }) => {
   const response = await api(`exercises/${slugMuscleGroup}/${slugTitle}/`);

@@ -1,5 +1,5 @@
 import { MuscleGroup } from '../common';
-import { backMuscleGroupNames } from '../../common/constants';
+import { backMuscleGroupNames } from '@/common/constants';
 
 const BackAnatomy = ({
   onMuscleClick,

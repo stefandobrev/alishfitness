@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { fetchExercise } from './helpersExerciseDetail';
-import { ToggleableMuscleView } from '../../components/muscleviews';
-import { MobileTabs } from '../../components/buttons';
+import { ToggleableMuscleView } from '@/components/muscleviews';
+import { MobileTabs } from '@/components/buttons';
 import {
   AnatomyLegend,
   ExerciseDataHeading,
   ExerciseDataContainer,
 } from './components';
-import { Spinner } from '../../components/common';
-import { useTitle } from '../../hooks/useTitle.hook';
+import { Spinner } from '@/components/common';
+import { useTitle } from '@/hooks/useTitle.hook';
 
 export const ExerciseDetailPage = () => {
   const [exerciseData, setExerciseData] = useState({});

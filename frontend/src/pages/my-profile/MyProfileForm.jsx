@@ -2,8 +2,8 @@ import {
   ActionButton,
   ButtonVariant,
   SubmitButton,
-} from '../../components/buttons';
-import { InputField } from '../../components/inputs';
+} from '@/components/buttons';
+import { InputField } from '@/components/inputs';
 
 export const MyProfileForm = ({ isEditing, setIsEditing, onSubmit }) => {
   return (

@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
-import { getNavMobileItemStyles } from '../../../utils/classNames';
+import { getNavMobileItemStyles } from '@/utils/classNames';
 
 export const MobileMenu = ({
   navigation,

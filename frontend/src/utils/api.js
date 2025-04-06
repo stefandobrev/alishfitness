@@ -1,6 +1,7 @@
-import { logout, setTokens } from '../store/slices/authSlice';
-import { refreshAccessToken } from '../store/slices/helpersAuth';
 import { toast } from 'react-toastify';
+
+import { logout, setTokens } from '@/store/slices/authSlice';
+import { refreshAccessToken } from '@/store/slices/helpersAuth';
 
 let storeInstance = null;
 let isRefreshing = false;
