@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { blacklistToken } from '@/utils/helpersAuth';
+import { blacklistToken } from '@/utils';
 
 const initialState = {
   isAuthenticated: false,

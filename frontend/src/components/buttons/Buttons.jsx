@@ -1,4 +1,4 @@
-import { classNames } from '../../utils/classNames';
+import { classNames } from '@/utils';
 import { ButtonVariant } from './constants';
 
 const baseStyle =

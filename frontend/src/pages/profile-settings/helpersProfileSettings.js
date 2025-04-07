@@ -1,4 +1,4 @@
-import api from '@/utils/api';
+import { api } from '@/utils';
 import { store } from '@/store/store';
 
 export const fetchUserSettings = async () => {

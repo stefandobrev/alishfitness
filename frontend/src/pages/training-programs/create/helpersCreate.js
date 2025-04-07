@@ -1,4 +1,4 @@
-import api from '@/utils/api';
+import { api } from '@/utils';
 
 export const fetchTrainingSetupData = async () => {
   const response = await api('/training-programs/training-setup-data', 'GET');

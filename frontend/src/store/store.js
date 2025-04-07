@@ -13,9 +13,7 @@ import storage from 'redux-persist/lib/storage';
 import { initializeStore } from '../utils/api';
 
 // Import reducers first
-import authReducer from './slices/authSlice';
-import loadingReducer from './slices/loadingSlice';
-import userReducer from './slices/userSlice';
+import { authReducer, loadingReducer, userReducer } from './slices';
 
 // Then configure persist
 const persistConfigAuth = {

@@ -1,6 +1,6 @@
-import { classNames } from '../../utils/classNames';
+import { classNames } from '@/utils';
 
-import { useScrollVisibility } from '../../hooks/useScrollVisibility';
+import { useScrollVisibility } from '@/hooks/useScrollVisibility';
 import { MobileTabVariant } from './constants';
 
 export const MobileTabs = ({

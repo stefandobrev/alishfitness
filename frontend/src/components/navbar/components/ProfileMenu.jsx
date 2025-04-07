@@ -5,7 +5,7 @@ import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
 
 import { logoutWithBlacklist } from '@/store/slices/authSlice';
 import { profileMenuItems } from '@/config/navigation';
-import { getNavMobileItemStyles } from '@/utils/classNames';
+import { getNavMobileItemStyles } from '@/utils';
 import { isMobile } from '@/common/constants';
 
 export const ProfileMenu = ({ isOpen, setIsOpen }) => {

@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import Navbar from '../components/navbar/Navbar';
-import { Spinner, Toast } from '../components/common';
+import Navbar from '@/components/navbar/Navbar';
+import { Spinner, Toast } from '@/components/common';
 
 const MainLayout = () => {
   const isLoading = useSelector((state) => state.loading.loading);

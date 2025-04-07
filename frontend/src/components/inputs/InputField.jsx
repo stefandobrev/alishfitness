@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@/utils';
 
 export const InputField = ({
   label,

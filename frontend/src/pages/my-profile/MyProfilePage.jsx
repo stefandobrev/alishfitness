@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { updateUserProfile } from './helpersMyProfile';
-import { fetchProfileData } from '@/store/actions/userActions';
+import { fetchProfileData } from '@/store/actions';
 import { useTitle } from '@/hooks/useTitle.hook';
 import { MyProfileForm } from './MyProfileForm';
 import { zodResolver } from '@hookform/resolvers/zod';
