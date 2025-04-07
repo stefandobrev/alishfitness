@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchUserProfile } from '@/pages/my-profile/helpersMyProfile';
 
 const initialState = {
   profile: {
@@ -20,11 +19,6 @@ const userSlice = createSlice({
     },
   },
 });
-
-export const fetchProfileData = () => async (dispatch) => {
-  const profile = await fetchUserProfile();
-  dispatch(setProfile(profile));
-};
 
 export const { setProfile, clearProfile } = userSlice.actions;
 export default userSlice.reducer;

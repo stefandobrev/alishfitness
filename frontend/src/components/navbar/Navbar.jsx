@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchProfileData } from '@/store/slices/userSlice';
+import { fetchProfileData } from '@/store/actions/userActions';
 import { getNavigation } from '@/config/navigation';
 import { useNavbarState, useNavbarStyles } from './hooks';
 import {
