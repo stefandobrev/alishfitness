@@ -1,8 +1,12 @@
 import api from '../../utils/api';
 
 export const loginUser = async (userData) => {
+  const transformedData = {
+    login_username: userData.loginUsername,
+    login_password: userData.loginPassword,
+  };
   try {
-    const response = await api('user/login/', 'POST', userData);
+    const response = await api('user/login/', 'POST', transformedData);
 
     if (!response.ok) {
       const errorData = await response.json();

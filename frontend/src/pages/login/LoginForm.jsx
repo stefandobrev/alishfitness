@@ -7,7 +7,7 @@ import { SubmitButton } from '@/components/buttons';
 
 const LoginForm = ({ loginUserData }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const { handleSubmit, register } = useFormContext();
+  const { handleSubmit } = useFormContext();
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -15,15 +15,10 @@ const LoginForm = ({ loginUserData }) => {
 
   return (
     <form onSubmit={handleSubmit(loginUserData)} className='space-y-3'>
-      <InputField
-        label='Username'
-        id='login_username'
-        registration={register('login_username')}
-      />
+      <InputField label='Username' id='loginUsername' />
       <PasswordField
         label='Password'
-        id='login_password'
-        registration={register('login_password')}
+        id='loginPassword'
         isPasswordVisible={isPasswordVisible}
         togglePasswordVisibility={togglePasswordVisibility}
       />

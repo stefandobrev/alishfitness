@@ -1,23 +1,26 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 
+import registrationSchema from '@/schemas/registrationSchema';
 import { registerUser } from './helpersRegistration';
 import RegistrationForm from './RegistrationForm';
-import userValidationResolver from '@/utils/userValidationResolver';
+
 import { useTitle } from '@/hooks/useTitle.hook';
 
 export const RegistrationPage = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
   const methods = useForm({
-    resolver: userValidationResolver,
-    context: 'registration',
+    resolver: zodResolver(registrationSchema),
   });
   useTitle('Create Profile');
 
   const onSubmit = async (userData) => {
+    console.log('Habibi');
     const { type, text } = await registerUser(userData);
 
     if (type === 'error') {

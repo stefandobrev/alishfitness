@@ -5,14 +5,11 @@ import { InputField, PasswordField } from '@/components/inputs';
 import { SubmitButton } from '@/components/buttons';
 
 const RegistrationForm = ({ registerUser, message }) => {
-  const { handleSubmit, watch } = useFormContext();
+  const {
+    handleSubmit,
+    formState: { errors },
+  } = useFormContext();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-  const password = watch('password');
-  const confirm_password = watch('confirm_password');
-
-  const isPasswordInvalid =
-    password && confirm_password && password !== confirm_password;
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -20,8 +17,8 @@ const RegistrationForm = ({ registerUser, message }) => {
 
   return (
     <form onSubmit={handleSubmit(registerUser)} className='space-y-4'>
-      <InputField label='First Name' id='first_name' />
-      <InputField label='Last Name' id='last_name' />
+      <InputField label='First Name' id='firstName' />
+      <InputField label='Last Name' id='lastName' />
       <InputField label='Username' id='username' />
       <InputField label='Email' id='email' />
       <PasswordField
@@ -32,19 +29,17 @@ const RegistrationForm = ({ registerUser, message }) => {
       />
       <PasswordField
         label='Confirm Password'
-        id='confirm_password'
+        id='confirmPassword'
         isPasswordVisible={isPasswordVisible}
         togglePasswordVisibility={togglePasswordVisibility}
       />
 
-      {isPasswordInvalid && (
-        <p className='text-red-500'>Passwords don't match!</p>
-      )}
-
       {message && <p className={'text-red-500'}>{message.text}</p>}
 
       <div className='flex justify-center'>
-        <SubmitButton disabled={isPasswordInvalid}>Create User</SubmitButton>
+        <SubmitButton disabled={Object.keys(errors).length > 0}>
+          Create User
+        </SubmitButton>
       </div>
     </form>
   );
