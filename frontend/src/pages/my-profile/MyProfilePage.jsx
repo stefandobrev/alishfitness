@@ -1,20 +1,27 @@
 import { useState, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { toast } from 'react-toastify';
 
 import { updateUserProfile } from './helpersMyProfile';
-import { setLoading } from '@/store/slices/loadingSlice';
 import { fetchProfileData } from '@/store/slices/userSlice';
 import { useTitle } from '@/hooks/useTitle.hook';
 import { MyProfileForm } from './MyProfileForm';
+import { zodResolver } from '@hookform/resolvers/zod';
+import myProfileSchema from '@/schemas/myProfileSchema';
+import { Spinner } from '@/components/common';
 
 export const MyProfilePage = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const profile = useSelector((state) => state.user.profile);
-  const methods = useForm();
+  const methods = useForm({
+    resolver: zodResolver(myProfileSchema),
+  });
   const { handleSubmit, reset } = methods;
-  const [isEditing, setIsEditing] = useState(false);
+
   useTitle('Edit Profile');
 
   useEffect(() => {
@@ -22,12 +29,17 @@ export const MyProfilePage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    reset(profile);
+    if (profile) {
+      reset({
+        firstName: profile.first_name,
+        lastName: profile.last_name,
+      });
+    }
   }, [profile, reset, isEditing]);
 
   const handleSave = async (profileData) => {
     try {
-      dispatch(setLoading(true));
+      setIsLoading(true);
       await updateUserProfile(profileData);
       dispatch(fetchProfileData());
       setIsEditing(false);
@@ -35,22 +47,28 @@ export const MyProfilePage = () => {
     } catch (error) {
       toast.error('Failed to update profile.');
     } finally {
-      dispatch(setLoading(false));
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className='flex h-[calc(100vh-108px)] items-center justify-center'>
-      <div className='w-full max-w-xs'>
-        <h1 className='mb-4 text-2xl font-semibold'>My Profile</h1>
-        <FormProvider {...methods}>
-          <MyProfileForm
-            isEditing={isEditing}
-            setIsEditing={setIsEditing}
-            onSubmit={handleSubmit(handleSave)}
-          />
-        </FormProvider>
-      </div>
-    </div>
+    <>
+      {isLoading ? (
+        <Spinner loading={isLoading} className='min-h-[70vh]' />
+      ) : (
+        <div className='flex h-[calc(100vh-108px)] items-center justify-center'>
+          <div className='w-full max-w-xs'>
+            <h1 className='mb-4 text-2xl font-semibold'>My Profile</h1>
+            <FormProvider {...methods}>
+              <MyProfileForm
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
+                onSubmit={handleSubmit(handleSave)}
+              />
+            </FormProvider>
+          </div>
+        </div>
+      )}
+    </>
   );
 };

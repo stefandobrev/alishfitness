@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,16 +16,17 @@ import { Spinner } from '@/components/common';
 import { useTitle } from '@/hooks/useTitle.hook';
 
 export const ProfileSettingsPage = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [settings, setSettings] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
   const methods = useForm({
     resolver: userValidationResolver,
     context: 'profile',
   });
   const { handleSubmit, reset } = methods;
-  const [isEditing, setIsEditing] = useState(false);
-  const [isChangingPassword, setIsChangingPassword] = useState(false);
+
+  const navigate = useNavigate();
   useTitle('Settings');
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export const ProfileSettingsPage = () => {
 
   const handleSave = async (profileData) => {
     try {
-      dispatch(setLoading(true));
+      setIsLoading(true);
       await updateUserSettings(profileData);
       const updatedSettings = await fetchUserSettings();
       setSettings(updatedSettings);
@@ -54,13 +54,13 @@ export const ProfileSettingsPage = () => {
     } catch (error) {
       toast.error('Failed to update profile.');
     } finally {
-      dispatch(setLoading(false));
+      setIsLoading(false);
     }
   };
 
   const handlePasswordSave = async (passwordData) => {
     try {
-      dispatch(setLoading(true));
+      setLoading(true);
       await updateUserPassword(passwordData);
       dispatch(logoutWithBlacklist());
       navigate('/login');
@@ -74,15 +74,13 @@ export const ProfileSettingsPage = () => {
       toast.error(errorMessage);
       return;
     } finally {
-      dispatch(setLoading(false));
+      setLoading(false);
     }
   };
 
   const handlePasswordChange = () => {
     setIsChangingPassword(true);
   };
-
-  const isLoading = Object.keys(settings).length === 0;
 
   return (
     <>

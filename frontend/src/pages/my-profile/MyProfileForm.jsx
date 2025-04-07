@@ -9,12 +9,12 @@ export const MyProfileForm = ({ isEditing, setIsEditing, onSubmit }) => {
   return (
     <form onSubmit={onSubmit}>
       <div className='mb-4'>
-        <InputField label='First Name' id='first_name' readOnly={!isEditing} />
+        <InputField label='First Name' id='firstName' readOnly={!isEditing} />
       </div>
       <div className='mb-4'>
         <InputField
           label='Last Name'
-          id='last_name'
+          id='lastName'
           readOnly={!isEditing}
           className='w-15'
         />

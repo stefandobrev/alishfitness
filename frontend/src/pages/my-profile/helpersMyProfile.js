@@ -13,8 +13,12 @@ export const fetchUserProfile = async () => {
 };
 
 export const updateUserProfile = async (profileData) => {
+  const transformedData = {
+    first_name: profileData.firstName,
+    last_name: profileData.lastName,
+  };
   try {
-    const response = await api('user/my-profile/', 'PUT', profileData);
+    const response = await api('user/my-profile/', 'PUT', transformedData);
     if (!response.ok) {
       throw new Error('Failed to update user profile');
     }

@@ -3,8 +3,8 @@ import { fetchUserProfile } from '@/pages/my-profile/helpersMyProfile';
 
 const initialState = {
   profile: {
-    first_name: '',
-    last_name: '',
+    firstName: '',
+    lastName: '',
   },
 };
 
