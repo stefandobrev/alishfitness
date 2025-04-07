@@ -8,6 +8,7 @@ import { useTrainingSetupData } from './exercises-table';
 import { Spinner } from '@/components/common';
 
 export const SessionsPanel = ({
+  onSubmit,
   activeTab,
   sessions,
   onRemoveSession,
@@ -38,7 +39,10 @@ export const SessionsPanel = ({
         </div>
         <AddSessionButton />
 
-        <ProgramActivationBar newProgramMode={newProgramMode} />
+        <ProgramActivationBar
+          onSubmit={onSubmit}
+          newProgramMode={newProgramMode}
+        />
       </div>
     </div>
   );

@@ -14,6 +14,9 @@ export const InputField = ({
     formState: { errors },
   } = useFormContext();
 
+  // for nested errors
+  const error = id.split('.').reduce((acc, key) => acc?.[key], errors);
+
   return (
     <div className='w-full'>
       {label && (
@@ -40,9 +43,9 @@ export const InputField = ({
           {...rest}
         />
       </div>
-      {errors && errors[id] && (
+      {error && (
         <p className='mt-1 text-sm font-medium text-red-500'>
-          {errors[id].message || 'This field is required'}
+          {error.message || 'This field is required'}
         </p>
       )}
     </div>

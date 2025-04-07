@@ -25,6 +25,10 @@ export const CreatePage = () => {
     setActiveTab(tab);
   };
 
+  const onSubmit = async (data) => {
+    console.log({ data });
+  };
+
   const tabs = [
     { label: 'Sessions', value: 'sessions' },
     { label: 'Schedule', value: 'schedule' },
@@ -42,6 +46,7 @@ export const CreatePage = () => {
       <FormProvider {...methods}>
         <div className='flex w-full flex-col lg:flex-row'>
           <SessionsPanel
+            onSubmit={onSubmit}
             activeTab={activeTab}
             sessions={sessions}
             onRemoveSession={handleRemoveSession}

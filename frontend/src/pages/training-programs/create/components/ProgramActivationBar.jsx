@@ -6,16 +6,12 @@ import { useTrainingSetupData } from './exercises-table';
 import { DateSelect, UserSelect } from './exercises-table';
 import { SubmitButton } from '@/components/buttons';
 
-export const ProgramActivationBar = ({ newProgramMode }) => {
+export const ProgramActivationBar = ({ onSubmit, newProgramMode }) => {
   const { control, handleSubmit } = useFormContext();
   const [userSelected, setUserSelected] = useState(false);
   const { usersData } = useTrainingSetupData();
 
   const userOptions = usersData;
-
-  const onSubmit = async (data) => {
-    console.log({ data });
-  };
 
   return (
     <div className='my-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
