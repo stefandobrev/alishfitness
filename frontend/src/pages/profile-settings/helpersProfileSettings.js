@@ -8,13 +8,24 @@ export const fetchUserSettings = async () => {
 };
 
 export const updateUserSettings = async (data) => {
-  return api('user/settings/', 'PUT', data);
+  const transformedData = {
+    email: data.email,
+    username: data.username,
+    password: data.password,
+    confirm_password: data.confirmPassword,
+  };
+  return api('user/settings/', 'PUT', transformedData);
 };
 
 export const updateUserPassword = async (data) => {
+  const transformedData = {
+    current_password: data.currentPassword,
+    new_password: data.newPassword,
+    confirm_password: data.confirmPassword,
+  };
   const refreshToken = store.getState().auth.refreshToken;
   const requestData = {
-    ...data,
+    ...transformedData,
     refresh: refreshToken,
   };
 

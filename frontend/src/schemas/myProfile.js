@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const myProfileSchema = z.object({
+const myProfile = z.object({
   firstName: z
     .string()
     .min(3, 'First name must be at least 3 characters.')
@@ -12,4 +12,4 @@ const myProfileSchema = z.object({
     .nonempty('Last name is required.'),
 });
 
-export default myProfileSchema;
+export default myProfile;

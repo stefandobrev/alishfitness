@@ -9,7 +9,7 @@ import { fetchProfileData } from '@/store/actions';
 import { useTitle } from '@/hooks/useTitle.hook';
 import { MyProfileForm } from './MyProfileForm';
 import { zodResolver } from '@hookform/resolvers/zod';
-import myProfileSchema from '@/schemas/myProfileSchema';
+import myProfile from '@/schemas/myProfile';
 import { Spinner } from '@/components/common';
 
 export const MyProfilePage = () => {
@@ -18,7 +18,7 @@ export const MyProfilePage = () => {
   const dispatch = useDispatch();
   const profile = useSelector((state) => state.user.profile);
   const methods = useForm({
-    resolver: zodResolver(myProfileSchema),
+    resolver: zodResolver(myProfile),
   });
   const { handleSubmit, reset } = methods;
 

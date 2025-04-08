@@ -1,5 +1,5 @@
+import { useState, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
-
 import { InputField, PasswordField } from '@/components/inputs';
 import {
   ActionButton,
@@ -13,70 +13,80 @@ export const SettingsForm = ({
   onSubmit,
   onPasswordChange,
 }) => {
-  const { watch } = useFormContext();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const {
+    formState: { errors },
+  } = useFormContext();
 
-  const password = watch('password');
-  const confirm_password = watch('confirm_password');
+  const togglePasswordVisibility = () => setIsPasswordVisible((v) => !v);
 
-  const isPasswordInvalid = () => {
-    return password && confirm_password && password !== confirm_password;
-  };
+  const handleCancel = () => setIsEditing(false);
+
+  const handleEdit = () => setIsEditing(true);
+
+  const handlePasswordClick = useCallback(
+    (e) => {
+      e.preventDefault();
+      onPasswordChange?.();
+    },
+    [onPasswordChange],
+  );
 
   return (
     <form onSubmit={onSubmit}>
-      <>
-        <div className='mb-4'>
-          <InputField label='Email' id='email' readOnly={!isEditing} />
-        </div>
-        <div className='mb-4'>
-          <InputField label='Username' id='username' readOnly={!isEditing} />
-        </div>
-        {isEditing && (
-          <>
-            <div className='mb-4'>
-              <PasswordField label='Password' id='password' />
-            </div>
-            <div className='mb-4'>
-              <PasswordField label='Confirm Password' id='confirm_password' />
-            </div>
+      <div className='mb-4'>
+        <InputField label='Email' id='email' readOnly={!isEditing} />
+      </div>
+      <div className='mb-4'>
+        <InputField label='Username' id='username' readOnly={!isEditing} />
+      </div>
 
-            {/* Password feedback */}
-            {isPasswordInvalid() && (
-              <p className='text-red-500'>Passwords don't match!</p>
-            )}
+      {isEditing && (
+        <>
+          <div className='mb-4'>
+            <PasswordField
+              label='Password'
+              id='password'
+              isPasswordVisible={isPasswordVisible}
+              togglePasswordVisibility={togglePasswordVisibility}
+            />
+          </div>
+          <div className='mb-4'>
+            <PasswordField
+              label='Confirm Password'
+              id='confirmPassword'
+              isPasswordVisible={isPasswordVisible}
+              togglePasswordVisibility={togglePasswordVisibility}
+            />
+          </div>
+        </>
+      )}
+
+      <div className='flex space-x-4'>
+        {isEditing ? (
+          <>
+            <SubmitButton disabled={Object.keys(errors).length > 0}>
+              Save
+            </SubmitButton>
+            <ActionButton
+              variant={ButtonVariant.GRAY_DARK}
+              onClick={handleCancel}
+            >
+              Cancel
+            </ActionButton>
+          </>
+        ) : (
+          <>
+            <ActionButton onClick={handleEdit}>Edit</ActionButton>
+            <ActionButton
+              variant={ButtonVariant.GRAY_DARK}
+              onClick={handlePasswordClick}
+            >
+              Change Password
+            </ActionButton>
           </>
         )}
-        <div className='flex space-x-4'>
-          {isEditing ? (
-            <>
-              <SubmitButton disabled={isPasswordInvalid()}>Save</SubmitButton>
-              <ActionButton
-                variant={ButtonVariant.GRAY_DARK}
-                onClick={() => setIsEditing(false)}
-              >
-                Cancel
-              </ActionButton>
-            </>
-          ) : (
-            <>
-              <ActionButton onClick={() => setIsEditing(true)}>
-                Edit
-              </ActionButton>
-              <ActionButton
-                variant={ButtonVariant.GRAY_DARK}
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (onPasswordChange) {
-                    onPasswordChange();
-                  }
-                }}
-              >
-                Change Password
-              </ActionButton>
-            </>
-          )}
-        </div>
-      </>
+      </div>
     </form>
   );
 };

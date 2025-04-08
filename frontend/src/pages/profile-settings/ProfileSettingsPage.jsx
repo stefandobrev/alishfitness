@@ -4,57 +4,45 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   fetchUserSettings,
   updateUserSettings,
   updateUserPassword,
 } from './helpersProfileSettings';
+import profileSettings from '@/schemas/profileSettings';
+import passwordForm from '@/schemas/passwordForm';
 import { logoutWithBlacklist } from '@/store/slices/authSlice';
 import { PasswordForm, SettingsForm } from './forms';
-import userValidationResolver from '@/utils/userValidationResolver';
 import { Spinner } from '@/components/common';
 import { useTitle } from '@/hooks/useTitle.hook';
 
 export const ProfileSettingsPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [settings, setSettings] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
-  const methods = useForm({
-    resolver: userValidationResolver,
-    context: 'profile',
-  });
-  const { handleSubmit, reset } = methods;
-  const dispatch = useDispatch();
 
+  const settingsFormMethods = useForm({
+    resolver: zodResolver(profileSettings),
+  });
+  const passwordFormMethods = useForm({
+    resolver: zodResolver(passwordForm),
+  });
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   useTitle('Settings');
 
-  useEffect(() => {
-    const getUserSettings = async () => {
-      setIsLoading(true);
-      try {
-        const userSettings = await fetchUserSettings();
-        setSettings(userSettings);
-        reset(userSettings);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // Handles both canceling password change
+  // and entering into password change mode from within settings)
+  const togglePasswordChange = () => {
+    setIsChangingPassword((prev) => !prev);
+  };
 
-    getUserSettings();
-  }, [reset]);
-
-  useEffect(() => {
-    reset(settings);
-  }, [isEditing, reset, settings]);
-
-  const handleSave = async (profileData) => {
+  const handleSettingsSave = async (profileData) => {
     try {
       setIsLoading(true);
       await updateUserSettings(profileData);
-      const updatedSettings = await fetchUserSettings();
-      setSettings(updatedSettings);
       setIsEditing(false);
       toast.success('Settings updated successfully!');
     } catch (error) {
@@ -70,23 +58,29 @@ export const ProfileSettingsPage = () => {
       await updateUserPassword(passwordData);
       dispatch(logoutWithBlacklist());
       navigate('/login');
-      toast.success('Password updated successfully. Please log in again.');
+      toast.success('Password updated. Please log in again.');
     } catch (error) {
       const errorMessages = Object.values(error.response || {}).flat();
-      const errorMessage =
-        errorMessages.length > 0
-          ? errorMessages[0]
-          : 'Failed to update password';
-      toast.error(errorMessage);
-      return;
+      toast.error(errorMessages[0] || 'Failed to update password');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handlePasswordChange = () => {
-    setIsChangingPassword(true);
-  };
+  // Fetch settings on mount
+  useEffect(() => {
+    const loadSettings = async () => {
+      setIsLoading(true);
+      try {
+        const userSettings = await fetchUserSettings();
+
+        settingsFormMethods.reset(userSettings);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadSettings();
+  }, [settingsFormMethods.reset]);
 
   return (
     <>
@@ -96,24 +90,28 @@ export const ProfileSettingsPage = () => {
         <div className='flex h-[calc(100vh-108px)] items-center justify-center'>
           <div className='w-full max-w-xs'>
             <h1 className='mb-4 text-2xl font-semibold'>Profile Settings</h1>
-            <FormProvider {...methods}>
-              {isChangingPassword ? (
+
+            {isChangingPassword ? (
+              <FormProvider {...passwordFormMethods}>
                 <PasswordForm
-                  onSubmit={handleSubmit(handlePasswordSave)}
-                  onCancel={() => {
-                    setIsChangingPassword(false);
-                    reset(settings);
-                  }}
+                  onSubmit={passwordFormMethods.handleSubmit(
+                    handlePasswordSave,
+                  )}
+                  onCancel={togglePasswordChange}
                 />
-              ) : (
+              </FormProvider>
+            ) : (
+              <FormProvider {...settingsFormMethods}>
                 <SettingsForm
                   isEditing={isEditing}
                   setIsEditing={setIsEditing}
-                  onSubmit={handleSubmit(handleSave)}
-                  onPasswordChange={handlePasswordChange}
+                  onSubmit={settingsFormMethods.handleSubmit(
+                    handleSettingsSave,
+                  )}
+                  onPasswordChange={togglePasswordChange}
                 />
-              )}
-            </FormProvider>
+              </FormProvider>
+            )}
           </div>
         </div>
       )}

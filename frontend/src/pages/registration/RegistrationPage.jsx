@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 
-import registrationSchema from '@/schemas/registrationSchema';
+import registration from '@/schemas/registration';
 import { registerUser } from './helpersRegistration';
 import RegistrationForm from './RegistrationForm';
 
@@ -15,7 +15,7 @@ export const RegistrationPage = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
   const methods = useForm({
-    resolver: zodResolver(registrationSchema),
+    resolver: zodResolver(registration),
   });
   useTitle('Create Profile');
 

@@ -1,26 +1,16 @@
 import { z } from 'zod';
 
-const registrationSchema = z
+const profileSettings = z
   .object({
-    firstName: z
+    email: z
       .string()
-      .min(3, 'First name must be at least 3 characters.')
-      .nonempty('First name is required.'),
-
-    lastName: z
-      .string()
-      .min(3, 'Last name must be at least 3 characters.')
-      .nonempty('Last name is required.'),
+      .email('Invalid email address.')
+      .nonempty('Email is required.'),
 
     username: z
       .string()
       .min(3, 'Username must be at least 3 characters long.')
       .nonempty('Username is required.'),
-
-    email: z
-      .string()
-      .email('Invalid email address.')
-      .nonempty('Email is required.'),
 
     password: z
       .string()
@@ -38,4 +28,4 @@ const registrationSchema = z
     }
   });
 
-export default registrationSchema;
+export default profileSettings;
