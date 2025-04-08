@@ -5,5 +5,6 @@ export {
   getNavItemStyles,
   getNavMobileItemStyles,
 } from './classNames';
+export { getChangedFields } from './formHelpers';
 
 export { default as api } from './api';

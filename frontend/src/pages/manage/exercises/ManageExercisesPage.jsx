@@ -2,19 +2,30 @@ import { useState, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 
-import { fetchMuscleGroups } from './helpersManageExercises';
+import {
+  fetchMuscleGroups,
+  fetchExerciseData,
+  saveExercise,
+  deleteExercise,
+} from './helpersManageExercises';
 import { useTitle } from '@/hooks/useTitle.hook';
 import { ExerciseListPanel, FormPanel, AnatomyPanel } from './components';
 import { MobileTabs } from '@/components/buttons';
+import { getChangedFields } from '@/utils';
+import { toast } from 'react-toastify';
 
 export const ManageExercisesPage = () => {
   const methods = useForm();
   const location = useLocation();
   const [mode, setMode] = useState('add');
+  const [message, setMessage] = useState('');
   const [selectedExercise, setSelectedExercise] = useState(null);
+  const [exerciseData, setExerciseData] = useState(null);
   const [muscleGroups, setMuscleGroups] = useState([]);
   const [refreshTitleListKey, setRefreshTitleListKey] = useState(0);
   const [activeTab, setActiveTab] = useState('form');
+  const [isLoading, setIsLoading] = useState(false);
+  const { reset } = methods;
   useTitle('Manage');
 
   useEffect(() => {
@@ -31,17 +42,99 @@ export const ManageExercisesPage = () => {
   }, []);
 
   useEffect(() => {
+    const loadExerciseData = async () => {
+      if (!selectedExercise) {
+        setExerciseData(null);
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const data = await fetchExerciseData(selectedExercise);
+        setExerciseData(data);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadExerciseData();
+  }, [selectedExercise]);
+
+  useEffect(() => {
     if (location.state?.exerciseId) {
       handleSelectExercise(location.state.exerciseId);
     }
   }, [location.state]);
+
+  const onSubmitNewExercise = async (submittedExerciseData) => {
+    setIsLoading(true);
+    try {
+      const response = await saveExercise(submittedExerciseData);
+      const { type, text } = response;
+
+      if (type === 'error') {
+        setMessage({ type, text });
+        return;
+      }
+
+      if (type === 'success') {
+        toast.success(text);
+        triggerRefresh();
+        reset({
+          steps: [],
+          mistakes: [],
+        });
+        setMessage('');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onSubmitEditExercise = async (submittedExerciseData) => {
+    const changedData = getChangedFields(exerciseData, submittedExerciseData);
+    const response = await saveExercise(changedData, selectedExercise);
+    const { type, text } = response;
+
+    if (type === 'error') {
+      toast.error(text);
+      setMessage({ type, text });
+      return;
+    }
+
+    if (type === 'success') {
+      toast.success(text);
+      triggerRefresh();
+      setMessage('');
+
+      const updatedData = await fetchExerciseData(selectedExercise);
+      setExerciseData(updatedData);
+    }
+  };
+
+  const handleDeleteConfirm = async () => {
+    const response = await deleteExercise(selectedExercise);
+    const { type, text } = response;
+
+    if (type === 'error') {
+      toast.error(text);
+      setMessage({ type, text });
+      return;
+    }
+
+    if (type === 'success') {
+      toast.success(text);
+      triggerRefresh();
+      launchAddMode();
+    }
+  };
 
   const triggerRefresh = () => setRefreshTitleListKey((prev) => prev + 1);
 
   const launchAddMode = () => {
     setMode('add');
     setSelectedExercise(null);
-    methods.reset();
+    reset();
   };
 
   const handleSelectExercise = (exerciseId) => {
@@ -80,10 +173,15 @@ export const ManageExercisesPage = () => {
           <FormPanel
             activeTab={activeTab}
             mode={mode}
+            isLoading={isLoading}
             muscleGroups={muscleGroups}
-            selectedExercise={selectedExercise}
+            exerciseData={exerciseData}
             onExerciseChange={triggerRefresh}
             onAddNew={launchAddMode}
+            submittedNewExerciseData={onSubmitNewExercise}
+            submittedEditExerciseData={onSubmitEditExercise}
+            handleDeleteConfirm={handleDeleteConfirm}
+            message={message}
           />
 
           <AnatomyPanel activeTab={activeTab} methods={methods} />

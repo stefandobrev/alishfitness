@@ -1,66 +1,27 @@
 import { useState, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 import { DefaultForm } from './';
-import {
-  saveExercise,
-  fetchExerciseData,
-  deleteExercise,
-} from '../helpersManageExercises';
 import { ActionButton } from '@/components/buttons';
+import { getChangedFields } from '@/utils';
 import { DeleteConfirmation } from '../components/DeleteConfirmation';
 import { Spinner } from '@/components/common';
 
 export const EditForm = ({
   muscleGroups,
-  exerciseId,
-  onExerciseUpdated,
+  exerciseData,
+  isLoading,
   mode,
   launchAddMode,
+  submittedEditExerciseData,
+  handleDeleteConfirm,
+  message,
 }) => {
-  const [message, setMessage] = useState('');
-  const [exerciseData, setExerciseData] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { watch } = useFormContext();
-
-  useEffect(() => {
-    const loadExerciseData = async () => {
-      setIsLoading(true);
-
-      try {
-        const exerciseData = await fetchExerciseData(exerciseId);
-        setExerciseData(exerciseData);
-      } catch (error) {
-        console.log('Error loading exercise:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadExerciseData();
-  }, [exerciseId]);
-
-  const getChangedFields = (initData, updatedData) => {
-    const changedFields = {};
-    for (const key in initData) {
-      if (Array.isArray(initData[key]) && Array.isArray(updatedData[key])) {
-        if (
-          initData[key].length !== updatedData[key].length ||
-          !initData[key].every((val, index) => val === updatedData[key][index])
-        ) {
-          changedFields[key] = updatedData[key];
-        }
-      } else if (initData[key] !== updatedData[key]) {
-        changedFields[key] = updatedData[key];
-      }
-    }
-    return changedFields;
-  };
 
   useEffect(() => {
     if (!exerciseData) return;
@@ -70,50 +31,12 @@ export const EditForm = ({
     setHasChanges(Object.keys(changedData).length > 0);
   }, [watch(), exerciseData]);
 
-  const onSubmit = async (submittedExerciseData) => {
-    const changedData = getChangedFields(exerciseData, submittedExerciseData);
-    const response = await saveExercise(changedData, exerciseId);
-    const { type, text } = response;
-
-    if (type === 'error') {
-      toast.error(text);
-      setMessage({ type, text });
-      return;
-    }
-
-    if (type === 'success') {
-      toast.success(text);
-      onExerciseUpdated();
-      setMessage(null);
-
-      const updatedData = await fetchExerciseData(exerciseId);
-      setExerciseData(updatedData);
-    }
-  };
-
   const handleDelete = () => {
     setIsDeleteDialogOpen(true);
   };
 
   const handleView = () => {
     navigate(`/exercises/${exerciseData.primary_group}/${exerciseData.slug}`);
-  };
-
-  const handleDeleteConfirm = async () => {
-    const response = await deleteExercise(exerciseId);
-    const { type, text } = response;
-
-    if (type === 'error') {
-      toast.error(text);
-      setMessage({ type, text });
-      return;
-    }
-
-    if (type === 'success') {
-      toast.success(text);
-      onExerciseUpdated();
-      launchAddMode();
-    }
   };
 
   const editFormTitle = (
@@ -131,7 +54,7 @@ export const EditForm = ({
         <Spinner loading={isLoading} className='min-h-[70vh]' />
       ) : (
         <DefaultForm
-          submittedExerciseData={onSubmit}
+          submittedExerciseData={submittedEditExerciseData}
           muscleGroups={muscleGroups}
           message={message}
           mode={mode}

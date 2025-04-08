@@ -3,10 +3,14 @@ import { AddForm, EditForm } from '../forms';
 export const FormPanel = ({
   activeTab,
   mode,
+  isLoading,
   muscleGroups,
-  selectedExercise,
-  onExerciseChange,
+  exerciseData,
   onAddNew,
+  submittedNewExerciseData,
+  submittedEditExerciseData,
+  handleDeleteConfirm,
+  message,
 }) => {
   return (
     <div
@@ -17,15 +21,20 @@ export const FormPanel = ({
       {mode === 'add' ? (
         <AddForm
           muscleGroups={muscleGroups}
-          onExerciseAdded={onExerciseChange}
+          submittedNewExerciseData={submittedNewExerciseData}
+          isLoading={isLoading}
+          message={message}
         />
       ) : (
         <EditForm
           muscleGroups={muscleGroups}
-          exerciseId={selectedExercise}
-          onExerciseUpdated={onExerciseChange}
+          submittedEditExerciseData={submittedEditExerciseData}
+          exerciseData={exerciseData}
+          isLoading={isLoading}
           mode={mode}
           launchAddMode={onAddNew}
+          handleDeleteConfirm={handleDeleteConfirm}
+          message={message}
         />
       )}
     </div>
