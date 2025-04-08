@@ -25,7 +25,16 @@ export const MyProfilePage = () => {
   useTitle('Edit Profile');
 
   useEffect(() => {
-    dispatch(fetchProfileData());
+    const loadProfile = async () => {
+      setIsLoading(true);
+      try {
+        dispatch(fetchProfileData());
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProfile();
   }, [dispatch]);
 
   useEffect(() => {

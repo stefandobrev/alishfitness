@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import {
   fetchUserSettings,
   updateUserSettings,
   updateUserPassword,
 } from './helpersProfileSettings';
-import { setLoading } from '@/store/slices/loadingSlice';
 import { logoutWithBlacklist } from '@/store/slices/authSlice';
 import { PasswordForm, SettingsForm } from './forms';
 import userValidationResolver from '@/utils/userValidationResolver';
@@ -25,15 +25,21 @@ export const ProfileSettingsPage = () => {
     context: 'profile',
   });
   const { handleSubmit, reset } = methods;
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
   useTitle('Settings');
 
   useEffect(() => {
     const getUserSettings = async () => {
-      const userSettings = await fetchUserSettings();
-      setSettings(userSettings);
-      reset(userSettings);
+      setIsLoading(true);
+      try {
+        const userSettings = await fetchUserSettings();
+        setSettings(userSettings);
+        reset(userSettings);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     getUserSettings();
@@ -60,7 +66,7 @@ export const ProfileSettingsPage = () => {
 
   const handlePasswordSave = async (passwordData) => {
     try {
-      setLoading(true);
+      setIsLoading(true);
       await updateUserPassword(passwordData);
       dispatch(logoutWithBlacklist());
       navigate('/login');
@@ -74,7 +80,7 @@ export const ProfileSettingsPage = () => {
       toast.error(errorMessage);
       return;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 

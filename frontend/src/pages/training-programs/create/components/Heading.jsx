@@ -16,7 +16,7 @@ export const Heading = ({ newProgramMode, setNewProgramMode }) => {
           <InputField label='Name' id='programName' />
         </div>
 
-        <label class='mt-4 inline-flex cursor-pointer items-center md:mt-0'>
+        <label className='mt-4 inline-flex cursor-pointer items-center md:mt-0'>
           <div className='flex gap-2'>
             <span class='text-m font-semibold text-gray-700 dark:text-gray-200'>
               Template Mode
