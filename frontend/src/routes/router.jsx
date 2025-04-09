@@ -22,7 +22,7 @@ import {
   ExerciseDetailPage,
   MyProgramPage,
   ViewAllPage,
-  CreatePage,
+  CreateProgramPage,
   TemplatesPage,
 } from '../pages';
 
@@ -62,7 +62,10 @@ export const router = createBrowserRouter(
           <Route path='/manage/users' element={<ManageUsersPage />} />
 
           <Route path='/training-programs/view-all' element={<ViewAllPage />} />
-          <Route path='/training-programs/create' element={<CreatePage />} />
+          <Route
+            path='/training-programs/create'
+            element={<CreateProgramPage />}
+          />
           <Route
             path='/training-programs/templates'
             element={<TemplatesPage />}

@@ -1,24 +1,28 @@
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+
 import { Schedule, SessionsPanel } from './components';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
 import { useTitle } from '@/hooks/useTitle.hook';
+import createProgram from '@/schemas/createProgram';
 
-export const CreatePage = () => {
+export const CreateProgramPage = () => {
   const [newProgramMode, setNewProgramMode] = useState(true);
   const [activeTab, setActiveTab] = useState('sessions');
-  const methods = useForm();
+  const methods = useForm({ resolver: zodResolver(createProgram) });
+  const { watch, getValues, reset } = methods;
   useTitle('Create');
 
-  const sessions = methods.watch('sessions');
+  const sessions = watch('sessions');
 
   const handleRemoveSession = (index) => {
-    const currentSessions = methods.getValues('sessions') || [];
+    const currentSessions = getValues('sessions') || [];
     const newSessions = currentSessions.filter((_, i) => i !== index);
 
-    methods.setValue('sessions', newSessions);
-    methods.reset({ ...methods.getValues(), sessions: newSessions });
+    setValue('sessions', newSessions);
+    reset({ ...getValues(), sessions: newSessions });
   };
 
   const handleTabChange = (tab) => {
