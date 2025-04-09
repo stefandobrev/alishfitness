@@ -16,7 +16,7 @@ const profileSettings = z
       .string()
       .min(8, 'Password must be at least 8 characters long.')
       .nonempty('Password is required.'),
-    confirmPassword: z.string().nonempty('Confirm password is required.'),
+    confirmPassword: z.string(),
   })
   .superRefine(({ password, confirmPassword }, ctx) => {
     if (password !== confirmPassword) {

@@ -2,31 +2,19 @@ import { z } from 'zod';
 
 const registration = z
   .object({
-    firstName: z
-      .string()
-      .min(3, 'First name must be at least 3 characters.')
-      .nonempty('First name is required.'),
+    firstName: z.string().min(3, 'First name must be at least 3 characters.'),
 
-    lastName: z
-      .string()
-      .min(3, 'Last name must be at least 3 characters.')
-      .nonempty('Last name is required.'),
+    lastName: z.string().min(3, 'Last name must be at least 3 characters.'),
 
-    username: z
-      .string()
-      .min(3, 'Username must be at least 3 characters long.')
-      .nonempty('Username is required.'),
+    username: z.string().min(3, 'Username must be at least 3 characters long.'),
 
     email: z
       .string()
-      .email('Invalid email address.')
-      .nonempty('Email is required.'),
+      .min(1, 'Email is required.')
+      .email('Invalid email address.'),
 
-    password: z
-      .string()
-      .min(8, 'Password must be at least 8 characters long.')
-      .nonempty('Password is required.'),
-    confirmPassword: z.string().nonempty('Confirm password is required.'),
+    password: z.string().min(8, 'Password must be at least 8 characters long.'),
+    confirmPassword: z.string(),
   })
   .superRefine(({ password, confirmPassword }, ctx) => {
     if (password !== confirmPassword) {

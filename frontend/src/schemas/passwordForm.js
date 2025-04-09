@@ -5,9 +5,8 @@ const passwordForm = z
     currentPassword: z.string().nonempty('Current password is required.'),
     newPassword: z
       .string()
-      .min(8, 'Password must be at least 8 characters long.')
-      .nonempty('Password is required.'),
-    confirmPassword: z.string().nonempty('Confirm password is required.'),
+      .min(8, 'Password must be at least 8 characters long.'),
+    confirmPassword: z.string(),
   })
   .superRefine(({ newPassword, currentPassword }, ctx) => {
     if (newPassword === currentPassword) {
