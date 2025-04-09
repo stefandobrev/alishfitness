@@ -1,4 +1,4 @@
-import { api } from '@/utils';
+import { api, camelToSnake } from '@/utils';
 import { store } from '@/store/store';
 
 export const fetchUserSettings = async () => {
@@ -8,21 +8,12 @@ export const fetchUserSettings = async () => {
 };
 
 export const updateUserSettings = async (data) => {
-  const transformedData = {
-    email: data.email,
-    username: data.username,
-    password: data.password,
-    confirm_password: data.confirmPassword,
-  };
+  const transformedData = camelToSnake(data);
   return api('user/settings/', 'PUT', transformedData);
 };
 
 export const updateUserPassword = async (data) => {
-  const transformedData = {
-    current_password: data.currentPassword,
-    new_password: data.newPassword,
-    confirm_password: data.confirmPassword,
-  };
+  const transformedData = camelToSnake(data);
   const refreshToken = store.getState().auth.refreshToken;
   const requestData = {
     ...transformedData,

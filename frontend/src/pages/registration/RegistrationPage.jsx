@@ -20,7 +20,6 @@ export const RegistrationPage = () => {
   useTitle('Create Profile');
 
   const onSubmit = async (userData) => {
-    console.log('Habibi');
     const { type, text } = await registerUser(userData);
 
     if (type === 'error') {

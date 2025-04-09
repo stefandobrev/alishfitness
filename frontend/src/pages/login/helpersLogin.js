@@ -1,10 +1,7 @@
-import { api } from '@/utils';
+import { api, camelToSnake } from '@/utils';
 
 export const loginUser = async (userData) => {
-  const transformedData = {
-    login_username: userData.loginUsername,
-    login_password: userData.loginPassword,
-  };
+  const transformedData = camelToSnake(userData);
   try {
     const response = await api('user/login/', 'POST', transformedData);
 

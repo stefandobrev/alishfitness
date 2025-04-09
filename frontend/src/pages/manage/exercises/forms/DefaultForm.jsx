@@ -28,11 +28,11 @@ export const DefaultForm = ({
   const textAreaRefs = useRef([]);
   const exerciseDataRef = useRef(exerciseData);
 
-  const primaryGroupValue = watch('primary_group');
+  const primaryGroupValue = watch('primaryGroup');
 
   useEffect(() => {
-    if (exerciseDataRef.current?.primary_group !== primaryGroupValue) {
-      setValue('secondary_groups', []);
+    if (exerciseDataRef.current?.primaryGroup !== primaryGroupValue) {
+      setValue('secondaryGroups', []);
     }
   }, [primaryGroupValue, setValue]);
 
@@ -44,19 +44,19 @@ export const DefaultForm = ({
     if (exerciseData) {
       setValue('id', exerciseData.id);
       setValue('title', exerciseData.title);
-      setValue('primary_group', exerciseData.primary_group);
-      setValue('secondary_groups', exerciseData.secondary_groups);
+      setValue('primaryGroup', exerciseData.primaryGroup);
+      setValue('secondaryGroups', exerciseData.secondaryGroups);
       setValue('steps', exerciseData.steps);
-      setValue('gif_link_front', exerciseData.gif_link_front);
-      setValue('gif_link_side', exerciseData.gif_link_side);
-      setValue('video_link', exerciseData.video_link);
+      setValue('gifLinkFront', exerciseData.gifLinkFront);
+      setValue('gifLinkSide', exerciseData.gifLinkSide);
+      setValue('videoLink', exerciseData.videoLink);
       setValue('mistakes', exerciseData.mistakes);
 
       exerciseDataRef.current = exerciseData;
     }
   }, [exerciseData, setValue]);
 
-  /* Cosmetic changes */
+  // Cosmetic changes
   const autoResize = (event) => {
     event.target.style.height = 'auto';
     event.target.style.height = `${event.target.scrollHeight}px`;
@@ -72,8 +72,8 @@ export const DefaultForm = ({
     }
   }, [exerciseData]);
 
-  const gifFront = watch('gif_link_front');
-  const gifSide = watch('gif_link_side');
+  const gifFront = watch('gifLinkFront');
+  const gifSide = watch('gifLinkSide');
 
   const areUrlsInvalid = gifFront && gifSide && gifFront === gifSide;
 
@@ -82,7 +82,7 @@ export const DefaultForm = ({
       {title}
 
       <form
-        id='exercise-form'
+        id='exerciseForm'
         onSubmit={handleSubmit(submittedExerciseData)}
         className='flex flex-col space-y-3 overflow-y-auto px-2 lg:max-h-[67vh]'
       >
@@ -94,13 +94,13 @@ export const DefaultForm = ({
         />
         <DropdownField
           label='Primary group'
-          id='primary_group'
+          id='primaryGroup'
           options={muscleGroups}
           placeholder='Select primary group'
         />
         <DropdownFieldWithTags
           label='Secondary groups'
-          id='secondary_groups'
+          id='secondaryGroups'
           options={filteredMuscleGroups}
           key={primaryGroupValue}
           placeholder='Select secondary groups'
@@ -113,21 +113,21 @@ export const DefaultForm = ({
         <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
           <InputField
             label='Gif front'
-            id='gif_link_front'
+            id='gifLinkFront'
             type='url'
             required
             placeholder='Enter front gif'
           />
           <InputField
             label='Gif side'
-            id='gif_link_side'
+            id='gifLinkSide'
             type='url'
             required
             placeholder='Enter side gif'
           />
           <InputField
             label='Video'
-            id='video_link'
+            id='videoLink'
             type='url'
             required={false}
             placeholder='Enter video'

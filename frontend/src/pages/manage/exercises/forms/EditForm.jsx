@@ -36,7 +36,7 @@ export const EditForm = ({
   };
 
   const handleView = () => {
-    navigate(`/exercises/${exerciseData.primary_group}/${exerciseData.slug}`);
+    navigate(`/exercises/${exerciseData.primaryGroup}/${exerciseData.slug}`);
   };
 
   const editFormTitle = (

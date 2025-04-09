@@ -21,7 +21,7 @@ class MuscleGroup(models.Model):
 
 
 class Exercise(models.Model):
-    title = models.CharField(unique=True, max_length=100)
+    title = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):

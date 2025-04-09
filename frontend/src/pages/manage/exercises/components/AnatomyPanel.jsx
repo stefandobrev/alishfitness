@@ -1,39 +1,42 @@
 import { useState, useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { ToggleableMuscleView } from '@/components/muscleviews';
 
-export const AnatomyPanel = ({ activeTab, methods }) => {
+export const AnatomyPanel = ({ activeTab }) => {
   const [muscleSelection, setMuscleSelection] = useState({
     primary: null,
     secondary: [],
   });
 
+  const { setValue, getValues, methods, watch } = useFormContext();
+
   // Watch form changes to update muscle visualization
   useEffect(() => {
-    const subscription = methods.watch((values) => {
+    const subscription = watch((values) => {
       setMuscleSelection({
-        primary: values.primary_group || null,
-        secondary: values.secondary_groups || [],
+        primary: values.primaryGroup || null,
+        secondary: values.secondaryGroups || [],
       });
     });
     return () => subscription.unsubscribe();
   }, [methods]);
 
   const handleMuscleClick = (muscle) => {
-    const currentPrimary = methods.getValues('primary_group');
-    const currentSecondary = methods.getValues('secondary_groups') || [];
+    const currentPrimary = getValues('primaryGroup');
+    const currentSecondary = getValues('secondaryGroups') || [];
 
     if (!currentPrimary) {
-      methods.setValue('primary_group', muscle);
+      setValue('primaryGroup', muscle);
     } else if (currentPrimary === muscle) {
-      methods.setValue('primary_group', null);
+      setValue('primaryGroup', null);
     } else if (currentSecondary.includes(muscle)) {
-      methods.setValue(
-        'secondary_groups',
+      setValue(
+        'secondaryGroups',
         currentSecondary.filter((m) => m !== muscle),
       );
     } else {
-      methods.setValue('secondary_groups', [...currentSecondary, muscle]);
+      setValue('secondaryGroups', [...currentSecondary, muscle]);
     }
   };
 

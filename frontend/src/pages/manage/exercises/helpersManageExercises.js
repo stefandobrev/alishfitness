@@ -1,4 +1,4 @@
-import { api } from '@/utils';
+import { api, camelToSnake } from '@/utils';
 
 export const fetchMuscleGroups = async () => {
   const response = await api('exercises/muscle-groups/', 'GET');
@@ -29,6 +29,7 @@ export const fetchExerciseData = async (id) => {
 };
 
 export const saveExercise = async (exerciseData, id = null) => {
+  const transformedData = camelToSnake(exerciseData);
   try {
     const isEditMode = Boolean(id);
     let response;
@@ -37,10 +38,14 @@ export const saveExercise = async (exerciseData, id = null) => {
       response = await api(
         `exercises/update-exercise/${id}/`,
         'PUT',
-        exerciseData,
+        transformedData,
       );
     } else {
-      response = await api('exercises/create-exercise/', 'POST', exerciseData);
+      response = await api(
+        'exercises/create-exercise/',
+        'POST',
+        transformedData,
+      );
     }
 
     if (!response.ok) {

@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 
+import { toast } from 'react-toastify';
+import { zodResolver } from '@hookform/resolvers/zod';
+
 import {
   fetchMuscleGroups,
   fetchExerciseData,
@@ -11,11 +14,10 @@ import {
 import { useTitle } from '@/hooks/useTitle.hook';
 import { ExerciseListPanel, FormPanel, AnatomyPanel } from './components';
 import { MobileTabs } from '@/components/buttons';
-import { getChangedFields } from '@/utils';
-import { toast } from 'react-toastify';
+import { getChangedFields, snakeToCamel } from '@/utils';
+import manageExercises from '@/schemas/manageExercises';
 
 export const ManageExercisesPage = () => {
-  const methods = useForm();
   const location = useLocation();
   const [mode, setMode] = useState('add');
   const [message, setMessage] = useState('');
@@ -25,6 +27,9 @@ export const ManageExercisesPage = () => {
   const [refreshTitleListKey, setRefreshTitleListKey] = useState(0);
   const [activeTab, setActiveTab] = useState('form');
   const [isLoading, setIsLoading] = useState(false);
+  const methods = useForm({
+    resolver: zodResolver(manageExercises),
+  });
   const { reset } = methods;
   useTitle('Manage');
 
@@ -51,7 +56,9 @@ export const ManageExercisesPage = () => {
       setIsLoading(true);
       try {
         const data = await fetchExerciseData(selectedExercise);
-        setExerciseData(data);
+        const transformedData = snakeToCamel(data);
+        setExerciseData(transformedData);
+        reset({});
       } finally {
         setIsLoading(false);
       }
@@ -108,7 +115,8 @@ export const ManageExercisesPage = () => {
       setMessage('');
 
       const updatedData = await fetchExerciseData(selectedExercise);
-      setExerciseData(updatedData);
+      const transformedData = snakeToCamel(updatedData);
+      setExerciseData(transformedData);
     }
   };
 
@@ -134,7 +142,10 @@ export const ManageExercisesPage = () => {
   const launchAddMode = () => {
     setMode('add');
     setSelectedExercise(null);
-    reset();
+    reset({
+      steps: [],
+      mistakes: [],
+    });
   };
 
   const handleSelectExercise = (exerciseId) => {
@@ -184,7 +195,7 @@ export const ManageExercisesPage = () => {
             message={message}
           />
 
-          <AnatomyPanel activeTab={activeTab} methods={methods} />
+          <AnatomyPanel activeTab={activeTab} />
         </FormProvider>
       </div>
     </>

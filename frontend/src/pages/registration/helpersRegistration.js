@@ -1,15 +1,7 @@
-import { api } from '@/utils';
+import { api, camelToSnake } from '@/utils';
 
 export const registerUser = async (userData) => {
-  const transformedData = {
-    first_name: userData.firstName,
-    last_name: userData.lastName,
-    username: userData.username,
-    email: userData.email,
-    password: userData.password,
-    confirm_password: userData.confirmPassword,
-  };
-
+  const transformedData = camelToSnake(userData);
   try {
     const response = await api('user/create-user/', 'POST', transformedData);
 

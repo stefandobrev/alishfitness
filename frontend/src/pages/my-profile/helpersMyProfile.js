@@ -1,4 +1,4 @@
-import { api } from '@/utils';
+import { api, camelToSnake } from '@/utils';
 
 export const fetchUserProfile = async () => {
   try {
@@ -13,10 +13,7 @@ export const fetchUserProfile = async () => {
 };
 
 export const updateUserProfile = async (profileData) => {
-  const transformedData = {
-    first_name: profileData.firstName,
-    last_name: profileData.lastName,
-  };
+  const transformedData = camelToSnake(profileData);
   try {
     const response = await api('user/my-profile/', 'PUT', transformedData);
     if (!response.ok) {

@@ -17,7 +17,7 @@ export const MdScreenButtons = ({
       disabled={
         mode === 'edit' ? !hasChanges || areUrlsInvalid : areUrlsInvalid
       }
-      form='exercise-form'
+      form='exerciseForm'
       className='w-auto'
     >
       {mode === 'add' ? 'Add exercise' : 'Edit exercise'}
