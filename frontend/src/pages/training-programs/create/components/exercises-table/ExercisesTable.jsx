@@ -5,7 +5,7 @@ import { ExerciseRow, ExerciseMobileRow } from './';
 import { isMobile } from '@/common/constants';
 
 export const ExercisesTable = ({ sessionIndex, session }) => {
-  const { setValue, getValues } = useFormContext();
+  const { setValue, getValues, trigger } = useFormContext();
   const { muscleGroups, getExerciseOptionsForMuscleGroup } =
     useTrainingSetupData();
 
@@ -16,6 +16,8 @@ export const ExercisesTable = ({ sessionIndex, session }) => {
       `sessions.${sessionIndex}.exercises`,
       currentExercises.filter((_, i) => i !== exerciseIndex),
     );
+
+    trigger(`sessions.${sessionIndex}.exercises`);
   };
 
   return isMobile ? (
