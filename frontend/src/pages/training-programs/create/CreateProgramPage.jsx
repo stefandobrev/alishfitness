@@ -12,7 +12,7 @@ export const CreateProgramPage = () => {
   const [newProgramMode, setNewProgramMode] = useState(true);
   const [activeTab, setActiveTab] = useState('sessions');
   const methods = useForm({ resolver: zodResolver(createProgram) });
-  const { watch, getValues, reset } = methods;
+  const { watch, setValue, getValues, reset } = methods;
   useTitle('Create');
 
   const sessions = watch('sessions');

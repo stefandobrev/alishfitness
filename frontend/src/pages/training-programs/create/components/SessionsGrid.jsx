@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { ExercisesTable } from './exercises-table';
@@ -11,8 +12,15 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
     control,
     setValue,
     getValues,
-    formState: { errors },
+    trigger,
+    formState: { errors, submitCount },
   } = useFormContext();
+
+  useEffect(() => {
+    if (submitCount > 0) {
+      trigger('sessions');
+    }
+  }, [submitCount, trigger]);
 
   const handleAddExercise = (sessionIndex) => {
     const currentExercises =
@@ -39,6 +47,7 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
         reps: '',
       },
     ]);
+    trigger('sessions');
   };
 
   return (
@@ -85,7 +94,7 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
               <ExercisesTable sessionIndex={sessionIndex} session={session} />
             </div>
 
-            {/* Display array-level errors for exercises */}
+            {/* Display array-level errors (e.g., no exercises in the session) */}
             {sessionExercisesErrors && sessionExercisesErrors.message && (
               <p className='mt-1 text-sm text-red-500'>
                 {sessionExercisesErrors.message}
@@ -94,20 +103,34 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
 
             {/* Display individual exercise field errors */}
             {Array.isArray(sessionExercisesErrors) &&
-              sessionExercisesErrors.some((error) => error) && (
+              sessionExercisesErrors.some(
+                (exerciseErrors) => exerciseErrors,
+              ) && (
                 <div className='mt-1 rounded bg-red-50 p-2'>
                   <ul className='ml-4 list-disc text-sm text-red-600'>
                     {sessionExercisesErrors.map(
-                      (exerciseErrors, exerciseIndex) =>
-                        exerciseErrors
-                          ? Object.entries(exerciseErrors).map(
-                              ([field, error]) => (
-                                <li key={`${exerciseIndex}-${field}`}>
-                                  Exercise {exerciseIndex + 1}: {error.message}
-                                </li>
-                              ),
-                            )
-                          : null,
+                      (exerciseErrors, exerciseIndex) => {
+                        // Ensure exerciseErrors is an object and not null
+                        if (
+                          exerciseErrors &&
+                          typeof exerciseErrors === 'object'
+                        ) {
+                          return Object.entries(exerciseErrors).map(
+                            ([field, error]) => {
+                              if (error && error.message) {
+                                return (
+                                  <li key={`${exerciseIndex}-${field}`}>
+                                    Exercise {exerciseIndex + 1}:{' '}
+                                    {error.message}
+                                  </li>
+                                );
+                              }
+                              return null; // In case there's no error.message
+                            },
+                          );
+                        }
+                        return null; // If exerciseErrors is null or not an object
+                      },
                     )}
                   </ul>
                 </div>
