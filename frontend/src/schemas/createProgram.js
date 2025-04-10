@@ -36,14 +36,14 @@ const createProgram = z
       if (!data.assignedUser) {
         ctx.addIssue({
           path: ['assignedUser'],
-          message: 'Assigned user is required when creating a program.',
+          message: 'Assigned user is required.',
           code: z.ZodIssueCode.custom,
         });
       }
       if (!data.activationDate) {
         ctx.addIssue({
           path: ['activationDate'],
-          message: 'Activation date is required when creating a program.',
+          message: 'Activation date is required.',
           code: z.ZodIssueCode.custom,
         });
       }

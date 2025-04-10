@@ -107,7 +107,7 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
                 (exerciseErrors) => exerciseErrors,
               ) && (
                 <div className='mt-1 rounded bg-red-50 p-2'>
-                  <ul className='ml-4 list-disc text-sm text-red-600'>
+                  <ul className='ml-4 list-disc text-sm text-red-500'>
                     {sessionExercisesErrors.map(
                       (exerciseErrors, exerciseIndex) => {
                         // Ensure exerciseErrors is an object and not null

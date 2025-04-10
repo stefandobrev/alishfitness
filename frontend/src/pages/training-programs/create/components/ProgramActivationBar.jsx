@@ -7,7 +7,11 @@ import { DateSelect, UserSelect } from './exercises-table';
 import { SubmitButton } from '@/components/buttons';
 
 export const ProgramActivationBar = ({ onSubmit, isCreateMode }) => {
-  const { control, handleSubmit } = useFormContext();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useFormContext();
   const [userSelected, setUserSelected] = useState(false);
   const { usersData } = useTrainingSetupData();
 
@@ -18,33 +22,50 @@ export const ProgramActivationBar = ({ onSubmit, isCreateMode }) => {
       <div className='flex flex-col gap-4 sm:flex-row'>
         {isCreateMode ? (
           <>
-            <div className='w-full'>
-              <label className='text-m mb-1 block font-semibold text-gray-700'>
-                Assign user
-              </label>
-              <Controller
-                name='assignedUser'
-                control={control}
-                render={({ field }) => (
-                  <UserSelect
-                    field={field}
-                    userOptions={userOptions}
-                    setUserSelected={setUserSelected}
-                  />
-                )}
-              />
+            <div className='flex flex-col'>
+              <div className='w-full'>
+                <label className='text-m mb-1 block font-semibold text-gray-700'>
+                  Assign user
+                </label>
+                <Controller
+                  name='assignedUser'
+                  control={control}
+                  render={({ field }) => (
+                    <UserSelect
+                      field={field}
+                      userOptions={userOptions}
+                      setUserSelected={setUserSelected}
+                    />
+                  )}
+                />
+              </div>
+
+              {errors.assignedUser && (
+                <p className='mt-1 text-sm text-red-500'>
+                  {errors.assignedUser.message}
+                </p>
+              )}
             </div>
-            <div className='flex w-full flex-col justify-center md:block md:flex-row'>
-              <label className='text-m mb-1 block font-semibold text-gray-700'>
-                Activation date
-              </label>
-              <Controller
-                name='activationDate'
-                control={control}
-                render={({ field }) => (
-                  <DateSelect field={field} userSelected={userSelected} />
-                )}
-              />
+
+            <div className='flex flex-col'>
+              <div className='flex w-full flex-col justify-center md:block md:flex-row'>
+                <label className='text-m mb-1 block font-semibold text-gray-700'>
+                  Activation date
+                </label>
+                <Controller
+                  name='activationDate'
+                  control={control}
+                  render={({ field }) => (
+                    <DateSelect field={field} userSelected={userSelected} />
+                  )}
+                />
+              </div>
+
+              {errors.assignedUser && (
+                <p className='mt-1 text-sm text-red-500'>
+                  {errors.activationDate.message}
+                </p>
+              )}
             </div>
           </>
         ) : null}
