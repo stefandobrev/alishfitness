@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { ExercisesTable } from './exercises-table';
@@ -12,15 +11,9 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
     control,
     setValue,
     getValues,
-    trigger,
-    formState: { errors, submitCount },
+    clearErrors,
+    formState: { errors },
   } = useFormContext();
-
-  useEffect(() => {
-    if (submitCount > 0) {
-      trigger('sessions');
-    }
-  }, [submitCount, trigger]);
 
   const handleAddExercise = (sessionIndex) => {
     const currentExercises =
@@ -47,7 +40,7 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
         reps: '',
       },
     ]);
-    trigger('sessions');
+    clearErrors(`sessions.${sessionIndex}.exercises`);
   };
 
   return (
@@ -94,47 +87,11 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
               <ExercisesTable sessionIndex={sessionIndex} session={session} />
             </div>
 
-            {/* Display array-level errors (e.g., no exercises in the session) */}
-            {sessionExercisesErrors && sessionExercisesErrors.message && (
+            {sessionExercisesErrors && (
               <p className='mt-1 text-sm text-red-500'>
-                {sessionExercisesErrors.message}
+                {sessionExercisesErrors.message || 'All fields are required.'}
               </p>
             )}
-
-            {/* Display individual exercise field errors */}
-            {Array.isArray(sessionExercisesErrors) &&
-              sessionExercisesErrors.some(
-                (exerciseErrors) => exerciseErrors,
-              ) && (
-                <div className='mt-1 rounded bg-red-50 p-2'>
-                  <ul className='ml-4 list-disc text-sm text-red-500'>
-                    {sessionExercisesErrors.map(
-                      (exerciseErrors, exerciseIndex) => {
-                        // Ensure exerciseErrors is an object and not null
-                        if (
-                          exerciseErrors &&
-                          typeof exerciseErrors === 'object'
-                        ) {
-                          return Object.entries(exerciseErrors).map(
-                            ([field, error]) => {
-                              if (error && error.message) {
-                                return (
-                                  <li key={`${exerciseIndex}-${field}`}>
-                                    Exercise {exerciseIndex + 1}:{' '}
-                                    {error.message}
-                                  </li>
-                                );
-                              }
-                              return null; // In case there's no error.message
-                            },
-                          );
-                        }
-                        return null; // If exerciseErrors is null or not an object
-                      },
-                    )}
-                  </ul>
-                </div>
-              )}
 
             <div className='mt-3'>
               <ActionButton

@@ -6,7 +6,7 @@ import { ActionButton } from '@/components/buttons';
 
 export const AddSessionButton = () => {
   const [counter, setCounter] = useState(1);
-  const { getValues, setValue } = useFormContext();
+  const { getValues, setValue, clearErrors } = useFormContext();
 
   const handleAddSession = () => {
     const currentSessions = getValues('sessions') || [];
@@ -18,7 +18,7 @@ export const AddSessionButton = () => {
     ]);
 
     setCounter(counter + 1);
-
+    clearErrors('sessions');
     console.log({ updatedSessions: getValues('sessions') });
   };
 

@@ -13,6 +13,7 @@ export const CreateProgramPage = () => {
   const [activeTab, setActiveTab] = useState('sessions');
   const methods = useForm({
     resolver: zodResolver(createProgram),
+    mode: 'onChange',
     defaultValues: {
       mode: isCreateMode ? 'create' : 'template',
       sessions: [],
