@@ -1,14 +1,14 @@
 import { InputField } from '@/components/inputs';
 
-export const Heading = ({ newProgramMode, setNewProgramMode }) => {
-  const toggleIsNewProgramMode = () => {
-    setNewProgramMode((prev) => !prev);
+export const Heading = ({ isCreateMode, setIsCreateMode }) => {
+  const toggleisCreateMode = () => {
+    setIsCreateMode((prev) => !prev);
   };
 
   return (
     <>
       <h1 className='p-4 text-2xl font-bold md:text-3xl'>
-        {newProgramMode ? 'Create Training Program' : 'Create Template'}
+        {isCreateMode ? 'Create Training Program' : 'Create Template'}
       </h1>
 
       <div className='flex flex-col justify-between md:flex-row md:pl-4'>
@@ -25,7 +25,7 @@ export const Heading = ({ newProgramMode, setNewProgramMode }) => {
               type='checkbox'
               value=''
               className='peer sr-only'
-              onClick={toggleIsNewProgramMode}
+              onClick={toggleisCreateMode}
             />
             <div className="peer peer-checked:bg-logored relative h-6 w-11 rounded-full bg-gray-600 peer-focus:ring-1 peer-focus:ring-black after:absolute after:start-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white rtl:peer-checked:after:-translate-x-full"></div>
           </div>

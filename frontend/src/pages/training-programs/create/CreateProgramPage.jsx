@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,11 +9,23 @@ import { useTitle } from '@/hooks/useTitle.hook';
 import createProgram from '@/schemas/createProgram';
 
 export const CreateProgramPage = () => {
-  const [newProgramMode, setNewProgramMode] = useState(true);
+  const [isCreateMode, setIsCreateMode] = useState(true);
   const [activeTab, setActiveTab] = useState('sessions');
-  const methods = useForm({ resolver: zodResolver(createProgram) });
+  const methods = useForm({
+    resolver: zodResolver(createProgram),
+    defaultValues: {
+      mode: isCreateMode ? 'create' : 'template',
+      sessions: [],
+      assignedUser: null,
+      activationDate: null,
+    },
+  });
   const { watch, setValue, getValues, reset } = methods;
   useTitle('Create');
+
+  useEffect(() => {
+    setValue('mode', isCreateMode ? 'create' : 'template');
+  }, [isCreateMode, setValue]);
 
   const sessions = watch('sessions');
 
@@ -30,7 +42,15 @@ export const CreateProgramPage = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log({ data });
+    const formattedData = {
+      ...data,
+      activationDate: data.activationDate
+        ? new Date(data.activationDate).toISOString()
+        : null,
+      assignedUser: data.assignedUser ? data.assignedUser.value : null,
+    };
+
+    console.log({ formattedData });
   };
 
   const tabs = [
@@ -54,8 +74,8 @@ export const CreateProgramPage = () => {
             activeTab={activeTab}
             sessions={sessions}
             onRemoveSession={handleRemoveSession}
-            newProgramMode={newProgramMode}
-            setNewProgramMode={setNewProgramMode}
+            isCreateMode={isCreateMode}
+            setIsCreateMode={setIsCreateMode}
           />
 
           <Schedule activeTab={activeTab} sessions={sessions} />

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { fetchTrainingSetupData } from '@/pages/training-programs/create/helpersCreate';
+import { fetchTrainingSetupData } from '@/pages/training-programs/create/helpersCreateProgram';
 
 export const useTrainingSetupData = () => {
   const [muscleGroupsAndExercises, setMuscleGroupsAndExercises] = useState({});

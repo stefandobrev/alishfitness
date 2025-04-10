@@ -6,7 +6,7 @@ export const fetchTrainingSetupData = async () => {
   return response.json();
 };
 
-export const helpersCreate = async () => {
+export const helpersCreateProgram = async () => {
   const response = await api('/training-programs/create-program');
   if (!response.ok) throw new Error('Failed to create program.');
   return response.json();

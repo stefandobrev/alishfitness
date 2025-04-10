@@ -1,3 +1,5 @@
+import { useFormContext } from 'react-hook-form';
+
 import {
   Heading,
   SessionsGrid,
@@ -12,9 +14,12 @@ export const SessionsPanel = ({
   activeTab,
   sessions,
   onRemoveSession,
-  newProgramMode,
-  setNewProgramMode,
+  isCreateMode,
+  setIsCreateMode,
 }) => {
+  const {
+    formState: { errors },
+  } = useFormContext();
   const { isLoading } = useTrainingSetupData();
   return (
     <div
@@ -22,8 +27,8 @@ export const SessionsPanel = ({
     >
       <div className='flex flex-col px-4'>
         <Heading
-          newProgramMode={newProgramMode}
-          setNewProgramMode={setNewProgramMode}
+          isCreateMode={isCreateMode}
+          setIsCreateMode={setIsCreateMode}
         />
         <div className='mt-4'>
           {isLoading ? (
@@ -37,12 +42,13 @@ export const SessionsPanel = ({
             </div>
           ) : null}
         </div>
+
+        {errors.sessions?.message && (
+          <p className='text-sm text-red-500'>{errors.sessions.message}</p>
+        )}
         <AddSessionButton />
 
-        <ProgramActivationBar
-          onSubmit={onSubmit}
-          newProgramMode={newProgramMode}
-        />
+        <ProgramActivationBar onSubmit={onSubmit} isCreateMode={isCreateMode} />
       </div>
     </div>
   );
