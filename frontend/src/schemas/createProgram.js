@@ -3,16 +3,16 @@ import { z } from 'zod';
 const sessionSchema = z.object({
   title: z.string().min(1, 'Session title is required.'),
   exercises: z
-    .array(
-      z.object({
-        sequence: z.string().min(1, 'Required'),
-        muscleGroup: z.string().min(1, 'Required'),
-        slug: z.string().min(1, 'Required'),
-        sets: z.string().optional(),
-        reps: z.string().optional(),
-      }),
-    )
+    .array(exerciseSchema)
     .min(1, 'At least one exercise is required.'),
+});
+
+const exerciseSchema = z.object({
+  sequence: z.string().min(1, 'Required'),
+  muscleGroup: z.string().min(1, 'Required'),
+  slug: z.string().min(1, 'Required'),
+  sets: z.string().min(1, 'Required'),
+  reps: z.string().min(1, 'Required'),
 });
 
 const createProgram = z
@@ -20,7 +20,7 @@ const createProgram = z
     programName: z.string().min(1, 'Program name is required.'),
     sessions: z
       .array(sessionSchema)
-      .min(1, 'At least one session is required.'),
+      .min(1, { message: 'At least one session is required.' }),
     mode: z.enum(['create', 'template']),
     assignedUser: z
       .object({
@@ -31,13 +31,24 @@ const createProgram = z
       .optional(),
     activationDate: z.date().nullable().optional(),
   })
-  .refine((data) => data.mode !== 'create' || data.assignedUser !== null, {
-    message: 'Assigned user is required',
-    path: ['assignedUser'],
-  })
-  .refine((data) => data.mode !== 'create' || data.activationDate !== null, {
-    message: 'Activation date is required',
-    path: ['activationDate'],
+  .superRefine((data, ctx) => {
+    if (data.mode === 'create') {
+      if (!data.assignedUser) {
+        ctx.addIssue({
+          path: ['assignedUser'],
+          message: 'Assigned user is required.',
+          code: z.ZodIssueCode.custom,
+        });
+      }
+
+      if (!data.activationDate) {
+        ctx.addIssue({
+          path: ['activationDate'],
+          message: 'Activation date is required.',
+          code: z.ZodIssueCode.custom,
+        });
+      }
+    }
   });
 
 export default createProgram;

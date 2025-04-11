@@ -22,6 +22,7 @@ export const CreateProgramPage = () => {
     },
   });
   const { watch, setValue, getValues, reset } = methods;
+
   useTitle('Create');
 
   useEffect(() => {

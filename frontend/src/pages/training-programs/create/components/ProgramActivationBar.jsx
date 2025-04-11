@@ -12,6 +12,7 @@ export const ProgramActivationBar = ({ onSubmit, isCreateMode }) => {
     handleSubmit,
     formState: { errors },
   } = useFormContext();
+
   const [userSelected, setUserSelected] = useState(false);
   const { usersData } = useTrainingSetupData();
 
@@ -61,7 +62,7 @@ export const ProgramActivationBar = ({ onSubmit, isCreateMode }) => {
                 />
               </div>
 
-              {errors.assignedUser && (
+              {errors.activationDate && (
                 <p className='mt-1 text-sm text-red-500'>
                   {errors.activationDate.message}
                 </p>
