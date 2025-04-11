@@ -24,4 +24,5 @@ urlpatterns = [
 
     # training programs paths
     path("training-programs/training-setup-data/", training_program_views.training_setup_data, name="training-setup-data"),
+    path("training-programs/create-program/", training_program_views.create_program, name="create-program")
 ]

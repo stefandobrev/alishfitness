@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Schedule, SessionsPanel } from './components';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
+import { createProgramRequest } from './helpersCreateProgram';
 import { useTitle } from '@/hooks/useTitle.hook';
 import createProgram from '@/schemas/createProgram';
 
@@ -53,7 +54,7 @@ export const CreateProgramPage = () => {
       assignedUser: data.assignedUser ? data.assignedUser.value : null,
     };
 
-    console.log({ formattedData });
+    const response = await createProgramRequest(formattedData);
   };
 
   const tabs = [

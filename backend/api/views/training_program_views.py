@@ -8,3 +8,9 @@ from api.controllers.training_program_controller import TrainingProgramControlle
 def training_setup_data(request):
     training_program_controller = TrainingProgramController()
     return training_program_controller.get_muscle_groups_and_exercises(request)
+
+
+@api_view(["POST"])
+@permission_classes([IsAdminUser])
+def create_program(request):
+    pass
