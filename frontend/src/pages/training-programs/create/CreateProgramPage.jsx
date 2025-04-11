@@ -17,6 +17,7 @@ export const CreateProgramPage = () => {
     defaultValues: {
       mode: isCreateMode ? 'create' : 'template',
       sessions: [],
+      scheduleArray: [],
       assignedUser: null,
       activationDate: null,
     },

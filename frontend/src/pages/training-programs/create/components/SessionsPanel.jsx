@@ -44,7 +44,7 @@ export const SessionsPanel = ({
         </div>
 
         {errors.sessions?.message && (
-          <p className='text-sm text-red-500'>{errors.sessions.message}</p>
+          <p className='my-2 text-sm text-red-500'>{errors.sessions.message}</p>
         )}
         <AddSessionButton />
 

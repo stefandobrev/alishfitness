@@ -14,7 +14,11 @@ import { ActionButton, ButtonVariant } from '@/components/buttons';
 export const Schedule = ({ activeTab, sessions }) => {
   const [schedule, setSchedule] = useState([]);
   const [selectedSession, setSelectedSession] = useState(null);
-  const { register, setValue } = useFormContext();
+  const {
+    register,
+    setValue,
+    formState: { errors },
+  } = useFormContext();
 
   useEffect(() => {
     register('scheduleArray');
@@ -89,9 +93,14 @@ export const Schedule = ({ activeTab, sessions }) => {
           </div>
         </div>
       </div>
+
       <div className='flex flex-col gap-3 px-6 pt-4 lg:sticky lg:top-50'>
         {schedule.length === 0 ? (
-          <div className='py-6 text-center text-gray-400 italic'>
+          <div
+            className={`py-6 text-center italic ${
+              errors.scheduleArray?.message ? 'text-red-500' : 'text-gray-400'
+            }`}
+          >
             No sessions added to schedule yet
           </div>
         ) : (
