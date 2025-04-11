@@ -13,7 +13,7 @@ export const Heading = ({ isCreateMode, setIsCreateMode }) => {
 
       <div className='flex flex-col justify-between md:flex-row md:pl-4'>
         <div className='w-full md:max-w-xs'>
-          <InputField label='Name' id='programName' />
+          <InputField label='Name' id='programTitle' />
         </div>
 
         <label className='mt-4 inline-flex cursor-pointer items-center md:mt-0'>

@@ -73,7 +73,7 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
                 />
                 <InputField
                   label={`Session ${sessionIndex + 1}`}
-                  id={`sessions.${sessionIndex}.title`}
+                  id={`sessions.${sessionIndex}.sessionTitle`}
                   className='max-w-lg flex-1 bg-white'
                 />
                 <ActionButton

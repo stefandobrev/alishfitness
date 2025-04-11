@@ -9,7 +9,7 @@ const exerciseSchema = z.object({
 });
 
 const sessionSchema = z.object({
-  title: z.string().min(1, 'Session title is required.'),
+  sessionTitle: z.string().min(1, 'Session title is required.'),
   exercises: z
     .array(exerciseSchema)
     .min(1, 'At least one exercise is required.'),
@@ -17,7 +17,7 @@ const sessionSchema = z.object({
 
 const createProgram = z
   .object({
-    programName: z.string().min(1, 'Program name is required.'),
+    programTitle: z.string().min(1, 'Program title is required.'),
     sessions: z
       .array(sessionSchema)
       .min(1, { message: 'At least one session is required.' }),
