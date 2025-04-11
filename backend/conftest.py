@@ -2,7 +2,9 @@ import pytest
 from django.conf import settings
 from rest_framework.test import APIClient
 
-from api.models import User, MuscleGroup, Exercise
+from datetime import date
+
+from api.models import User, MuscleGroup, Exercise, TrainingProgram
 
 @pytest.fixture(scope="session", autouse=True)
 def set_test_db():
@@ -64,3 +66,15 @@ def test_exercise(test_muscle_group, test_secondary_muscle_group):
     )
     exercise.secondary_groups.set([test_secondary_muscle_group])
     return exercise
+
+@pytest.fixture
+def test_create_training_program(test_muscle_group, test_exercise, test_user):
+    activation_date = date.today()
+
+    training_program = TrainingProgram.objects.create(
+        program_title="Test Program",
+        mode="create",
+        assigned_user=test_user,
+        activation_date=activation_date,
+        schedule_array=
+    )

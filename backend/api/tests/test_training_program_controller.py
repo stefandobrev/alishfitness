@@ -17,3 +17,8 @@ class TestTrainingProgramController:
         
         assert test_muscle_group.slug in response_data["muscle_groups"] 
         assert any(user["username"] == test_user.username for user in response_data["users"])
+
+    def test_create_program(self, api_client, test_admin, test_muscle_group, test_exercise, test_user):
+        api_client.force_authenticate(user=test_admin)
+        url = reverse("create-program")
+        response = api_client.post(url)

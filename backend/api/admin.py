@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, MuscleGroup, Exercise, Step, Mistake
+from api.models import User, MuscleGroup, Exercise, Step, Mistake, TrainingProgram, TrainingSession, ProgramExercise
 
 class UserAdmin(admin.ModelAdmin):
     ordering = ["username"]
