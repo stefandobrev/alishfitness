@@ -47,7 +47,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
         if "gif_link_front" in data:
             if data["gif_link_front"] == data["gif_link_side"]:
                 raise serializers.ValidationError(
-                    {"gif links": "Gif links should be different"}
+                    {"gif links": "Gif links should be different."}
                 )
 
         return data

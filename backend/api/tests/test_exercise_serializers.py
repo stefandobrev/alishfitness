@@ -28,7 +28,7 @@ class TestExerciseSerializer:
         assert not serializer.is_valid()
         with pytest.raises(ValidationError) as exc_info:
             serializer.is_valid(raise_exception=True)
-        assert "Title must be at least 3 characters long" in str(exc_info)
+        assert "Title must be at least 3 characters long." in str(exc_info)
 
     def test_data_invalid_title_chars(self, test_muscle_group):
         invalid_data = {
@@ -42,7 +42,7 @@ class TestExerciseSerializer:
         assert not serializer.is_valid()
         with pytest.raises(ValidationError) as exc_info:
             serializer.is_valid(raise_exception=True)
-        assert "Title should only contain letters and numbers" in str(exc_info)
+        assert "Title should only contain letters and numbers." in str(exc_info)
 
     def test_data_existing_title(self,test_muscle_group, test_exercise):
         invalid_data = {
@@ -56,7 +56,7 @@ class TestExerciseSerializer:
         assert not serializer.is_valid()
         with pytest.raises(ValidationError) as exc_info:
             serializer.is_valid(raise_exception=True)
-        assert "exercise with this title already exists" in str(exc_info) ## taken from model
+        assert "exercise with this title already exists." in str(exc_info) ## taken from model
     
     def test_same_gifs(self, test_muscle_group):
         invalid_data = {
@@ -70,4 +70,4 @@ class TestExerciseSerializer:
         assert not serializer.is_valid()
         with pytest.raises(ValidationError) as exc_info:
             serializer.is_valid(raise_exception=True)
-        assert "Gif links should be different" in str(exc_info)
+        assert "Gif links should be different." in str(exc_info)
