@@ -4,7 +4,7 @@ from rest_framework.test import APIClient
 
 from datetime import date
 
-from api.models import User, MuscleGroup, Exercise, TrainingProgram
+from api.models import User, MuscleGroup, Exercise, TrainingProgram, TrainingSession, ProgramExercise
 
 @pytest.fixture(scope="session", autouse=True)
 def set_test_db():
@@ -68,13 +68,56 @@ def test_exercise(test_muscle_group, test_secondary_muscle_group):
     return exercise
 
 @pytest.fixture
-def test_create_training_program(test_muscle_group, test_exercise, test_user):
+def test_training_program(test_user):
     activation_date = date.today()
+
 
     training_program = TrainingProgram.objects.create(
         program_title="Test Program",
         mode="create",
         assigned_user=test_user,
         activation_date=activation_date,
-        schedule_array=
+        schedule_array=[1, 2, 1],
     )
+    return training_program
+
+@pytest.fixture
+def test_template():
+    training_program = TrainingProgram.objects.create(
+        program_title="Test Template",
+        mode="template",
+        assigned_user=None,
+        activation_date=None,
+        schedule_array=[],
+    )
+    return training_program
+
+@pytest.fixture
+def test_program_session(test_training_program):
+    session = TrainingSession.objects.create(
+        session_title="Test Session",
+        program=test_training_program,
+        order=0
+    )
+    return session
+
+@pytest.fixture
+def test_second_program_session(test_training_program, test_program_session):
+    session = TrainingSession.objects.create(
+        session_title="Second Test Session",
+        program=test_training_program,
+        order=1
+    )
+    return session
+
+@pytest.fixture
+def test_program_exercise(test_program_session, test_exercise):
+    program_exercise = ProgramExercise.objects.create(
+        session=test_program_session,
+        exercise=test_exercise,
+        sequence="A",
+        sets=3,
+        reps="10-12",
+        order=0
+    )
+    return program_exercise

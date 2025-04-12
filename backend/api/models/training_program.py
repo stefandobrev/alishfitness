@@ -25,14 +25,14 @@ class TrainingProgram(models.Model):
     def is_active(self):
         return self.mode == "create" and self.assigned_user is not None
     
-class TrainingSession(models.Model):   
+class TrainingSession(models.Model): 
+    session_title = models.CharField(max_length=255)  
     program = models.ForeignKey(
         TrainingProgram, 
         related_name="sessions", 
         on_delete=models.CASCADE
     )
-    session_title = models.CharField(max_length=255)
-    order = models.PositiveIntegerField(default=0) ## order by scheduleArray
+    order = models.PositiveIntegerField(default=0) 
     
     class Meta:
         ordering = ["order"]
