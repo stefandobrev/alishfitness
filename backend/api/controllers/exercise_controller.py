@@ -87,31 +87,26 @@ class ExerciseController:
         Returns:
             Response with exercise, steps and mistakes data or error messages.
         """
-        exercise_data = {key: value for key, value in request.data.items() if key in ExerciseSerializer.Meta.fields }
+        exercise_data = {key: value for key, value in request.data.items() if key in ExerciseSerializer.Meta.fields}
         steps_data = request.data.get("steps", [])
         mistakes_data = request.data.get("mistakes", [])
 
+        # Convert slug to ID for primary_group
         primary_group_name = exercise_data.get("primary_group")
         if primary_group_name:
             primary_group = MuscleGroup.objects.filter(slug=primary_group_name).first()
             if not primary_group:
                 return Response({"primary_group": "Primary group not found."}, status=status.HTTP_400_BAD_REQUEST)
             exercise_data["primary_group"] = primary_group.id
-        
+
+        # Convert slugs to IDs for secondary_groups
         secondary_groups = []
         if "secondary_groups" in exercise_data:
             for group_name in exercise_data["secondary_groups"]:
                 group = MuscleGroup.objects.filter(slug=group_name).first()
                 if group:
                     secondary_groups.append(group.id)
-            
-            if primary_group and primary_group.id in secondary_groups:
-                return Response(
-                    {"secondary_groups": "You cannot select the same group as primary and secondary."},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-
-        exercise_data["secondary_groups"] = secondary_groups
+            exercise_data["secondary_groups"] = secondary_groups
 
         serializer = ExerciseSerializer(data=exercise_data)
         if not serializer.is_valid():
@@ -128,41 +123,29 @@ class ExerciseController:
         return Response({"message": "Exercise created successfully!"})
 
     def update(self, request, id):
-        """ Update an existing exercise model (only provided fields)."""
+        """Update an existing exercise model (only provided fields)."""
         exercise = get_object_or_404(Exercise, id=id)
 
         exercise_data = {key: value for key, value in request.data.items() if key in ExerciseSerializer.Meta.fields}
         steps_data = request.data.get("steps")
         mistakes_data = request.data.get("mistakes")
 
-        new_primary_group = None
-        secondary_groups = []
-
+        # Convert slug to ID for primary_group
         if "primary_group" in exercise_data:
             primary_group_name = exercise_data["primary_group"]
-            new_primary_group = MuscleGroup.objects.filter(slug=primary_group_name).first()
-            if not new_primary_group:
+            primary_group = MuscleGroup.objects.filter(slug=primary_group_name).first()
+            if not primary_group:
                 return Response({"primary_group": "Primary group not found."}, status=status.HTTP_400_BAD_REQUEST)
-            exercise_data["primary_group"] = new_primary_group.id
+            exercise_data["primary_group"] = primary_group.id
 
+        # Convert slugs to IDs for secondary_groups
         if "secondary_groups" in exercise_data:
+            secondary_groups = []
             for group_name in exercise_data["secondary_groups"]:
                 group = MuscleGroup.objects.filter(slug=group_name).first()
                 if group:
                     secondary_groups.append(group.id)
-
-        if new_primary_group and new_primary_group.id in secondary_groups:
-            return Response(
-                {"secondary_groups": "You cannot select the same group as primary and secondary."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        elif not new_primary_group and exercise.primary_group.id in secondary_groups:
-            return Response(
-                {"secondary_groups": "You cannot select the same group as primary and secondary."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        exercise_data["secondary_groups"] = secondary_groups
+            exercise_data["secondary_groups"] = secondary_groups
 
         serializer = ExerciseSerializer(exercise, data=exercise_data, partial=True)
         if not serializer.is_valid():

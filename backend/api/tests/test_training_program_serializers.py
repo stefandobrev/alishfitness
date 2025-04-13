@@ -387,4 +387,3 @@ class TestTrainingProgramSerializer:
             serializer.is_valid(raise_exception=True)
         assert "Template programs should not have an activation date." in str(exc_info)
     
-    

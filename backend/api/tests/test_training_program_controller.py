@@ -12,13 +12,13 @@ class TestTrainingProgramController:
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_200_OK
-
-        response_data = response.json()
         
-        assert test_muscle_group.slug in response_data["muscle_groups"] 
-        assert any(user["username"] == test_user.username for user in response_data["users"])
+        assert len(response.data) >= 1
+        assert test_muscle_group.slug in response.data["muscle_groups"] 
+        assert any(user["username"] == test_user.username for user in response.data["users"])
 
-    def test_create_program(self, api_client, test_admin, test_muscle_group, test_exercise, test_user):
+    def test_create_program(self, api_client, test_admin, test_training_program):
         api_client.force_authenticate(user=test_admin)
         url = reverse("create-program")
-        response = api_client.post(url)
+        response = api_client.post(url, test_training_program, format="json")
+        assert response.status_code == status.HTTP_200_OK
