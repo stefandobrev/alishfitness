@@ -97,7 +97,6 @@ def test_program_session(test_training_program):
     session = TrainingSession.objects.create(
         session_title="Test Session",
         program=test_training_program,
-        order=0
     )
     return session
 
@@ -106,7 +105,6 @@ def test_second_program_session(test_training_program, test_program_session):
     session = TrainingSession.objects.create(
         session_title="Second Test Session",
         program=test_training_program,
-        order=1
     )
     return session
 
@@ -118,6 +116,5 @@ def test_program_exercise(test_program_session, test_exercise):
         sequence="A",
         sets=3,
         reps="10-12",
-        order=0
     )
     return program_exercise

@@ -15,18 +15,27 @@ class TestTrainingProgramSerializer:
             "mode": "create",
             "assigned_user": test_user.id,
             "activation_date": activation_date,
-            "schedule_array": [1, 2, 1],
+            "schedule_array": ["1", "2", "1"],
             "sessions": [
                 {
                     "session_title": "Day 1",
-                    "order": 0,
                     "exercises": [
                         {
                             "exercise": test_exercise.id,
                             "sequence": "A",
                             "sets": "3",
                             "reps": "10-12",
-                            "order": 0
+                        }
+                    ]
+                },
+                {
+                    "session_title": "Day 2",
+                    "exercises": [
+                        {
+                            "exercise": test_exercise.id,
+                            "sequence": "A",
+                            "sets": "3",
+                            "reps": "12",
                         }
                     ]
                 }
@@ -42,18 +51,27 @@ class TestTrainingProgramSerializer:
             "mode": "template",
             "assigned_user": None,
             "activation_date": None,
-            "schedule_array": [],
+            "schedule_array": ["1", "2", "1"],
             "sessions": [
                 {
                     "session_title": "Day 1",
-                    "order": 0,
                     "exercises": [
                         {
                             "exercise": test_exercise.id,
                             "sequence": "A",
-                            "sets": "4",
+                            "sets": "3",
                             "reps": "10-12",
-                            "order": 0
+                        }
+                    ]
+                },
+                {
+                    "session_title": "Day 2",
+                    "exercises": [
+                        {
+                            "exercise": test_exercise.id,
+                            "sequence": "A",
+                            "sets": "3",
+                            "reps": "12",
                         }
                     ]
                 }
@@ -69,18 +87,16 @@ class TestTrainingProgramSerializer:
             "mode": "create",
             "assigned_user": test_user,
             "activation_date": activation_date,
-            "schedule_array": [1, 2, 1],
+            "schedule_array": ["1"],
             "sessions": [
                 {
                     "session_title": "Day 1",
-                    "order": 0,
                     "exercises": [
                         {
                             "exercise": test_exercise.id,
                             "sequence": "A",
                             "sets": "3",
                             "reps": "10-12",
-                            "order": 0
                         }
                     ]
                 }
@@ -99,18 +115,16 @@ class TestTrainingProgramSerializer:
             "mode": "create",
             "assigned_user": "invalid_username",
             "activation_date": activation_date,
-            "schedule_array": [1, 2, 1],
+            "schedule_array": ["1"],
             "sessions": [
                 {
                     "session_title": "Day 1",
-                    "order": 0,
                     "exercises": [
                         {
                             "exercise": test_exercise.id,
                             "sequence": "A",
                             "sets": "3",
                             "reps": "10-12",
-                            "order": 0
                         }
                     ]
                 }
@@ -129,18 +143,16 @@ class TestTrainingProgramSerializer:
             "mode": "create",
             "assigned_user": None,  
             "activation_date": activation_date,
-            "schedule_array": [1],
+            "schedule_array": ["1"],
             "sessions": [
                 {
                     "session_title": "Day 1",
-                    "order": 0,
                     "exercises": [
                         {
                             "exercise": test_exercise.id,
                             "sequence": "A",
                             "sets": "3",
                             "reps": "10-12",
-                            "order": 0
                         }
                     ]
                 }
@@ -160,18 +172,16 @@ class TestTrainingProgramSerializer:
             "mode": "create",
             "assigned_user": test_user,
             "activation_date": "2025-31-02",
-            "schedule_array": [1, 2, 1],
+            "schedule_array": ["1"],
             "sessions": [
                 {
                     "session_title": "Day 1",
-                    "order": 0,
                     "exercises": [
                         {
                             "exercise": test_exercise.id,
                             "sequence": "A",
                             "sets": "3",
                             "reps": "10-12",
-                            "order": 0
                         }
                     ]
                 }
@@ -194,14 +204,12 @@ class TestTrainingProgramSerializer:
             "sessions": [
                 {
                     "session_title": "Day 1",
-                    "order": 0,
                     "exercises": [
                         {
                             "exercise": test_exercise.id,
                             "sequence": "A",
                             "sets": "3",
                             "reps": "10-12",
-                            "order": 0
                         }
                     ]
                 }
@@ -212,50 +220,7 @@ class TestTrainingProgramSerializer:
         assert not serializer.is_valid()
         with pytest.raises(ValidationError) as exc_info:
             serializer.is_valid(raise_exception=True)
-        assert "Schedule order for create mode is missing." in str(exc_info)
-    
-    def test_sessions_duplicate_orders(self, activation_date, test_user, test_exercise):
-        invalid_data = {
-            "program_title": "Test Program",
-            "mode": "create",
-            "assigned_user": test_user.id,
-            "activation_date": activation_date,
-            "schedule_array": [1, 2],
-            "sessions": [
-                {
-                    "session_title": "Day 1",
-                    "order": 0,
-                    "exercises": [
-                        {
-                            "exercise": test_exercise.id,
-                            "sequence": "A",
-                            "sets": "3",
-                            "reps": "10-12",
-                            "order": 0
-                        }
-                    ]
-                },
-                {
-                    "session_title": "Day 2",
-                    "order": 0,  # Duplicate order
-                    "exercises": [
-                        {
-                            "exercise": test_exercise.id,
-                            "sequence": "B",
-                            "sets": "4",
-                            "reps": "8-10",
-                            "order": 0
-                        }
-                    ]
-                }
-            ]
-        }
-        
-        serializer = TrainingProgramSerializer(data=invalid_data)
-        assert not serializer.is_valid()
-        with pytest.raises(ValidationError) as exc_info:
-            serializer.is_valid(raise_exception=True)
-        assert "Session orders must be unique." in str(exc_info) or "duplicate" in str(exc_info).lower()
+        assert "Schedule is missing." in str(exc_info)
     
     def test_empty_sessions(self, activation_date, test_user):
         invalid_data = {
@@ -263,7 +228,7 @@ class TestTrainingProgramSerializer:
             "mode": "create",
             "assigned_user": test_user.id,
             "activation_date": activation_date,
-            "schedule_array": [1, 2],
+            "schedule_array": ["1", "2"],
             "sessions": []  
         }
         
@@ -271,7 +236,7 @@ class TestTrainingProgramSerializer:
         assert not serializer.is_valid()
         with pytest.raises(ValidationError) as exc_info:
             serializer.is_valid(raise_exception=True)
-        assert "Schedile aray is empty for create mode." in str(exc_info)
+        assert "Sessions are missing." in str(exc_info)
     
     def test_session_without_exercises(self, activation_date, test_user):
         invalid_data = {
@@ -279,11 +244,10 @@ class TestTrainingProgramSerializer:
             "mode": "create",
             "assigned_user": test_user.id,
             "activation_date": activation_date,
-            "schedule_array": [1],
+            "schedule_array": ["1"],
             "sessions": [
                 {
                     "session_title": "Day 1",
-                    "order": 0,
                     "exercises": []  
                 }
             ]
@@ -301,18 +265,16 @@ class TestTrainingProgramSerializer:
             "mode": "create",
             "assigned_user": test_user.id,
             "activation_date": activation_date,
-            "schedule_array": [1],
+            "schedule_array": ["1"],
             "sessions": [
                 {
                     "session_title": "Day 1",
-                    "order": 0,
                     "exercises": [
                         {
                             "exercise": test_exercise.id,
                             "sequence": "A",
                             "sets": "invalid",  
                             "reps": "10-12",
-                            "order": 0
                         }
                     ]
                 }
@@ -333,18 +295,16 @@ class TestTrainingProgramSerializer:
             "mode": "create",
             "assigned_user": test_user.id,
             "activation_date": activation_date,
-            "schedule_array": [1],
+            "schedule_array": ["1"],
             "sessions": [
                 {
                     "session_title": "Day 1",
-                    "order": 0,
                     "exercises": [
                         {
                             "exercise": nonexistent_exercise_id,
                             "sequence": "A",
                             "sets": "3",
                             "reps": "10-12",
-                            "order": 0
                         }
                     ]
                 }
@@ -363,18 +323,16 @@ class TestTrainingProgramSerializer:
             "mode": "template",
             "assigned_user": None,
             "activation_date": "2025-04-15",  # Should be None for templates
-            "schedule_array": [],
+            "schedule_array": ["1"],
             "sessions": [
                 {
                     "session_title": "Day 1",
-                    "order": 0,
                     "exercises": [
                         {
                             "exercise": test_exercise.id,
                             "sequence": "A",
                             "sets": "3",
                             "reps": "10-12",
-                            "order": 0
                         }
                     ]
                 }

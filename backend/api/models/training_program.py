@@ -32,11 +32,7 @@ class TrainingSession(models.Model):
         related_name="sessions", 
         on_delete=models.CASCADE
     )
-    order = models.PositiveIntegerField(default=0) 
-    
-    class Meta:
-        ordering = ["order"]
-    
+  
     def __str__(self):
         return f"{self.program.program_title} - {self.session_title}"
 
@@ -54,10 +50,6 @@ class ProgramExercise(models.Model):
     sequence = models.CharField(max_length=10, blank=True)  
     sets = models.CharField(max_length=10)
     reps = models.CharField(max_length=50)  
-    order = models.PositiveIntegerField(default=0)
-    
-    class Meta:
-        ordering = ["order"]
     
     def __str__(self):
         return f"{self.exercise.title} ({self.sets}x{self.reps})"
