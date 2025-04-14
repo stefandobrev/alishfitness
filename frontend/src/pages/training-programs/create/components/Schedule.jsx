@@ -17,6 +17,7 @@ export const Schedule = ({ activeTab, sessions }) => {
   const {
     register,
     setValue,
+    trigger,
     formState: { errors },
   } = useFormContext();
 
@@ -27,7 +28,8 @@ export const Schedule = ({ activeTab, sessions }) => {
 
   useEffect(() => {
     setValue('scheduleArray', schedule);
-  }, [schedule, setValue]);
+    trigger('scheduleArray');
+  }, [schedule, setValue, trigger]);
 
   const handleSessionSelect = (selected) => {
     if (selected) {
@@ -95,12 +97,13 @@ export const Schedule = ({ activeTab, sessions }) => {
       </div>
 
       <div className='flex flex-col gap-3 px-6 pt-4 lg:sticky lg:top-50'>
+        {errors.scheduleArray && (
+          <p className='text-m my-2 flex justify-center text-red-500'>
+            {errors.scheduleArray.message}
+          </p>
+        )}
         {schedule.length === 0 ? (
-          <div
-            className={`py-6 text-center italic ${
-              errors.scheduleArray?.message ? 'text-red-500' : 'text-gray-400'
-            }`}
-          >
+          <div className='py-6 text-center text-gray-400 italic'>
             No sessions added to schedule yet
           </div>
         ) : (

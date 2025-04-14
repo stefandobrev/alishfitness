@@ -9,6 +9,7 @@ const exerciseSchema = z.object({
 });
 
 const sessionSchema = z.object({
+  tempId: z.string().min(1, 'Session tempId is required.'),
   sessionTitle: z.string().min(1, 'Session title is required.'),
   exercises: z
     .array(exerciseSchema)
@@ -21,7 +22,7 @@ const createProgram = z
     sessions: z
       .array(sessionSchema)
       .min(1, { message: 'At least one session is required.' }),
-    scheduleArray: z.array(z.string()).optional(),
+    scheduleArray: z.array(z.string()).min(1, 'Schedule is required.'),
     mode: z.enum(['create', 'template']),
     assignedUser: z
       .object({
@@ -49,14 +50,19 @@ const createProgram = z
           code: z.ZodIssueCode.custom,
         });
       }
+    }
 
-      if (!data.scheduleArray || data.scheduleArray.length === 0) {
-        ctx.addIssue({
-          path: ['scheduleArray'],
-          message: 'Schedule is required.',
-          code: z.ZodIssueCode.custom,
-        });
-      }
+    // Ensure every session appears at least once in scheduleArray
+    const missingSessions = data.sessions.filter(
+      (s) => !data.scheduleArray.includes(s.tempId),
+    );
+
+    if (missingSessions.length > 0) {
+      ctx.addIssue({
+        path: ['scheduleArray'],
+        message: 'Sessions missing.',
+        code: z.ZodIssueCode.custom,
+      });
     }
   });
 

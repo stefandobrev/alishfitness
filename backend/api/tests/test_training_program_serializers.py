@@ -14,7 +14,7 @@ class TestTrainingProgramSerializer:
             "program_title": "Test Program",
             "mode": "create",
             "assigned_user": test_user.id,
-            "activation_date": activation_date.isoformat(),
+            "activation_date": activation_date,
             "schedule_array": [1, 2, 1],
             "sessions": [
                 {

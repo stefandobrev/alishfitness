@@ -49,7 +49,7 @@ export const CreateProgramPage = () => {
     const formattedData = {
       ...data,
       activationDate: data.activationDate
-        ? new Date(data.activationDate).toISOString()
+        ? new Date(data.activationDate).toISOString().split('T')[0]
         : null,
       assignedUser: data.assignedUser ? data.assignedUser.value : null,
     };
