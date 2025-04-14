@@ -1,6 +1,9 @@
+import { useFormContext } from 'react-hook-form';
+
 import { isMobile } from '@/common/constants';
 
-export const SequenceInput = ({ field }) => {
+export const SequenceInput = ({ field, sessionIndex }) => {
+  const { trigger } = useFormContext();
   return (
     <input
       {...field}
@@ -9,6 +12,7 @@ export const SequenceInput = ({ field }) => {
       }`}
       onChange={(e) => {
         field.onChange(e.target.value.toUpperCase());
+        trigger(`sessions.${sessionIndex}.exercises`);
       }}
     />
   );

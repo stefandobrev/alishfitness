@@ -30,7 +30,9 @@ export const ExerciseMobileRow = ({
           <Controller
             name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.sequence`}
             control={control}
-            render={({ field }) => <SequenceInput field={field} />}
+            render={({ field }) => (
+              <SequenceInput field={field} sessionIndex={sessionIndex} />
+            )}
           />
         </div>
 

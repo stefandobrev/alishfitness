@@ -89,7 +89,8 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
 
             {sessionExercisesErrors && (
               <p className='mt-1 text-sm text-red-500'>
-                {sessionExercisesErrors.message || 'All fields are required.'}
+                {errors?.sessions?.[sessionIndex]?.exercises?.sequence
+                  ?.message || 'All fields are required.'}
               </p>
             )}
 

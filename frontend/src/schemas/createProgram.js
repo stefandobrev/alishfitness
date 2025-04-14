@@ -13,7 +13,23 @@ const sessionSchema = z.object({
   sessionTitle: z.string().min(1, 'Session title is required.'),
   exercises: z
     .array(exerciseSchema)
-    .min(1, 'At least one exercise is required.'),
+    .min(1, 'At least one exercise is required.')
+    .refine(
+      (exercises) => {
+        const sequences = new Set();
+        for (const exercise of exercises) {
+          if (sequences.has(exercise.sequence)) {
+            return false; // Duplicate found
+          }
+          sequences.add(exercise.sequence);
+        }
+        return true; // All sequences are unique
+      },
+      {
+        message: 'Sequences must be unique.',
+        path: ['sequence'],
+      },
+    ),
 });
 
 const createProgram = z
