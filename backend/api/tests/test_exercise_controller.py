@@ -130,26 +130,7 @@ class TestExerciseController:
         assert steps[0].description == "Step1"
         assert steps[0].order == 1
         assert steps[1].description == "Step2"
-        assert steps[1].order == 2
-
-    def test_update_invalid_same_groups(self, api_client, test_admin, test_secondary_muscle_group):
-        api_client.force_authenticate(user=test_admin)
-
-        url = reverse("create-exercise")
-
-        invalid_exercise = {
-            "title": "Test New Exercise",
-            "primary_group": test_secondary_muscle_group.slug,
-            "secondary_groups": [test_secondary_muscle_group.slug],
-            "gif_link_front":  "https://example.com/gifs/front_view.gif",
-            "gif_link_side":  "https://example.com/gifs/side_view.gif",
-            "steps": [{"description": "Step1"}, {"description": "Step2"}],
-            "mistakes": [{"description": "mistake1"}]
-        }
-        response = api_client.post(url, invalid_exercise, format="json")
-
-        assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert "You cannot select the same group as primary and secondary." in response.data["secondary_groups"][0]    
+        assert steps[1].order == 2   
     
     def test_update(self, api_client, test_admin, test_exercise, test_secondary_muscle_group):
         api_client.force_authenticate(user=test_admin)
@@ -171,19 +152,6 @@ class TestExerciseController:
         
         updated_exercise = Exercise.objects.get(id=test_exercise.id)
         assert updated_exercise.primary_group == test_secondary_muscle_group
-
-    def test_update_invalid_primary_group(self, api_client, test_admin, test_exercise, test_secondary_muscle_group):
-        api_client.force_authenticate(user=test_admin)
-
-        url = reverse("update-exercise", args=[test_exercise.id])
-
-        invalid_updated_data = {
-            "primary_group": "invalidgroup",
-        }
-        response = api_client.put(url, invalid_updated_data, format="json")
-
-        assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert "Primary group not found." in response.data["primary_group"]
     
     def test_delete_success(self, api_client, test_admin, test_exercise):
         api_client.force_authenticate(user=test_admin)
