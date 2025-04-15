@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
-from api.models import Exercise, MuscleGroup, Step, Mistake
+from api.models import Exercise, MuscleGroup
 
 from api.serializers.exercise_serializers import ExerciseSerializer
 from api.serializers.common_serializers import MuscleGroupTitleSerializer
@@ -78,93 +78,34 @@ class ExerciseController:
 
     def create(self, request):
         """
-        Create a new exercise model(optional: add secondary_groups, 
-        steps and mistakes to it.)
+        Create a new exercise model with steps and mistakes.
 
         Args:
             request: HTTP request containing data.
 
         Returns:
-            Response with exercise, steps and mistakes data or error messages.
+            Response with success message or error messages.
         """
-        exercise_data = {key: value for key, value in request.data.items() if key in ExerciseSerializer.Meta.fields}
-        steps_data = request.data.get("steps", [])
-        mistakes_data = request.data.get("mistakes", [])
-
-        # Convert slug to ID for primary_group
-        primary_group_name = exercise_data.get("primary_group")
-        if primary_group_name:
-            primary_group = MuscleGroup.objects.filter(slug=primary_group_name).first()
-            if not primary_group:
-                return Response({"primary_group": "Primary group not found."}, status=status.HTTP_400_BAD_REQUEST)
-            exercise_data["primary_group"] = primary_group.id
-
-        # Convert slugs to IDs for secondary_groups
-        secondary_groups = []
-        if "secondary_groups" in exercise_data:
-            for group_name in exercise_data["secondary_groups"]:
-                group = MuscleGroup.objects.filter(slug=group_name).first()
-                if group:
-                    secondary_groups.append(group.id)
-            exercise_data["secondary_groups"] = secondary_groups
-
-        serializer = ExerciseSerializer(data=exercise_data)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        exercise = serializer.save()
-
-        for index, step_description in enumerate(steps_data, start=1):
-            Step.objects.create(exercise=exercise, description=step_description, order=index)
-
-        for mistake_description in mistakes_data:
-            Mistake.objects.create(exercise=exercise, description=mistake_description)
-
-        return Response({"message": "Exercise created successfully!"})
+        serializer = ExerciseSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Exercise created successfully!"}, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, id):
-        """Update an existing exercise model (only provided fields)."""
+        """Update an existing exercise with steps and mistakes."""
         exercise = get_object_or_404(Exercise, id=id)
-
-        exercise_data = {key: value for key, value in request.data.items() if key in ExerciseSerializer.Meta.fields}
-        steps_data = request.data.get("steps")
-        mistakes_data = request.data.get("mistakes")
-
-        # Convert slug to ID for primary_group
-        if "primary_group" in exercise_data:
-            primary_group_name = exercise_data["primary_group"]
-            primary_group = MuscleGroup.objects.filter(slug=primary_group_name).first()
-            if not primary_group:
-                return Response({"primary_group": "Primary group not found."}, status=status.HTTP_400_BAD_REQUEST)
-            exercise_data["primary_group"] = primary_group.id
-
-        # Convert slugs to IDs for secondary_groups
-        if "secondary_groups" in exercise_data:
-            secondary_groups = []
-            for group_name in exercise_data["secondary_groups"]:
-                group = MuscleGroup.objects.filter(slug=group_name).first()
-                if group:
-                    secondary_groups.append(group.id)
-            exercise_data["secondary_groups"] = secondary_groups
-
-        serializer = ExerciseSerializer(exercise, data=exercise_data, partial=True)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        exercise = serializer.save()
-
-        if steps_data is not None:
-            exercise.steps.all().delete()
-            for index, step_description in enumerate(steps_data, start=1):
-                Step.objects.create(exercise=exercise, description=step_description, order=index)
         
-        if mistakes_data is not None:
-            exercise.mistakes.all().delete()
-            for mistake_description in mistakes_data:
-                Mistake.objects.create(exercise=exercise, description=mistake_description)
+        serializer = ExerciseSerializer(exercise, data=request.data, partial=True)
         
-        return Response({"message": "Exercise updated successfully!"})
-    
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Exercise updated successfully!"})
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
     def delete(self, request, id):
         """ Delete an existing exercise model."""
         exercise = get_object_or_404(Exercise, id=id)

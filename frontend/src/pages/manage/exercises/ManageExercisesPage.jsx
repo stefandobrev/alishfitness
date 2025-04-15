@@ -75,6 +75,7 @@ export const ManageExercisesPage = () => {
 
   const onSubmitNewExercise = async (submittedExerciseData) => {
     setIsLoading(true);
+
     try {
       const response = await saveExercise(submittedExerciseData);
       const { type, text } = response;

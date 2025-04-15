@@ -13,4 +13,5 @@ def training_setup_data(request):
 @api_view(["POST"])
 @permission_classes([IsAdminUser])
 def create_program(request):
-    pass
+    training_program_controller = TrainingProgramController()
+    return training_program_controller.create(request)

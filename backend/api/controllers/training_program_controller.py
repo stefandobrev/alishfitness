@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import status
 from rest_framework.response import Response
 
@@ -29,3 +30,26 @@ class TrainingProgramController:
                 "exercises": exercise_data
             }
         return Response(data)
+    
+    def create(self, request):
+        """
+            Create a new training program or new template.
+
+            Args:
+                request: HTTP request containing data.
+
+            Returns:
+                Response with messages.
+        """
+        serializer = TrainingProgramSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        with transaction.atomic():
+            program = serializer.save()
+
+            self.transform_program_structure(program, request) ## assign real ids to tempIds
+
+            # program.save()
+
+        return Response({"message": "Program created successfully!"})
