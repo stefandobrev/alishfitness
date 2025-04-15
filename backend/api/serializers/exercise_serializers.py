@@ -193,36 +193,3 @@ class ExerciseSerializer(serializers.ModelSerializer):
                 )
         
         return instance
-    
-    def to_internal_value(self, data):
-        """
-        Handle conversion from frontend data format to serializer format.
-        """
-        # Map frontend field names to serializer field names
-        field_mapping = {
-            'primaryGroup': 'primary_group',
-            'secondaryGroups': 'secondary_groups',
-            'gifLinkFront': 'gif_link_front',
-            'gifLinkSide': 'gif_link_side',
-            'videoLink': 'video_link',
-        }
-        
-        # If the data is nested inside submittedExerciseData, extract it
-        if 'submittedExerciseData' in data:
-            data = data['submittedExerciseData']
-        
-        # Create a new dict with the mapped fields
-        mapped_data = {}
-        for key, value in data.items():
-            serializer_key = field_mapping.get(key, key)
-            mapped_data[serializer_key] = value
-        
-        # Handle steps and mistakes arrays (convert simple strings to dict format)
-        if 'steps' in mapped_data and isinstance(mapped_data['steps'], list):
-            mapped_data['steps'] = [{'description': step} for step in mapped_data['steps']]
-            
-        if 'mistakes' in mapped_data and isinstance(mapped_data['mistakes'], list):
-            mapped_data['mistakes'] = [{'description': mistake} for mistake in mapped_data['mistakes']]
-        
-        # Call parent implementation with mapped data
-        return super().to_internal_value(mapped_data)
