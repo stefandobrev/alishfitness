@@ -103,12 +103,12 @@ class LoginSerializer(serializers.Serializer):
 
         if not user:
             raise AuthenticationFailed(
-                {"non_field_errors": ["Invalid username or password"]}
+                {"login_username": "Invalid username or password."}
             )
 
         if not user.is_active:
             raise AuthenticationFailed(
-                {"non_field_errors": ["This account has been disabled"]}
+                {"login_username": "This account has been disabled."}
             )
 
         return {"user": user}
@@ -129,7 +129,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         """Validate profile update data."""
         if not data.get("first_name") and not data.get("last_name"):
             raise serializers.ValidationError(
-                {"non_field_errors": ["At least one field must be provided"]}
+                {"first_name": "At least one field must be provided."}
             )
         return data
 
@@ -270,12 +270,12 @@ class TokenRefreshSerializer(serializers.Serializer):
             jti = token.get("jti")
             if not OutstandingToken.objects.filter(jti=jti).exists():
                 raise serializers.ValidationError(
-                    "Token not found in outstanding tokens"
+                    "Token not found in outstanding tokens."
                 )
 
             # Check if token is blacklisted
             if BlacklistedToken.objects.filter(token__jti=jti).exists():
-                raise serializers.ValidationError("Token is blacklisted")
+                raise serializers.ValidationError("Token is blacklisted.")
 
             return token
 
