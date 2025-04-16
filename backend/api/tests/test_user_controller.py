@@ -96,7 +96,7 @@ class TestUserController:
         response = api_client.post(url, data=login_data, format="json")
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
-        assert "non_field_errors" in response.data
+        assert "login_username" in response.data
 
     def test_refresh_token_valid(self, api_client, test_user):
         login_data = {
@@ -208,12 +208,35 @@ class TestUserController:
     def test_get_profile(self, api_client, test_user):
         api_client.force_authenticate(user=test_user)
 
-        url = reverse("my-profile")
+        url = reverse("get-my-profile")
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_200_OK
         assert response.data["first_name"] == "test"
         assert response.data["last_name"] == "user"
+
+    def test_get_settings(self, api_client, test_user):
+        api_client.force_authenticate(user=test_user)
+
+        url = reverse("get-settings")
+        response = api_client.get(url)
+
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data["username"] == "testuser"
+        assert response.data["email"] == "test@email.com"
+
+    def test_update_settings(self, api_client, test_user):
+        api_client.force_authenticate(user=test_user)
+
+        update_data = {
+            "username": "updated_username",
+        }
+
+        url = reverse("update-settings")
+        response = api_client.put(url, data=update_data, format="json")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data["username"] == "updated_username"
     
     def test_update_profile(self, api_client, test_user):
         api_client.force_authenticate(user=test_user)
@@ -223,7 +246,7 @@ class TestUserController:
             "last_name": "updated-last",
         }
 
-        url = reverse("my-profile")
+        url = reverse("update-my-profile")
         response = api_client.put(url, data=update_data, format="json")
 
         assert response.status_code == status.HTTP_200_OK
