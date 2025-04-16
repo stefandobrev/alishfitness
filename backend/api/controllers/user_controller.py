@@ -39,6 +39,31 @@ class UserController:
             },
             status=status.HTTP_201_CREATED,
         )
+    
+    def update(self, request):
+        """
+        Updates profile/settings.
+
+        Args:
+            request: HTTP request
+
+        Returns:
+            Response with profile/settings data or error message
+        """
+        user = request.user
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            user = serializer.save()
+        
+            return Response({
+                "username": user.username,
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+            })
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def login(self, request):
         """
@@ -100,39 +125,17 @@ class UserController:
                 {"error": f"Invalid or expired refresh token: {str(e)}"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-
-    def handle_profile_or_settings(self, request):
-        """
-        Handle profile/settings operations (get/update).
-
-        Args:
-            request: HTTP request
-
-        Returns:
-            Response with profile/settings data or error message
-        """
-        user = request.user
         
-        if request.method == "GET":
-            return Response({
+    def get_profile_or_settings(self, request):
+        """ Returns user profile/settings info."""
+        user = request.user
+
+        return Response({
                 "username": user.username,
                 "email": user.email,
                 "first_name": user.first_name,
                 "last_name": user.last_name,
             })
-        elif request.method == "PUT":
-            serializer = UserSerializer(user, data=request.data, partial=True)
-            if serializer.is_valid():
-                user = serializer.save()
-            
-                return Response({
-                    "username": user.username,
-                    "email": user.email,
-                    "first_name": user.first_name,
-                    "last_name": user.last_name,
-                })
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update_password(self, request):
         """Update the user's password."""

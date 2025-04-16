@@ -9,37 +9,44 @@ def create_user(request):
     user_controller = UserController()
     return user_controller.create(request)
 
-
 @api_view(["POST"])
 def login_user(request):
     user_controller = UserController()
     return user_controller.login(request)
 
-
-@api_view(["GET", "PUT"])
+@api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def my_profile(request):
+def get_profile(request):
     user_controller = UserController()
-    return user_controller.handle_profile_or_settings(request)
+    return user_controller.get_profile_or_settings(request)
 
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def update_profile(request):
+    user_controller = UserController()
+    return user_controller.update(request)
 
 @api_view(["POST"])
 def refresh_token(request):
     user_controller = UserController()
     return user_controller.refresh_token(request)
 
-
 @api_view(["POST"])
 def blacklist_token(request):
     user_controller = UserController()
     return user_controller.blacklist_token(request)
 
-
-@api_view(["GET", "PUT"])
+@api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def profile_settings(request):
+def get_settings(request):
     user_controller = UserController()
-    return user_controller.handle_profile_or_settings(request)
+    return user_controller.get_profile_or_settings(request)
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def update_settings(request):
+    user_controller = UserController()
+    return user_controller.update(request)
 
 
 @api_view(["PUT"])

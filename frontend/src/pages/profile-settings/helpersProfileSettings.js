@@ -10,7 +10,7 @@ export const fetchUserSettings = async () => {
 export const updateUserSettings = async (data) => {
   const transformedData = camelToSnake(data);
   try {
-    const response = await api('user/settings/', 'PUT', transformedData);
+    const response = await api('user/settings/update/', 'PUT', transformedData);
 
     if (!response.ok) {
       const errorData = await response.json();

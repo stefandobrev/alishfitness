@@ -15,7 +15,11 @@ export const fetchUserProfile = async () => {
 export const updateUserProfile = async (profileData) => {
   const transformedData = camelToSnake(profileData);
   try {
-    const response = await api('user/my-profile/', 'PUT', transformedData);
+    const response = await api(
+      'user/my-profile/update/',
+      'PUT',
+      transformedData,
+    );
     if (!response.ok) {
       throw new Error('Failed to update user profile');
     }

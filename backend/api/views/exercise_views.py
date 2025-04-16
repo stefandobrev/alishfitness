@@ -33,7 +33,6 @@ def update_exercise(request, id):
     exercise_controller = ExerciseController()
     return exercise_controller.update(request, id)
 
-
 @api_view(["DELETE"])
 @permission_classes([IsAdminUser])
 def delete_exercise(request, id):
@@ -45,7 +44,6 @@ def delete_exercise(request, id):
 def exercises_group(request):
     exercise_controller = ExerciseController()
     return exercise_controller.get_exercises_group(request)
-
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
