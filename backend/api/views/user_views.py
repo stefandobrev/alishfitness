@@ -20,7 +20,7 @@ def login_user(request):
 @permission_classes([IsAuthenticated])
 def my_profile(request):
     user_controller = UserController()
-    return user_controller.handle_profile(request)
+    return user_controller.handle_profile_or_settings(request)
 
 
 @api_view(["POST"])
@@ -39,7 +39,7 @@ def blacklist_token(request):
 @permission_classes([IsAuthenticated])
 def profile_settings(request):
     user_controller = UserController()
-    return user_controller.handle_settings(request)
+    return user_controller.handle_profile_or_settings(request)
 
 
 @api_view(["PUT"])

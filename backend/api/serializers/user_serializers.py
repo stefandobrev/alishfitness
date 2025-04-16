@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from django.core.validators import EmailValidator
 from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 from rest_framework_simplejwt.token_blacklist.models import (
@@ -13,18 +13,9 @@ from rest_framework_simplejwt.token_blacklist.models import (
 from api.models import User
 
 class UserSerializer(serializers.ModelSerializer):
-    """Serializer for user registration."""
-
-    confirm_password = serializers.CharField(write_only=True)
-    email = serializers.EmailField(
-        validators=[
-            EmailValidator(message="Enter a valid email address."),  
-            UniqueValidator(queryset=User.objects.all().only("email"), message="This email is already registered.") 
-        ]
-    )
-    username = serializers.CharField(
-        validators=[UniqueValidator(queryset=User.objects.all().only("username"), message="This username is already taken.")]
-    )
+    """Serializer for user registration, profile updates, and settings updates."""
+    
+    confirm_password = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = User
@@ -40,10 +31,13 @@ class UserSerializer(serializers.ModelSerializer):
             "password": {
                 "write_only": True,
                 "min_length": 8,
-                "style": {"input_type": "password"},
+            },"first_name": {
+                "required": True,  
             },
-            "first_name": {"required": True},
-            "last_name": {"required": True},
+            "last_name": {
+                "required": True,  
+            },
+
         }
 
     def validate(self, data):
@@ -53,32 +47,51 @@ class UserSerializer(serializers.ModelSerializer):
         Checks:
         - Passwords match
         - Email case sensitivity uniqeness
+        - Username case sensitivity uniqeness
         """
-        if data["password"] != data["confirm_password"]:
-            raise serializers.ValidationError(
-                {"confirm_password": "Passwords do not match."}
-            )
+        instance = getattr(self, "instance", None)
+
+        if "password" in data or "confirm_password" in data:
+            if data.get("password") != data.get("confirm_password"):
+                raise serializers.ValidationError({"confirm_password": "Passwords do not match."})
         
-        if User.objects.filter(email__iexact=data["email"].lower()).exists():
-            raise serializers.ValidationError(
-                {"email": "This email is already registered."}
-        )
+        if "email" in data:
+            email = data["email"].lower()
+            data["email"] = email  
+            queryset = User.objects.filter(email__iexact=email)
+            if instance:
+                queryset = queryset.exclude(pk=instance.pk)
+            if queryset.exists():
+                raise serializers.ValidationError({"email": "This email is already registered."})
+
+        if "username" in data:
+            username = data["username"].lower()
+            data["username"] = username  
+            queryset = User.objects.filter(username__iexact=username)
+            if instance:
+                queryset = queryset.exclude(pk=instance.pk)
+            if queryset.exists():
+                raise serializers.ValidationError({"username": "This username is already taken."})
 
         return data
 
     def create(self, validated_data):
         """Create and return a new user."""
-        # Remove confirm_password from the data
         validated_data.pop("confirm_password")
-
-        # Hash the password
         validated_data["password"] = make_password(validated_data["password"])
 
-        # Ensure username and email are lowercase
-        validated_data["username"] = validated_data["username"].lower()
-        validated_data["email"] = validated_data["email"].lower()
-
         return User.objects.create(**validated_data)
+    
+    def update(self, instance, validated_data):
+        """Update and return an existing user."""
+        validated_data.pop("password", None)
+        validated_data.pop("confirm_password", None)    
+        
+        for field, value in validated_data.items():
+            setattr(instance, field, value)
+
+        instance.save()
+        return instance
 
 
 class LoginSerializer(serializers.Serializer):
@@ -113,104 +126,6 @@ class LoginSerializer(serializers.Serializer):
 
         return {"user": user}
 
-
-class UserProfileSerializer(serializers.ModelSerializer):
-    """Serializer for user profile updates."""
-
-    class Meta:
-        model = User
-        fields = ["first_name", "last_name"]
-        extra_kwargs = {
-            "first_name": {"required": True},
-            "last_name": {"required": True},
-        }
-
-    def validate(self, data):
-        """Validate profile update data."""
-        if not data.get("first_name") and not data.get("last_name"):
-            raise serializers.ValidationError(
-                {"first_name": "At least one field must be provided."}
-            )
-        return data
-
-
-class UserSettingsSerializer(serializers.ModelSerializer):
-    """Serializer for settings updates."""
-
-    confirm_password = serializers.CharField(write_only=True)
-    email = serializers.EmailField(validators=[EmailValidator()])
-
-    class Meta:
-        model = User
-        fields = ["username", "email", "password", "confirm_password"]
-        extra_kwargs = {
-            "password": {
-                "write_only": True,
-                "min_length": 8,
-                "style": {"input_type": "password"},
-            },
-        }
-
-    def validate(self, data):
-        """
-        Validate the user settings data.
-
-        Checks:
-        - Current password is correct
-        - Passwords match
-        - Username uniqueness (excluding current user)
-        - Email uniqueness (excluding current user)
-        """
-        # Verify current password first
-        if not self.instance.check_password(data["password"]):
-            raise serializers.ValidationError(
-                {"password": "Current password is incorrect."}
-            )
-
-        if data["password"] != data["confirm_password"]:
-            raise serializers.ValidationError(
-                {"confirm_password": "Passwords do not match."}
-            )
-
-        # Username and email uniqueness checks (excluding current user)
-        if (
-            User.objects.exclude(pk=self.instance.pk)
-            .filter(username=data["username"].lower())
-            .exists()
-        ):
-            raise serializers.ValidationError(
-                {"username": "This username is already taken."}
-            )
-
-        if (
-            User.objects.exclude(pk=self.instance.pk)
-            .filter(email=data["email"].lower())
-            .exists()
-        ):
-            raise serializers.ValidationError(
-                {"email": "This email is already registered."}
-            )
-
-        return data
-
-    def update(self, instance, validated_data):
-        """Update and return the user settings."""
-        # Remove password fields as they were only used for validation
-        validated_data.pop("confirm_password")
-        validated_data.pop("password")
-
-        # Ensure username and email are lowercase
-        validated_data["username"] = validated_data["username"].lower()
-        validated_data["email"] = validated_data["email"].lower()
-
-        # Update the instance
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-
-        instance.save()
-        return instance
-
-
 class UpdatePasswordSerializer(serializers.Serializer):
     """Serializer for updating user password."""
 
@@ -229,13 +144,11 @@ class UpdatePasswordSerializer(serializers.Serializer):
         """
         user = self.context["request"].user
 
-        # Verify current password
         if not user.check_password(data["current_password"]):
             raise serializers.ValidationError(
                 {"current_password": "Current password is incorrect."}
             )
 
-        # Check if current and new passwords are the same
         if data["current_password"] == data["new_password"]:
             raise serializers.ValidationError(
                 {
@@ -243,7 +156,6 @@ class UpdatePasswordSerializer(serializers.Serializer):
                 }
             )
 
-        # Check if new passwords match
         if data["new_password"] != data["confirm_password"]:
             raise serializers.ValidationError(
                 {"confirm_password": "Passwords do not match."}

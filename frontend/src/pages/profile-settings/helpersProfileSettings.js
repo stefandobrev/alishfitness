@@ -9,7 +9,34 @@ export const fetchUserSettings = async () => {
 
 export const updateUserSettings = async (data) => {
   const transformedData = camelToSnake(data);
-  return api('user/settings/', 'PUT', transformedData);
+  try {
+    const response = await api('user/settings/', 'PUT', transformedData);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+
+      /* Hardcoding the error messages because django handles unique
+      with own text. */
+      let errorMessage = 'Something went wrong';
+      if (errorData.username) {
+        errorMessage = 'Username unavailable.';
+      }
+      if (errorData.email) {
+        errorMessage = 'Email unavailable.';
+      }
+      return {
+        type: 'error',
+        text: errorMessage,
+      };
+    }
+    return {
+      type: 'success',
+      text: 'Settings updated successfully!',
+    };
+  } catch (error) {
+    console.log(error);
+    return { type: 'error', text: 'Something went wrong.' };
+  }
 };
 
 export const updateUserPassword = async (data) => {

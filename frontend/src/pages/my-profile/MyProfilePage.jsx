@@ -65,7 +65,7 @@ export const MyProfilePage = () => {
       {isLoading ? (
         <Spinner loading={isLoading} className='min-h-[70vh]' />
       ) : (
-        <div className='flex h-[calc(100vh-108px)] items-center justify-center'>
+        <div className='flex min-h-[calc(100vh-108px)] items-center justify-center'>
           <div className='w-full max-w-xs'>
             <h1 className='mb-4 text-2xl font-semibold'>My Profile</h1>
             <FormProvider {...methods}>

@@ -18,6 +18,7 @@ import { Spinner } from '@/components/common';
 import { useTitle } from '@/hooks/useTitle.hook';
 
 export const ProfileSettingsPage = () => {
+  const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
@@ -33,8 +34,8 @@ export const ProfileSettingsPage = () => {
   const navigate = useNavigate();
   useTitle('Settings');
 
-  // Handles both canceling password change
-  // and entering into password change mode from within settings)
+  /* Handles both canceling password change
+   and entering into password change mode from within settings) */
   const togglePasswordChange = () => {
     setIsChangingPassword((prev) => !prev);
   };
@@ -42,11 +43,17 @@ export const ProfileSettingsPage = () => {
   const handleSettingsSave = async (profileData) => {
     try {
       setIsLoading(true);
-      await updateUserSettings(profileData);
-      setIsEditing(false);
-      toast.success('Settings updated successfully!');
-    } catch (error) {
-      toast.error('Failed to update profile.');
+      const { type, text } = await updateUserSettings(profileData);
+
+      if (type === 'error') {
+        setMessage({ type, text });
+        return;
+      }
+
+      if (type === 'success') {
+        setIsEditing(false);
+        toast.success('Settings updated successfully!');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -67,7 +74,6 @@ export const ProfileSettingsPage = () => {
     }
   };
 
-  // Fetch settings on mount
   useEffect(() => {
     const loadSettings = async () => {
       setIsLoading(true);
@@ -87,7 +93,7 @@ export const ProfileSettingsPage = () => {
       {isLoading ? (
         <Spinner loading={isLoading} className='min-h-[70vh]' />
       ) : (
-        <div className='flex h-[calc(100vh-108px)] items-center justify-center'>
+        <div className='flex min-h-[calc(100vh-108px)] items-center justify-center'>
           <div className='w-full max-w-xs'>
             <h1 className='mb-4 text-2xl font-semibold'>Profile Settings</h1>
 
@@ -109,6 +115,7 @@ export const ProfileSettingsPage = () => {
                     handleSettingsSave,
                   )}
                   onPasswordChange={togglePasswordChange}
+                  message={message}
                 />
               </FormProvider>
             )}

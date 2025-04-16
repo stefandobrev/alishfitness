@@ -5,13 +5,13 @@ import re
 class StepSerializer(serializers.ModelSerializer):
     class Meta:
         model = Step
-        fields = ['description', 'order']
-        extra_kwargs = {'order': {'required': False}}
+        fields = ["description", "order"]
+        extra_kwargs = {"order": {"required": False}}
 
 class MistakeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mistake
-        fields = ['description']
+        fields = ["description"]
 
 class ExerciseSerializer(serializers.ModelSerializer):
     """Serializer for Exercise with nested steps and mistakes."""
@@ -58,7 +58,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
                 )
            
             # For updates, need to exclude current instance from uniqueness check
-            instance = getattr(self, 'instance', None)
+            instance = getattr(self, "instance", None)
             title_query = Exercise.objects.filter(title__iexact=data["title"])
             if instance:
                 title_query = title_query.exclude(pk=instance.pk)
@@ -111,7 +111,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
             )
             
         # For partial updates - check against existing instance data
-        instance = getattr(self, 'instance', None)
+        instance = getattr(self, "instance", None)
         if instance:
             # If primary_group is being updated but secondary_groups isn't provided
             if primary_group and "secondary_groups" not in data:
@@ -131,9 +131,9 @@ class ExerciseSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         """Create exercise with related steps and mistakes."""
-        steps_data = validated_data.pop('steps', [])
-        mistakes_data = validated_data.pop('mistakes', [])
-        secondary_groups = validated_data.pop('secondary_groups', [])
+        steps_data = validated_data.pop("steps", [])
+        mistakes_data = validated_data.pop("mistakes", [])
+        secondary_groups = validated_data.pop("secondary_groups", [])
         
         exercise = Exercise.objects.create(**validated_data)
         
@@ -145,7 +145,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
         for index, step_data in enumerate(steps_data, start=1):
             Step.objects.create(
                 exercise=exercise,
-                description=step_data['description'],
+                description=step_data["description"],
                 order=index
             )
         
@@ -153,16 +153,16 @@ class ExerciseSerializer(serializers.ModelSerializer):
         for mistake_data in mistakes_data:
             Mistake.objects.create(
                 exercise=exercise,
-                description=mistake_data['description']
+                description=mistake_data["description"]
             )
         
         return exercise
     
     def update(self, instance, validated_data):
         """Update exercise with related steps and mistakes."""
-        steps_data = validated_data.pop('steps', None)
-        mistakes_data = validated_data.pop('mistakes', None)
-        secondary_groups = validated_data.pop('secondary_groups', None)
+        steps_data = validated_data.pop("steps", None)
+        mistakes_data = validated_data.pop("mistakes", None)
+        secondary_groups = validated_data.pop("secondary_groups", None)
         
         # Update exercise fields
         for attr, value in validated_data.items():
@@ -179,7 +179,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
             for index, step_data in enumerate(steps_data, start=1):
                 Step.objects.create(
                     exercise=instance,
-                    description=step_data['description'],
+                    description=step_data["description"],
                     order=index
                 )
         
@@ -189,7 +189,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
             for mistake_data in mistakes_data:
                 Mistake.objects.create(
                     exercise=instance,
-                    description=mistake_data['description']
+                    description=mistake_data["description"]
                 )
         
         return instance

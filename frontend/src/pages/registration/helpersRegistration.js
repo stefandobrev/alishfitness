@@ -10,7 +10,7 @@ export const registerUser = async (userData) => {
 
       let errorMessage = 'Something went wrong';
       if (errorData.username || errorData.email) {
-        errorMessage = 'Username/Email unavailable';
+        errorMessage = 'Username/Email unavailable.';
       }
 
       return {

@@ -5,11 +5,9 @@ from rest_framework.response import Response
 from api.serializers.user_serializers import (
     UserSerializer,
     LoginSerializer,
-    UserSettingsSerializer,
     UpdatePasswordSerializer,
     TokenRefreshSerializer,
 )
-
 
 class UserController:
     """Controller handling all user-related operations."""
@@ -22,7 +20,7 @@ class UserController:
             request: HTTP request containing user data
 
         Returns:
-            Response with user data or error messages
+            Response with messages.
         """
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -50,13 +48,14 @@ class UserController:
             request: HTTP request containing login credentials
 
         Returns:
-            Response with tokens or error message
+            Response with tokens or error message.
         """
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         user = serializer.validated_data["user"]
-        tokens = self._generate_tokens(user)
+        refresh = RefreshToken.for_user(user)
+        tokens = {"access": str(refresh.access_token), "refresh": str(refresh)}
 
         return Response(
             {
@@ -102,77 +101,41 @@ class UserController:
                 status=status.HTTP_401_UNAUTHORIZED,
             )
 
-    def handle_profile(self, request):
+    def handle_profile_or_settings(self, request):
         """
-        Handle profile operations (get/update).
+        Handle profile/settings operations (get/update).
 
         Args:
             request: HTTP request
 
         Returns:
-            Response with profile data or error message
+            Response with profile/settings data or error message
         """
-
+        user = request.user
+        
         if request.method == "GET":
-            return self._get_profile(request.user)
-        elif request.method == "PUT":
-            return self._update_profile(request.user, request.data)
-
-    def _generate_tokens(self, user):
-        """Generate access and refresh tokens for user."""
-        refresh = RefreshToken.for_user(user)
-        return {"access": str(refresh.access_token), "refresh": str(refresh)}
-
-    def _get_profile(self, user):
-        """Get user profile data."""
-        return Response(
-            {
+            return Response({
+                "username": user.username,
+                "email": user.email,
                 "first_name": user.first_name,
                 "last_name": user.last_name,
-            }
-        )
-
-    def _update_profile(self, user, data):
-        """Update user profile data."""
-        user.first_name = data.get("first_name", user.first_name)
-        user.last_name = data.get("last_name", user.last_name)
-        user.save()
-        return Response({"first_name": user.first_name, "last_name": user.last_name})
-
-    def handle_settings(self, request):
-        """
-        Handle settings operations (get/update).
-
-        Args:
-            request: HTTP request
-
-        Returns:
-            Response with settings data or error message
-        """
-        if request.method == "GET":
-            return self._get_settings(request.user)
+            })
         elif request.method == "PUT":
-            return self._update_settings(request.user, request.data)
-
-    def _get_settings(self, user):
-        """Get user settings data."""
-        return Response(
-            {
-                "email": user.email,
-                "username": user.username,
-            }
-        )
-
-    def _update_settings(self, user, data):
-        """Update user settings data."""
-        serializer = UserSettingsSerializer(user, data=data)
-        serializer.is_valid(raise_exception=True)
-
-        user = serializer.save()
-        return Response({"username": user.username, "email": user.email})
+            serializer = UserSerializer(user, data=request.data, partial=True)
+            if serializer.is_valid():
+                user = serializer.save()
+            
+                return Response({
+                    "username": user.username,
+                    "email": user.email,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                })
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update_password(self, request):
-        """Update the user"s password."""
+        """Update the user's password."""
         serializer = UpdatePasswordSerializer(
             data=request.data, context={"request": request}
         )

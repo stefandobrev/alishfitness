@@ -12,6 +12,7 @@ export const SettingsForm = ({
   setIsEditing,
   onSubmit,
   onPasswordChange,
+  message,
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const {
@@ -59,6 +60,8 @@ export const SettingsForm = ({
               togglePasswordVisibility={togglePasswordVisibility}
             />
           </div>
+
+          {message && <p className={'my-2 text-red-500'}>{message.text}</p>}
         </>
       )}
 
