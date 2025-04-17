@@ -15,7 +15,7 @@ import { useTitle } from '@/hooks/useTitle.hook';
 import { ExerciseListPanel, FormPanel, AnatomyPanel } from './components';
 import { MobileTabs } from '@/components/buttons';
 import { getChangedFields, snakeToCamel } from '@/utils';
-import manageExercises from '@/schemas/manageExercises';
+import { manageExercises } from '@/schemas';
 
 export const ManageExercisesPage = () => {
   const location = useLocation();

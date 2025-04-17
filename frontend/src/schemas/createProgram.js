@@ -3,7 +3,7 @@ import { z } from 'zod';
 const exerciseSchema = z.object({
   sequence: z.string().min(1, 'Required'),
   muscleGroup: z.string().min(1, 'Required'),
-  slug: z.string().min(1, 'Required'),
+  exerciseSlug: z.string().min(1, 'Required'),
   sets: z.string().min(1, 'Required'),
   reps: z.string().min(1, 'Required'),
 });

@@ -5,11 +5,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 
-import registration from '@/schemas/registration';
+import { useTitle } from '@/hooks/useTitle.hook';
 import { registerUser } from './helpersRegistration';
 import RegistrationForm from './RegistrationForm';
-
-import { useTitle } from '@/hooks/useTitle.hook';
+import { registration } from '@/schemas';
 
 export const RegistrationPage = () => {
   const [message, setMessage] = useState('');

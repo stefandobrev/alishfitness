@@ -7,7 +7,7 @@ import { Schedule, SessionsPanel } from './components';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
 import { createProgramRequest } from './helpersCreateProgram';
 import { useTitle } from '@/hooks/useTitle.hook';
-import createProgram from '@/schemas/createProgram';
+import { createProgram } from '@/schemas';
 
 export const CreateProgramPage = () => {
   const [isCreateMode, setIsCreateMode] = useState(true);

@@ -9,8 +9,8 @@ import { fetchProfileData } from '@/store/actions';
 import { useTitle } from '@/hooks/useTitle.hook';
 import { MyProfileForm } from './MyProfileForm';
 import { zodResolver } from '@hookform/resolvers/zod';
-import myProfile from '@/schemas/myProfile';
 import { Spinner } from '@/components/common';
+import { myProfile } from '@/schemas';
 
 export const MyProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
