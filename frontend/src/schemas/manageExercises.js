@@ -5,7 +5,7 @@ const selectOptionSchema = z.object({
   label: z.string(),
 });
 
-const manageExercises = z.object({
+export const manageExercises = z.object({
   title: z
     .string()
     .min(1, 'Title is required.')
@@ -41,5 +41,3 @@ const manageExercises = z.object({
   videoLink: z.string().url('Invalid URL format').optional().or(z.literal('')),
   mistakes: z.array(z.string()).optional().default([]),
 });
-
-export default manageExercises;

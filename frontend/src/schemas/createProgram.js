@@ -3,7 +3,7 @@ import { z } from 'zod';
 const exerciseSchema = z.object({
   sequence: z.string().min(1, 'Required'),
   muscleGroup: z.string().min(1, 'Required'),
-  exerciseSlug: z.string().min(1, 'Required'),
+  exerciseInput: z.string().min(1, 'Required'),
   sets: z.string().min(1, 'Required'),
   reps: z.string().min(1, 'Required'),
 });
@@ -32,7 +32,7 @@ const sessionSchema = z.object({
     ),
 });
 
-const createProgram = z
+export const createProgram = z
   .object({
     programTitle: z.string().min(1, 'Program title is required.'),
     sessions: z
@@ -81,5 +81,3 @@ const createProgram = z
       });
     }
   });
-
-export default createProgram;

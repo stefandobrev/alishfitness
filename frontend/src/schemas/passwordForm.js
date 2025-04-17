@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const passwordForm = z
+export const passwordForm = z
   .object({
     currentPassword: z.string().nonempty('Current password is required.'),
     newPassword: z
@@ -27,4 +27,3 @@ const passwordForm = z
       });
     }
   });
-export default passwordForm;

@@ -44,7 +44,7 @@ export const ExerciseRow = ({
                 field.onChange(selected?.value ?? null);
                 // Reset exercise when muscle group changes
                 setValue(
-                  `sessions.${sessionIndex}.exercises.${exerciseIndex}.exerciseSlug`,
+                  `sessions.${sessionIndex}.exercises.${exerciseIndex}.exerciseInput`,
                   null,
                 );
               }}
@@ -54,7 +54,7 @@ export const ExerciseRow = ({
       </td>
       <td className='border p-2'>
         <Controller
-          name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.exerciseSlug`}
+          name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.exerciseInput`}
           control={control}
           render={({ field }) => {
             const muscleGroupValue = getValues(

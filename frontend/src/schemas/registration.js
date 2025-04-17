@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const registration = z
+export const registration = z
   .object({
     firstName: z.string().min(3, 'First name must be at least 3 characters.'),
 
@@ -25,5 +25,3 @@ const registration = z
       });
     }
   });
-
-export default registration;

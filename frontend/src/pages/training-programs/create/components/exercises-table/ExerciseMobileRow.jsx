@@ -60,7 +60,7 @@ export const ExerciseMobileRow = ({
                   field.onChange(selected?.value ?? null);
                   // Reset exercise when muscle group changes
                   setValue(
-                    `sessions.${sessionIndex}.exercises.${exerciseIndex}.exerciseSlug`,
+                    `sessions.${sessionIndex}.exercises.${exerciseIndex}.exerciseInput`,
                     null,
                   );
                 }}
@@ -73,7 +73,7 @@ export const ExerciseMobileRow = ({
         <div className='flex flex-col space-y-1 border p-2'>
           <label className='text-m font-bold text-gray-800'>Exercise</label>
           <Controller
-            name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.exerciseSlug`}
+            name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.exerciseInput`}
             control={control}
             render={({ field }) => {
               const muscleGroupValue = getValues(

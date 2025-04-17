@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const profileSettings = z
+export const profileSettings = z
   .object({
     email: z
       .string()
@@ -22,5 +22,3 @@ const profileSettings = z
       });
     }
   });
-
-export default profileSettings;
