@@ -61,7 +61,7 @@ export const SettingsForm = ({
             />
           </div>
 
-          {message && <p className={'my-2 text-red-500'}>{message.text}</p>}
+          {message && <p className={'mb-2 text-red-500'}>{message.text}</p>}
         </>
       )}
 

@@ -1,9 +1,7 @@
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
-from django.core.validators import EmailValidator
-from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
-from rest_framework.exceptions import AuthenticationFailed, ValidationError
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 from rest_framework_simplejwt.token_blacklist.models import (
@@ -31,13 +29,7 @@ class UserSerializer(serializers.ModelSerializer):
             "password": {
                 "write_only": True,
                 "min_length": 8,
-            },"first_name": {
-                "required": True,  
-            },
-            "last_name": {
-                "required": True,  
-            },
-
+            }
         }
 
     def validate(self, data):
@@ -50,6 +42,16 @@ class UserSerializer(serializers.ModelSerializer):
         - Username case sensitivity uniqeness
         """
         instance = getattr(self, "instance", None)
+
+        if "first_name" in data and not data["first_name"].strip():
+            raise serializers.ValidationError({"first_name": "First name cannot be empty."})
+        
+        if "last_name" in data and not data["last_name"].strip():
+            raise serializers.ValidationError({"last_name": "Last name cannot be empty."})
+
+        if instance and "password" in data:
+            if not instance.check_password(data.get("password")):
+                raise serializers.ValidationError({"password": "Incorrect password."})
 
         if "password" in data or "confirm_password" in data:
             if data.get("password") != data.get("confirm_password"):

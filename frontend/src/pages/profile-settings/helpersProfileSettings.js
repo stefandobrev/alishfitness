@@ -15,15 +15,8 @@ export const updateUserSettings = async (data) => {
     if (!response.ok) {
       const errorData = await response.json();
 
-      /* Hardcoding the error messages because django handles unique
-      with own text. */
-      let errorMessage = 'Something went wrong';
-      if (errorData.username) {
-        errorMessage = 'Username unavailable.';
-      }
-      if (errorData.email) {
-        errorMessage = 'Email unavailable.';
-      }
+      const key = Object.keys(errorData)[0];
+      const errorMessage = errorData[key]?.[0] || 'Something went wrong';
       return {
         type: 'error',
         text: errorMessage,

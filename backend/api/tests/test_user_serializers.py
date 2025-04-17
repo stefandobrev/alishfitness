@@ -2,7 +2,7 @@ import pytest
 from django.contrib.auth.hashers import check_password
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
-from rest_framework.exceptions import ValidationError, AuthenticationFailed
+from rest_framework.exceptions import AuthenticationFailed
 
 from datetime import datetime, timezone
 
@@ -10,8 +10,6 @@ from api.models import User
 from api.serializers.user_serializers import (
     UserSerializer,
     LoginSerializer,
-    UserProfileSerializer,
-    UserSettingsSerializer,
     UpdatePasswordSerializer,
     TokenRefreshSerializer,
 )
@@ -49,6 +47,12 @@ class TestUserSerializer:
         serializer = UserSerializer(data=data)
         assert not serializer.is_valid()
         assert "username" in serializer.errors
+        assert "A user with that username already exists." in serializer.errors["username"][0]
+
+        data["username"] = test_user.username.upper()
+        serializer = UserSerializer(data=data)
+        assert not serializer.is_valid()
+        assert "username" in serializer.errors
         assert "This username is already taken." in serializer.errors["username"][0]
     
     def test_email_uniqueness(self, valid_user_data, test_user):
@@ -81,6 +85,98 @@ class TestUserSerializer:
 
         assert user.username == data["username"].lower()
         assert user.email == data["email"].lower()
+
+    def test_update_valid_profile(self):
+        profile_data = {
+            "first_name": "Test",
+            "last_name": "User",
+        }
+
+        serializer = UserSerializer(data=profile_data, partial=True)
+
+        assert serializer.is_valid()
+        assert serializer.validated_data["first_name"] == "Test"
+
+    def test_update_invalid_profile(self):
+        profile_data = {
+            "first_name": "",
+            "last_name": "Test",
+        }
+
+        serializer = UserSerializer(data=profile_data, partial=True)
+
+        assert not serializer.is_valid()
+        assert "first_name" in serializer.errors
+               
+    def test_incorrect_password_settings(self, test_user):
+        invalid_data = {
+            "username": "testuser",
+            "email": "test@email.com",
+            "password": "WrongPassword123",  
+            "confirm_password": "WrongPassword123",
+        }
+        serializer = UserSerializer(instance=test_user, data=invalid_data, partial=True)
+        assert not serializer.is_valid()
+        assert "password" in serializer.errors
+        
+    def test_passwords_dont_match_settings(self, test_user):
+        invalid_data = {
+            "username": "testuser",
+            "email": "test@example.com",
+            "password": "securepassword123",  
+            "confirm_password": "wrongconfirm",  
+        }
+        serializer = UserSerializer(instance=test_user, data=invalid_data, partial=True)
+        assert not serializer.is_valid()
+        assert "confirm_password" in serializer.errors
+        
+    def test_username_already_taken_settings(self, test_user):
+        User.objects.create_user(username="existinguser", email="existing@example.com", password="AnotherPass123")
+        
+        invalid_data = {
+            "username": "existinguser",  
+            "email": "test@example.com",
+            "password": "securepassword123",
+            "confirm_password": "securepassword123",
+        }
+        serializer = UserSerializer(instance=test_user, data=invalid_data, partial=True)
+        assert not serializer.is_valid()
+        assert "username" in serializer.errors
+        
+    def test_email_already_taken_settings(self, test_user):
+        User.objects.create_user(username="anotheruser", email="taken@example.com", password="AnotherPass123")
+        
+        invalid_data = {
+            "username": "testuser",
+            "email": "taken@example.com",  
+            "password": "securepassword123",
+            "confirm_password": "securepassword123",
+        }
+        serializer = UserSerializer(instance=test_user, data=invalid_data, partial=True)
+        assert not serializer.is_valid()
+        assert "email" in serializer.errors
+
+    def test_update_settings(self, test_user):
+        valid_update_data = {
+            "username": "UpdatedUser",
+            "email": "updated@example.com",  
+            "password": "securepassword123",
+            "confirm_password": "securepassword123",
+        }
+
+        serializer = UserSerializer(instance=test_user, data=valid_update_data, partial=True)
+        assert serializer.is_valid()
+
+        updated_user = serializer.save()
+        assert updated_user.username == "updateduser"  
+        assert updated_user.email == "updated@example.com"
+
+        assert hasattr(updated_user, "username")
+        assert not hasattr(updated_user, "confirm_password")
+
+        db_user = User.objects.get(pk=test_user.pk)
+        assert db_user.username == "updateduser"
+        assert db_user.email == "updated@example.com"
 
 @pytest.mark.django_db(transaction=True)
 class TestLoginSerializer:
@@ -115,114 +211,6 @@ class TestLoginSerializer:
         with pytest.raises(AuthenticationFailed) as exc_info:
             serializer.is_valid(raise_exception=True)
         assert "Invalid username or password" in str(exc_info.value)
-
-@pytest.mark.django_db(transaction=True)
-class TestUserProfileSerializer:
-    def test_valid_profile(self):
-        profile_data = {
-            "first_name": "Test",
-            "last_name": "User",
-        }
-
-        serializer = UserProfileSerializer(data=profile_data)
-
-        assert serializer.is_valid()
-        assert serializer.validated_data["first_name"] == "Test"
-
-    def test_invalid_profile(self):
-        profile_data = {
-            "first_name": "",
-            "last_name": "",
-        }
-
-        serializer = UserProfileSerializer(data=profile_data)
-
-        assert not serializer.is_valid()
-        with pytest.raises(ValidationError) as exc_info:
-            serializer.is_valid(raise_exception=True)
-        assert "At least one field must be provided" in str(exc_info.value)
-       
-@pytest.mark.django_db(transaction=True)
-class TestUserSettingsSerializer:    
-    def test_valid_settings(self, test_user):
-        valid_data = {
-            "username": "new_testuser",
-            "email": "newtest@example.com",
-            "password": "securepassword123",
-            "confirm_password": "securepassword123",
-        }
-        serializer = UserSettingsSerializer(instance=test_user, data=valid_data)
-        assert serializer.is_valid()
-        
-    def test_incorrect_password(self, test_user):
-        invalid_data = {
-            "username": "testuser",
-            "email": "test@email.com",
-            "password": "WrongPassword123",  
-            "confirm_password": "WrongPassword123",
-        }
-        serializer = UserSettingsSerializer(instance=test_user, data=invalid_data)
-        assert not serializer.is_valid()
-        assert "password" in serializer.errors
-        
-    def test_passwords_dont_match(self, test_user):
-        invalid_data = {
-            "username": "testuser",
-            "email": "test@example.com",
-            "password": "securepassword123",  
-            "confirm_password": "wrongconfirm",  
-        }
-        serializer = UserSettingsSerializer(instance=test_user, data=invalid_data)
-        assert not serializer.is_valid()
-        assert "confirm_password" in serializer.errors
-        
-    def test_username_already_taken(self, test_user):
-        User.objects.create_user(username="existinguser", email="existing@example.com", password="AnotherPass123")
-        
-        invalid_data = {
-            "username": "existinguser",  
-            "email": "test@example.com",
-            "password": "securepassword123",
-            "confirm_password": "securepassword123",
-        }
-        serializer = UserSettingsSerializer(instance=test_user, data=invalid_data)
-        assert not serializer.is_valid()
-        assert "username" in serializer.errors
-        
-    def test_email_already_taken(self, test_user):
-        User.objects.create_user(username="anotheruser", email="taken@example.com", password="AnotherPass123")
-        
-        invalid_data = {
-            "username": "testuser",
-            "email": "taken@example.com",  
-            "password": "securepassword123",
-            "confirm_password": "securepassword123",
-        }
-        serializer = UserSettingsSerializer(instance=test_user, data=invalid_data)
-        assert not serializer.is_valid()
-        assert "email" in serializer.errors
-
-    def test_update(self, test_user):
-        valid_update_data = {
-            "username": "UpdatedUser",
-            "email": "updated@example.com",  
-            "password": "securepassword123",
-            "confirm_password": "securepassword123",
-        }
-
-        serializer = UserSettingsSerializer(instance=test_user, data=valid_update_data)
-        assert serializer.is_valid()
-
-        updated_user = serializer.save()
-        assert updated_user.username == "updateduser"  
-        assert updated_user.email == "updated@example.com"
-
-        assert hasattr(updated_user, "username")
-        assert not hasattr(updated_user, "confirm_password")
-
-        db_user = User.objects.get(pk=test_user.pk)
-        assert db_user.username == "updateduser"
-        assert db_user.email == "updated@example.com"
 
 @pytest.mark.django_db(transaction=True)
 class TestUpdatePasswordSerializer:
@@ -266,14 +254,14 @@ class TestUpdatePasswordSerializer:
 
         serializer = UpdatePasswordSerializer(
             data=same_password_data,
-            context={'request': request}
+            context={"request": request}
         )
         
         assert not serializer.is_valid()
         assert "new_password" in serializer.errors
 
     def test_passwords_dont_match(self, test_user):
-        request = type('Request', (), {'user': test_user})()
+        request = type("Request", (), {"user": test_user})()
         
         invalid_data = {
             "current_password": "securepassword123",  
@@ -283,7 +271,7 @@ class TestUpdatePasswordSerializer:
         
         serializer = UpdatePasswordSerializer(
             data=invalid_data,
-            context={'request': request}
+            context={"request": request}
         )
         
         assert not serializer.is_valid()
