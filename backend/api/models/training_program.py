@@ -1,5 +1,5 @@
 from django.db import models
-from api.models import Exercise, User
+from api.models import Exercise, User, MuscleGroup
 
 class TrainingProgram(models.Model):
     PROGRAM_MODES = [
@@ -47,6 +47,15 @@ class ProgramExercise(models.Model):
         related_name="program_exercises", 
         on_delete=models.CASCADE
     )
+    muscle_group = models.ForeignKey(
+        MuscleGroup,
+        related_name="program_muscle_group",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+    custom_muscle_group = models.CharField(max_length=100, blank=True)
+    custom_exercise = models.CharField(max_length=100, blank=True)
     sequence = models.CharField(max_length=10, blank=True)  
     sets = models.CharField(max_length=10)
     reps = models.CharField(max_length=50)  
