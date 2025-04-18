@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from datetime import datetime
 
-from api.models import User, TrainingProgram, TrainingSession, ProgramExercise
+from api.models import User, MuscleGroup, Exercise, TrainingProgram, TrainingSession, ProgramExercise
 
 class ProgramExerciseSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,7 +50,6 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
         - Reps exists
         - Sets exists
         """
-        instance = (self, "instance", None)
 
         if "program_title" in data:
             if len(data["program_title"]) < 3:
@@ -65,14 +64,23 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
                     {"mode": "Invalid mode."}
                 )
         
-        if "assigned_user" in data:
+        if data.get("mode") == "create":
+            if "assigned_user" not in data:
+                raise serializers.ValidationError(
+                        {"assigned_user": "User is missing."}
+                    )
+            
             if not User.objects.filter(username=data["assigned_user"]).exists():    
                 raise serializers.ValidationError(
                     {"assigned_user": "User doesn't exist."}
                 )
         
-        if "activation_date" in data:
-            date_str = data["activation_date"]
+            if "activation_date" not in data:
+                raise serializers.ValidationError(
+                            {"activation_date": "Activation date is missing."}
+                )
+            
+            date_str=data["activation_date"]
             try:
                 datetime.fromisoformat(date_str)
             except ValueError:
@@ -86,5 +94,61 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
                     {"schedule_array": "Schedule cannot be empty."}
                 )
             
-        
-        
+        if "sessions" in data:
+            if not data.get("sessions"):
+                raise serializers.ValidationError({"sessions": "Sessions cannot be empty."})
+
+            for session in data["sessions"]:
+                if not session.get("session_title"):
+                    raise serializers.ValidationError({"session_title": "Session title cannot be empty."})
+
+                if not session.get("temp_id"):
+                    raise serializers.ValidationError({"temp_id": "Temp Id is missing."})
+
+                exercises = session.get("exercises", [])
+                if not exercises:
+                    raise serializers.ValidationError({"exercises": "Exercises cannot be empty."})
+
+                for exercise in exercises:
+                    if not exercise.get("sequence"):
+                        raise serializers.ValidationError({"sequence": "Sequence is missing."})
+
+                    if not exercise.get("muscle_group"):
+                        raise serializers.ValidationError({"muscle_group": "Muscle group is missing."})
+
+                    if not MuscleGroup.objects.filter(slug=exercise["muscle_group"]).exists():
+                        if exercise["muscle_group"] != "custom":
+                            raise serializers.ValidationError({
+                                "muscle_group": "Muscle group invalid."
+                            })
+
+                    if not exercise.get("exercise_input"):
+                        raise serializers.ValidationError({"exercise_input": "Exercise is missing."})
+
+                    if not Exercise.objects.filter(slug=exercise["exercise_input"]).exists():
+                        if exercise["exercise_input"] != "custom":
+                            raise serializers.ValidationError({
+                                "exercise_input": "Exercise invalid."
+                            })
+
+                    if not exercise.get("reps"):
+                        raise serializers.ValidationError({"reps": "Reps is missing."})
+
+                    if not exercise.get("sets"):
+                        raise serializers.ValidationError({"sets": "Sets is missing."})
+
+                    sets_value = exercise.get("sets")
+                    if not sets_value.isdigit():
+                        raise serializers.ValidationError({"sets": "Invalid value for sets. Must be a number."})
+
+        return data
+    
+    def create(self, validated_date):
+        """Create a program with validated data including sessions and exercises within."""
+        sessions_data = validated_date.pop("sessions", [])
+        schedule_data = validated_date.pop("schedule_array", [])
+
+
+    def update(self, instance, validated_date):
+        """Update a program with validated data including sessions and exercises within."""
+        pass
