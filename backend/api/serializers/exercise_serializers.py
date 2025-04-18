@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from api.models import Exercise, Step, Mistake, MuscleGroup
-import re
 
 class StepSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,7 +14,7 @@ class MistakeSerializer(serializers.ModelSerializer):
 
 class ExerciseSerializer(serializers.ModelSerializer):
     """Serializer for Exercise with nested steps and mistakes."""
-    primary_group = serializers.CharField(required=False)  # Changed to CharField to handle slugs manually
+    primary_group = serializers.CharField(required=False) 
     secondary_groups = serializers.ListField(
         child=serializers.CharField(),
         required=False
@@ -41,24 +40,20 @@ class ExerciseSerializer(serializers.ModelSerializer):
         Validate the exercise data.
         Checks:
         - Title min length
-        - Title contains only numbers and letters
         - Title uniqueness
         - Gif links contain different urls
         - Primary and secondary groups exist
         - Primary group is not in secondary groups
         """
+        # For partial updates - check against existing instance data
+        instance = getattr(self, "instance", None)
+
         if "title" in data:
             if len(data["title"]) < 3:
                 raise serializers.ValidationError(
                     {"title": "Title must be at least 3 characters long."}
                 )
-            if not re.match(r'^[a-zA-Z0-9 ]+$', data["title"]):
-                raise serializers.ValidationError(
-                    {"title": "Title should only contain letters and numbers."}
-                )
-           
-            # For updates, need to exclude current instance from uniqueness check
-            instance = getattr(self, "instance", None)
+
             title_query = Exercise.objects.filter(title__iexact=data["title"])
             if instance:
                 title_query = title_query.exclude(pk=instance.pk)
@@ -110,8 +105,6 @@ class ExerciseSerializer(serializers.ModelSerializer):
                 {"secondary_groups": "You cannot select the same group as primary and secondary."}
             )
             
-        # For partial updates - check against existing instance data
-        instance = getattr(self, "instance", None)
         if instance:
             # If primary_group is being updated but secondary_groups isn't provided
             if primary_group and "secondary_groups" not in data:

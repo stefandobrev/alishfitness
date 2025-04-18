@@ -4,6 +4,7 @@ from rest_framework.response import Response
 
 from api.models import User, MuscleGroup, Exercise
 from api.serializers.common_serializers import ExerciseTitleSerializer, UserNamesSerializer
+from api.serializers.training_program_serializers import TrainingProgramSerializer
 
 
 class TrainingProgramController:
