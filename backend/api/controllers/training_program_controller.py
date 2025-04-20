@@ -42,15 +42,38 @@ class TrainingProgramController:
             Returns:
                 Response with messages.
         """
-        serializer = TrainingProgramSerializer(data=request.data)
+        transformed_data = self._transform_data(request.data)
+        serializer = TrainingProgramSerializer(data=transformed_data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         with transaction.atomic():
             program = serializer.save()
 
-            self.transform_program_structure(program, request) ## assign real ids to tempIds
+            self._transform_schedule(program.schedule_array) 
 
             # program.save()
 
         return Response({"message": "Program created successfully!"})
+    
+    def update(self, request, id):
+        """Update an existing program."""
+        pass
+
+    def _transform_data(self, data):
+        """Set to ints, PKs for muscle_group and exercise_input"""
+        for session in data.get("sessions", []):
+            for exercise in session.get("exercises", []):
+                if exercise["sets"]:
+                    exercise["sets"] = int(exercise.get("sets"))
+
+                if exercise["muscle_group"] and exercise["muscle_group"] != "custom": ## Assign id for muscle_group or leave it string
+                    exercise["muscle_group"] = MuscleGroup.objects.get(id)
+
+        return data
+    
+    def _transform_schedule(self, schedule_data):
+        """Assign backend ids on tempIds places within the schedule."""
+        temp_id_mapping = {}
+        pass
+

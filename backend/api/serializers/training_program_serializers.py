@@ -4,11 +4,14 @@ from datetime import datetime
 from api.models import User, MuscleGroup, Exercise, TrainingProgram, TrainingSession, ProgramExercise
 
 class ProgramExerciseSerializer(serializers.ModelSerializer):
+    exercise_input = serializers.CharField(write_only=True, required=False)
+
     class Meta:
         model = ProgramExercise
         fields = ["sequence", "muscle_group", "exercise_input", "reps", "sets"]
 
 class TrainingSessionSerializer(serializers.ModelSerializer):
+    temp_id = serializers.CharField(write_only=True, required=False)
     exercises = ProgramExerciseSerializer(many=True)
 
     class Meta:
@@ -137,16 +140,48 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
                     if not exercise.get("sets"):
                         raise serializers.ValidationError({"sets": "Sets is missing."})
 
-                    sets_value = exercise.get("sets")
-                    if not sets_value.isdigit():
+                    if not isinstance(exercise.get("sets"), int) :
                         raise serializers.ValidationError({"sets": "Invalid value for sets. Must be a number."})
-
+                        
         return data
     
     def create(self, validated_date):
         """Create a program with validated data including sessions and exercises within."""
         sessions_data = validated_date.pop("sessions", [])
-        schedule_data = validated_date.pop("schedule_array", [])
+        schedule_array = validated_date.pop("schedule_array", [])
+
+        program = TrainingProgram.objects.create(**validated_date)
+        program.schedule_array = schedule_array
+        program.save()
+
+        print("\n\n============= SCHEDULE ARRAY =============")
+        print(program.schedule_array)
+        print("==========================================\n\n")
+
+        for session_data in sessions_data:
+            session_data.pop("temp_id", None)
+            exercises_data = session_data.pop("exercises", [])
+            session = TrainingSession.objects.create(program=program, **session_data)
+
+            for exercise_data in exercises_data:
+                exercise_input = exercise_data.pop("exercise_input", None)
+
+                if exercise_data["muscle_group"] == "custom":
+                    custom_muscle_group = exercise_data.pop("muscle_group")
+                    exercise_data["muscle_group"] = None
+                    exercise_data["exercise"] = None
+                    exercise_data["custom_muscle_group"] = custom_muscle_group
+                    exercise_data["custom_exercise"] = exercise_input
+                else:
+                    muscle_group = exercise_data.pop("muscle_group")
+                    exercise_data["muscle_group"] = MuscleGroup.objects.get(slug=muscle_group)
+                    exercise_data["exercise"] = Exercise.objects.get(slug=exercise_input)
+                    exercise_data["custom_muscle_group"] = ""
+                    exercise_data["custom_exercise"] = ""
+                
+                ProgramExercise.objects.create(session=session, **exercise_data)
+
+        return program
 
 
     def update(self, instance, validated_date):

@@ -56,8 +56,8 @@ class ProgramExercise(models.Model):
     )
     custom_muscle_group = models.CharField(max_length=100, blank=True)
     custom_exercise = models.CharField(max_length=100, blank=True)
-    sequence = models.CharField(max_length=10, blank=True)  
-    sets = models.CharField(max_length=10)
+    sequence = models.CharField(max_length=10)  
+    sets = models.IntegerField()
     reps = models.CharField(max_length=50)  
     
     def __str__(self):
