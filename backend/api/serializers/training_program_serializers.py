@@ -8,7 +8,7 @@ class ProgramExerciseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProgramExercise
-        fields = ["sequence", "muscle_group", "exercise_input", "reps", "sets"]
+        fields = ["muscle_group", "is_custom_muscle_group", "exercise", "custom_exercise_title", "sequence", "reps", "sets"]
 
 class TrainingSessionSerializer(serializers.ModelSerializer):
     temp_id = serializers.CharField(write_only=True, required=False)

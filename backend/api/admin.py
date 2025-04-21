@@ -29,7 +29,7 @@ class ExerciseAdmin(admin.ModelAdmin):
 class ProgramExerciseInline(admin.TabularInline):
     model = ProgramExercise
     extra = 0
-    fields = ["exercise", "muscle_group", "custom_exercise", "sequence", "sets", "reps"]
+    fields = ["exercise", "muscle_group","is_custom_muscle_group", "custom_exercise_title", "sequence", "sets", "reps"]
 
 class TrainingSessionInline(admin.TabularInline):
     model = TrainingSession

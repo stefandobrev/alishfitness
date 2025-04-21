@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const exerciseSchema = z.object({
   sequence: z.string().min(1, 'Required'),
-  muscleGroup: z.string().min(1, 'Required'),
+  muscleGroupInput: z.string().min(1, 'Required'),
   exerciseInput: z.string().min(1, 'Required'),
   sets: z.string().min(1, 'Required'),
   reps: z.string().min(1, 'Required'),
@@ -40,7 +40,7 @@ export const createProgram = z
       .min(1, { message: 'At least one session is required.' }),
     scheduleArray: z.array(z.string()).min(1, 'Schedule is required.'),
     mode: z.enum(['create', 'template']),
-    assignedUser: z
+    assignedUserUsername: z
       .object({
         label: z.string().min(1, 'User label is required.'),
         value: z.string().min(1, 'User value is required.'),
@@ -51,9 +51,9 @@ export const createProgram = z
   })
   .superRefine((data, ctx) => {
     if (data.mode === 'create') {
-      if (!data.assignedUser) {
+      if (!data.assignedUserUsername) {
         ctx.addIssue({
-          path: ['assignedUser'],
+          path: ['assignedUserUsername'],
           message: 'Assigned user is required.',
           code: z.ZodIssueCode.custom,
         });

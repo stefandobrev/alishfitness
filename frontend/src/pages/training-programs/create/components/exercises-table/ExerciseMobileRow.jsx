@@ -50,7 +50,7 @@ export const ExerciseMobileRow = ({
         <div className='flex flex-col space-y-1 border p-2'>
           <label className='text-m font-bold text-gray-800'>Muscle Group</label>
           <Controller
-            name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`}
+            name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroupInput`}
             control={control}
             render={({ field }) => (
               <MuscleGroupSelect
@@ -77,7 +77,7 @@ export const ExerciseMobileRow = ({
             control={control}
             render={({ field }) => {
               const muscleGroupValue = getValues(
-                `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`,
+                `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroupInput`,
               );
 
               if (muscleGroupValue === 'custom') {

@@ -25,7 +25,7 @@ export const ExercisesTable = ({ sessionIndex, session }) => {
       {session.exercises.map((exercise, exerciseIndex) => {
         const exerciseOptions = getExerciseOptionsForMuscleGroup(
           getValues(
-            `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`,
+            `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroupInput`,
           ),
         );
 
@@ -50,7 +50,7 @@ export const ExercisesTable = ({ sessionIndex, session }) => {
           {session.exercises.map((exercise, exerciseIndex) => {
             const exerciseOptions = getExerciseOptionsForMuscleGroup(
               getValues(
-                `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`,
+                `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroupInput`,
               ),
             );
 

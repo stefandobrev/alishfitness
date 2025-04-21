@@ -34,7 +34,7 @@ export const ExerciseRow = ({
       </td>
       <td className='border p-2'>
         <Controller
-          name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`}
+          name={`sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroupInput`}
           control={control}
           render={({ field }) => (
             <MuscleGroupSelect
@@ -58,7 +58,7 @@ export const ExerciseRow = ({
           control={control}
           render={({ field }) => {
             const muscleGroupValue = getValues(
-              `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroup`,
+              `sessions.${sessionIndex}.exercises.${exerciseIndex}.muscleGroupInput`,
             );
 
             if (muscleGroupValue === 'custom') {

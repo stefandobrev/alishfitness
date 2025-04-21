@@ -54,8 +54,8 @@ class ProgramExercise(models.Model):
         null=True,
         blank=True
     )
-    custom_muscle_group = models.CharField(max_length=100, blank=True)
-    custom_exercise = models.CharField(max_length=100, blank=True)
+    is_custom_muscle_group = models.BooleanField(default=False)
+    custom_exercise_title = models.CharField(max_length=100, blank=True)
     sequence = models.CharField(max_length=10)  
     sets = models.IntegerField()
     reps = models.CharField(max_length=50)  

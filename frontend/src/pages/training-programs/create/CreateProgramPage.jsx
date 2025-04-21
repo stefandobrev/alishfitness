@@ -19,7 +19,7 @@ export const CreateProgramPage = () => {
       mode: isCreateMode ? 'create' : 'template',
       sessions: [],
       scheduleArray: [],
-      assignedUser: null,
+      assignedUserUsername: null,
       activationDate: null,
     },
   });
@@ -51,7 +51,9 @@ export const CreateProgramPage = () => {
       activationDate: data.activationDate
         ? new Date(data.activationDate).toISOString().split('T')[0]
         : null,
-      assignedUser: data.assignedUser ? data.assignedUser.value : null,
+      assignedUserUsername: data.assignedUserUsername
+        ? data.assignedUserUsername.value
+        : null,
     };
 
     const response = await createProgramRequest(formattedData);

@@ -29,7 +29,7 @@ export const ProgramActivationBar = ({ onSubmit, isCreateMode }) => {
                   Assign user
                 </label>
                 <Controller
-                  name='assignedUser'
+                  name='assignedUserUsername'
                   control={control}
                   render={({ field }) => (
                     <UserSelect
@@ -41,9 +41,9 @@ export const ProgramActivationBar = ({ onSubmit, isCreateMode }) => {
                 />
               </div>
 
-              {errors.assignedUser && (
+              {errors.assignedUserUsername && (
                 <p className='mt-1 text-sm text-red-500'>
-                  {errors.assignedUser.message}
+                  {errors.assignedUserUsername.message}
                 </p>
               )}
             </div>

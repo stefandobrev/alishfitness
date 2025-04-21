@@ -1,6 +1,7 @@
 from django.db import transaction
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
 
 from api.models import User, MuscleGroup, Exercise
 from api.serializers.common_serializers import ExerciseTitleSerializer, UserNamesSerializer
@@ -61,16 +62,44 @@ class TrainingProgramController:
         pass
 
     def _transform_data(self, data):
-        """Set to ints, PKs for muscle_group and exercise_input"""
-        for session in data.get("sessions", []):
-            for exercise in session.get("exercises", []):
-                if exercise["sets"]:
-                    exercise["sets"] = int(exercise.get("sets"))
+        """
+        Transform sets to ints, PKs for muscle_group and exercise_input or 
+        is_custom_muscle_group set to True with custom exercise title.
+        """
+        if data["assigned_user_username"]:
+            data["assigned_user"] = User.objects.get(username=data["assigned_user_username"]).id
 
-                if exercise["muscle_group"] and exercise["muscle_group"] != "custom": ## Assign id for muscle_group or leave it string
-                    exercise["muscle_group"] = MuscleGroup.objects.get(id)
+        if data["sessions"]:
+            for session in data.get("sessions", []):
+                for exercise in session.get("exercises", []):
+                    if exercise["sets"]:
+                        exercise["sets"] = int(exercise.get("sets"))
 
-        return data
+                    if exercise["muscle_group_input"]:
+                        if exercise["muscle_group_input"] != "custom": 
+                            try:
+                                exercise["muscle_group"] = MuscleGroup.objects.get(slug=exercise["muscle_group_input"]).id
+                            except MuscleGroup.DoesNotExist:
+                                raise ValidationError(
+                                    {"muscle_group_input": f"Muscle group '{exercise['muscle_group_input']}' not found."}
+                                ) 
+                        elif exercise["muscle_group_input"] == "custom":
+                            exercise["muscle_group"] = None
+                            exercise["is_custom_muscle_group"] = True
+
+                    if exercise.get("exercise_input"):
+                        if exercise.get("is_custom_muscle_group"):
+                            exercise["custom_exercise_title"] = exercise["exercise_input"]
+                        else:
+                            try:
+                                exercise["exercise"] = Exercise.objects.get(slug=exercise["exercise_input"]).id
+                            except Exercise.DoesNotExist:
+                                raise ValidationError(
+                                    {"exercise_input": f"Exercise '{exercise['exercise_input']}' not found."}
+                                )
+
+            return data
+
     
     def _transform_schedule(self, schedule_data):
         """Assign backend ids on tempIds places within the schedule."""
