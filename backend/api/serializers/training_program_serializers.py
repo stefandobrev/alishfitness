@@ -112,12 +112,10 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
         for session_data in sessions_data:
             session_data.pop("temp_id", None)
             exercises_data = session_data.pop("exercises", [])
-            print("Session data:", session_data)
             
             session = TrainingSession.objects.create(program=program, **session_data)
   
             for exercise_data in exercises_data: 
-                print("Exercise data:", exercise_data)             
                 ProgramExercise.objects.create(session=session, **exercise_data)
 
         return program

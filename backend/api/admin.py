@@ -1,4 +1,5 @@
 from django.contrib import admin
+from nested_admin import NestedTabularInline, NestedModelAdmin
 from api.models import User, MuscleGroup, Exercise, Step, Mistake, TrainingProgram, TrainingSession, ProgramExercise
 
 class UserAdmin(admin.ModelAdmin):
@@ -26,20 +27,20 @@ class ExerciseAdmin(admin.ModelAdmin):
     search_fields = ["title", "primary_group__name"]
     inlines = [StepInline, MistakeInline]
 
-class ProgramExerciseInline(admin.TabularInline):
+class ProgramExerciseInline(NestedTabularInline):
     model = ProgramExercise
     extra = 0
     fields = ["exercise", "muscle_group","is_custom_muscle_group", "custom_exercise_title", "sequence", "sets", "reps"]
 
-class TrainingSessionInline(admin.TabularInline):
+class TrainingSessionInline(NestedTabularInline):
     model = TrainingSession
     extra = 0
     fields = ["session_title"]
     inlines = [ProgramExerciseInline]
 
-class TrainingProgramAdmin(admin.ModelAdmin):
+class TrainingProgramAdmin(NestedModelAdmin):
     ordering = ["program_title"]
-    list_display = ["mode", "program_title", "assigned_user", "activation_date"]
+    list_display = ["program_title","mode", "assigned_user", "activation_date"]
     search_fields = ["program_title", "assigned_user__username"]
     inlines = [TrainingSessionInline]
 

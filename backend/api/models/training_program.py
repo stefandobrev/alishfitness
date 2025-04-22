@@ -4,7 +4,7 @@ from api.models import Exercise, User, MuscleGroup
 class TrainingProgram(models.Model):
     PROGRAM_MODES = [
         ("template", "Template"),
-        ("create", "Active Program"),
+        ("create", "Assigned"),
     ]
     program_title = models.CharField(max_length=255)
     mode = models.CharField(max_length=20, choices=PROGRAM_MODES)
@@ -63,4 +63,6 @@ class ProgramExercise(models.Model):
     reps = models.CharField(max_length=50)  
     
     def __str__(self):
+        if self.is_custom_muscle_group:
+            return f"{self.custom_exercise_title} ({self.sets}x{self.reps})"
         return f"{self.exercise.title} ({self.sets}x{self.reps})"
