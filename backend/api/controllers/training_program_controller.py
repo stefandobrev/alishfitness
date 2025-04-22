@@ -44,13 +44,11 @@ class TrainingProgramController:
                 Response with messages.
         """
         transformed_data = self._transform_data(request.data)
-        print("Transformed data:", transformed_data)
+        # print("Transformed data:", transformed_data)
         serializer = TrainingProgramSerializer(data=transformed_data)
         if not serializer.is_valid():
-            print("Serializer ERRORS:", serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        print("Validated data:", serializer)
         with transaction.atomic():
             program = serializer.save()
             

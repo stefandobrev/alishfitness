@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from datetime import datetime
+from datetime import date
 
 from api.models import TrainingProgram, TrainingSession, ProgramExercise
 
@@ -94,9 +94,7 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
                 )
             
             date_str=data["activation_date"]
-            try:
-                datetime.fromisoformat(date_str)
-            except ValueError:
+            if not isinstance(date_str, date):
                 raise serializers.ValidationError(
                     {"activation_date": "Date must be in ISO format (YYYY-MM-DD)."}
                 )
@@ -110,12 +108,16 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
         program = TrainingProgram.objects.create(**validated_data)
         program.save()
 
+        print("Validated data:", validated_data)
         for session_data in sessions_data:
             session_data.pop("temp_id", None)
             exercises_data = session_data.pop("exercises", [])
+            print("Session data:", session_data)
+            
             session = TrainingSession.objects.create(program=program, **session_data)
-
-            for exercise_data in exercises_data:              
+  
+            for exercise_data in exercises_data: 
+                print("Exercise data:", exercise_data)             
                 ProgramExercise.objects.create(session=session, **exercise_data)
 
         return program
