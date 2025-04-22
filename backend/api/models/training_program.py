@@ -45,7 +45,9 @@ class ProgramExercise(models.Model):
     exercise = models.ForeignKey(
         Exercise, 
         related_name="program_exercises", 
-        on_delete=models.CASCADE
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
     )
     muscle_group = models.ForeignKey(
         MuscleGroup,
@@ -55,7 +57,7 @@ class ProgramExercise(models.Model):
         blank=True
     )
     is_custom_muscle_group = models.BooleanField(default=False)
-    custom_exercise_title = models.CharField(max_length=100, blank=True)
+    custom_exercise_title = models.CharField(max_length=100,null=True, blank=True)
     sequence = models.CharField(max_length=10)  
     sets = models.IntegerField()
     reps = models.CharField(max_length=50)  

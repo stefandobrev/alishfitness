@@ -44,18 +44,21 @@ class TrainingProgramController:
                 Response with messages.
         """
         transformed_data = self._transform_data(request.data)
+        print("Transformed data:", transformed_data)
         serializer = TrainingProgramSerializer(data=transformed_data)
         if not serializer.is_valid():
+            print("Serializer ERRORS:", serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
+        print("Validated data:", serializer)
         with transaction.atomic():
             program = serializer.save()
-
+            
             self._transform_schedule(program.schedule_array) 
 
             # program.save()
 
-        return Response({"message": "Program created successfully!"})
+        return Response({"message": "Program created successfully!"}, status=status.HTTP_201_CREATED)
     
     def update(self, request, id):
         """Update an existing program."""
@@ -66,41 +69,69 @@ class TrainingProgramController:
         Transform sets to ints, PKs for muscle_group and exercise_input or 
         is_custom_muscle_group set to True with custom exercise title.
         """
-        if data["assigned_user_username"]:
-            data["assigned_user"] = User.objects.get(username=data["assigned_user_username"]).id
+        if data.get("assigned_user_username"):
+            username = data.pop("assigned_user_username", None)
+            try:
+                data["assigned_user"] = User.objects.get(username=username).id
+            except User.DoesNotExist: 
+                raise ValidationError({"assigned_user": f"User '{data["assigned_user"]}' doesn't exist."})
 
-        if data["sessions"]:
-            for session in data.get("sessions", []):
-                for exercise in session.get("exercises", []):
-                    if exercise["sets"]:
-                        exercise["sets"] = int(exercise.get("sets"))
+        if data.get("sessions"):
+            if len(data["sessions"]) < 1:
+                raise ValidationError({"sessions": "Sessions cannot be empty."})
+            
+            for session in data["sessions"]:
+                if session.get("exercises"):
+                    if len(session["exercises"]) < 1:
+                        raise ValidationError({"exercises": "Exercises cannot be empty."})
+                    
+                    for exercise in session["exercises"]:
+                        if "sets" in exercise: ## On update it might already be int
+                            sets_value = exercise.get("sets")
+                            if sets_value:
+                                try:
+                                    exercise["sets"] = int(sets_value)
+                                    if exercise["sets"] < 1:
+                                        raise ValidationError({"sets": "Sets must be a positive number."})
+                                except (ValueError, TypeError):
+                                    raise ValidationError({"sets": "Sets must be a valid number."})
 
-                    if exercise["muscle_group_input"]:
-                        if exercise["muscle_group_input"] != "custom": 
-                            try:
-                                exercise["muscle_group"] = MuscleGroup.objects.get(slug=exercise["muscle_group_input"]).id
-                            except MuscleGroup.DoesNotExist:
+                        if exercise.get("muscle_group_input"):
+                            muscle_group_input = exercise.pop("muscle_group_input", None)
+                            if muscle_group_input != "custom": 
+                                try:
+                                    exercise["muscle_group"] = MuscleGroup.objects.get(slug=muscle_group_input).id
+                                except MuscleGroup.DoesNotExist:
+                                    raise ValidationError(
+                                        {"muscle_group_input": f"Muscle group '{muscle_group_input}' not found."}
+                                    ) 
+                                exercise["is_custom_muscle_group"] = False
+                                exercise["custom_exercise_title"] = None
+
+                            elif muscle_group_input == "custom":
+                                exercise["muscle_group"] = None
+                                exercise["exercise"] = None
+                                exercise["is_custom_muscle_group"] = True
+
+                            else:
                                 raise ValidationError(
-                                    {"muscle_group_input": f"Muscle group '{exercise['muscle_group_input']}' not found."}
-                                ) 
-                        elif exercise["muscle_group_input"] == "custom":
-                            exercise["muscle_group"] = None
-                            exercise["is_custom_muscle_group"] = True
-
-                    if exercise.get("exercise_input"):
-                        if exercise.get("is_custom_muscle_group"):
-                            exercise["custom_exercise_title"] = exercise["exercise_input"]
-                        else:
-                            try:
-                                exercise["exercise"] = Exercise.objects.get(slug=exercise["exercise_input"]).id
-                            except Exercise.DoesNotExist:
-                                raise ValidationError(
-                                    {"exercise_input": f"Exercise '{exercise['exercise_input']}' not found."}
+                                    {"muscle_group_input": "Muscle group invalid."}
                                 )
 
-            return data
+                        if exercise.get("exercise_input"):
+                            exercise_input = exercise.pop("exercise_input", None)
+                            if exercise["is_custom_muscle_group"]:
+                                exercise["custom_exercise_title"] = exercise_input
+                            else:
+                                try:
+                                    exercise["exercise"] = Exercise.objects.get(slug=exercise_input).id
+                                except Exercise.DoesNotExist:
+                                    raise ValidationError(
+                                        {"exercise_input": f"Exercise '{exercise_input}' not found."}
+                                    )
 
-    
+        return data
+
     def _transform_schedule(self, schedule_data):
         """Assign backend ids on tempIds places within the schedule."""
         temp_id_mapping = {}
