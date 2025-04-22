@@ -66,8 +66,9 @@ class TrainingProgramController:
 
     def _transform_data(self, data):
         """
-        Transform sets to ints, PKs for muscle_group and exercise_input or 
-        is_custom_muscle_group set to True with custom exercise title.
+        Transform sets to ints, PKs for muscle_group and exercise or 
+        is_custom_muscle_group set to True and custom_exercise_title set to None 
+        with custom exercise title.
         """
         if data.get("assigned_user_username"):
             username = data.pop("assigned_user_username", None)

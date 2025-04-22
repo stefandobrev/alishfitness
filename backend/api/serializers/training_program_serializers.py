@@ -50,7 +50,7 @@ class TrainingSessionSerializer(serializers.ModelSerializer):
 
 class TrainingProgramSerializer(serializers.ModelSerializer):
     """
-    Serializer for Training Program and it's nested Training Sessions and
+    Serializer for Training Program and nested Training Sessions and
     Program Exercises.
     """
     sessions = TrainingSessionSerializer(many=True)

@@ -35,7 +35,7 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
       {
         sequence: newSequence,
         muscleGroupInput: '',
-        exerciseSlug: '',
+        exerciseInput: '',
         sets: '3',
         reps: '',
       },

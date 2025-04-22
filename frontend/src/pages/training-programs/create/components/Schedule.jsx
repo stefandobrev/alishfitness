@@ -42,7 +42,7 @@ export const Schedule = ({ activeTab, sessions }) => {
   const scheduleOptions =
     sessions?.map((session, index) => {
       return {
-        label: `Session ${index + 1}${session.title ? ` : ${session.title}` : ''}`,
+        label: `Session ${index + 1}${session.sessionTitle ? ` : ${session.sessionTitle}` : ''}`,
         value: session.tempId,
       };
     }) || [];
@@ -132,7 +132,7 @@ export const Schedule = ({ activeTab, sessions }) => {
                       <div className='flex size-6 items-center justify-center rounded-full border border-gray-300 bg-gray-100 text-sm font-semibold text-gray-700 shadow-sm'>
                         {index + 1}
                       </div>
-                      <p className='line-clamp-2 max-w-20 font-medium break-words'>{`${session.title ? `${session.title}` : `Session ${sessionIndex + 1}`}`}</p>{' '}
+                      <p className='line-clamp-2 max-w-20 font-medium break-words'>{`${session.sessionTitle ? `${session.sessionTitle}` : `Session ${sessionIndex + 1}`}`}</p>{' '}
                     </div>
 
                     <div className='flex items-center'>

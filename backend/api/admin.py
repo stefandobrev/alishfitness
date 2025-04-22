@@ -23,7 +23,7 @@ class MistakeInline(admin.TabularInline):
 class ExerciseAdmin(admin.ModelAdmin):
     ordering = ["title"]
     list_display = ["title", "primary_group", "id"]
-    search_fields = ["title", "primary_group"]
+    search_fields = ["title", "primary_group__name"]
     inlines = [StepInline, MistakeInline]
 
 class ProgramExerciseInline(admin.TabularInline):
@@ -40,7 +40,7 @@ class TrainingSessionInline(admin.TabularInline):
 class TrainingProgramAdmin(admin.ModelAdmin):
     ordering = ["program_title"]
     list_display = ["mode", "program_title", "assigned_user", "activation_date"]
-    search_fields = ["program_title", "assigned_user"]
+    search_fields = ["program_title", "assigned_user__username"]
     inlines = [TrainingSessionInline]
 
 admin.site.register(User, UserAdmin) 
