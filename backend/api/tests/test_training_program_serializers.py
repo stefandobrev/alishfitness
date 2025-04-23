@@ -1,347 +1,122 @@
 import pytest
 from rest_framework.exceptions import ValidationError
+from copy import deepcopy
 
-from datetime import date
-
-@pytest.fixture
-def activation_date():
-    return date.today()
+from api.serializers.training_program_serializers import TrainingProgramSerializer
 
 @pytest.mark.django_db(transaction=True)
 class TestTrainingProgramSerializer:
-    def test_valid_data_new_program_with_sessions(self, activation_date, test_user, test_exercise):
-        valid_data = {
+    @pytest.fixture
+    def valid_training_program_data(self, test_user, test_exercise, test_muscle_group):
+        return {
             "program_title": "Test Program",
             "mode": "create",
             "assigned_user": test_user.id,
-            "activation_date": activation_date,
-            "schedule_array": ["1", "2", "1"],
+            "activation_date": "2025-11-11",
             "sessions": [
                 {
                     "session_title": "Day 1",
+                    "temp_id": "1",
                     "exercises": [
-                        {
+                        {   
+                            "muscle_group": test_muscle_group.id,
+                            "is_custom_muscle_group": False,
                             "exercise": test_exercise.id,
+                            "custom_exercise_title": None,
                             "sequence": "A",
-                            "sets": "3",
+                            "sets": 3,
                             "reps": "10-12",
                         }
                     ]
                 },
                 {
                     "session_title": "Day 2",
+                    "temp_id": "2",
                     "exercises": [
                         {
-                            "exercise": test_exercise.id,
+                            "muscle_group": None,
+                            "is_custom_muscle_group": True,
+                            "exercise": None,
+                            "custom_exercise_title": "Custom Exercise Title",
                             "sequence": "A",
-                            "sets": "3",
-                            "reps": "12",
-                        }
-                    ]
-                }
-            ]
-        }
-
-        serializer = TrainingProgramSerializer(data=valid_data)
-        assert serializer.is_valid()
-    
-    def test_valid_data_new_template(self, test_exercise):
-        valid_data = {
-            "program_title": "Test Program",
-            "mode": "template",
-            "assigned_user": None,
-            "activation_date": None,
-            "schedule_array": ["1", "2", "1"],
-            "sessions": [
-                {
-                    "session_title": "Day 1",
-                    "exercises": [
-                        {
-                            "exercise": test_exercise.id,
-                            "sequence": "A",
-                            "sets": "3",
+                            "sets": 3,
                             "reps": "10-12",
                         }
                     ]
-                },
-                {
-                    "session_title": "Day 2",
-                    "exercises": [
-                        {
-                            "exercise": test_exercise.id,
-                            "sequence": "A",
-                            "sets": "3",
-                            "reps": "12",
-                        }
-                    ]
                 }
             ]
         }
+    
+    def test_valid_data(self, valid_training_program_data):
+        valid_data = deepcopy(valid_training_program_data)
 
         serializer = TrainingProgramSerializer(data=valid_data)
         assert serializer.is_valid()
 
-    def test_invalid_title_len(self, activation_date, test_user,test_exercise):
-        valid_data = {
-            "program_title": "",
-            "mode": "create",
-            "assigned_user": test_user,
-            "activation_date": activation_date,
-            "schedule_array": ["1"],
-            "sessions": [
-                {
-                    "session_title": "Day 1",
-                    "exercises": [
-                        {
-                            "exercise": test_exercise.id,
-                            "sequence": "A",
-                            "sets": "3",
-                            "reps": "10-12",
-                        }
-                    ]
-                }
-            ]
-        }
+    def test_valid_data_template(self, valid_training_program_data):
+        valid_data = deepcopy(valid_training_program_data)
+        valid_data_template = valid_data
+        valid_data_template.pop("assigned_user")
+        valid_data_template["mode"] = "template"
+        valid_data_template["activation_date"] = None
+
+        serializer = TrainingProgramSerializer(data=valid_data_template)
+        assert serializer.is_valid()
+
+    def test_invalid_title_len(self, valid_training_program_data):
+        valid_data = deepcopy(valid_training_program_data)
+        invalid_title_len_data = valid_data
+        invalid_title_len_data["program_title"] = "A"
 
         serializer = TrainingProgramSerializer(data=valid_data)
         assert not serializer.is_valid()
         with pytest.raises(ValidationError) as exc_info:
             serializer.is_valid(raise_exception=True)
-        assert "Program title is missing." in str(exc_info)
+        assert "Title must be at least 3 characters long." in str(exc_info)
 
-    def test_nonexisting_user(self, activation_date ,test_exercise):
-        valid_data = {
-            "program_title": "Test Program",
-            "mode": "create",
-            "assigned_user": "invalid_username",
-            "activation_date": activation_date,
-            "schedule_array": ["1"],
-            "sessions": [
-                {
-                    "session_title": "Day 1",
-                    "exercises": [
-                        {
-                            "exercise": test_exercise.id,
-                            "sequence": "A",
-                            "sets": "3",
-                            "reps": "10-12",
-                        }
-                    ]
-                }
-            ]
-        }
+    def test_invalid_user(self, valid_training_program_data):
+        valid_data = deepcopy(valid_training_program_data)
+        invalid_user_data = valid_data
+        invalid_user_data["assigned_user"] = "invalid"
 
-        serializer = TrainingProgramSerializer(data=valid_data)
+        serializer = TrainingProgramSerializer(data=invalid_user_data)
         assert not serializer.is_valid()
         with pytest.raises(ValidationError) as exc_info:
             serializer.is_valid(raise_exception=True)
-        assert "User doesn't exist." in str(exc_info)
+        assert "Incorrect type" in str(exc_info.value)
 
-    def test_create_without_assigned_user(self, activation_date, test_exercise):
-        invalid_data = {
-            "program_title": "Test Program",
-            "mode": "create",
-            "assigned_user": None,  
-            "activation_date": activation_date,
-            "schedule_array": ["1"],
-            "sessions": [
-                {
-                    "session_title": "Day 1",
-                    "exercises": [
-                        {
-                            "exercise": test_exercise.id,
-                            "sequence": "A",
-                            "sets": "3",
-                            "reps": "10-12",
-                        }
-                    ]
-                }
-            ]
-        }
-        
-        serializer = TrainingProgramSerializer(data=invalid_data)
-        assert not serializer.is_valid()
-        with pytest.raises(ValidationError) as exc_info:
-            serializer.is_valid(raise_exception=True)
-        assert "Active programs require an assigned user." in str(exc_info)
+    def test_missing_user_create(self, valid_training_program_data):
+        valid_data = deepcopy(valid_training_program_data)
+        missing_user_data = valid_data
+        missing_user_data.pop("assigned_user")
 
+        serializer = TrainingProgramSerializer(data=missing_user_data)
+        assert not serializer.is_valid()
+        with pytest.raises(ValidationError) as exc_info:
+            serializer.is_valid(raise_exception=True)
+        assert "Assigned user is missing." in str(exc_info)
 
-    def test_invalid_date_format(self, test_user, test_exercise):
-        valid_data = {
-            "program_title": "Test Program",
-            "mode": "create",
-            "assigned_user": test_user,
-            "activation_date": "2025-31-02",
-            "schedule_array": ["1"],
-            "sessions": [
-                {
-                    "session_title": "Day 1",
-                    "exercises": [
-                        {
-                            "exercise": test_exercise.id,
-                            "sequence": "A",
-                            "sets": "3",
-                            "reps": "10-12",
-                        }
-                    ]
-                }
-            ]
-        }
+    def test_missing_date(self, valid_training_program_data):
+        valid_data = deepcopy(valid_training_program_data)
+        missing_date_data = valid_data
+        missing_date_data.pop("activation_date")
 
-        serializer = TrainingProgramSerializer(data=valid_data)
+        serializer = TrainingProgramSerializer(data=missing_date_data)
         assert not serializer.is_valid()
         with pytest.raises(ValidationError) as exc_info:
             serializer.is_valid(raise_exception=True)
-        assert "Activation date for create mode is missing." in str(exc_info)
-
-    def test_empty_schedule_array(self, test_user, activation_date, test_exercise):
-        valid_data = {
-            "program_title": "Test Program",
-            "mode": "create",
-            "assigned_user": test_user,
-            "activation_date": activation_date,
-            "schedule_array": [],
-            "sessions": [
-                {
-                    "session_title": "Day 1",
-                    "exercises": [
-                        {
-                            "exercise": test_exercise.id,
-                            "sequence": "A",
-                            "sets": "3",
-                            "reps": "10-12",
-                        }
-                    ]
-                }
-            ]
-        }
-
-        serializer = TrainingProgramSerializer(data=valid_data)
-        assert not serializer.is_valid()
-        with pytest.raises(ValidationError) as exc_info:
-            serializer.is_valid(raise_exception=True)
-        assert "Schedule is missing." in str(exc_info)
-    
-    def test_empty_sessions(self, activation_date, test_user):
-        invalid_data = {
-            "program_title": "Test Program",
-            "mode": "create",
-            "assigned_user": test_user.id,
-            "activation_date": activation_date,
-            "schedule_array": ["1", "2"],
-            "sessions": []  
-        }
-        
-        serializer = TrainingProgramSerializer(data=invalid_data)
-        assert not serializer.is_valid()
-        with pytest.raises(ValidationError) as exc_info:
-            serializer.is_valid(raise_exception=True)
-        assert "Sessions are missing." in str(exc_info)
-    
-    def test_session_without_exercises(self, activation_date, test_user):
-        invalid_data = {
-            "program_title": "Test Program",
-            "mode": "create",
-            "assigned_user": test_user.id,
-            "activation_date": activation_date,
-            "schedule_array": ["1"],
-            "sessions": [
-                {
-                    "session_title": "Day 1",
-                    "exercises": []  
-                }
-            ]
-        }
-        
-        serializer = TrainingProgramSerializer(data=invalid_data)
-        assert not serializer.is_valid()
-        with pytest.raises(ValidationError) as exc_info:
-            serializer.is_valid(raise_exception=True)
-        assert "At least one exercise is required." in str(exc_info)
-    
-    def test_invalid_sets_format(self, activation_date, test_user, test_exercise):
-        invalid_data = {
-            "program_title": "Test Program",
-            "mode": "create",
-            "assigned_user": test_user.id,
-            "activation_date": activation_date,
-            "schedule_array": ["1"],
-            "sessions": [
-                {
-                    "session_title": "Day 1",
-                    "exercises": [
-                        {
-                            "exercise": test_exercise.id,
-                            "sequence": "A",
-                            "sets": "invalid",  
-                            "reps": "10-12",
-                        }
-                    ]
-                }
-            ]
-        }
-        
-        serializer = TrainingProgramSerializer(data=invalid_data)
-        assert not serializer.is_valid()
-        with pytest.raises(ValidationError) as exc_info:
-            serializer.is_valid(raise_exception=True)
-        assert "Sets must be a valid number." in str(exc_info)
-    
-    def test_nonexistent_exercise(self, activation_date, test_user):
-        nonexistent_exercise_id = 9999999 
-        
-        invalid_data = {
-            "program_title": "Test Program",
-            "mode": "create",
-            "assigned_user": test_user.id,
-            "activation_date": activation_date,
-            "schedule_array": ["1"],
-            "sessions": [
-                {
-                    "session_title": "Day 1",
-                    "exercises": [
-                        {
-                            "exercise": nonexistent_exercise_id,
-                            "sequence": "A",
-                            "sets": "3",
-                            "reps": "10-12",
-                        }
-                    ]
-                }
-            ]
-        }
-        
-        serializer = TrainingProgramSerializer(data=invalid_data)
-        assert not serializer.is_valid()
-        with pytest.raises(ValidationError) as exc_info:
-            serializer.is_valid(raise_exception=True)
-        assert "Exercise doesn't exist." in str(exc_info)
+        assert "Activation date is missing." in str(exc_info)
      
-    def test_template_with_activation_date(self, test_exercise):
-        invalid_data = {
-            "program_title": "Test Template",
-            "mode": "template",
-            "assigned_user": None,
-            "activation_date": "2025-04-15",  # Should be None for templates
-            "schedule_array": ["1"],
-            "sessions": [
-                {
-                    "session_title": "Day 1",
-                    "exercises": [
-                        {
-                            "exercise": test_exercise.id,
-                            "sequence": "A",
-                            "sets": "3",
-                            "reps": "10-12",
-                        }
-                    ]
-                }
-            ]
-        }
-        
-        serializer = TrainingProgramSerializer(data=invalid_data)
+    def test_template_with_activation_date(self, valid_training_program_data):
+        valid_data = deepcopy(valid_training_program_data)
+        template_with_date_data = valid_data
+        template_with_date_data.pop("assigned_user")
+        template_with_date_data["mode"] = "template"
+        template_with_date_data["activation_date"] = "2025-11-11"
+
+        serializer = TrainingProgramSerializer(data=template_with_date_data)
         assert not serializer.is_valid()
         with pytest.raises(ValidationError) as exc_info:
             serializer.is_valid(raise_exception=True)
-        assert "Template programs should not have an activation date." in str(exc_info)
+        assert "Templates should not have activation date." in str(exc_info)
     

@@ -45,16 +45,20 @@ class TrainingProgramController:
             Returns:
                 Response with messages.
         """
-        if request.data.get("schedule_array"):
-            schedule_array = request.data.pop("schedule_array")
-            if len(schedule_array) < 1:
-                raise ValidationError({"schedule_array": "Schedule cannot be empty."})
-        else:
-            raise ValidationError(
-                {"schedule_array": "Schedule is missing!"}
-            )
+        try:
+            if "schedule_array" in request.data:
+                schedule_array = request.data["schedule_array"]
+                if len(schedule_array) < 1:
+                    raise ValidationError({"schedule_array": "Schedule cannot be empty."})
+            else:
+                raise ValidationError({"schedule_array": "Schedule is missing!"})
+        except ValidationError as e:
+            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
         
-        transformed_data = self._transform_data(request.data)
+        try:
+            transformed_data = self._transform_data(request.data)
+        except ValidationError as e:
+            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = TrainingProgramSerializer(data=transformed_data)
         if not serializer.is_valid():
@@ -63,7 +67,10 @@ class TrainingProgramController:
         with transaction.atomic():
             program, temp_id_mapping = serializer.save()
             
-            transformed_schedule = self._transform_schedule(schedule_array, temp_id_mapping) 
+            try:
+                transformed_schedule = self._transform_schedule(schedule_array, temp_id_mapping) 
+            except ValidationError as e:
+                return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
 
             program.schedule_array = transformed_schedule
             program.save()
@@ -85,17 +92,11 @@ class TrainingProgramController:
             try:
                 data["assigned_user"] = User.objects.get(username=username).id
             except User.DoesNotExist: 
-                raise ValidationError({"assigned_user": f"User '{data["assigned_user"]}' doesn't exist."})
+                raise ValidationError({"assigned_user": f"User '{username}' doesn't exist."})
 
-        if data.get("sessions"):
-            if len(data["sessions"]) < 1:
-                raise ValidationError({"sessions": "Sessions cannot be empty."})
-            
+        if data.get("sessions"):           
             for session in data["sessions"]:
                 if session.get("exercises"):
-                    if len(session["exercises"]) < 1:
-                        raise ValidationError({"exercises": "Exercises cannot be empty."})
-                    
                     for exercise in session["exercises"]:
                         if "sets" in exercise: ## On update it might already be int
                             sets_value = exercise.get("sets")
@@ -109,7 +110,13 @@ class TrainingProgramController:
 
                         if exercise.get("muscle_group_input"):
                             muscle_group_input = exercise.pop("muscle_group_input", None)
-                            if muscle_group_input != "custom": 
+                            
+                            if muscle_group_input == "custom":
+                                exercise["muscle_group"] = None
+                                exercise["exercise"] = None
+                                exercise["is_custom_muscle_group"] = True
+                            
+                            else: 
                                 try:
                                     exercise["muscle_group"] = MuscleGroup.objects.get(slug=muscle_group_input).id
                                 except MuscleGroup.DoesNotExist:
@@ -118,16 +125,6 @@ class TrainingProgramController:
                                     ) 
                                 exercise["is_custom_muscle_group"] = False
                                 exercise["custom_exercise_title"] = None
-
-                            elif muscle_group_input == "custom":
-                                exercise["muscle_group"] = None
-                                exercise["exercise"] = None
-                                exercise["is_custom_muscle_group"] = True
-
-                            else:
-                                raise ValidationError(
-                                    {"muscle_group_input": "Muscle group invalid."}
-                                )
 
                         if exercise.get("exercise_input"):
                             exercise_input = exercise.pop("exercise_input", None)
@@ -156,6 +153,6 @@ class TrainingProgramController:
                 transformed.append(temp_id_mapping[temp_id])
             else:
                 raise ValidationError({
-                    temp_id: f"{temp_id} is invalid session."
+                    "temp_id": f"{temp_id} is invalid session."
                 })
         return transformed

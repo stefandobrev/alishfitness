@@ -157,7 +157,7 @@ class TestUserController:
         response = api_client.post(url, data=blacklist_data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert response.data["error"] == "Refresh token is required"
+        assert response.data["refresh_token"] == "Refresh token is required"
 
     def test_blacklist_token_invalid(self, api_client):
         blacklist_data = {
@@ -168,7 +168,7 @@ class TestUserController:
         response = api_client.post(url, data=blacklist_data, format="json")
         
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
-        assert "Invalid or expired refresh token" in response.data["error"]
+        assert "Invalid or expired refresh token" in response.data["refresh_token"]
     
     def test_refresh_token_blacklisted(self, api_client, test_user):
         login_data = {
@@ -180,12 +180,8 @@ class TestUserController:
         login_response = api_client.post(login_url, data=login_data, format="json")
         refresh_token = login_response.data["refresh"]
 
-        print("Refresh Token:", refresh_token)
-
-        blacklist_url = reverse("blacklist-token")
+        blacklist_url = reverse("blacklist-token")  
         blacklist_response = api_client.post(blacklist_url, data={"refresh": refresh_token}, format="json")
-
-        print("Blacklist Response:", blacklist_response.data)
 
         refresh_url = reverse("refresh-token")
         refresh_response = api_client.post(refresh_url, data={"refresh": refresh_token}, format="json")

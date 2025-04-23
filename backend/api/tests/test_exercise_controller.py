@@ -105,8 +105,8 @@ class TestExerciseController:
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
-        assert "error" in response.data
-        assert response.data["error"] == "Exercise not found."
+        assert "exercise" in response.data
+        assert response.data["exercise"] == "Exercise not found."
 
     def test_create(self, api_client, test_admin, test_muscle_group):
         api_client.force_authenticate(user=test_admin)
@@ -202,7 +202,7 @@ class TestExerciseController:
         response = api_client.post(url, missing_excercise_group, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert response.data["error"] == "Muscle group ID is required."
+        assert response.data["muscle_group_id"] == "Muscle group ID is required."
 
     def test_get_exercises_group_invalid(self, api_client, test_user, test_exercise):
         api_client.force_authenticate(user=test_user)
@@ -217,7 +217,7 @@ class TestExerciseController:
         response = api_client.post(url, invalid_excercise_group, format="json")
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
-        assert response.data["error"] == "Invalid muscle group."
+        assert response.data["muscle_group_id"] == "Invalid muscle group."
 
     def test_get_exercise_by_slug_success(self, api_client, test_user, test_muscle_group, test_exercise):
         api_client.force_authenticate(user=test_user)
@@ -238,11 +238,11 @@ class TestExerciseController:
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
-        assert response.data["error"] == "Invalid muscle group."
+        assert response.data["muscle_group_slug"] == "Invalid muscle group."
 
         url = reverse("exercises-detail-slug", args=[test_muscle_group.slug, "invalidexerciseslug"])
 
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
-        assert response.data["error"] == "Invalid exercise."
+        assert response.data["exercise_slug"] == "Invalid exercise."

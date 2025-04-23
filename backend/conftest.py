@@ -68,9 +68,8 @@ def test_exercise(test_muscle_group, test_secondary_muscle_group):
     return exercise
 
 @pytest.fixture
-def test_training_program(test_user):
+def test_training_program(test_user, test_program_session, test_second_program_session):
     activation_date = date.today()
-
 
     training_program = TrainingProgram.objects.create(
         program_title="Test Program",
@@ -78,17 +77,19 @@ def test_training_program(test_user):
         assigned_user=test_user,
         activation_date=activation_date,
         schedule_array=[1, 2, 1],
+        sessions=[test_program_session, test_second_program_session]
     )
     return training_program
 
 @pytest.fixture
-def test_template():
+def test_template(test_program_session, test_second_program_session):
     training_program = TrainingProgram.objects.create(
         program_title="Test Template",
         mode="template",
         assigned_user=None,
         activation_date=None,
-        schedule_array=[],
+        schedule_array=[1, 2, 1],
+        sessions=[test_program_session, test_second_program_session]
     )
     return training_program
 
@@ -101,7 +102,7 @@ def test_program_session(test_training_program):
     return session
 
 @pytest.fixture
-def test_second_program_session(test_training_program, test_program_session):
+def test_second_program_session(test_training_program):
     session = TrainingSession.objects.create(
         session_title="Second Test Session",
         program=test_training_program,
@@ -109,12 +110,29 @@ def test_second_program_session(test_training_program, test_program_session):
     return session
 
 @pytest.fixture
-def test_program_exercise(test_program_session, test_exercise):
+def test_program_exercise(test_muscle_group, test_program_session, test_exercise):
     program_exercise = ProgramExercise.objects.create(
         session=test_program_session,
+        muscle_group=test_muscle_group,
         exercise=test_exercise,
+        is_custom_muscle_group=False,
+        custom_exercise_title=None,
         sequence="A",
         sets=3,
         reps="10-12",
+    )
+    return program_exercise
+
+@pytest.fixture
+def test_program_exercise_custom(test_second_program_session):
+    program_exercise = ProgramExercise.objects.create(
+        session=test_second_program_session,
+        muscle_group=None,
+        exercise=None,
+        is_custom_muscle_group=True,
+        custom_exercise_title="Custom Test Exercise Title",
+        sequence="A",
+        sets=5,
+        reps="12",
     )
     return program_exercise

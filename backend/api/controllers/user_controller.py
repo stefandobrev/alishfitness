@@ -110,7 +110,7 @@ class UserController:
         refresh_token = request.data.get("refresh")
         if not refresh_token:
             return Response(
-                {"error": "Refresh token is required"},
+                {"refresh_token": "Refresh token is required"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -122,7 +122,7 @@ class UserController:
             )
         except TokenError as e:
             return Response(
-                {"error": f"Invalid or expired refresh token: {str(e)}"},
+                {"refresh_token": f"Invalid or expired refresh token: {str(e)}"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
         

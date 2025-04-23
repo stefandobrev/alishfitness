@@ -58,7 +58,7 @@ class ExerciseController:
             
             return Response(self._get_exercise_data(exercise))
         except Exercise.DoesNotExist:
-            return Response({"error": "Exercise not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"exercise": "Exercise not found."}, status=status.HTTP_404_NOT_FOUND)
         
     def _get_exercise_data(self, exercise):
         return {
@@ -122,12 +122,12 @@ class ExerciseController:
         search_query = request.data.get("search_query", "")
 
         if not muscle_group_id:
-            return Response({"error": "Muscle group ID is required."}, status=400)
+            return Response({"muscle_group_id": "Muscle group ID is required."}, status=400)
         
         muscle_group = MuscleGroup.objects.filter(slug=muscle_group_id).first()
 
         if not muscle_group: 
-            return Response({"error": "Invalid muscle group."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"muscle_group_id": "Invalid muscle group."}, status=status.HTTP_404_NOT_FOUND)
 
         query = Exercise.objects.filter(primary_group__slug=muscle_group_id)
 
@@ -151,7 +151,7 @@ class ExerciseController:
         muscle_group = MuscleGroup.objects.filter(slug=muscle_slug).first()
 
         if not muscle_group: 
-            return Response({"error": "Invalid muscle group."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"muscle_group_slug": "Invalid muscle group."}, status=status.HTTP_404_NOT_FOUND)
 
         try: 
             exercise = Exercise.objects.prefetch_related(
@@ -160,4 +160,4 @@ class ExerciseController:
             
             return Response(self._get_exercise_data(exercise))
         except Exercise.DoesNotExist:
-            return Response({"error": "Invalid exercise."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"exercise_slug": "Invalid exercise."}, status=status.HTTP_404_NOT_FOUND)

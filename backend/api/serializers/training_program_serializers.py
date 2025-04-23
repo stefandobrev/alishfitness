@@ -88,17 +88,22 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
                 )
         
         if data.get("mode") == "create":
+            if "assigned_user" not in data:
+                raise serializers.ValidationError(
+                    {"assigned_user": "Assigned user is missing."}
+                )
+
             if "activation_date" not in data:
                 raise serializers.ValidationError(
-                            {"activation_date": "Activation date is missing."}
+                    {"activation_date": "Activation date is missing."}
                 )
             
-            date_str=data["activation_date"]
-            if not isinstance(date_str, date):
+        if data.get("mode") == "template":
+            if data.get("activation_date"):
                 raise serializers.ValidationError(
-                    {"activation_date": "Date must be in ISO format (YYYY-MM-DD)."}
+                    {"activation_date": "Templates should not have activation date."}
                 )
-                        
+                  
         return data
     
     def create(self, validated_data):
