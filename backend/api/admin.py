@@ -35,8 +35,13 @@ class ProgramExerciseInline(NestedTabularInline):
 class TrainingSessionInline(NestedTabularInline):
     model = TrainingSession
     extra = 0
-    fields = ["session_title"]
+    fields = ["session_title", "display_id"]
+    readonly_fields = ["display_id"]
     inlines = [ProgramExerciseInline]
+
+    def display_id(self, obj):
+        return obj.id
+    display_id.short_description = "ID"
 
 class TrainingProgramAdmin(NestedModelAdmin):
     ordering = ["program_title"]

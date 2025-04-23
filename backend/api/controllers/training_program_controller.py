@@ -36,6 +36,8 @@ class TrainingProgramController:
     def create(self, request):
         """
             Create a new training program or new template.
+            Schedule array is removed from serializer validation (validated first)
+            and send to transform schedule to have it mapped with created session ids.
 
             Args:
                 request: HTTP request containing data.
@@ -43,18 +45,28 @@ class TrainingProgramController:
             Returns:
                 Response with messages.
         """
+        if request.data.get("schedule_array"):
+            schedule_array = request.data.pop("schedule_array")
+            if len(schedule_array) < 1:
+                raise ValidationError({"schedule_array": "Schedule cannot be empty."})
+        else:
+            raise ValidationError(
+                {"schedule_array": "Schedule is missing!"}
+            )
+        
         transformed_data = self._transform_data(request.data)
-        # print("Transformed data:", transformed_data)
+
         serializer = TrainingProgramSerializer(data=transformed_data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         with transaction.atomic():
-            program = serializer.save()
+            program, temp_id_mapping = serializer.save()
             
-            self._transform_schedule(program.schedule_array) 
+            transformed_schedule = self._transform_schedule(schedule_array, temp_id_mapping) 
 
-            # program.save()
+            program.schedule_array = transformed_schedule
+            program.save()
 
         return Response({"message": "Program created successfully!"}, status=status.HTTP_201_CREATED)
     
@@ -66,7 +78,7 @@ class TrainingProgramController:
         """
         Transform sets to ints, PKs for muscle_group and exercise or 
         is_custom_muscle_group set to True and custom_exercise_title set to None 
-        with custom exercise title.
+        with custom exercise title. Send to serializer.
         """
         if data.get("assigned_user_username"):
             username = data.pop("assigned_user_username", None)
@@ -131,8 +143,19 @@ class TrainingProgramController:
 
         return data
 
-    def _transform_schedule(self, schedule_data):
-        """Assign backend ids on tempIds places within the schedule."""
-        temp_id_mapping = {}
-        pass
-
+    def _transform_schedule(self, schedule_array, temp_id_mapping):
+        """Transform temporary session IDs to actual database IDs.
+        temp_id_mapping is a dict where temp_ids are they key and values are
+        the backend unique ids.
+    
+        Args:
+            schedule_array: List of session strings references to transform as ids"""
+        transformed = []
+        for temp_id in schedule_array:
+            if temp_id in temp_id_mapping:
+                transformed.append(temp_id_mapping[temp_id])
+            else:
+                raise ValidationError({
+                    temp_id: f"{temp_id} is invalid session."
+                })
+        return transformed

@@ -8,7 +8,6 @@ export const fetchTrainingSetupData = async () => {
 
 export const createProgramRequest = async (data) => {
   const tranformedData = camelToSnake(data);
-  console.log({ tranformedData });
   const response = await api(
     'training-programs/create-program/',
     'POST',

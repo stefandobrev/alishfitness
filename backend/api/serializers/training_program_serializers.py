@@ -108,17 +108,20 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
         program = TrainingProgram.objects.create(**validated_data)
         program.save()
 
-        print("Validated data:", validated_data)
+        temp_id_mapping = {} ## Create a mapping track to assign correlation between ids and temp_ids
+
         for session_data in sessions_data:
-            session_data.pop("temp_id", None)
+            temp_id = session_data.pop("temp_id", None)
             exercises_data = session_data.pop("exercises", [])
             
             session = TrainingSession.objects.create(program=program, **session_data)
-  
+
+            temp_id_mapping[temp_id] = session.id
+
             for exercise_data in exercises_data: 
                 ProgramExercise.objects.create(session=session, **exercise_data)
 
-        return program
+        return program, temp_id_mapping
 
 
     def update(self, instance, validated_date):
