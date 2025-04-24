@@ -8,11 +8,32 @@ export const fetchTrainingSetupData = async () => {
 
 export const createProgramRequest = async (data) => {
   const tranformedData = camelToSnake(data);
-  const response = await api(
-    'training-programs/create-program/',
-    'POST',
-    tranformedData,
-  );
-  if (!response.ok) throw new Error('Failed to create program.');
-  return response.json();
+  try {
+    const response = await api(
+      'training-programs/create-program/',
+      'POST',
+      tranformedData,
+    );
+    if (!response.ok) {
+      const errorData = await response.json();
+
+      const key = Object.key(errorData)[0];
+      const errorMessage = errorData[key]?.[0] || 'Something went wrong';
+
+      return {
+        type: 'error',
+        text: errorMessage,
+      };
+    }
+
+    return {
+      type: 'success',
+      text: 'Program created successfully!',
+    };
+  } catch (error) {
+    return {
+      type: 'error',
+      text: 'An unexpected error occurred. Please try again later.',
+    };
+  }
 };

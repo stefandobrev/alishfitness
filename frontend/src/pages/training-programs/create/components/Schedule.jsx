@@ -12,29 +12,29 @@ import { getLightColors } from '@/common/constants';
 import { ActionButton, ButtonVariant } from '@/components/buttons';
 
 export const Schedule = ({ activeTab, sessions }) => {
-  const [schedule, setSchedule] = useState([]);
   const [selectedSession, setSelectedSession] = useState(null);
   const {
     register,
     setValue,
     trigger,
+    watch,
     formState: { errors, isSubmitted },
   } = useFormContext();
 
-  useEffect(() => {
-    register('scheduleArray');
-    setValue('scheduleArray', schedule);
-  }, [register]);
+  const schedule = watch('scheduleArray') || [];
 
   useEffect(() => {
-    setValue('scheduleArray', schedule);
-    trigger('scheduleArray');
-  }, [schedule, setValue, trigger]);
+    register('scheduleArray');
+    if (!schedule.length) {
+      setValue('scheduleArray', []);
+    }
+  }, [register]);
 
   const handleSessionSelect = (selected) => {
     if (selected) {
       const newSchedule = [...schedule, selected.value];
-      setSchedule(newSchedule);
+      setValue('scheduleArray', newSchedule);
+      trigger('scheduleArray');
       setSelectedSession(null); // Reset dropdown after selection
     }
   };
@@ -49,7 +49,8 @@ export const Schedule = ({ activeTab, sessions }) => {
 
   const handleRemoveFromSchedule = (index) => {
     const newSchedule = schedule.filter((_, idx) => idx !== index);
-    setSchedule(newSchedule);
+    setValue('scheduleArray', newSchedule);
+    trigger('scheduleArray');
   };
 
   const moveSessionUp = (index) => {
@@ -58,7 +59,7 @@ export const Schedule = ({ activeTab, sessions }) => {
     const temp = newSchedule[index];
     newSchedule[index] = newSchedule[index - 1];
     newSchedule[index - 1] = temp;
-    setSchedule(newSchedule);
+    setValue('scheduleArray', newSchedule);
   };
 
   const moveSessionDown = (index) => {
@@ -67,7 +68,7 @@ export const Schedule = ({ activeTab, sessions }) => {
     const temp = newSchedule[index];
     newSchedule[index] = newSchedule[index + 1];
     newSchedule[index + 1] = temp;
-    setSchedule(newSchedule);
+    setValue('scheduleArray', newSchedule);
   };
 
   return (

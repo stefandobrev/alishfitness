@@ -101,23 +101,28 @@ export const ManageExercisesPage = () => {
 
   const onSubmitEditExercise = async (submittedExerciseData) => {
     const changedData = getChangedFields(exerciseData, submittedExerciseData);
-    const response = await saveExercise(changedData, selectedExercise);
-    const { type, text } = response;
+    setIsLoading(true);
+    try {
+      const response = await saveExercise(changedData, selectedExercise);
+      const { type, text } = response;
 
-    if (type === 'error') {
-      toast.error(text);
-      setMessage({ type, text });
-      return;
-    }
+      if (type === 'error') {
+        toast.error(text);
+        setMessage({ type, text });
+        return;
+      }
 
-    if (type === 'success') {
-      toast.success(text);
-      triggerRefresh();
-      setMessage('');
+      if (type === 'success') {
+        toast.success(text);
+        triggerRefresh();
+        setMessage('');
 
-      const updatedData = await fetchExerciseData(selectedExercise);
-      const transformedData = snakeToCamel(updatedData);
-      setExerciseData(transformedData);
+        const updatedData = await fetchExerciseData(selectedExercise);
+        const transformedData = snakeToCamel(updatedData);
+        setExerciseData(transformedData);
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 

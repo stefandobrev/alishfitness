@@ -1,3 +1,4 @@
+import { Spinner } from '@/components/common';
 import { AddForm, EditForm } from '../forms';
 
 export const FormPanel = ({
@@ -18,11 +19,12 @@ export const FormPanel = ({
         activeTab !== 'form' ? 'hidden lg:flex' : ''
       }`}
     >
-      {mode === 'add' ? (
+      {isLoading ? (
+        <Spinner loading={isLoading} className='min-h-[70vh]' />
+      ) : mode === 'add' ? (
         <AddForm
           muscleGroups={muscleGroups}
           submittedNewExerciseData={submittedNewExerciseData}
-          isLoading={isLoading}
           message={message}
         />
       ) : (
@@ -30,7 +32,6 @@ export const FormPanel = ({
           muscleGroups={muscleGroups}
           submittedEditExerciseData={submittedEditExerciseData}
           exerciseData={exerciseData}
-          isLoading={isLoading}
           mode={mode}
           launchAddMode={onAddNew}
           handleDeleteConfirm={handleDeleteConfirm}

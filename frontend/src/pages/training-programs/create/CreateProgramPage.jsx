@@ -2,16 +2,19 @@ import { useState, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'react-toastify';
 
 import { Schedule, SessionsPanel } from './components';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
 import { createProgramRequest } from './helpersCreateProgram';
 import { useTitle } from '@/hooks/useTitle.hook';
 import { createProgram } from '@/schemas';
+import { Spinner } from '@/components/common';
 
 export const CreateProgramPage = () => {
   const [isCreateMode, setIsCreateMode] = useState(true);
   const [activeTab, setActiveTab] = useState('sessions');
+  const [isLoading, setIsLoading] = useState(false);
   const methods = useForm({
     resolver: zodResolver(createProgram),
     mode: 'onChange',
@@ -23,7 +26,7 @@ export const CreateProgramPage = () => {
       activationDate: null,
     },
   });
-  const { watch, setValue, getValues, reset } = methods;
+  const { watch, setValue, getValues, reset, clearErrors } = methods;
 
   useTitle('Create');
 
@@ -56,7 +59,25 @@ export const CreateProgramPage = () => {
         : null,
     };
 
-    const response = await createProgramRequest(formattedData);
+    setIsLoading(true);
+
+    try {
+      const response = await createProgramRequest(formattedData);
+      const { type, text } = response;
+
+      if (type === 'error') {
+        toast.error(text);
+        return;
+      }
+
+      if (type === 'success') {
+        toast.success(text);
+        setIsCreateMode(true);
+        reset({});
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const tabs = [
@@ -73,20 +94,24 @@ export const CreateProgramPage = () => {
         variant={MobileTabVariant.HIDE}
       />
 
-      <FormProvider {...methods}>
-        <div className='flex w-full flex-col lg:flex-row'>
-          <SessionsPanel
-            onSubmit={onSubmit}
-            activeTab={activeTab}
-            sessions={sessions}
-            onRemoveSession={handleRemoveSession}
-            isCreateMode={isCreateMode}
-            setIsCreateMode={setIsCreateMode}
-          />
+      {isLoading ? (
+        <Spinner loading={isLoading} className='min-h-[70vh]' />
+      ) : (
+        <FormProvider {...methods}>
+          <div className='flex w-full flex-col lg:flex-row'>
+            <SessionsPanel
+              onSubmit={onSubmit}
+              activeTab={activeTab}
+              sessions={sessions}
+              onRemoveSession={handleRemoveSession}
+              isCreateMode={isCreateMode}
+              setIsCreateMode={setIsCreateMode}
+            />
 
-          <Schedule activeTab={activeTab} sessions={sessions} />
-        </div>
-      </FormProvider>
+            <Schedule activeTab={activeTab} sessions={sessions} />
+          </div>
+        </FormProvider>
+      )}
     </>
   );
 };

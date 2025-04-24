@@ -6,12 +6,10 @@ import { DefaultForm } from './';
 import { ActionButton } from '@/components/buttons';
 import { getChangedFields } from '@/utils';
 import { DeleteConfirmation } from '../components/DeleteConfirmation';
-import { Spinner } from '@/components/common';
 
 export const EditForm = ({
   muscleGroups,
   exerciseData,
-  isLoading,
   mode,
   launchAddMode,
   submittedEditExerciseData,
@@ -50,21 +48,17 @@ export const EditForm = ({
 
   return (
     <>
-      {isLoading ? (
-        <Spinner loading={isLoading} className='min-h-[70vh]' />
-      ) : (
-        <DefaultForm
-          submittedExerciseData={submittedEditExerciseData}
-          muscleGroups={muscleGroups}
-          message={message}
-          mode={mode}
-          title={editFormTitle}
-          exerciseData={exerciseData}
-          hasChanges={hasChanges}
-          handleDeleteButton={handleDelete}
-          handleViewButton={handleView}
-        />
-      )}
+      <DefaultForm
+        submittedExerciseData={submittedEditExerciseData}
+        muscleGroups={muscleGroups}
+        message={message}
+        mode={mode}
+        title={editFormTitle}
+        exerciseData={exerciseData}
+        hasChanges={hasChanges}
+        handleDeleteButton={handleDelete}
+        handleViewButton={handleView}
+      />
 
       {isDeleteDialogOpen && (
         <DeleteConfirmation
