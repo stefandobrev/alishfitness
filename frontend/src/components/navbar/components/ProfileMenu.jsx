@@ -61,10 +61,10 @@ export const ProfileMenu = ({ isOpen, setIsOpen }) => {
                 key={item.name}
                 to={item.href}
                 onClick={() => setIsOpen(false)}
-                className={`flex w-full items-center px-4 py-3 text-sm ${
+                className={`flex w-full items-center px-4 py-3 text-sm hover:bg-gray-600 ${
                   isItemActive
                     ? 'bg-gray-700 text-white'
-                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                    : 'text-gray-300 hover:text-white'
                 } transition duration-150 ${index === 0 ? 'rounded-t-lg' : ''}`}
               >
                 {item.icon && (

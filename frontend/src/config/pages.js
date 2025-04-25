@@ -15,7 +15,6 @@ export const adminPages = [
     menuItems: [
       { name: 'View All', href: '/training-programs/view-all' },
       { name: 'Create', href: '/training-programs/create' },
-      { name: 'Templates', href: '/training-programs/templates' },
     ],
   },
 ];

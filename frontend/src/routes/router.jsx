@@ -23,7 +23,6 @@ import {
   MyProgramPage,
   ViewAllPage,
   CreateProgramPage,
-  TemplatesPage,
 } from '../pages';
 
 // Route Guards
@@ -65,10 +64,6 @@ export const router = createBrowserRouter(
           <Route
             path='/training-programs/create'
             element={<CreateProgramPage />}
-          />
-          <Route
-            path='/training-programs/templates'
-            element={<TemplatesPage />}
           />
         </Route>
 
