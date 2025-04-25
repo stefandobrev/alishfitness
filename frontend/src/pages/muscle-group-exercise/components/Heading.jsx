@@ -7,10 +7,10 @@ export const Heading = ({
   valueSearch,
   onSearchChange,
 }) => {
-  const exerciseCount =
+  const exerciseCounter =
     totalExercises !== undefined ? totalExercises : exercisesData?.length;
-  const isPlural = exerciseCount !== 1;
-  const exercisesCounter = `${exerciseCount} exercise${isPlural ? 's' : ''} available`;
+  const isPlural = exerciseCounter !== 1;
+  const exerciseDescription = `${exerciseCounter} exercise${isPlural ? 's' : ''} available`;
 
   return (
     <div className='flex flex-col'>
@@ -26,7 +26,7 @@ export const Heading = ({
           />
         </div>
         <p className='w-full text-center text-gray-600 lg:mx-auto dark:text-gray-300'>
-          {exercisesData && exercisesCounter}
+          {exercisesData && exerciseDescription}
         </p>
       </div>
     </div>

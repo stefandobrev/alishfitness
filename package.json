@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "concurrently \"npm run be\" \"npm run fe\"",
-    "be": "python backend/manage.py runserver",
+    "be": ".\\env\\Scripts\\activate && python backend/manage.py runserver",
     "fe": "cd frontend && npm run dev"
   },
   "dependencies": {
