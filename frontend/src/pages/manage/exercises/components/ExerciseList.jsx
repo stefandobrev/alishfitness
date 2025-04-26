@@ -134,6 +134,7 @@ export const ExerciseList = ({
           onChange={(value) =>
             handleExercisePropsUpdate({ searchQuery: value })
           }
+          placeholder='Search exercise'
           className='max-w-md'
         />
         <MuscleGroupFilter

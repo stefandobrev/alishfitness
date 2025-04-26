@@ -22,6 +22,7 @@ export const Heading = ({
           <SearchInput
             value={valueSearch}
             onChange={onSearchChange}
+            placeholder='Search exercise'
             className='w-80 max-w-md lg:w-70'
           />
         </div>
