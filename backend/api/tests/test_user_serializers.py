@@ -54,6 +54,24 @@ class TestUserSerializer:
         assert not serializer.is_valid()
         assert "username" in serializer.errors
         assert "This username is already taken." in serializer.errors["username"][0]
+
+    def test_username_invalid_char(self, valid_user_data):
+        data = valid_user_data.copy()
+        data["username"] = "Testusername@"
+
+        serializer = UserSerializer(data=data)
+        assert not serializer.is_valid()
+        assert "username" in serializer.errors
+        assert "Username can only contain letters" in serializer.errors["username"][0]
+
+    def test_name_invalid_char(self, valid_user_data):
+        data = valid_user_data.copy()
+        data["first_name"] = "Test@"
+
+        serializer = UserSerializer(data=data)
+        assert not serializer.is_valid()
+        assert "first_name" in serializer.errors
+        assert "First name can only contain letters" in serializer.errors["first_name"][0]
     
     def test_email_uniqueness(self, valid_user_data, test_user):
         data = valid_user_data.copy()

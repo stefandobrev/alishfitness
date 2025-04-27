@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+import re
 
 from rest_framework_simplejwt.token_blacklist.models import (
     BlacklistedToken,
@@ -37,17 +38,25 @@ class UserSerializer(serializers.ModelSerializer):
         Validate the user registration data.
 
         Checks:
+        - First and Last names regex chars
         - Passwords match
-        - Email case sensitivity uniqeness
-        - Username case sensitivity uniqeness
+        - Email case sensitivity, uniqeness
+        - Username case sensitivity, uniqeness, regex chars
         """
         instance = getattr(self, "instance", None)
 
-        if "first_name" in data and not data["first_name"].strip():
-            raise serializers.ValidationError({"first_name": "First name cannot be empty."})
-        
-        if "last_name" in data and not data["last_name"].strip():
-            raise serializers.ValidationError({"last_name": "Last name cannot be empty."})
+        if "first_name" in data:
+            if not data["first_name"].strip():
+                raise serializers.ValidationError({"first_name": "First name cannot be empty."})
+            if not re.match(r"^[a-zA-Z\s-]+$", data["first_name"]):
+                raise serializers.ValidationError({"first_name": "First name can only contain letters, spaces, and hyphens."})
+
+        if "last_name" in data:
+            if not data["last_name"].strip():
+                raise serializers.ValidationError({"last_name": "Last name cannot be empty."})
+            if not re.match(r"^[a-zA-Z\s-]+$", data["last_name"]):
+                raise serializers.ValidationError({"last_name": "Last name can only contain letters, spaces, and hyphens."})
+
 
         if instance and "password" in data:
             if not instance.check_password(data.get("password")):
@@ -68,6 +77,10 @@ class UserSerializer(serializers.ModelSerializer):
 
         if "username" in data:
             username = data["username"].lower()
+
+            if not re.match(r"^[a-zA-Z0-9_-]+$", username):
+                raise serializers.ValidationError({"username": "Username can only contain letters, numbers, hyphens, and underscores."})
+
             data["username"] = username  
             queryset = User.objects.filter(username__iexact=username)
             if instance:

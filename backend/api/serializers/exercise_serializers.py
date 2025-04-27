@@ -1,4 +1,6 @@
 from rest_framework import serializers
+import re
+
 from api.models import Exercise, Step, Mistake, MuscleGroup
 
 class StepSerializer(serializers.ModelSerializer):
@@ -39,8 +41,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
         """
         Validate the exercise data.
         Checks:
-        - Title min length
-        - Title uniqueness
+        - Title min length,uniqueness, regex chars
         - Gif links contain different urls
         - Primary and secondary groups exist
         - Primary group is not in secondary groups
@@ -52,6 +53,11 @@ class ExerciseSerializer(serializers.ModelSerializer):
             if len(data["title"]) < 3:
                 raise serializers.ValidationError(
                     {"title": "Title must be at least 3 characters long."}
+                )
+            
+            if not re.match(r"^[a-zA-Z0-9_-]+$", data["title"]):
+                raise serializers.ValidationError(
+                    {"title": "Title can only contain letters, numbers, hyphens, and underscores."}
                 )
 
             title_query = Exercise.objects.filter(title__iexact=data["title"])

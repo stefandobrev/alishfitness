@@ -7,7 +7,13 @@ export const profileSettings = z
       .min(1, 'Email is required.')
       .email('Invalid email address.'),
 
-    username: z.string().min(3, 'Username must be at least 3 characters long.'),
+    username: z
+      .string()
+      .min(3, 'Username must be at least 3 characters long.')
+      .regex(
+        /^[a-zA-Z0-9-_]+$/,
+        'Username can only contain letters, numbers, hyphens, and underscores.',
+      ),
 
     password: z.string().min(8, 'Password must be at least 8 characters long.'),
 

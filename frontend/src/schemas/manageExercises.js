@@ -6,7 +6,14 @@ const selectOptionSchema = z.object({
 });
 
 export const manageExercises = z.object({
-  title: z.string().min(3, 'Title must be at least 3 characters long.'),
+  title: z
+    .string()
+    .min(3, 'Title must be at least 3 characters long.')
+    .regex(
+      /^[a-zA-Z0-9-_]+$/,
+      'Title can only contain letters, numbers, hyphens, and underscores.',
+    ),
+
   primaryGroup: z
     .union([
       selectOptionSchema,
