@@ -26,7 +26,7 @@ export const CreateProgramPage = () => {
       activationDate: null,
     },
   });
-  const { watch, setValue, getValues, reset, clearErrors } = methods;
+  const { watch, setValue, getValues, reset } = methods;
 
   useTitle('Create');
 

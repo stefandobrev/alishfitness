@@ -1,2 +1,3 @@
 export { Heading } from './Heading';
-export { SearchAndFilters } from './SearchAndFilters';
+export { Filters } from './Filters';
+export { SearchAndFilterTrigger } from './SearchAndFilterTrigger ';
