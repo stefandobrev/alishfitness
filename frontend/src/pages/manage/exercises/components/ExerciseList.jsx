@@ -11,8 +11,8 @@ const ITEMS_PER_PAGE = 10;
 const defaultFilters = {
   searchQuery: '',
   sortBy: null,
-  offset: INITIAL_OFFSET,
   selectedMuscleGroups: [],
+  offset: INITIAL_OFFSET,
   hasMore: true,
   loadMore: false,
 };
@@ -26,7 +26,7 @@ export const ExerciseList = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const [
-    { searchQuery, sortBy, offset, selectedMuscleGroups, hasMore, loadMore },
+    { searchQuery, sortBy, selectedMuscleGroups, offset, hasMore, loadMore },
     setExerciseProps,
   ] = useState(defaultFilters);
 

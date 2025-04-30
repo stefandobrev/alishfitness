@@ -4,18 +4,20 @@ import { SearchInput } from '@/components/inputs';
 import { ActionButton, ButtonVariant } from '@/components/buttons';
 
 export const Filters = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
-
   return (
     <>
       {/* Overlay for closing on outside click */}
-      <div
-        className='bg-opacity-30 fixed inset-0 z-40 bg-black/50 backdrop-blur-xs transition-opacity duration-300'
-        onClick={onClose}
-      />
+      {isOpen && (
+        <div
+          className='md:fixed md:inset-0 md:z-40 md:bg-black/50 md:backdrop-blur-xs md:transition-opacity md:duration-300'
+          onClick={onClose}
+        />
+      )}
 
       {/* Drawer */}
-      <div className='fixed top-20 right-0 z-60 h-[calc(100vh-108px)] w-full transform overflow-y-auto rounded-l-lg border-t border-b border-gray-200 bg-white p-4 shadow-xl md:w-80'>
+      <div
+        className={`w-full p-4 md:fixed md:top-20 md:right-0 md:z-60 md:h-[calc(100vh-108px)] md:w-70 md:transform md:overflow-y-auto md:rounded-l-lg md:border-t md:border-b md:border-gray-200 md:bg-white md:shadow-xl md:transition-transform md:duration-400 md:ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      >
         <div className='flex flex-col'>
           {/* Header */}
           <div className='mb-6 flex items-center justify-between'>
