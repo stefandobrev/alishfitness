@@ -10,8 +10,8 @@ export const manageExercises = z.object({
     .string()
     .min(3, 'Title must be at least 3 characters long.')
     .regex(
-      /^[a-zA-Z0-9-_]+$/,
-      'Title can only contain letters, numbers, hyphens, and underscores.',
+      /^[a-zA-Z0-9-_ ]+$/,
+      'Title can only contain letters, spaces, numbers, hyphens, and underscores.',
     ),
 
   primaryGroup: z

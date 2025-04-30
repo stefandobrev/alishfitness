@@ -1,5 +1,6 @@
 from rest_framework import serializers
 import re
+from django.utils.text import slugify
 
 from api.models import Exercise, Step, Mistake, MuscleGroup
 
@@ -50,17 +51,18 @@ class ExerciseSerializer(serializers.ModelSerializer):
         instance = getattr(self, "instance", None)
 
         if "title" in data:
-            if len(data["title"]) < 3:
+            title = data["title"].strip()
+            if len(title) < 3:
                 raise serializers.ValidationError(
                     {"title": "Title must be at least 3 characters long."}
                 )
             
-            if not re.match(r"^[a-zA-Z0-9_-]+$", data["title"]):
+            if not re.match(r"^[a-zA-Z0-9_\- ]+$", title):
                 raise serializers.ValidationError(
-                    {"title": "Title can only contain letters, numbers, hyphens, and underscores."}
+                    {"title": "Title can only contain letters, spaces, numbers, hyphens, and underscores."}
                 )
 
-            title_query = Exercise.objects.filter(title__iexact=data["title"])
+            title_query = Exercise.objects.filter(title__iexact=title)
             if instance:
                 title_query = title_query.exclude(pk=instance.pk)
             if title_query.exists():
@@ -165,7 +167,11 @@ class ExerciseSerializer(serializers.ModelSerializer):
         
         # Update exercise fields
         for attr, value in validated_data.items():
-            setattr(instance, attr, value)
+            if attr == "title":
+                instance.title = value
+                instance.slug = slugify(value)
+            else:
+                setattr(instance, attr, value)
         instance.save()
         
         # Update secondary groups if provided
