@@ -21,6 +21,8 @@ const defaultFilters = {
 export const ViewAllPage = () => {
   useTitle('All Programs');
   const [isLoading, setIsLoading] = useState(false);
+  const [totalPrograms, setTotalPrograms] = useState(0);
+  const [trainingProgramsData, setTrainingProgramsData] = useState(null);
 
   const [
     {
@@ -37,7 +39,7 @@ export const ViewAllPage = () => {
 
   useEffect(() => {
     loadTrainingProgramsData();
-  });
+  }, []);
 
   const loadTrainingProgramsData = async (offset) => {
     const currentOffset = offset ?? INITIAL_OFFSET;
@@ -52,6 +54,8 @@ export const ViewAllPage = () => {
         itemsPerPage: ITEMS_PER_PAGE,
         offset: currentOffset,
       });
+      setTotalPrograms(data.total_count);
+      setTrainingProgramsData(data.training_programs);
     } finally {
       setIsLoading(false);
     }
@@ -59,7 +63,10 @@ export const ViewAllPage = () => {
 
   return (
     <>
-      <Heading />
+      <Heading
+        totalPrograms={totalPrograms}
+        trainingProgramsData={trainingProgramsData}
+      />
       <SearchAndFilterTrigger />
 
       {isLoading ? (

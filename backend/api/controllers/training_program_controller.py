@@ -68,7 +68,10 @@ class TrainingProgramController:
 
         training_programs = query[offset: offset + items_per_page].values("program_title", "assigned_user__username", "activation_date")
 
-        return Response(list(training_programs))
+        return Response({
+            "training_programs": list(training_programs),
+            "total_count": query.count()
+        })
     
     def create(self, request):
         """
