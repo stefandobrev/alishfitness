@@ -6,18 +6,13 @@ export const fetchMuscleGroups = async () => {
   return response.json();
 };
 
-export const fetchExerciseTitles = async ({
-  offset,
-  searchQuery,
-  sort,
-  muscleGroups,
-}) => {
-  const response = await api('exercises/exercise-titles/', 'POST', {
-    offset: offset,
-    search_query: searchQuery,
-    sort: sort,
-    muscle_groups: muscleGroups,
-  });
+export const fetchExerciseTitles = async (filterData) => {
+  const transformedData = camelToSnake(filterData);
+  const response = await api(
+    'exercises/exercise-titles/',
+    'POST',
+    transformedData,
+  );
   if (!response.ok) throw new Error('Failed to fetch exercise titles.');
   return response.json();
 };
