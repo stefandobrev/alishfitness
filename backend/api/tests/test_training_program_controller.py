@@ -51,7 +51,7 @@ class TestTrainingProgramController:
     
     def test_get_training_setup_data(self, api_client, test_user, test_admin, test_muscle_group):
         api_client.force_authenticate(user=test_admin)
-        url = reverse("training-setup-data")
+        url = reverse("training_setup_data")
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_200_OK

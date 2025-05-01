@@ -38,18 +38,25 @@ export const ViewAllPage = () => {
   ] = useState(defaultFilters);
 
   useEffect(() => {
-    const loadTrainingProgramsData = async () => {
-      setIsLoading(true);
-
-      try {
-        const trainingProgramsData = await fetchTrainingProgramData();
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     loadTrainingProgramsData();
   });
+
+  const loadTrainingProgramsData = async (offset) => {
+    const currentOffset = offset ?? INITIAL_OFFSET;
+    setIsLoading(true);
+
+    try {
+      const data = await fetchTrainingProgramData({
+        searchQuery: searchQuery,
+        filterMode: filterMode,
+        filterUser: filterUser,
+        filterDate: filterDate,
+        offset: currentOffset,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>

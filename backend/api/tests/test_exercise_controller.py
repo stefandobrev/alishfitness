@@ -174,7 +174,7 @@ class TestExerciseController:
     def test_get_exercises_group_success(self, api_client, test_user, test_muscle_group ,test_exercise):
         api_client.force_authenticate(user=test_user)
 
-        url = reverse("exercises-group")
+        url = reverse("filter-exercises")
 
         exercises_group = {
             "muscle_group_id": test_muscle_group.slug,
@@ -192,7 +192,7 @@ class TestExerciseController:
     def test_get_exercises_group_missing(self, api_client, test_user, test_exercise):
         api_client.force_authenticate(user=test_user)
 
-        url = reverse("exercises-group")
+        url = reverse("filter-exercises")
 
         missing_excercise_group = {
             "muscle_group_id": "",
@@ -207,7 +207,7 @@ class TestExerciseController:
     def test_get_exercises_group_invalid(self, api_client, test_user, test_exercise):
         api_client.force_authenticate(user=test_user)
 
-        url = reverse("exercises-group")
+        url = reverse("filter-exercises")
 
         invalid_excercise_group = {
             "muscle_group_id": "invalidgroup",

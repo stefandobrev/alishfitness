@@ -9,9 +9,15 @@ def training_setup_data(request):
     training_program_controller = TrainingProgramController()
     return training_program_controller.get_muscle_groups_and_exercises(request)
 
-
 @api_view(["POST"])
 @permission_classes([IsAdminUser])
 def create_program(request):
     training_program_controller = TrainingProgramController()
     return training_program_controller.create(request)
+
+
+@api_view(["POST"])
+@permission_classes([IsAdminUser])
+def training_programs(request):
+    training_program_controller = TrainingProgramController()
+    return training_program_controller.get_training_programs(request)

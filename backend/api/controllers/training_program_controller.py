@@ -1,7 +1,8 @@
-from django.db import transaction
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
+from django.db import transaction
+from django.db.models import Q
 
 from api.models import User, MuscleGroup, Exercise
 from api.serializers.common_serializers import ExerciseTitleSerializer, UserNamesSerializer
@@ -32,6 +33,18 @@ class TrainingProgramController:
                 "exercises": exercise_data
             }
         return Response(data)
+    
+    def get_training_programs(self, request):
+        """Returns all or filtered training programs."""
+        search_query = request.data.get("search_query", "")
+        filter_mode = request.data.get("filter_mode", None)
+        filter_user = request.data.get("filter_user", None)
+        filter_date = request.data.get("filter_date", None)
+
+
+        return Response({
+            "search_query": search_query
+        })
     
     def create(self, request):
         """

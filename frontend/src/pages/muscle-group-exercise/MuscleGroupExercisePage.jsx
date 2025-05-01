@@ -93,9 +93,9 @@ export const MuscleGroupExercisePage = () => {
 
     try {
       const data = await fetchExercises({
-        selectedMuscleId: slugMuscleGroup,
-        offset: currentOffset,
         searchQuery: searchQuery,
+        muscleGroupId: slugMuscleGroup,
+        offset: currentOffset,
       });
 
       // data.error should handle 404 only. Rest is handled by helpers.

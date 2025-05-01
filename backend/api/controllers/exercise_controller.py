@@ -22,8 +22,8 @@ class ExerciseController:
         """
         Creates and returns a filtered list of exercise titles.
         """
-        offset = request.data.get("offset", 0)
         search_query = request.data.get("search_query", "")
+        offset = request.data.get("offset", 0)
         sort = request.data.get("sort", None)
         muscle_groups = request.data.get("muscle_groups", [])
 
@@ -112,7 +112,7 @@ class ExerciseController:
         exercise.delete()
         return Response({"message": "Exercise deleted successfully!"})
 
-    def get_exercises_group(self, request):
+    def get_filtered_exercises(self, request):
         """
         Return a response containing all exercises related to the muscle 
         group from the DB.

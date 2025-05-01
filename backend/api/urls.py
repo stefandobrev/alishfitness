@@ -21,10 +21,11 @@ urlpatterns = [
     path("exercises/create-exercise/", exercise_views.create_exercise, name="create-exercise"),
     path("exercises/update-exercise/<int:id>/", exercise_views.update_exercise, name="update-exercise"),
     path("exercises/delete-exercise/<int:id>/", exercise_views.delete_exercise, name="delete-exercise"),
-    path("exercises/exercises-group/", exercise_views.exercises_group, name="exercises-group"),
+    path("exercises/filter/", exercise_views.filter_exercises, name="filter-exercises"),
     path("exercises/<str:muscle_slug>/<str:exercise_slug>/", exercise_views.exercise_detail_slug, name="exercises-detail-slug"),
 
     # training programs paths
     path("training-programs/training-setup-data/", training_program_views.training_setup_data, name="training-setup-data"),
-    path("training-programs/create-program/", training_program_views.create_program, name="create-program")
+    path("training-programs/create-program/", training_program_views.create_program, name="create-program"),
+    path("training-programs/", training_program_views.training_programs, name="training-programs")
 ]
