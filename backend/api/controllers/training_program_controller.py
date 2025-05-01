@@ -41,6 +41,8 @@ class TrainingProgramController:
         filter_user = request.data.get("filter_user", None)
         filter_date = request.data.get("filter_date", None)
 
+        
+
 
         return Response({
             "search_query": search_query

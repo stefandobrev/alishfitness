@@ -93,8 +93,9 @@ export const MuscleGroupExercisePage = () => {
 
     try {
       const data = await fetchExercises({
-        searchQuery: searchQuery,
         muscleGroupId: slugMuscleGroup,
+        searchQuery: searchQuery,
+        itemsPerPage: ITEMS_PER_PAGE,
         offset: currentOffset,
       });
 

@@ -81,10 +81,11 @@ export const ExerciseList = ({
     setIsLoading(true);
     try {
       const exerciseTitlesData = await fetchExerciseTitles({
-        offset: currentOffset,
         searchQuery: searchQuery,
         sort: sortBy,
         muscleGroups: selectedMuscleGroups,
+        offset: currentOffset,
+        itemsPerPage: ITEMS_PER_PAGE,
       });
 
       handleExercisePropsUpdate({

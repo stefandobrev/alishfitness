@@ -23,9 +23,13 @@ class ExerciseController:
         Creates and returns a filtered list of exercise titles.
         """
         search_query = request.data.get("search_query", "")
-        offset = request.data.get("offset", 0)
         sort = request.data.get("sort", None)
         muscle_groups = request.data.get("muscle_groups", [])
+        offset = request.data.get("offset", 0)
+        items_per_page = request.data.get("items_per_page")
+
+        if not items_per_page:
+            return Response({"items_per_page": "Items per page is required."}, status=400)
 
         query = Exercise.objects.all()
 
@@ -44,8 +48,7 @@ class ExerciseController:
         else:
             query = query.order_by("title") 
 
-        ITEMS_PER_PAGE = 10
-        exercise_titles = query[offset : offset + ITEMS_PER_PAGE].values("id", "title", "created_at", "updated_at")
+        exercise_titles = query[offset : offset + items_per_page].values("id", "title", "created_at", "updated_at")
         
         return Response(list(exercise_titles))
     
@@ -118,11 +121,15 @@ class ExerciseController:
         group from the DB.
         """
         muscle_group_id = request.data.get("muscle_group_id")
-        offset = request.data.get("offset", 0)
         search_query = request.data.get("search_query", "")
-
+        items_per_page = request.data.get("items_per_page")
+        offset = request.data.get("offset", 0)
+        
         if not muscle_group_id:
             return Response({"muscle_group_id": "Muscle group ID is required."}, status=400)
+        
+        if not items_per_page:
+            return Response({"items_per_page": "Items per page is required."}, status=400)
         
         muscle_group = MuscleGroup.objects.filter(slug=muscle_group_id).first()
 
@@ -134,8 +141,7 @@ class ExerciseController:
         if search_query:
             query = query.filter(Q(title__iexact=search_query) |  Q(title__icontains=search_query))
 
-        ITEMS_PER_PAGE = 6
-        exercises = query[offset : offset + ITEMS_PER_PAGE].values("id", "title", "gif_link_front")
+        exercises = query[offset : offset + items_per_page].values("id", "title", "gif_link_front")
 
         return Response({
             "name": muscle_group.name,
