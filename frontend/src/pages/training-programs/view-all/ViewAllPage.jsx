@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 
-import { toast } from 'react-toastify';
-
 import { Heading, SearchAndFilterTrigger } from './components';
 import { fetchTrainingProgramData } from './helpersViewAll';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
@@ -51,6 +49,7 @@ export const ViewAllPage = () => {
         filterMode: filterMode,
         filterUser: filterUser,
         filterDate: filterDate,
+        itemsPerPage: ITEMS_PER_PAGE,
         offset: currentOffset,
       });
     } finally {

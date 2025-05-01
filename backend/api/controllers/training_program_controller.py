@@ -3,8 +3,9 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import Q
+from django.utils.dateparse import parse_date
 
-from api.models import User, MuscleGroup, Exercise
+from api.models import User, MuscleGroup, Exercise, TrainingProgram
 from api.serializers.common_serializers import ExerciseTitleSerializer, UserNamesSerializer
 from api.serializers.training_program_serializers import TrainingProgramSerializer
 
@@ -40,13 +41,34 @@ class TrainingProgramController:
         filter_mode = request.data.get("filter_mode", None)
         filter_user = request.data.get("filter_user", None)
         filter_date = request.data.get("filter_date", None)
+        items_per_page = request.data.get("items_per_page")
+        offset = request.data.get("offset", 0)
 
+        if not items_per_page:
+            return Response({"items_per_page": "Items per page is required."}, status=400)
         
+        query = TrainingProgram.objects.all()
 
+        if search_query:
+            query = query.filter(Q(program_title__iexact=search_query) | Q(program_title__icontains=search_query))
 
-        return Response({
-            "search_query": search_query
-        })
+        if filter_mode:
+            query = query.filter(Q(mode__iexact=filter_mode))
+
+        if filter_user:
+            query = query.filter(Q(assigned_user__username__iexact=filter_user))
+
+        if filter_date:
+            start_date = parse_date(filter_date.get("from"))
+            end_date = parse_date(filter_date.get("to"))
+            if start_date and end_date:
+                query = query.filter(Q(activation_date__range=(start_date, end_date)))
+            else:
+                return Response({"filter_date": "Activation date range incomplete."}, status=400)
+
+        training_programs = query[offset: offset + items_per_page].values("program_title", "assigned_user__username", "activation_date")
+
+        return Response(list(training_programs))
     
     def create(self, request):
         """

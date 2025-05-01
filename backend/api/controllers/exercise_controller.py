@@ -25,9 +25,9 @@ class ExerciseController:
         search_query = request.data.get("search_query", "")
         sort = request.data.get("sort", None)
         muscle_groups = request.data.get("muscle_groups", [])
-        offset = request.data.get("offset", 0)
         items_per_page = request.data.get("items_per_page")
-
+        offset = request.data.get("offset", 0)
+        
         if not items_per_page:
             return Response({"items_per_page": "Items per page is required."}, status=400)
 
