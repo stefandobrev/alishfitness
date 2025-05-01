@@ -21,7 +21,7 @@ const MainLayout = () => {
           <Outlet />
         )}
       </main>
-      <footer className='h-7 bg-gray-800'>
+      <footer className='z-50 h-7 bg-gray-800'>
         <div className='container mx-auto flex h-full items-center justify-center px-4'>
           <p className='text-gray-300'>
             © {currentYear} AlishFitness. All rights reserved.

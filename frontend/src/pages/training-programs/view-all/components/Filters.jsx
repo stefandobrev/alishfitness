@@ -16,9 +16,9 @@ export const Filters = ({ isOpen, onClose }) => {
 
       {/* Drawer */}
       <div
-        className={`w-full p-4 md:fixed md:top-20 md:right-0 md:z-60 md:h-[calc(100vh-108px)] md:w-70 md:transform md:overflow-y-auto md:rounded-l-lg md:border-t md:border-b md:border-gray-200 md:bg-white md:shadow-xl md:transition-transform md:duration-400 md:ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`w-full p-4 md:fixed md:top-20 md:right-0 md:z-60 md:h-[calc(100vh-108px)] md:w-70 md:transform md:overflow-y-auto md:border md:border-gray-300 md:bg-white md:shadow-xl md:transition-transform md:duration-400 md:ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
-        <div className='flex flex-col'>
+        <div className='flex h-full flex-col'>
           {/* Header */}
           <div className='mb-6 flex items-center justify-between'>
             <h3 className='text-2xl font-bold'>Filters</h3>
@@ -30,7 +30,7 @@ export const Filters = ({ isOpen, onClose }) => {
           </div>
 
           {/* Filter content */}
-          <div className='flex flex-col space-y-6'>
+          <div className='flex h-full flex-col space-y-6'>
             <div>
               <label className='mb-2 block font-semibold text-gray-700'>
                 Filter by mode
@@ -52,7 +52,7 @@ export const Filters = ({ isOpen, onClose }) => {
               <SearchInput placeholder='Select date range' />
             </div>
 
-            <div className='mt-4 space-y-4'>
+            <div className='mt-auto flex md:gap-2 md:py-2'>
               <ActionButton variant={ButtonVariant.GRAY_Red} className='w-full'>
                 Apply
               </ActionButton>
