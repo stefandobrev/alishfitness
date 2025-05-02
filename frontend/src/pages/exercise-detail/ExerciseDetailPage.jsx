@@ -10,7 +10,7 @@ import {
   ExerciseDataContainer,
 } from './components';
 import { Spinner } from '@/components/common';
-import { useTitle } from '@/hooks/useTitle.hook';
+import { useTitle } from '@/hooks';
 
 export const ExerciseDetailPage = () => {
   const [exerciseData, setExerciseData] = useState({});

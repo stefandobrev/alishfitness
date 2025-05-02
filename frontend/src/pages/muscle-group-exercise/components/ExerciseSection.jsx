@@ -1,4 +1,4 @@
-import { useScrollVisibility } from '@/hooks/useScrollVisibility';
+import { useScrollVisibility } from '@/hooks';
 import { Heading, MuscleGrid, PaginationMuscleGroupExercise } from './';
 import { Spinner } from '@/components/common';
 

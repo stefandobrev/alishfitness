@@ -11,7 +11,7 @@ import {
   saveExercise,
   deleteExercise,
 } from './helpersManageExercises';
-import { useTitle } from '@/hooks/useTitle.hook';
+import { useTitle } from '@/hooks';
 import { ExerciseListPanel, FormPanel, AnatomyPanel } from './components';
 import { MobileTabs } from '@/components/buttons';
 import { getChangedFields, snakeToCamel } from '@/utils';

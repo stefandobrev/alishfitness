@@ -2,7 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 
 import { ActionButton } from '@/components/buttons';
-import { useTitle } from '@/hooks/useTitle.hook';
+import { useTitle } from '@/hooks';
 
 export const NotFoundPage = () => {
   const navigate = useNavigate();

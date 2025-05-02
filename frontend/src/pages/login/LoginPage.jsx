@@ -7,7 +7,7 @@ import { loginUser } from './helpersLogin';
 import LoginForm from './LoginForm';
 import { setUser } from '@/store/slices/authSlice';
 import { setLoading } from '@/store/slices/loadingSlice';
-import { useTitle } from '@/hooks/useTitle.hook';
+import { useTitle } from '@/hooks';
 
 export const LoginPage = () => {
   const methods = useForm();

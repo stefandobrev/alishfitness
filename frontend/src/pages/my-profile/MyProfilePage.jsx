@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 import { updateUserProfile } from './helpersMyProfile';
 import { fetchProfileData } from '@/store/actions';
-import { useTitle } from '@/hooks/useTitle.hook';
+import { useTitle } from '@/hooks';
 import { MyProfileForm } from './MyProfileForm';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Spinner } from '@/components/common';

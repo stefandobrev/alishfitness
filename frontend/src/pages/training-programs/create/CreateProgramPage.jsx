@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { Schedule, SessionsPanel } from './components';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
 import { createProgramRequest } from './helpersCreateProgram';
-import { useTitle } from '@/hooks/useTitle.hook';
+import { useTitle } from '@/hooks';
 import { createProgram } from '@/schemas';
 import { Spinner } from '@/components/common';
 

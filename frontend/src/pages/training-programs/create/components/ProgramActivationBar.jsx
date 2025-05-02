@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { useFormContext, Controller } from 'react-hook-form';
 
-import { useTrainingSetupData } from './exercises-table';
+import { useTrainingSetupData } from '../hooks';
 import { DateSelect, UserSelect } from './exercises-table';
 import { SubmitButton } from '@/components/buttons';
 

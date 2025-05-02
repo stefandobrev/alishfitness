@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Heading, SearchAndFilterTrigger } from './components';
 import { fetchTrainingProgramData } from './helpersViewAll';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
-import { useTitle } from '@/hooks/useTitle.hook';
+import { useTitle } from '@/hooks';
 import { Spinner } from '@/components/common';
 
 const INITIAL_OFFSET = 0;
@@ -60,6 +60,15 @@ export const ViewAllPage = () => {
       setIsLoading(false);
     }
   };
+
+  const tableHeadings = [
+    'Title',
+    'Mode',
+    'Assigned User',
+    'Activation Date',
+    '',
+    '',
+  ];
 
   return (
     <>

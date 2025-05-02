@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 
-import { useTitle } from '@/hooks/useTitle.hook';
+import { useTitle } from '@/hooks';
 import { registerUser } from './helpersRegistration';
 import RegistrationForm from './RegistrationForm';
 import { registration } from '@/schemas';

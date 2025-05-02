@@ -6,7 +6,7 @@ import {
   AddSessionButton,
   ProgramActivationBar,
 } from './';
-import { useTrainingSetupData } from './exercises-table';
+import { useTrainingSetupData } from '../hooks';
 import { Spinner } from '@/components/common';
 
 export const SessionsPanel = ({

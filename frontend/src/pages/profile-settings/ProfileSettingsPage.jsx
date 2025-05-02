@@ -13,7 +13,7 @@ import {
 import { logoutWithBlacklist } from '@/store/slices/authSlice';
 import { PasswordForm, SettingsForm } from './forms';
 import { Spinner } from '@/components/common';
-import { useTitle } from '@/hooks/useTitle.hook';
+import { useTitle } from '@/hooks';
 import { profileSettings, passwordForm } from '@/schemas';
 
 export const ProfileSettingsPage = () => {

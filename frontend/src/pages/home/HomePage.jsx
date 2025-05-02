@@ -1,5 +1,5 @@
-import { useTitle } from '@/hooks/useTitle.hook';
-import { useScrollEffects } from './hooks/useScrollEffects';
+import { useTitle } from '@/hooks';
+import { useScrollEffects } from './hooks';
 import {
   HeroSection,
   IntroductionSection,

@@ -4,7 +4,7 @@ import {
   FullBodyMuscleView,
   ToggleableMuscleView,
 } from '@/components/muscleviews';
-import { useTitle } from '@/hooks/useTitle.hook';
+import { useTitle } from '@/hooks';
 
 export const ExercisePage = () => {
   const navigate = useNavigate();

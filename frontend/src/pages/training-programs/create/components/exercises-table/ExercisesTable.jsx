@@ -1,7 +1,8 @@
 import { useFormContext } from 'react-hook-form';
 
-import { TableHeadLg, useTrainingSetupData } from './';
+import { useTrainingSetupData } from '../../hooks';
 import { ExerciseRow, ExerciseMobileRow } from './';
+import { TableHeadings } from '@/components/common';
 import { isMobile } from '@/common/constants';
 
 export const ExercisesTable = ({ sessionIndex, session }) => {
@@ -19,6 +20,8 @@ export const ExercisesTable = ({ sessionIndex, session }) => {
 
     trigger(`sessions.${sessionIndex}.exercises`);
   };
+
+  const tableHeadings = ['Seq', 'Muscle Group', 'Exercise', 'Sets', 'Reps', ''];
 
   return isMobile ? (
     <div className='space-y-4'>
@@ -44,7 +47,7 @@ export const ExercisesTable = ({ sessionIndex, session }) => {
   ) : (
     <div className='overflow-x-auto text-center'>
       <table className='w-full border-separate overflow-hidden border'>
-        <TableHeadLg />
+        <TableHeadings tableHeadings={tableHeadings} />
 
         <tbody>
           {session.exercises.map((exercise, exerciseIndex) => {
