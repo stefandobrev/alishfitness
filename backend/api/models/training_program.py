@@ -6,8 +6,15 @@ class TrainingProgram(models.Model):
         ("template", "Template"),
         ("create", "Assigned"),
     ]
+
+    PROGRAM_STATUSES = [
+        ("scheduled", "Scheduled"),
+        ("current", "Current"),
+        ("archived", "Archived"),
+    ]   
     program_title = models.CharField(max_length=255)
     mode = models.CharField(max_length=20, choices=PROGRAM_MODES)
+    status = models.CharField(max_length=20, choices=PROGRAM_STATUSES, blank=True, null=True)
     assigned_user = models.ForeignKey(
         User, null=True, blank=True, on_delete=models.CASCADE
     )

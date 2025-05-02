@@ -45,7 +45,7 @@ class TrainingSessionInline(NestedTabularInline):
 
 class TrainingProgramAdmin(NestedModelAdmin):
     ordering = ["program_title"]
-    list_display = ["program_title","mode", "assigned_user", "activation_date"]
+    list_display = ["program_title","mode", "status", "assigned_user", "activation_date"]
     search_fields = ["program_title", "assigned_user__username"]
     inlines = [TrainingSessionInline]
 

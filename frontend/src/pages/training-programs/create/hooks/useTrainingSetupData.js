@@ -6,34 +6,32 @@ export const useTrainingSetupData = () => {
   const [muscleGroupsAndExercises, setMuscleGroupsAndExercises] = useState({});
   const [usersData, setUsersData] = useState([]);
   const [muscleGroups, setMuscleGroups] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const loadTrainingSetupData = async () => {
       setIsLoading(true);
 
       try {
-        const trainingSetupData = await fetchTrainingSetupData();
-        setMuscleGroupsAndExercises(trainingSetupData.muscle_groups);
+        const data = await fetchTrainingSetupData();
+        setMuscleGroupsAndExercises(data.muscle_groups);
 
-        const filteredMuscleGroups = Object.values(
-          trainingSetupData.muscle_groups,
-        ).map((group) => ({
-          label: group.name,
-          value: group.slug,
-        }));
+        const filteredMuscleGroups = Object.values(data.muscle_groups).map(
+          (group) => ({
+            label: group.name,
+            value: group.slug,
+          }),
+        );
 
         filteredMuscleGroups.push({
           label: 'Custom',
           value: 'custom',
         });
 
-        const fitleredUserData = Object.values(trainingSetupData.users).map(
-          (user) => ({
-            label: `${user.last_name}, ${user.first_name} (${user.username})`,
-            value: user.username,
-          }),
-        );
+        const fitleredUserData = Object.values(data.users).map((user) => ({
+          label: `${user.last_name}, ${user.first_name} (${user.username})`,
+          value: user.username,
+        }));
 
         setMuscleGroups(filteredMuscleGroups);
         setUsersData(fitleredUserData);

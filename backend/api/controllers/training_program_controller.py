@@ -35,6 +35,11 @@ class TrainingProgramController:
             }
         return Response(data)
     
+    def get_filter_data(self, request):
+        """Returns mode and users for filter modes in View All Training Programs."""
+
+        
+    
     def get_training_programs(self, request):
         """Returns all or filtered training programs."""
         search_query = request.data.get("search_query", "")
