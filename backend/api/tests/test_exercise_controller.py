@@ -2,11 +2,22 @@ import pytest
 from rest_framework import status
 from django.urls import reverse
 from django.utils.dateparse import parse_datetime
+from copy import deepcopy
 
 from api.models import Exercise, Step
 
 @pytest.mark.django_db(transaction=True)
 class TestExerciseController:
+    @pytest.fixture
+    def valid_search_data(self):
+        return {
+            "search_query": "",
+            "sort": None,
+            "muscle_groups":  [],
+            "items_per_page": 6,
+            "offset": 0        
+            }
+
     def test_get_muscle_groups(self, api_client, test_user, test_muscle_group, test_secondary_muscle_group):        
         api_client.force_authenticate(user=test_user)
         url = reverse("exercises-muscle-groups")
@@ -27,38 +38,87 @@ class TestExerciseController:
 
         assert response.data == expected_data
 
-    def test_get_exercise_titles(self, api_client, test_user, test_exercise, test_muscle_group):
-        api_client.force_authenticate(user=test_user)
+    def test_get_exercise_titles(self, api_client, test_admin, valid_search_data, test_exercise):
+        api_client.force_authenticate(user=test_admin)
+        search_data = deepcopy(valid_search_data)
 
         url = reverse("exercise-titles")
 
-        response = api_client.post(url, {"search_query": test_exercise.title}, format="json")
+        response = api_client.post(url, search_data, format="json")
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) >= 1
        
-        if test_exercise.primary_group:
-            response = api_client.post(url, {"muscle_groups": [test_exercise.primary_group.slug]}, format="json")
-            assert response.status_code == status.HTTP_200_OK
-            exercise_ids = [exercise["id"] for exercise in response.data]
-            filtered_exercises = Exercise.objects.filter(primary_group__slug=test_exercise.primary_group.slug)[:10]
-            for exercise in filtered_exercises:
-                assert exercise.id in exercise_ids
+    def test_get_exercise_titles_by_muscle_group(self, api_client, test_admin, valid_search_data, test_exercise, test_muscle_group):
+        api_client.force_authenticate(user=test_admin)
+        search_data = deepcopy(valid_search_data)
+        search_data["muscle_groups"] = [test_muscle_group.slug]
 
-        response = api_client.post(url, {"sort": "created_at"}, format="json")
-        if len(response.data) >= 2:
-            assert parse_datetime(response.data[0]["created_at"]) >= parse_datetime(response.data[1]["created_at"])
+        url = reverse("exercise-titles")
 
-        response = api_client.post(url, {"sort": "updated_at"}, format="json")
-        if len(response.data) >= 2:
-            assert parse_datetime(response.data[0]["updated_at"]) >= parse_datetime(response.data[1]["updated_at"])
+        response = api_client.post(url, search_data, format="json")
 
-        response = api_client.post(url, {}, format="json")
         assert response.status_code == status.HTTP_200_OK
-        if len(response.data) >= 2:
-            sorted_titles = sorted([exercise["title"] for exercise in response.data])
-            assert [exercise["title"] for exercise in response.data] == sorted_titles
 
-        for i in range(15):
+        exercise_ids = [exercise["id"] for exercise in response.data]
+        filtered_exercises = Exercise.objects.filter(primary_group__slug=test_muscle_group.slug)
+        for exercise in filtered_exercises:
+            assert exercise.id in exercise_ids
+
+    def test_get_exercise_titles_by_sort(self, api_client, test_admin, valid_search_data,  test_muscle_group):
+        api_client.force_authenticate(user=test_admin)
+        search_data_created_at = deepcopy(valid_search_data)
+        search_data_created_at["sort"] = "created_at"
+
+        exercise1 = Exercise.objects.create(
+            title="Test Exercise 1",
+            slug="test-exercise-1",
+            primary_group=test_muscle_group,
+            gif_link_front="https://example.com/gifs/front_view.gif",
+            gif_link_side="https://example.com/gifs/side_view.gif",
+            )
+        
+        exercise2 = Exercise.objects.create(
+            title="Test Exercise 2",
+            slug="test-exercise-2",
+            primary_group=test_muscle_group,
+            gif_link_front="https://example.com/gifs/front_view.gif",
+            gif_link_side="https://example.com/gifs/side_view.gif",
+            )
+
+        url = reverse("exercise-titles")
+
+        search_data_created_at = deepcopy(valid_search_data)
+        search_data_created_at["sort"] = "created_at"
+        response = api_client.post(url, search_data_created_at, format="json")
+        if len(response.data) >= 2:
+            created_0 = parse_datetime(str(response.data[0]["created_at"]))
+            created_1 = parse_datetime(str(response.data[1]["created_at"]))
+            assert created_0 >= created_1
+
+        search_data_updated_at = deepcopy(valid_search_data)
+        search_data_updated_at["sort"] = "updated_at"
+        response = api_client.post(url, search_data_updated_at, format="json")
+        if len(response.data) >= 2:
+            updated_0 = parse_datetime(str(response.data[0]["updated_at"]))
+            updated_1 = parse_datetime(str(response.data[1]["updated_at"]))
+            assert updated_0 >= updated_1
+
+    def test_get_exercise_titles_by_search(self, api_client, test_admin, test_exercise, valid_search_data):
+        api_client.force_authenticate(user=test_admin)
+        search_data = deepcopy(valid_search_data)
+        search_data["search_query"] = test_exercise.title[:4]
+
+        url = reverse("exercise-titles")
+
+        response = api_client.post(url, search_data, format="json")
+        assert response.status_code == status.HTTP_200_OK
+        assert any(ex["title"].startswith(test_exercise.title[:4]) for ex in response.data)
+
+    def test_get_exercise_titles_offset(self, api_client, test_admin,  valid_search_data,  test_muscle_group):
+        api_client.force_authenticate(user=test_admin)
+        search_data = deepcopy(valid_search_data)
+
+        for i in range(10):
             Exercise.objects.create(
                 title=f"Test Exercise {i}",
                 slug=f"test-exercise-{i}",
@@ -66,25 +126,19 @@ class TestExerciseController:
                 gif_link_front = "https://example.com/gifs/front_view.gif",
                 gif_link_side = "https://example.com/gifs/side_view.gif",
             )
-    
-        response = api_client.post(url, {}, format="json")
-        assert response.status_code == status.HTTP_200_OK
-        assert len(response.data) == 10  
         
-        response = api_client.post(url, {"offset": 10}, format="json")
+        url = reverse("exercise-titles")
+
+        response = api_client.post(url, search_data, format="json")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 6  
+
+        search_data["offset"] = 6
+        
+        response = api_client.post(url, search_data, format="json")
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) > 0  
-
-        if test_exercise.primary_group:
-            filtered_titles = {
-                    "search_query": test_exercise.title[:4],  
-                    "muscle_groups": [test_exercise.primary_group.slug],
-                    "sort": "created_at"
-                }
-            response = api_client.post(url, filtered_titles, format="json")
-
-        assert response.status_code == status.HTTP_200_OK
-        assert any(ex["title"].startswith(test_exercise.title[:4]) for ex in response.data)
 
     def test_get_exercise(self, api_client, test_user, test_exercise):
         api_client.force_authenticate(user=test_user)
@@ -178,7 +232,8 @@ class TestExerciseController:
 
         exercises_group = {
             "muscle_group_id": test_muscle_group.slug,
-            "search_query": test_exercise.title[:4]
+            "search_query": test_exercise.title[:4],
+            "items_per_page": 6
         }
 
         response = api_client.post(url, exercises_group, format="json")
@@ -196,7 +251,8 @@ class TestExerciseController:
 
         missing_excercise_group = {
             "muscle_group_id": "",
-            "search_query": test_exercise.title[:4]
+            "search_query": test_exercise.title[:4],
+            "items_per_page": 6
         }
 
         response = api_client.post(url, missing_excercise_group, format="json")
@@ -211,7 +267,8 @@ class TestExerciseController:
 
         invalid_excercise_group = {
             "muscle_group_id": "invalidgroup",
-            "search_query": test_exercise.title[:4]
+            "search_query": test_exercise.title[:4],
+            "items_per_page": 6
         }
 
         response = api_client.post(url, invalid_excercise_group, format="json")
