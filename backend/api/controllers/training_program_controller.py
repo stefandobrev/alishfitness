@@ -78,6 +78,10 @@ class TrainingProgramController:
             "total_count": query.count()
         })
     
+    def has_active_program(self, requst):
+            """Returns boolean whether user has current training program assigned."""
+
+    
     def create(self, request):
         """
             Create a new training program or new template.

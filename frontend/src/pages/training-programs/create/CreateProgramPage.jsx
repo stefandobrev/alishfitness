@@ -56,7 +56,20 @@ export const CreateProgramPage = () => {
         : null,
       assignedUser: data.assignedUser ? data.assignedUser.value : null,
     };
-
+    // Checks for current program assigned to the assigned user to determine if
+    // confirmation modal on create is needed
+    if (
+      formattedData.assignedUser &&
+      formattedData.activationDate === new Date().toISOString().split('T')[0]
+    ) {
+      const hasCurrentProgram = await checkUserHasCurrentProgram(
+        formattedData.assignedUser,
+      );
+      if (hasCurrentProgram) {
+        const confirmed = await showConfirmationModal();
+        if (!confirmed) return;
+      }
+    } // Checks if activation date is set for today which will make the program  current
     setIsLoading(true);
 
     try {

@@ -27,6 +27,7 @@ urlpatterns = [
     # training programs paths
     path("training-programs/training-setup-data/", training_program_views.training_setup_data, name="training-setup-data"),
     path("training-programs/filter-data/", training_program_views.filter_data, name="training-programs-filter-data"),
+    path("training-programs/has-active/", training_program_views.has_active_program, name="has-active-program"),
     path("training-programs/create-program/", training_program_views.create_program, name="create-program"),
-    path("training-programs/", training_program_views.training_programs, name="training-programs")
+    path("training-programs/", training_program_views.training_programs, name="training-programs"),
 ]

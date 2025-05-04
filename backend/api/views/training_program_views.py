@@ -18,6 +18,12 @@ def filter_data(request):
 
 @api_view(["POST"])
 @permission_classes([IsAdminUser])
+def has_active_program(request):
+    training_program_controller = TrainingProgramController()
+    return training_program_controller.has_active_program(request)
+
+@api_view(["POST"])
+@permission_classes([IsAdminUser])
 def create_program(request):
     training_program_controller = TrainingProgramController()
     return training_program_controller.create(request)
