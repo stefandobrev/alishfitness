@@ -74,7 +74,7 @@ def test_training_program(test_user, test_program_session, test_second_program_s
     training_program = TrainingProgram.objects.create(
         program_title="Test Program",
         mode="create",
-        assigned_user=test_user,
+        assigned_user=test_user.id,
         activation_date=activation_date,
         schedule_array=[1, 2, 1],
         sessions=[test_program_session, test_second_program_session]

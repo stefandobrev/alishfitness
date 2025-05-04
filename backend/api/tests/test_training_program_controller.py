@@ -16,7 +16,7 @@ class TestTrainingProgramController:
         return {
             "program_title": "Test Program",
             "mode": "create",
-            "assigned_user_username": test_user.username,
+            "assigned_user": test_user.id,
             "activation_date": activation_date,
             "schedule_array": ["1", "2", "1"],
             "sessions": [
@@ -105,18 +105,6 @@ class TestTrainingProgramController:
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data.get("schedule_array") == "Schedule is missing!"
-
-    def test_invalid_assigned_user(self, valid_training_program_data, api_client, test_admin):
-        valid_data = deepcopy(valid_training_program_data)
-        invalid_user_data = valid_data
-        invalid_user_data["assigned_user_username"] = "invalid_user"
-
-        api_client.force_authenticate(user=test_admin)
-        url = reverse("create-program")
-        response = api_client.post(url, invalid_user_data, format="json")
-
-        assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert "doesn't exist." in response.data.get("assigned_user")
 
     def test_invalid_sets(self, valid_training_program_data, api_client, test_admin):
         valid_data = deepcopy(valid_training_program_data)

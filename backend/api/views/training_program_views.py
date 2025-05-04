@@ -7,7 +7,7 @@ from api.controllers.training_program_controller import TrainingProgramControlle
 @permission_classes([IsAdminUser])
 def training_setup_data(request):
     training_program_controller = TrainingProgramController()
-    return training_program_controller.get_muscle_groups_and_exercises(request)
+    return training_program_controller.get_training_setup_data(request)
 
 
 @api_view(["GET"])

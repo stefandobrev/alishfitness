@@ -56,7 +56,6 @@ class TestTrainingProgramSerializer:
     def test_valid_data_template(self, valid_training_program_data):
         valid_data = deepcopy(valid_training_program_data)
         valid_data_template = valid_data
-        valid_data_template.pop("assigned_user")
         valid_data_template["mode"] = "template"
         valid_data_template["activation_date"] = None
 
@@ -85,17 +84,6 @@ class TestTrainingProgramSerializer:
             serializer.is_valid(raise_exception=True)
         assert "Incorrect type" in str(exc_info.value)
 
-    def test_missing_user_create(self, valid_training_program_data):
-        valid_data = deepcopy(valid_training_program_data)
-        missing_user_data = valid_data
-        missing_user_data.pop("assigned_user")
-
-        serializer = TrainingProgramSerializer(data=missing_user_data)
-        assert not serializer.is_valid()
-        with pytest.raises(ValidationError) as exc_info:
-            serializer.is_valid(raise_exception=True)
-        assert "Assigned user is missing." in str(exc_info)
-
     def test_missing_date(self, valid_training_program_data):
         valid_data = deepcopy(valid_training_program_data)
         missing_date_data = valid_data
@@ -110,7 +98,6 @@ class TestTrainingProgramSerializer:
     def test_template_with_activation_date(self, valid_training_program_data):
         valid_data = deepcopy(valid_training_program_data)
         template_with_date_data = valid_data
-        template_with_date_data.pop("assigned_user")
         template_with_date_data["mode"] = "template"
         template_with_date_data["activation_date"] = "2025-11-11"
 

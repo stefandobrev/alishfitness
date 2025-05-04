@@ -13,10 +13,10 @@ from api.serializers.training_program_serializers import TrainingProgramSerializ
 class TrainingProgramController:
     """Controller handling all training programs-related operations."""
 
-    def get_muscle_groups_and_exercises(self, request):
+    def get_training_setup_data(self, request):
         """Returns all muscle groups and exercises in a tree structure"""
         all_muscle_groups = MuscleGroup.objects.all().order_by("name").only("name", "slug")
-        all_users = User.objects.all().order_by("last_name").only("first_name", "last_name", "username")       
+        all_users = User.objects.all().order_by("last_name").only("id", "first_name", "last_name", "username")       
 
         data = {
             "muscle_groups": {},
@@ -132,13 +132,6 @@ class TrainingProgramController:
         is_custom_muscle_group set to True and custom_exercise_title set to None 
         with custom exercise title. Send to serializer.
         """
-        if data.get("assigned_user_username"):
-            username = data.pop("assigned_user_username", None)
-            try:
-                data["assigned_user"] = User.objects.get(username=username).id
-            except User.DoesNotExist: 
-                raise ValidationError({"assigned_user": f"User '{username}' doesn't exist."})
-
         if data.get("sessions"):           
             for session in data["sessions"]:
                 if session.get("exercises"):

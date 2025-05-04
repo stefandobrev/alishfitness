@@ -22,7 +22,7 @@ export const CreateProgramPage = () => {
       mode: isCreateMode ? 'create' : 'template',
       sessions: [],
       scheduleArray: [],
-      assignedUserUsername: null,
+      assignedUser: null,
       activationDate: null,
     },
   });
@@ -54,9 +54,7 @@ export const CreateProgramPage = () => {
       activationDate: data.activationDate
         ? new Date(data.activationDate).toISOString().split('T')[0]
         : null,
-      assignedUserUsername: data.assignedUserUsername
-        ? data.assignedUserUsername.value
-        : null,
+      assignedUser: data.assignedUser ? data.assignedUser.value : null,
     };
 
     setIsLoading(true);

@@ -19,7 +19,6 @@ export const AddSessionButton = () => {
 
     setCounter(counter + 1);
     clearErrors('sessions');
-    console.log({ updatedSessions: getValues('sessions') });
   };
 
   return (

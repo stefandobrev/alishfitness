@@ -30,7 +30,7 @@ export const useTrainingSetupData = () => {
 
         const fitleredUserData = Object.values(data.users).map((user) => ({
           label: `${user.last_name}, ${user.first_name} (${user.username})`,
-          value: user.username,
+          value: user.id,
         }));
 
         setMuscleGroups(filteredMuscleGroups);

@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from datetime import date
 
-from api.models import TrainingProgram, TrainingSession, ProgramExercise
+from api.models import User, TrainingProgram, TrainingSession, ProgramExercise
 
 class ProgramExerciseSerializer(serializers.ModelSerializer):
     class Meta:
@@ -54,6 +53,7 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
     Program Exercises.
     """
     sessions = TrainingSessionSerializer(many=True)
+    assigned_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
     class Meta:
         model = TrainingProgram
@@ -71,46 +71,40 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
         Checks:
         - Program title min length
         - Existing mode (model supports only pre-defined PROGRAM_MODES)
-        - Activation date not empty and iso format
+        - Assigned users exists
+        - Activation date not empty 
         """
+        title = data.get("program_title")
+        mode = data.get("mode")
+        activation_date = data.get("activation_date")
+        assigned_user = data.get("assigned_user")
 
-        if "program_title" in data:
-            if len(data["program_title"]) < 3:
-                raise serializers.ValidationError(
-                    {"program_title": "Title must be at least 3 characters long."}
-                )
+        if title and len(title) < 3:
+            raise serializers.ValidationError({"program_title": "Title must be at least 3 characters long."})
 
-        if "mode" in data:
-            valid_modes = [entry[0] for entry in TrainingProgram.PROGRAM_MODES]
-            if data["mode"] not in valid_modes:
-                raise serializers.ValidationError(
-                    {"mode": "Invalid mode."}
-                )
-        
-        if data.get("mode") == "create":
-            if "assigned_user" not in data:
-                raise serializers.ValidationError(
-                    {"assigned_user": "Assigned user is missing."}
-                )
+        valid_modes = [entry[0] for entry in TrainingProgram.PROGRAM_MODES]
+        if mode not in valid_modes:
+            raise serializers.ValidationError({"mode": "Invalid mode."})
 
-            if "activation_date" not in data:
-                raise serializers.ValidationError(
-                    {"activation_date": "Activation date is missing."}
-                )
-            
-        if data.get("mode") == "template":
-            if data.get("activation_date"):
-                raise serializers.ValidationError(
-                    {"activation_date": "Templates should not have activation date."}
-                )
-                  
+        if mode == "create":
+            if not assigned_user:
+                raise serializers.ValidationError({"assigned_user": "Assigned user is missing."})
+            if not activation_date:
+                raise serializers.ValidationError({"activation_date": "Activation date is missing."})
+
+        if mode == "template" and activation_date:
+            raise serializers.ValidationError({"activation_date": "Templates should not have activation date."})
+
         return data
     
     def create(self, validated_data):
         """Create a program with validated data including sessions and exercises within."""
         sessions_data = validated_data.pop("sessions", [])
-
-        program = TrainingProgram.objects.create(**validated_data)
+        assigned_user = validated_data.pop("assigned_user")
+    
+        # Extract the user ID and use it directly
+        user_id = assigned_user.id
+        program = TrainingProgram.objects.create(assigned_user_id=user_id, **validated_data)
         program.save()
 
         temp_id_mapping = {} ## Create a mapping track to assign correlation between ids and temp_ids

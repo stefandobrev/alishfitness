@@ -40,10 +40,10 @@ export const createProgram = z
       .min(1, { message: 'At least one session is required.' }),
     scheduleArray: z.array(z.string()).min(1, 'Schedule is required.'),
     mode: z.enum(['create', 'template']),
-    assignedUserUsername: z
+    assignedUser: z
       .object({
         label: z.string().min(1, 'User label is required.'),
-        value: z.string().min(1, 'User value is required.'),
+        value: z.number().min(1, 'User value is required.'),
       })
       .nullable()
       .optional(),
@@ -51,9 +51,9 @@ export const createProgram = z
   })
   .superRefine((data, ctx) => {
     if (data.mode === 'create') {
-      if (!data.assignedUserUsername) {
+      if (!data.assignedUser) {
         ctx.addIssue({
-          path: ['assignedUserUsername'],
+          path: ['assignedUser'],
           message: 'Assigned user is required.',
           code: z.ZodIssueCode.custom,
         });
