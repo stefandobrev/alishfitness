@@ -66,7 +66,8 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
             "mode",
             "activation_date",
             "assigned_user", 
-            "sessions"
+            "sessions",
+            "status"
         ]
 
     def validate(self, data):
@@ -93,8 +94,6 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
         if mode == "create":
             if not assigned_user:
                 raise serializers.ValidationError({"assigned_user": "Assigned user is missing."})
-            if not activation_date:
-                raise serializers.ValidationError({"activation_date": "Activation date is missing."})
 
         if mode == "template" and activation_date:
             raise serializers.ValidationError({"activation_date": "Templates should not have activation date."})

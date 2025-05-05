@@ -41,8 +41,7 @@ export const CreateProgramPage = () => {
     setValue('mode', isCreateMode ? 'create' : 'template');
   }, [isCreateMode, setValue]);
 
-  const sessions = watch('sessions');
-  const programTitle = watch('programTitle');
+  const { sessions, programTitle, assignedUser } = watch();
 
   const handleRemoveSession = (index) => {
     const currentSessions = getValues('sessions') || [];
@@ -158,7 +157,7 @@ export const CreateProgramPage = () => {
           onClose={() => setIsConfirmDialogOpen(false)}
           onConfirm={handleProgramConfirmation}
           heading={`Program: ${programTitle}`}
-          message='This user already has a current program. Are you sure you want to replace it with this new program?'
+          message={`${assignedUser.label} already has a current program. Are you sure you want to replace it with this new program?`}
         />
       )}
     </>

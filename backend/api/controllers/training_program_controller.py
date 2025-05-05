@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import Q
+from django.utils import timezone
 from django.utils.dateparse import parse_date
 
 from api.models import User, MuscleGroup, Exercise, TrainingProgram
@@ -129,6 +130,7 @@ class TrainingProgramController:
                 return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
 
             program.schedule_array = transformed_schedule
+            
             program.save()
 
         return Response({"message": "Program created successfully!"}, status=status.HTTP_201_CREATED)
@@ -142,6 +144,9 @@ class TrainingProgramController:
         Transform sets to ints, PKs for muscle_group and exercise or 
         is_custom_muscle_group set to True and custom_exercise_title set to None 
         with custom exercise title. Send to serializer.
+
+        Assigns status based on activation date. Future dates will assign scheduled, today's date
+        will assing current, making a previous current program archived.
         """
         if data.get("sessions"):           
             for session in data["sessions"]:
@@ -186,6 +191,22 @@ class TrainingProgramController:
                                     raise ValidationError(
                                         {"exercise_input": f"Exercise '{exercise_input}' not found."}
                                     )
+
+        if data.get("mode") == "create" and data.get("assigned_user"):
+            activation_date = parse_date(data.get("activation_date"))
+            if not activation_date:
+                raise ValidationError({"activation_date": "Activation date is missing."})
+            
+            today = timezone.now().date()
+            if activation_date > today:
+                data["status"] = "scheduled"
+            else:
+                TrainingProgram.objects.filter(
+                    assigned_user=data["assigned_user"],
+                    status="current"
+                ).update(status="archived")
+
+                data["status"] = "current"
 
         return data
 
