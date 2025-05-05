@@ -80,3 +80,7 @@ export const ProgramActivationBar = ({ onSubmit, isCreateMode }) => {
     </div>
   );
 };
+
+{
+  /* <form onSubmit={(e) => handleSubmit(onSubmit)(e)}></form> */
+}

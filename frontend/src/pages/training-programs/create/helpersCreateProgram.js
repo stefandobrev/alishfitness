@@ -6,6 +6,18 @@ export const fetchTrainingSetupData = async () => {
   return response.json();
 };
 
+export const checkUserHasCurrentProgram = async (userId) => {
+  const tranformedData = camelToSnake(userId);
+  console.log({ tranformedData });
+  const response = await api(
+    'training-programs/has-active/',
+    'POST',
+    tranformedData,
+  );
+  if (!response.ok) throw new Error('Failed to check for current programs.');
+  return response.json();
+};
+
 export const createProgramRequest = async (data) => {
   const tranformedData = camelToSnake(data);
   try {
@@ -17,7 +29,7 @@ export const createProgramRequest = async (data) => {
     if (!response.ok) {
       const errorData = await response.json();
 
-      const key = Object.key(errorData)[0];
+      const key = Object.keys(errorData)[0];
       const errorMessage = errorData[key]?.[0] || 'Something went wrong';
 
       return {

@@ -7,5 +7,6 @@ export {
 } from './classNames';
 export { getChangedFields } from './formHelpers';
 export { snakeToCamel, camelToSnake } from './caseConverter';
+export { toUtcMidnightDateString } from './dateConvertor';
 
 export { default as api } from './api';

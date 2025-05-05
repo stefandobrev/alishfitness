@@ -53,7 +53,11 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
     Program Exercises.
     """
     sessions = TrainingSessionSerializer(many=True)
-    assigned_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    assigned_user = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(),
+        allow_null=True,
+        required=False
+    )
 
     class Meta:
         model = TrainingProgram
@@ -78,7 +82,7 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
         mode = data.get("mode")
         activation_date = data.get("activation_date")
         assigned_user = data.get("assigned_user")
-
+        
         if title and len(title) < 3:
             raise serializers.ValidationError({"program_title": "Title must be at least 3 characters long."})
 
@@ -103,7 +107,7 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
         assigned_user = validated_data.pop("assigned_user")
     
         # Extract the user ID and use it directly
-        user_id = assigned_user.id
+        user_id = assigned_user.id if assigned_user else None
         program = TrainingProgram.objects.create(assigned_user_id=user_id, **validated_data)
         program.save()
 

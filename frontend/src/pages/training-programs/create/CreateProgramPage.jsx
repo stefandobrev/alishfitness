@@ -6,15 +6,22 @@ import { toast } from 'react-toastify';
 
 import { Schedule, SessionsPanel } from './components';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
-import { createProgramRequest } from './helpersCreateProgram';
+import {
+  createProgramRequest,
+  checkUserHasCurrentProgram,
+} from './helpersCreateProgram';
 import { useTitle } from '@/hooks';
 import { createProgram } from '@/schemas';
-import { Spinner } from '@/components/common';
+import { ConfirmationModal, Spinner } from '@/components/common';
+import { toUtcMidnightDateString } from '@/utils';
 
 export const CreateProgramPage = () => {
   const [isCreateMode, setIsCreateMode] = useState(true);
+  const [pendingProgramData, setPendingProgramData] = useState(null);
   const [activeTab, setActiveTab] = useState('sessions');
   const [isLoading, setIsLoading] = useState(false);
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+
   const methods = useForm({
     resolver: zodResolver(createProgram),
     mode: 'onChange',
@@ -26,7 +33,7 @@ export const CreateProgramPage = () => {
       activationDate: null,
     },
   });
-  const { watch, setValue, getValues, reset } = methods;
+  const { watch, setValue, getValues, reset, handleSubmit } = methods;
 
   useTitle('Create');
 
@@ -35,6 +42,7 @@ export const CreateProgramPage = () => {
   }, [isCreateMode, setValue]);
 
   const sessions = watch('sessions');
+  const programTitle = watch('programTitle');
 
   const handleRemoveSession = (index) => {
     const currentSessions = getValues('sessions') || [];
@@ -44,51 +52,72 @@ export const CreateProgramPage = () => {
     reset({ ...getValues(), sessions: newSessions });
   };
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
-
   const onSubmit = async (data) => {
     const formattedData = {
       ...data,
-      activationDate: data.activationDate
-        ? new Date(data.activationDate).toISOString().split('T')[0]
+      activationDate: isCreateMode
+        ? data.activationDate
+          ? toUtcMidnightDateString(data.activationDate)
+          : null
         : null,
-      assignedUser: data.assignedUser ? data.assignedUser.value : null,
+      assignedUser: isCreateMode
+        ? data.assignedUser
+          ? data.assignedUser.value
+          : null
+        : null,
     };
-    // Checks for current program assigned to the assigned user to determine if
-    // confirmation modal on create is needed
-    if (
-      formattedData.assignedUser &&
-      formattedData.activationDate === new Date().toISOString().split('T')[0]
-    ) {
-      const hasCurrentProgram = await checkUserHasCurrentProgram(
-        formattedData.assignedUser,
-      );
-      if (hasCurrentProgram) {
-        const confirmed = await showConfirmationModal();
-        if (!confirmed) return;
-      }
-    } // Checks if activation date is set for today which will make the program  current
-    setIsLoading(true);
 
+    const isToday =
+      formattedData.activationDate === toUtcMidnightDateString(new Date());
+
+    // Checks if date is today and if there is currently active assigned program on the
+    // assigned user. If yes, a confirmation must warn the admin that previous current program
+    // will be immediately replaced with the one created now.
+    if (formattedData.assignedUser && isToday) {
+      const hasCurrentProgram = await checkUserHasCurrentProgram({
+        assignedUser: formattedData.assignedUser,
+      });
+
+      if (hasCurrentProgram) {
+        setIsConfirmDialogOpen(true);
+        setPendingProgramData(formattedData);
+        return;
+      }
+    }
+
+    submitProgram(formattedData);
+  };
+
+  const handleProgramConfirmation = async () => {
+    setIsConfirmDialogOpen(false);
+    if (pendingProgramData) {
+      submitProgram(pendingProgramData);
+    }
+  };
+
+  const submitProgram = async (data) => {
+    setIsLoading(true);
     try {
-      const response = await createProgramRequest(formattedData);
+      const response = await createProgramRequest(data);
       const { type, text } = response;
 
       if (type === 'error') {
         toast.error(text);
         return;
       }
-
       if (type === 'success') {
         toast.success(text);
         setIsCreateMode(true);
-        reset({});
+        setPendingProgramData(null);
+        reset(methods.defaultValues);
       }
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
   };
 
   const tabs = [
@@ -111,7 +140,7 @@ export const CreateProgramPage = () => {
         <FormProvider {...methods}>
           <div className='flex w-full flex-col lg:flex-row'>
             <SessionsPanel
-              onSubmit={onSubmit}
+              onSubmit={handleSubmit(onSubmit)}
               activeTab={activeTab}
               sessions={sessions}
               onRemoveSession={handleRemoveSession}
@@ -122,6 +151,15 @@ export const CreateProgramPage = () => {
             <Schedule activeTab={activeTab} sessions={sessions} />
           </div>
         </FormProvider>
+      )}
+
+      {isConfirmDialogOpen && (
+        <ConfirmationModal
+          onClose={() => setIsConfirmDialogOpen(false)}
+          onConfirm={handleProgramConfirmation}
+          heading={`Program: ${programTitle}`}
+          message='This user already has a current program. Are you sure you want to replace it with this new program?'
+        />
       )}
     </>
   );

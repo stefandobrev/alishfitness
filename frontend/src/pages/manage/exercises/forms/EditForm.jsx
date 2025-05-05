@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { DefaultForm } from './';
 import { ActionButton } from '@/components/buttons';
+import { ConfirmationModal } from '@/components/common';
 import { getChangedFields } from '@/utils';
-import { DeleteConfirmation } from '../components/DeleteConfirmation';
 
 export const EditForm = ({
   muscleGroups,
@@ -61,10 +61,12 @@ export const EditForm = ({
       />
 
       {isDeleteDialogOpen && (
-        <DeleteConfirmation
-          onConfirm={handleDeleteConfirm}
+        <ConfirmationModal
           onClose={() => setIsDeleteDialogOpen(false)}
-          title={exerciseData.title}
+          onConfirm={handleDeleteConfirm}
+          heading={`Delete exercise: ${exerciseData.title}`}
+          message='Are you sure you want to delete the exercise?'
+          confirmText='Delete'
         />
       )}
     </>

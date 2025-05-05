@@ -78,9 +78,16 @@ class TrainingProgramController:
             "total_count": query.count()
         })
     
-    def has_active_program(self, requst):
-            """Returns boolean whether user has current training program assigned."""
+    def has_active_program(self, request):
+        """Returns boolean whether user has current training program assigned."""
+        assigned_user_id = request.data.get("assigned_user")
 
+        query = TrainingProgram.objects.filter(
+            status__iexact="current",
+            assigned_user__id=assigned_user_id
+        )
+
+        return Response(query.exists())
     
     def create(self, request):
         """
