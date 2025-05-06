@@ -2,6 +2,7 @@ import Select from 'react-select';
 
 import { formatDistanceToNow } from 'date-fns';
 
+// Not using custom SelectFilter because the filters have additional unique customizations
 export const MuscleGroupFilter = ({
   muscleGroups,
   selectedMuscleGroups,

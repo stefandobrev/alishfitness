@@ -4,3 +4,4 @@ export { DynamicTextFieldList } from './DynamicTextFieldList';
 export { InputField } from './InputField';
 export { PasswordField } from './PasswordField';
 export { SearchInput } from './SearchInput';
+export { SelectFilter } from './SelectFilter';

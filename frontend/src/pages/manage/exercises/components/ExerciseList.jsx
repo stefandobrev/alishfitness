@@ -120,7 +120,7 @@ export const ExerciseList = ({
 
   return (
     <>
-      <div className='flex w-full flex-col gap-4 rounded-lg bg-white px-6 sm:max-w-sm'>
+      <div className='flex w-full flex-col gap-4 px-6 sm:max-w-sm'>
         <div className='flex items-center justify-between px-2'>
           <h2 className='text-xl font-semibold text-gray-800'>Exercise List</h2>
           <ActionButton
