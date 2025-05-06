@@ -1,12 +1,21 @@
+import { useState } from 'react';
+
+import DatePicker from 'react-datepicker';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-import { SearchInput, SelectFilter } from '@/components/inputs';
-import { ActionButton, ButtonVariant } from '@/components/buttons';
+import { SelectFilter } from '@/components/inputs';
+import {
+  ActionButton,
+  ButtonVariant,
+  SubmitButton,
+} from '@/components/buttons';
 import { useTrainingProgramFilterData } from '../hooks';
 import { Spinner } from '@/components/common';
-import DatePicker from 'react-datepicker';
 
 export const Filters = ({ isOpen, onClose }) => {
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
+
   const { modesData, usersData, statusesData, isLoading } =
     useTrainingProgramFilterData();
   return (
@@ -62,22 +71,20 @@ export const Filters = ({ isOpen, onClose }) => {
                   Filter by activation date
                 </label>
                 <DatePicker
+                  selectsRange
+                  startDate={startDate}
+                  endDate={endDate}
+                  onChange={(update) => setDateRange(update)}
                   isClearable
                   placeholderText='Select date range'
                   dateFormat='yyyy-MM-dd'
                   className='w-full rounded-md border border-gray-300 p-2'
-                  classNamePrefix='react-datepicker'
                   wrapperClassName='w-full'
                 />
               </div>
 
               <div className='mt-auto flex md:gap-2 md:py-2'>
-                <ActionButton
-                  variant={ButtonVariant.GRAY_Red}
-                  className='w-full'
-                >
-                  Apply
-                </ActionButton>
+                <SubmitButton className='w-full'>Apply</SubmitButton>
                 <ActionButton
                   variant={ButtonVariant.GRAY_DARK}
                   className='w-full'
