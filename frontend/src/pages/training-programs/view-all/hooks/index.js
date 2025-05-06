@@ -1,0 +1,1 @@
+export { useTrainingProgramFilterData } from './useTrainingProgramFilterData';

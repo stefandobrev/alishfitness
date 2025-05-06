@@ -37,15 +37,28 @@ class TrainingProgramController:
         return Response(data)
     
     def get_filter_data(self, request):
-        """Returns mode and users for filter modes in View All Training Programs."""
+        """
+        Returns mode, users and status for filter 
+        modes in View All Training Programs.
+        """
+        all_modes = TrainingProgram.PROGRAM_MODES
+        all_users = User.objects.all().order_by("last_name").only("id", "first_name", "last_name", "username")       
+        all_statuses = TrainingProgram.PROGRAM_STATUSES
 
-        
-    
+        data = {
+            "modes": all_modes,
+            "users": UserNamesSerializer(all_users, many=True).data,
+            "statuses": all_statuses
+        }
+
+        return Response(data)
+
     def get_training_programs(self, request):
         """Returns all or filtered training programs."""
         search_query = request.data.get("search_query", "")
         filter_mode = request.data.get("filter_mode", None)
         filter_user = request.data.get("filter_user", None)
+        filter_status = request.data.get("filter_status", None)
         filter_date = request.data.get("filter_date", None)
         items_per_page = request.data.get("items_per_page")
         offset = request.data.get("offset", 0)
@@ -64,6 +77,9 @@ class TrainingProgramController:
         if filter_user:
             query = query.filter(Q(assigned_user__username__iexact=filter_user))
 
+        if filter_status:
+            query = query.filter(Q(status__iexact=filter_status))
+
         if filter_date:
             start_date = parse_date(filter_date.get("from"))
             end_date = parse_date(filter_date.get("to"))
@@ -72,7 +88,7 @@ class TrainingProgramController:
             else:
                 return Response({"filter_date": "Activation date range incomplete."}, status=400)
 
-        training_programs = query[offset: offset + items_per_page].values("program_title", "assigned_user__username", "activation_date")
+        training_programs = query[offset: offset + items_per_page].values("program_title", "assigned_user__username","status", "activation_date")
 
         return Response({
             "training_programs": list(training_programs),

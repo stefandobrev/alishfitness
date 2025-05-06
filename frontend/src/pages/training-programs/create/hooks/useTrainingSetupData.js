@@ -16,25 +16,25 @@ export const useTrainingSetupData = () => {
         const data = await fetchTrainingSetupData();
         setMuscleGroupsAndExercises(data.muscle_groups);
 
-        const filteredMuscleGroups = Object.values(data.muscle_groups).map(
+        const transformedMuscleGroups = Object.values(data.muscle_groups).map(
           (group) => ({
             label: group.name,
             value: group.slug,
           }),
         );
 
-        filteredMuscleGroups.push({
+        transformedMuscleGroups.push({
           label: 'Custom',
           value: 'custom',
         });
 
-        const fitleredUserData = Object.values(data.users).map((user) => ({
+        const transformedUserData = Object.values(data.users).map((user) => ({
           label: `${user.last_name}, ${user.first_name} (${user.username})`,
           value: user.id,
         }));
 
-        setMuscleGroups(filteredMuscleGroups);
-        setUsersData(fitleredUserData);
+        setMuscleGroups(transformedMuscleGroups);
+        setUsersData(transformedUserData);
       } finally {
         setIsLoading(false);
       }

@@ -2,8 +2,12 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 
 import { SearchInput } from '@/components/inputs';
 import { ActionButton, ButtonVariant } from '@/components/buttons';
+import { useTrainingProgramFilterData } from '../hooks';
+import { Spinner } from '@/components/common';
 
 export const Filters = ({ isOpen, onClose }) => {
+  const { modesData, usersData, statusesData, isLoading } =
+    useTrainingProgramFilterData();
   return (
     <>
       {/* Overlay for closing on outside click */}
@@ -29,41 +33,55 @@ export const Filters = ({ isOpen, onClose }) => {
             />
           </div>
 
-          {/* Filter content */}
-          <div className='flex h-full flex-col space-y-6'>
-            <div>
-              <label className='mb-2 block font-semibold text-gray-700'>
-                Filter by mode
-              </label>
-              <SearchInput placeholder='Select mode' />
-            </div>
+          {/* Drawer */}
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <div className='flex h-full flex-col space-y-6'>
+              <div>
+                <label className='mb-2 block font-semibold text-gray-700'>
+                  Filter by mode
+                </label>
+                <SearchInput placeholder='Select mode' />
+              </div>
 
-            <div>
-              <label className='mb-2 block font-semibold text-gray-700'>
-                Filter by assigned user
-              </label>
-              <SearchInput placeholder='Select user' />
-            </div>
+              <div>
+                <label className='mb-2 block font-semibold text-gray-700'>
+                  Filter by assigned user
+                </label>
+                <SearchInput placeholder='Select user' />
+              </div>
 
-            <div>
-              <label className='mb-2 block font-semibold text-gray-700'>
-                Filter by activation date
-              </label>
-              <SearchInput placeholder='Select date range' />
-            </div>
+              <div>
+                <label className='mb-2 block font-semibold text-gray-700'>
+                  Filter by status
+                </label>
+                <SearchInput placeholder='Select status' />
+              </div>
 
-            <div className='mt-auto flex md:gap-2 md:py-2'>
-              <ActionButton variant={ButtonVariant.GRAY_Red} className='w-full'>
-                Apply
-              </ActionButton>
-              <ActionButton
-                variant={ButtonVariant.GRAY_DARK}
-                className='w-full'
-              >
-                Reset
-              </ActionButton>
+              <div>
+                <label className='mb-2 block font-semibold text-gray-700'>
+                  Filter by activation date
+                </label>
+                <SearchInput placeholder='Select date range' />
+              </div>
+
+              <div className='mt-auto flex md:gap-2 md:py-2'>
+                <ActionButton
+                  variant={ButtonVariant.GRAY_Red}
+                  className='w-full'
+                >
+                  Apply
+                </ActionButton>
+                <ActionButton
+                  variant={ButtonVariant.GRAY_DARK}
+                  className='w-full'
+                >
+                  Reset
+                </ActionButton>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>

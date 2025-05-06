@@ -13,7 +13,6 @@ class MuscleGroupTitleSerializer(serializers.ModelSerializer):
         fields = ["name", "slug"]
 
 class ExerciseTitleSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Exercise
         fields = ["title", "slug"]

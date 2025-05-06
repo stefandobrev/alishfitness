@@ -8,7 +8,6 @@ export const fetchTrainingSetupData = async () => {
 
 export const checkUserHasCurrentProgram = async (userId) => {
   const tranformedData = camelToSnake(userId);
-  console.log({ tranformedData });
   const response = await api(
     'training-programs/has-active/',
     'POST',
