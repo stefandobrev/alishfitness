@@ -192,7 +192,7 @@ class TrainingProgramController:
                                         {"exercise_input": f"Exercise '{exercise_input}' not found."}
                                     )
 
-        if data.get("mode") == "create" and data.get("assigned_user"):
+        if data.get("mode") == "create" and data.get("assigned_user"): 
             activation_date = parse_date(data.get("activation_date"))
             if not activation_date:
                 raise ValidationError({"activation_date": "Activation date is missing."})

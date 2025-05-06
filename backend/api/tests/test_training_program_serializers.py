@@ -83,17 +83,6 @@ class TestTrainingProgramSerializer:
         with pytest.raises(ValidationError) as exc_info:
             serializer.is_valid(raise_exception=True)
         assert "Incorrect type" in str(exc_info.value)
-
-    def test_missing_date(self, valid_training_program_data):
-        valid_data = deepcopy(valid_training_program_data)
-        missing_date_data = valid_data
-        missing_date_data.pop("activation_date")
-
-        serializer = TrainingProgramSerializer(data=missing_date_data)
-        assert not serializer.is_valid()
-        with pytest.raises(ValidationError) as exc_info:
-            serializer.is_valid(raise_exception=True)
-        assert "Activation date is missing." in str(exc_info)
      
     def test_template_with_activation_date(self, valid_training_program_data):
         valid_data = deepcopy(valid_training_program_data)

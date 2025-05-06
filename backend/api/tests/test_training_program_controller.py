@@ -86,8 +86,7 @@ class TestTrainingProgramController:
         assert ProgramExercise.objects.filter(session=day_1_session, sequence="A").exists()
 
     def test_invalid_schedule(self, valid_training_program_data, api_client, test_admin):
-        valid_data = deepcopy(valid_training_program_data)
-        invalid_schedule_data=valid_data
+        invalid_schedule_data = deepcopy(valid_training_program_data)
         invalid_schedule_data["schedule_array"] = []
 
         api_client.force_authenticate(user=test_admin)
@@ -107,8 +106,7 @@ class TestTrainingProgramController:
         assert response.data.get("schedule_array") == "Schedule is missing!"
 
     def test_invalid_sets(self, valid_training_program_data, api_client, test_admin):
-        valid_data = deepcopy(valid_training_program_data)
-        invalid_sets_data=valid_data
+        invalid_sets_data = deepcopy(valid_training_program_data)
         invalid_sets_data["sessions"][0]["exercises"][0]["sets"] = "-1"
 
         api_client.force_authenticate(user=test_admin)
@@ -127,8 +125,7 @@ class TestTrainingProgramController:
         assert response.data.get("sets") == "Sets must be a valid number."
 
     def test_invalid_muscle_group(self, valid_training_program_data, api_client, test_admin):
-        valid_data = deepcopy(valid_training_program_data)
-        invalid_muscle_group_data=valid_data
+        invalid_muscle_group_data = deepcopy(valid_training_program_data)
         invalid_muscle_group_data["sessions"][0]["exercises"][0]["muscle_group_input"] = "invalid"
 
         api_client.force_authenticate(user=test_admin)
@@ -139,8 +136,7 @@ class TestTrainingProgramController:
         assert "not found." in response.data.get("muscle_group_input")
 
     def test_invalid_exercise(self, valid_training_program_data, api_client, test_admin):
-        valid_data = deepcopy(valid_training_program_data)
-        invalid_exercise_data=valid_data
+        invalid_exercise_data = deepcopy(valid_training_program_data)
         invalid_exercise_data["sessions"][0]["exercises"][0]["is_custom_muscle_group"] = False
         invalid_exercise_data["sessions"][0]["exercises"][0]["exercise_input"] = "invalid"
 
@@ -152,8 +148,7 @@ class TestTrainingProgramController:
         assert "not found." in response.data.get("exercise_input")
 
     def test_invalid_schedule_id(self, valid_training_program_data, api_client, test_admin):
-        valid_data = deepcopy(valid_training_program_data)
-        invalid_schedule_id_data = valid_data
+        invalid_schedule_id_data = deepcopy(valid_training_program_data)
         invalid_schedule_id_data["schedule_array"] = ["3"]
 
         api_client.force_authenticate(user=test_admin)
@@ -162,3 +157,30 @@ class TestTrainingProgramController:
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert "invalid session." in response.data.get("temp_id")
+
+    def test_missing_date(self, valid_training_program_data, api_client, test_admin):
+        missing_date_data = deepcopy(valid_training_program_data)
+        missing_date_data["activation_date"] = ""
+
+        api_client.force_authenticate(user=test_admin)
+        url = reverse("create-program")
+        response = api_client.post(url, missing_date_data, format="json")
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "Activation date is missing." in response.data.get("activation_date")
+
+    def test_valid_program_status(self, test_training_program, valid_training_program_data, api_client, test_admin):
+        valid_data = deepcopy(valid_training_program_data)
+        valid_data["program_title"] = "Current Test Program"
+        
+        api_client.force_authenticate(user=test_admin)
+        url = reverse("create-program")
+        response = api_client.post(url, valid_data, format="json")
+
+        assert response.status_code == status.HTTP_201_CREATED
+        current_program = TrainingProgram.objects.get(program_title="Current Test Program")
+
+        assert current_program.status == "current"
+        
+        old_program = TrainingProgram.objects.get(id=test_training_program.id)
+        assert old_program.status == "archived"
