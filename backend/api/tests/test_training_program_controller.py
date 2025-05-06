@@ -3,7 +3,7 @@ from rest_framework import status
 from django.urls import reverse
 from copy import deepcopy
 
-from datetime import date
+from datetime import date, timedelta
 
 from api.models import TrainingProgram, ProgramExercise
 
@@ -184,3 +184,11 @@ class TestTrainingProgramController:
         
         old_program = TrainingProgram.objects.get(id=test_training_program.id)
         assert old_program.status == "archived"
+
+        valid_data["program_title"] = "Scheduled Test Program"
+        valid_data["activation_date"] += timedelta(days=1)
+
+        url = reverse("create-program")
+        response = api_client.post(url, valid_data, format="json")
+        scheduled_program = TrainingProgram.objects.get(program_title="Scheduled Test Program")
+        assert scheduled_program.status == "scheduled"
