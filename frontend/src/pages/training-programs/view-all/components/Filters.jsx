@@ -50,20 +50,20 @@ export const Filters = ({ isOpen, onClose }) => {
             <div className='flex h-full flex-col space-y-6'>
               <SelectFilter
                 label='Filter by mode'
-                optionsData={modesData}
                 placeholder='Select mode'
+                optionsData={modesData}
               />
 
               <SelectFilter
                 label='Filter by user'
-                optionsData={usersData}
                 placeholder='Select user'
+                optionsData={usersData}
               />
 
               <SelectFilter
                 label='Filter by status'
-                optionsData={statusesData}
                 placeholder='Select status'
+                optionsData={statusesData}
               />
 
               <div>
@@ -71,12 +71,12 @@ export const Filters = ({ isOpen, onClose }) => {
                   Filter by activation date
                 </label>
                 <DatePicker
+                  placeholderText='Select date range'
+                  isClearable
                   selectsRange
                   startDate={startDate}
                   endDate={endDate}
                   onChange={(update) => setDateRange(update)}
-                  isClearable
-                  placeholderText='Select date range'
                   dateFormat='yyyy-MM-dd'
                   className='w-full rounded-md border border-gray-300 p-2'
                   wrapperClassName='w-full'

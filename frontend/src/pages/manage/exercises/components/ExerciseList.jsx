@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 
 import { fetchExerciseTitles } from '../helpersManageExercises';
 import { ActionButton, ButtonVariant } from '@/components/buttons';
-import { MuscleGroupFilter, SortFilter, ExerciseListItems } from './';
-import { SearchInput } from '@/components/inputs';
+import { ExerciseListItems } from './';
+import { SearchInput, SelectFilter } from '@/components/inputs';
 import { Spinner } from '@/components/common';
 
 const INITIAL_OFFSET = 0;
@@ -138,16 +138,45 @@ export const ExerciseList = ({
           placeholder='Search exercise'
           className='max-w-md'
         />
-        <MuscleGroupFilter
-          muscleGroups={muscleGroups}
-          selectedMuscleGroups={selectedMuscleGroups}
-          onChange={(value) =>
-            handleExercisePropsUpdate({ selectedMuscleGroups: value })
-          }
+        <SelectFilter
+          label='Filter by muscle groups'
+          placeholder='Select muscle groups'
+          optionsData={muscleGroups}
+          isMulti={true}
+          onChange={(selectedOptions) => {
+            const muscleGroupValues = selectedOptions
+              ? selectedOptions.map((opt) => opt.value)
+              : [];
+            handleExercisePropsUpdate({
+              selectedMuscleGroups: muscleGroupValues,
+            });
+          }}
+          value={muscleGroups.filter((group) =>
+            selectedMuscleGroups.includes(group.value),
+          )}
         />
-        <SortFilter
-          sortBy={sortBy}
-          onChange={(value) => handleExercisePropsUpdate({ sortBy: value })}
+        <SelectFilter
+          label='Sort by'
+          placeholder='Sort by date'
+          optionsData={[
+            { label: 'Last Created', value: 'created_at' },
+            { label: 'Last Edited', value: 'updated_at' },
+          ]}
+          onChange={(selectedOption) => {
+            const sortByValue = selectedOption ? selectedOption.value : null;
+            handleExercisePropsUpdate({
+              sortBy: sortByValue,
+            });
+          }}
+          value={
+            sortBy
+              ? {
+                  label:
+                    sortBy === 'created_at' ? 'Last Created' : 'Last Edited',
+                  value: sortBy,
+                }
+              : null
+          }
         />
       </div>
       <div
