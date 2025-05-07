@@ -68,7 +68,6 @@ export const ExerciseList = ({
 
   const loadExerciseTitles = async (offset) => {
     const currentOffset = offset ?? INITIAL_OFFSET;
-    const scrollPosition = window.scrollY;
 
     setIsLoading(true);
     try {
@@ -89,6 +88,10 @@ export const ExerciseList = ({
 
       if (currentOffset === INITIAL_OFFSET) {
         setExerciseTitles(exerciseTitlesData);
+        // Reset scroll position when filters change or on initial load
+        if (listContainerRef.current) {
+          listContainerRef.current.scrollTop = 0;
+        }
       } else if (exerciseTitlesData.length > 0) {
         setExerciseTitles((prevTitles) => [
           ...prevTitles,
@@ -98,10 +101,6 @@ export const ExerciseList = ({
     } finally {
       setIsLoading(false);
     }
-
-    requestAnimationFrame(() => {
-      window.scrollTo(0, scrollPosition);
-    });
   };
 
   const resetFilters = () => {
@@ -175,17 +174,24 @@ export const ExerciseList = ({
         ref={listContainerRef}
         className='mt-4 flex max-h-[40vh] w-full flex-col overflow-y-auto rounded-lg bg-white px-6 sm:max-w-sm lg:max-h-[47vh]'
       >
-        {isLoading ? (
+        {isLoading && exerciseTitles.length === 0 ? (
           <Spinner
             loading={isLoading}
             className='min-h-[40vh] lg:min-h-[47vh]'
           />
         ) : (
-          <ExerciseListItems
-            exercises={exerciseTitles}
-            onSelectExercise={onSelectExercise}
-            sortBy={filters.sortBy}
-          />
+          <>
+            <ExerciseListItems
+              exercises={exerciseTitles}
+              onSelectExercise={onSelectExercise}
+              sortBy={filters.sortBy}
+            />
+            {isLoading && exerciseTitles.length > 0 && (
+              <div className='flex justify-center py-2'>
+                <Spinner loading={true} size='small' />
+              </div>
+            )}
+          </>
         )}
       </div>
     </>

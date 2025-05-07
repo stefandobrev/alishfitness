@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { fetchExercises } from './helpersMuscleGroupExercise';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
 import { ExerciseSection, AnatomySection } from './components';
 import { useTitle } from '@/hooks';
+import { isMobile } from '@/common/constants';
 
 const INITIAL_OFFSET = 0;
 const ITEMS_PER_PAGE = 6;
-const defaultFilters = {
-  searchQuery: '',
-};
-
+const defaultFilters = { searchQuery: '' };
 const defaultPagination = {
   offset: INITIAL_OFFSET,
   hasMore: true,
@@ -21,28 +18,23 @@ const defaultPagination = {
 
 export const MuscleGroupExercisePage = () => {
   const { slugMuscleGroup } = useParams();
-  const [exercisesData, setExercisesData] = useState(null);
+  const navigate = useNavigate();
+
+  const [exercisesData, setExercisesData] = useState([]);
   const [muscleGroupName, setMuscleGroupName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('exercises');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalExercises, setTotalExercises] = useState(0);
-
   const [filters, setFilters] = useState(defaultFilters);
   const [pagination, setPagination] = useState(defaultPagination);
-
-  const navigate = useNavigate();
 
   useTitle(muscleGroupName);
 
   useEffect(() => {
     setCurrentPage(1);
-    setPagination({
-      offset: INITIAL_OFFSET,
-      hasMore: true,
-      loadMore: false,
-    });
+    setPagination(defaultPagination);
     setIsLoading(true);
     loadExercisesData(INITIAL_OFFSET);
   }, [slugMuscleGroup, filters.searchQuery, navigate]);
@@ -53,36 +45,29 @@ export const MuscleGroupExercisePage = () => {
     }
   }, [pagination.loadMore]);
 
-  // Infinite scroll for mobile
   useEffect(() => {
+    if (!isMobile) return;
     const handleScroll = () => {
-      if (window.innerWidth < 1024) {
-        const scrollPosition = window.scrollY + window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
-        const scrollThreshold = 200;
-
-        if (
-          documentHeight - scrollPosition < scrollThreshold &&
-          pagination.hasMore &&
-          !isLoading &&
-          !pagination.loadMore
-        ) {
-          setPagination((prev) => ({
-            ...prev,
-            loadMore: true,
-          }));
-        }
+      const atBottom =
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 200;
+      if (
+        atBottom &&
+        pagination.hasMore &&
+        !isLoading &&
+        !pagination.loadMore
+      ) {
+        setPagination((prev) => ({ ...prev, loadMore: true }));
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [pagination.hasMore, isLoading, pagination.loadMore]);
+  }, [pagination.hasMore, pagination.loadMore]);
 
   const loadExercisesData = async (offset) => {
     const currentOffset = offset ?? INITIAL_OFFSET;
     setIsLoading(true);
-
     const scrollPosition = window.scrollY;
 
     try {
@@ -93,32 +78,21 @@ export const MuscleGroupExercisePage = () => {
         offset: currentOffset,
       });
 
-      // data.error should handle 404 only. Rest is handled by helpers.
       if (data.error) {
         navigate('/404', { replace: true });
       }
 
-      // Update exercisesData based on screen size
-      setExercisesData((prevExercises) => {
-        if (window.innerWidth < 1024) {
-          return currentOffset === INITIAL_OFFSET
+      setExercisesData((prev) =>
+        isMobile
+          ? currentOffset === INITIAL_OFFSET
             ? data.exercises
-            : [...prevExercises, ...data.exercises];
-        } else {
-          // Desktop: Replace exercises (pagination)
-          return data.exercises;
-        }
-      });
+            : [...(prev || []), ...data.exercises]
+          : data.exercises,
+      );
 
-      if (data.total_count !== undefined) {
-        setTotalExercises(data.total_count);
-        setTotalPages(Math.ceil(data.total_count / ITEMS_PER_PAGE));
-      } else {
-        // Fallback logic if total_count is not provided
-        const calculatedTotal = currentOffset + data.exercises.length;
-        setTotalExercises(calculatedTotal);
-        setTotalPages(Math.ceil(calculatedTotal / ITEMS_PER_PAGE));
-      }
+      const total = data.total_count ?? currentOffset + data.exercises.length;
+      setTotalExercises(total);
+      setTotalPages(Math.ceil(total / ITEMS_PER_PAGE));
 
       setPagination({
         offset: currentOffset + ITEMS_PER_PAGE,
@@ -131,7 +105,6 @@ export const MuscleGroupExercisePage = () => {
       setIsLoading(false);
     }
 
-    // Restore the scroll position after the DOM updates
     requestAnimationFrame(() => {
       window.scrollTo(0, scrollPosition);
     });
@@ -163,14 +136,11 @@ export const MuscleGroupExercisePage = () => {
   };
 
   const handleSearchChange = (value) => {
-    setFilters((prev) => ({
-      ...prev,
-      searchQuery: value,
-    }));
-    setPagination((prev) => ({
-      ...prev,
-      offset: INITIAL_OFFSET,
-    }));
+    setFilters((prev) => ({ ...prev, searchQuery: value }));
+    setPagination((prev) => ({ ...prev, offset: INITIAL_OFFSET }));
+    if (isMobile) {
+      window.scrollTo(0, 0);
+    }
   };
 
   const tabs = [
