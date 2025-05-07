@@ -12,12 +12,13 @@ import {
 import { useTrainingProgramFilterData } from '../hooks';
 import { Spinner } from '@/components/common';
 
-export const Filters = ({ isOpen, onClose }) => {
+export const Filters = ({ filters, setFilters, isOpen, onClose }) => {
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
 
   const { modesData, usersData, statusesData, isLoading } =
     useTrainingProgramFilterData();
+
   return (
     <>
       {/* Overlay for closing on outside click */}
@@ -52,6 +53,15 @@ export const Filters = ({ isOpen, onClose }) => {
                 label='Filter by mode'
                 placeholder='Select mode'
                 optionsData={modesData}
+                onChange={(selectedOption) => {
+                  const modeValue = selectedOption
+                    ? selectedOption.value
+                    : null;
+                  setFilters((prev) => ({
+                    ...prev,
+                    filterMode: modeValue,
+                  }));
+                }}
               />
 
               <SelectFilter
@@ -82,6 +92,15 @@ export const Filters = ({ isOpen, onClose }) => {
                   wrapperClassName='w-full'
                 />
               </div>
+
+              <SelectFilter
+                label='Sort by'
+                placeholder='Sort by date'
+                optionsData={[
+                  { label: 'Last created', value: 'created_at' },
+                  { label: 'Last updated', value: 'updated_at' },
+                ]}
+              />
 
               <div className='mt-auto flex md:gap-2 md:py-2'>
                 <SubmitButton className='w-full'>Apply</SubmitButton>

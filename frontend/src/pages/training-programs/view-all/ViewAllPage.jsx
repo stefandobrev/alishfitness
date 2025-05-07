@@ -14,6 +14,7 @@ const defaultFilters = {
   filterUser: null,
   filterStatus: null,
   filterDate: null,
+  sortBy: null,
   offset: INITIAL_OFFSET,
   hasMore: true,
   loadMore: false,
@@ -24,24 +25,11 @@ export const ViewAllPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrograms, setTotalPrograms] = useState(0);
   const [trainingProgramsData, setTrainingProgramsData] = useState(null);
-
-  const [
-    {
-      searchQuery,
-      filterMode,
-      filterUser,
-      filterStatus,
-      filterDate,
-      offset,
-      hasMore,
-      loadMore,
-    },
-    setTrainingProgramProps,
-  ] = useState(defaultFilters);
+  const [filters, setFilters] = useState(defaultFilters);
 
   useEffect(() => {
     loadTrainingProgramsData();
-  }, []);
+  }, [filters]);
 
   const loadTrainingProgramsData = async (offset) => {
     const currentOffset = offset ?? INITIAL_OFFSET;
@@ -49,11 +37,12 @@ export const ViewAllPage = () => {
 
     try {
       const data = await fetchTrainingProgramData({
-        searchQuery: searchQuery,
-        filterMode: filterMode,
-        filterUser: filterUser,
-        filterStatus: filterStatus,
-        filterDate: filterDate,
+        searchQuery: filters.searchQuery,
+        filterMode: filters.filterMode,
+        filterUser: filters.filterUser,
+        filterStatus: filters.filterStatus,
+        filterDate: filters.filterDate,
+        sortBy: filters.sortBy,
         itemsPerPage: ITEMS_PER_PAGE,
         offset: currentOffset,
       });
@@ -70,6 +59,7 @@ export const ViewAllPage = () => {
     'Assigned User',
     'Status',
     'Activation Date',
+    'Sort by',
     '',
     '',
   ];
@@ -80,7 +70,7 @@ export const ViewAllPage = () => {
         totalPrograms={totalPrograms}
         trainingProgramsData={trainingProgramsData}
       />
-      <SearchAndFilterTrigger />
+      <SearchAndFilterTrigger filters={filters} setFilters={setFilters} />
 
       {isLoading ? (
         <Spinner loading={isLoading} className='min-h-[60vh]' />

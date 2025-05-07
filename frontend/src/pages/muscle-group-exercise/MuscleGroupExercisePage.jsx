@@ -11,6 +11,9 @@ const INITIAL_OFFSET = 0;
 const ITEMS_PER_PAGE = 6;
 const defaultFilters = {
   searchQuery: '',
+};
+
+const defaultPagination = {
   offset: INITIAL_OFFSET,
   hasMore: true,
   loadMore: false,
@@ -26,8 +29,8 @@ export const MuscleGroupExercisePage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalExercises, setTotalExercises] = useState(0);
 
-  const [{ searchQuery, offset, hasMore, loadMore }, setExerciseGroupProps] =
-    useState(defaultFilters);
+  const [filters, setFilters] = useState(defaultFilters);
+  const [pagination, setPagination] = useState(defaultPagination);
 
   const navigate = useNavigate();
 
@@ -35,20 +38,20 @@ export const MuscleGroupExercisePage = () => {
 
   useEffect(() => {
     setCurrentPage(1);
-    handleExerciseGroupPropsUpdate({
+    setPagination({
       offset: INITIAL_OFFSET,
       hasMore: true,
       loadMore: false,
     });
     setIsLoading(true);
     loadExercisesData(INITIAL_OFFSET);
-  }, [slugMuscleGroup, searchQuery, navigate]);
+  }, [slugMuscleGroup, filters.searchQuery, navigate]);
 
   useEffect(() => {
-    if (hasMore && loadMore) {
-      loadExercisesData(offset);
+    if (pagination.hasMore && pagination.loadMore) {
+      loadExercisesData(pagination.offset);
     }
-  }, [loadMore]);
+  }, [pagination.loadMore]);
 
   // Infinite scroll for mobile
   useEffect(() => {
@@ -60,11 +63,11 @@ export const MuscleGroupExercisePage = () => {
 
         if (
           documentHeight - scrollPosition < scrollThreshold &&
-          hasMore &&
+          pagination.hasMore &&
           !isLoading &&
-          !loadMore
+          !pagination.loadMore
         ) {
-          setExerciseGroupProps((prev) => ({
+          setPagination((prev) => ({
             ...prev,
             loadMore: true,
           }));
@@ -74,16 +77,7 @@ export const MuscleGroupExercisePage = () => {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [hasMore, isLoading, loadMore]);
-
-  const handleExerciseGroupPropsUpdate = (newValues) => {
-    setExerciseGroupProps((prevValues) => {
-      return {
-        ...prevValues,
-        ...newValues,
-      };
-    });
-  };
+  }, [pagination.hasMore, isLoading, pagination.loadMore]);
 
   const loadExercisesData = async (offset) => {
     const currentOffset = offset ?? INITIAL_OFFSET;
@@ -94,7 +88,7 @@ export const MuscleGroupExercisePage = () => {
     try {
       const data = await fetchExercises({
         muscleGroupId: slugMuscleGroup,
-        searchQuery: searchQuery,
+        searchQuery: filters.searchQuery,
         itemsPerPage: ITEMS_PER_PAGE,
         offset: currentOffset,
       });
@@ -126,7 +120,7 @@ export const MuscleGroupExercisePage = () => {
         setTotalPages(Math.ceil(calculatedTotal / ITEMS_PER_PAGE));
       }
 
-      handleExerciseGroupPropsUpdate({
+      setPagination({
         offset: currentOffset + ITEMS_PER_PAGE,
         loadMore: false,
         hasMore: data.exercises.length >= ITEMS_PER_PAGE,
@@ -148,10 +142,11 @@ export const MuscleGroupExercisePage = () => {
 
     const newOffset = (newPage - 1) * ITEMS_PER_PAGE;
     setCurrentPage(newPage);
-    handleExerciseGroupPropsUpdate({
+    setPagination((prev) => ({
+      ...prev,
       offset: newOffset,
       loadMore: false,
-    });
+    }));
 
     loadExercisesData(newOffset);
   };
@@ -168,10 +163,14 @@ export const MuscleGroupExercisePage = () => {
   };
 
   const handleSearchChange = (value) => {
-    handleExerciseGroupPropsUpdate({
+    setFilters((prev) => ({
+      ...prev,
       searchQuery: value,
+    }));
+    setPagination((prev) => ({
+      ...prev,
       offset: INITIAL_OFFSET,
-    });
+    }));
   };
 
   const tabs = [
@@ -194,7 +193,7 @@ export const MuscleGroupExercisePage = () => {
           muscleGroupName={muscleGroupName}
           exercisesData={exercisesData}
           totalExercises={totalExercises}
-          searchQuery={searchQuery}
+          searchQuery={filters.searchQuery}
           onSearchChange={handleSearchChange}
           isLoading={isLoading}
           currentPage={currentPage}

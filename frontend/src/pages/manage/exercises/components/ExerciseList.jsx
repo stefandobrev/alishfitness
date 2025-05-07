@@ -12,6 +12,8 @@ const defaultFilters = {
   searchQuery: '',
   sortBy: null,
   selectedMuscleGroups: [],
+};
+const defaultPagination = {
   offset: INITIAL_OFFSET,
   hasMore: true,
   loadMore: false,
@@ -24,27 +26,26 @@ export const ExerciseList = ({
 }) => {
   const [exerciseTitles, setExerciseTitles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const [
-    { searchQuery, sortBy, selectedMuscleGroups, offset, hasMore, loadMore },
-    setExerciseProps,
-  ] = useState(defaultFilters);
+  const [filters, setFilters] = useState(defaultFilters);
+  const [pagination, setPagination] = useState(defaultPagination);
 
   const listContainerRef = useRef(null);
 
   useEffect(() => {
-    handleExercisePropsUpdate({
+    setPagination({
+      ...pagination,
+      offset: INITIAL_OFFSET,
       hasMore: true,
       loadMore: false,
     });
     loadExerciseTitles();
-  }, [searchQuery, sortBy, selectedMuscleGroups, refreshTitlesKey]);
+  }, [filters, refreshTitlesKey]);
 
   useEffect(() => {
-    if (hasMore && loadMore) {
-      loadExerciseTitles(offset);
+    if (pagination.hasMore && pagination.loadMore) {
+      loadExerciseTitles(pagination.offset);
     }
-  }, [loadMore]);
+  }, [pagination.loadMore]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,8 +53,8 @@ export const ExerciseList = ({
         listContainerRef.current.scrollHeight ===
         listContainerRef.current.scrollTop +
           listContainerRef.current.clientHeight;
-      if (bottom && hasMore) {
-        setExerciseProps((prevState) => ({ ...prevState, loadMore: true }));
+      if (bottom && pagination.hasMore) {
+        setPagination((prev) => ({ ...prev, loadMore: true }));
       }
     };
 
@@ -63,16 +64,7 @@ export const ExerciseList = ({
     return () => {
       listContainer.removeEventListener('scroll', handleScroll);
     };
-  }, [hasMore]);
-
-  const handleExercisePropsUpdate = (newValues) => {
-    setExerciseProps((prevValues) => {
-      return {
-        ...prevValues,
-        ...newValues,
-      };
-    });
-  };
+  }, [pagination.hasMore]);
 
   const loadExerciseTitles = async (offset) => {
     const currentOffset = offset ?? INITIAL_OFFSET;
@@ -81,21 +73,19 @@ export const ExerciseList = ({
     setIsLoading(true);
     try {
       const exerciseTitlesData = await fetchExerciseTitles({
-        searchQuery: searchQuery,
-        sort: sortBy,
-        muscleGroups: selectedMuscleGroups,
+        searchQuery: filters.searchQuery,
+        sort: filters.sortBy,
+        muscleGroups: filters.selectedMuscleGroups,
         offset: currentOffset,
         itemsPerPage: ITEMS_PER_PAGE,
       });
 
-      handleExercisePropsUpdate({
+      setPagination((prev) => ({
+        ...prev,
         offset: currentOffset + ITEMS_PER_PAGE,
         loadMore: false,
-      });
-
-      if (exerciseTitlesData.length < ITEMS_PER_PAGE) {
-        handleExercisePropsUpdate({ hasMore: false });
-      }
+        hasMore: exerciseTitlesData.length === ITEMS_PER_PAGE,
+      }));
 
       if (currentOffset === INITIAL_OFFSET) {
         setExerciseTitles(exerciseTitlesData);
@@ -115,7 +105,8 @@ export const ExerciseList = ({
   };
 
   const resetFilters = () => {
-    handleExercisePropsUpdate(defaultFilters);
+    setFilters(defaultFilters);
+    setPagination(defaultPagination);
   };
 
   return (
@@ -131,9 +122,9 @@ export const ExerciseList = ({
           </ActionButton>
         </div>
         <SearchInput
-          value={searchQuery}
+          value={filters.searchQuery}
           onChange={(value) =>
-            handleExercisePropsUpdate({ searchQuery: value })
+            setFilters((prev) => ({ ...prev, searchQuery: value }))
           }
           placeholder='Search exercise'
           className='max-w-md'
@@ -147,33 +138,34 @@ export const ExerciseList = ({
             const muscleGroupValues = selectedOptions
               ? selectedOptions.map((opt) => opt.value)
               : [];
-            handleExercisePropsUpdate({
+            setFilters((prev) => ({
+              ...prev,
               selectedMuscleGroups: muscleGroupValues,
-            });
+            }));
           }}
           value={muscleGroups.filter((group) =>
-            selectedMuscleGroups.includes(group.value),
+            filters.selectedMuscleGroups.includes(group.value),
           )}
         />
         <SelectFilter
           label='Sort by'
           placeholder='Sort by date'
           optionsData={[
-            { label: 'Last Created', value: 'created_at' },
-            { label: 'Last Edited', value: 'updated_at' },
+            { label: 'Last created', value: 'created_at' },
+            { label: 'Last edited', value: 'updated_at' },
           ]}
           onChange={(selectedOption) => {
             const sortByValue = selectedOption ? selectedOption.value : null;
-            handleExercisePropsUpdate({
-              sortBy: sortByValue,
-            });
+            setFilters((prev) => ({ ...prev, sortBy: sortByValue }));
           }}
           value={
-            sortBy
+            filters.sortBy
               ? {
                   label:
-                    sortBy === 'created_at' ? 'Last Created' : 'Last Edited',
-                  value: sortBy,
+                    filters.sortBy === 'created_at'
+                      ? 'Last Created'
+                      : 'Last Edited',
+                  value: filters.sortBy,
                 }
               : null
           }
@@ -192,7 +184,7 @@ export const ExerciseList = ({
           <ExerciseListItems
             exercises={exerciseTitles}
             onSelectExercise={onSelectExercise}
-            sortBy={sortBy}
+            sortBy={filters.sortBy}
           />
         )}
       </div>

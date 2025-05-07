@@ -6,7 +6,7 @@ import { SearchInput } from '@/components/inputs';
 import { Filters } from '.';
 import { ActionButton, ButtonVariant } from '@/components/buttons';
 
-export const SearchAndFilterTrigger = () => {
+export const SearchAndFilterTrigger = ({ filters, setFilters }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const toggleFilters = () => {
@@ -16,6 +16,13 @@ export const SearchAndFilterTrigger = () => {
     <div className='m-2 flex items-start gap-4 p-2 md:flex-row'>
       <SearchInput
         placeholder='Search program title'
+        onChange={(value) =>
+          setFilters((prev) => ({
+            ...prev,
+            searchQuery: value,
+          }))
+        }
+        value={filters.searchQuery}
         className='w-full md:w-80'
       />
       <div className='hidden md:block'>
@@ -27,7 +34,12 @@ export const SearchAndFilterTrigger = () => {
           <AdjustmentsHorizontalIcon className='h-5 w-5' />
           Filters
         </ActionButton>
-        <Filters isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)} />
+        <Filters
+          filters={filters}
+          setFilters={setFilters}
+          isOpen={isFilterOpen}
+          onClose={() => setIsFilterOpen(false)}
+        />
       </div>
     </div>
   );
