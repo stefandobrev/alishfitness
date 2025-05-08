@@ -42,18 +42,20 @@ export const ExerciseList = ({
   }, [filters, refreshTitlesKey]);
 
   useEffect(() => {
-    if (pagination.hasMore && pagination.loadMore) {
+    if (pagination.loadMore) {
       loadExerciseTitles(pagination.offset);
     }
-  }, [pagination.loadMore]);
+  }, [pagination.loadMore, pagination.offset]);
 
   useEffect(() => {
     const handleScroll = () => {
-      const bottom =
-        listContainerRef.current.scrollHeight ===
-        listContainerRef.current.scrollTop +
-          listContainerRef.current.clientHeight;
-      if (bottom && pagination.hasMore) {
+      const threshold = 200;
+      const atBottom =
+        listContainerRef.current.scrollHeight - // container height with hidden content
+          listContainerRef.current.scrollTop - // distance from top of container to visible area
+          listContainerRef.current.clientHeight <= // visible container
+        threshold;
+      if (atBottom && pagination.hasMore) {
         setPagination((prev) => ({ ...prev, loadMore: true }));
       }
     };
@@ -64,7 +66,7 @@ export const ExerciseList = ({
     return () => {
       listContainer.removeEventListener('scroll', handleScroll);
     };
-  }, [pagination.hasMore]);
+  }, [pagination.hasMore, pagination.loadMore]);
 
   const loadExerciseTitles = async (offset) => {
     const currentOffset = offset ?? INITIAL_OFFSET;

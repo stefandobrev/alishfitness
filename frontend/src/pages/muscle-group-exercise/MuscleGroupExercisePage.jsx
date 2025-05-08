@@ -40,22 +40,19 @@ export const MuscleGroupExercisePage = () => {
   }, [slugMuscleGroup, filters.searchQuery, navigate]);
 
   useEffect(() => {
-    if (pagination.hasMore && pagination.loadMore) {
+    if (pagination.loadMore) {
       loadExercisesData(pagination.offset);
     }
-  }, [pagination.loadMore]);
+  }, [pagination.loadMore, pagination.offset]);
 
   useEffect(() => {
     if (!isMobile) return;
     const handleScroll = () => {
+      const threshold = 200;
       const atBottom =
-        window.innerHeight + window.scrollY >= document.body.offsetHeight - 200;
-      if (
-        atBottom &&
-        pagination.hasMore &&
-        !isLoading &&
-        !pagination.loadMore
-      ) {
+        window.innerHeight + window.scrollY >=
+        document.body.offsetHeight - threshold;
+      if (atBottom && pagination.hasMore) {
         setPagination((prev) => ({ ...prev, loadMore: true }));
       }
     };
