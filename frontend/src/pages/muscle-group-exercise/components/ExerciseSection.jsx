@@ -32,17 +32,26 @@ export const ExerciseSection = ({
         onSearchChange={onSearchChange}
       />
 
-      {isLoading ? (
+      {isLoading && !exercisesData.length ? (
         <Spinner loading={isLoading} className='min-h-[70vh]' />
       ) : (
-        <ExerciseContent
-          exercisesData={exercisesData}
-          totalExercises={totalExercises}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={onPageChange}
-          itemsPerPage={itemsPerPage}
-        />
+        <>
+          <ExerciseContent
+            exercisesData={exercisesData}
+            totalExercises={totalExercises}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={onPageChange}
+            itemsPerPage={itemsPerPage}
+          />
+
+          {/* Infinite scroll spinner for mobile */}
+          {isLoading && exercisesData.length > 0 && (
+            <div className='md:hidden'>
+              <Spinner loading={isLoading} />
+            </div>
+          )}
+        </>
       )}
     </div>
   );

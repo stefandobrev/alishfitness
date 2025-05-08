@@ -176,25 +176,30 @@ export const ExerciseList = ({
         ref={listContainerRef}
         className='mt-4 flex max-h-[40vh] w-full flex-col overflow-y-auto rounded-lg bg-white px-6 sm:max-w-sm lg:max-h-[47vh]'
       >
-        {isLoading && exerciseTitles.length === 0 ? (
-          <Spinner
-            loading={isLoading}
-            className='min-h-[40vh] lg:min-h-[47vh]'
-          />
-        ) : (
-          <>
+        <>
+          {exerciseTitles.length > 0 ? (
             <ExerciseListItems
               exercises={exerciseTitles}
               onSelectExercise={onSelectExercise}
               sortBy={filters.sortBy}
             />
-            {isLoading && exerciseTitles.length > 0 && (
-              <div className='flex justify-center py-2'>
-                <Spinner loading={true} size='small' />
+          ) : (
+            !isLoading && (
+              <div className='flex min-h-[20vh] items-center justify-center'>
+                <p className='text-gray-500'>No exercises found</p>
               </div>
-            )}
-          </>
-        )}
+            )
+          )}
+
+          {isLoading && (
+            <div className='flex justify-center py-2'>
+              <Spinner
+                loading={isLoading}
+                size={exerciseTitles.length === 0 ? 'medium' : 'small'}
+              />
+            </div>
+          )}
+        </>
       </div>
     </>
   );
