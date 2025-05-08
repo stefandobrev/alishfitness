@@ -14,7 +14,6 @@ const defaultFilters = {
   filterUser: null,
   filterStatus: null,
   filterDate: null,
-  sortBy: null,
   offset: INITIAL_OFFSET,
   hasMore: true,
   loadMore: false,
@@ -42,7 +41,6 @@ export const ViewAllPage = () => {
         filterUser: filters.filterUser,
         filterStatus: filters.filterStatus,
         filterDate: filters.filterDate,
-        sortBy: filters.sortBy,
         itemsPerPage: ITEMS_PER_PAGE,
         offset: currentOffset,
       });

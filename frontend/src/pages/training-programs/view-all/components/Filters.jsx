@@ -93,15 +93,6 @@ export const Filters = ({ filters, setFilters, isOpen, onClose }) => {
                 />
               </div>
 
-              <SelectFilter
-                label='Sort by'
-                placeholder='Sort by date'
-                optionsData={[
-                  { label: 'Last created', value: 'created_at' },
-                  { label: 'Last updated', value: 'updated_at' },
-                ]}
-              />
-
               <div className='mt-auto flex md:gap-2 md:py-2'>
                 <SubmitButton className='w-full'>Apply</SubmitButton>
                 <ActionButton
