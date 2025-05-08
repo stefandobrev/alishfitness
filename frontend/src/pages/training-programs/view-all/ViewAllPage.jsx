@@ -13,7 +13,10 @@ const defaultFilters = {
   filterMode: null,
   filterUser: null,
   filterStatus: null,
-  filterDate: null,
+  filterStartDate: null,
+  filterEndDate: null,
+};
+const defaultPagination = {
   offset: INITIAL_OFFSET,
   hasMore: true,
   loadMore: false,
@@ -25,6 +28,7 @@ export const ViewAllPage = () => {
   const [totalPrograms, setTotalPrograms] = useState(0);
   const [trainingProgramsData, setTrainingProgramsData] = useState(null);
   const [filters, setFilters] = useState(defaultFilters);
+  const [pagination, setPagination] = useState(defaultPagination);
 
   useEffect(() => {
     loadTrainingProgramsData();
@@ -40,7 +44,8 @@ export const ViewAllPage = () => {
         filterMode: filters.filterMode,
         filterUser: filters.filterUser,
         filterStatus: filters.filterStatus,
-        filterDate: filters.filterDate,
+        filterStartDate: filters.filterStartDate,
+        filterEndDate: filters.filterEndtDate,
         itemsPerPage: ITEMS_PER_PAGE,
         offset: currentOffset,
       });
@@ -57,7 +62,6 @@ export const ViewAllPage = () => {
     'Assigned User',
     'Status',
     'Activation Date',
-    'Sort by',
     '',
     '',
   ];

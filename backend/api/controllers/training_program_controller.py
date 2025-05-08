@@ -75,7 +75,7 @@ class TrainingProgramController:
             query = query.filter(Q(mode__iexact=filter_mode))
 
         if filter_user:
-            query = query.filter(Q(assigned_user__username__iexact=filter_user))
+            query = query.filter(Q(assigned_user=filter_user))
 
         if filter_status:
             query = query.filter(Q(status__iexact=filter_status))

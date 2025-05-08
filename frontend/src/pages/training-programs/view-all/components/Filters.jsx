@@ -13,11 +13,18 @@ import { useTrainingProgramFilterData } from '../hooks';
 import { Spinner } from '@/components/common';
 
 export const Filters = ({ filters, setFilters, isOpen, onClose }) => {
-  const [dateRange, setDateRange] = useState([null, null]);
-  const [startDate, endDate] = dateRange;
+  const [draftFilters, setDraftFilters] = useState({ ...filters });
 
   const { modesData, usersData, statusesData, isLoading } =
     useTrainingProgramFilterData();
+
+  const handleApply = () => {
+    setFilters((prev) => ({
+      ...prev,
+      ...draftFilters,
+    }));
+    onClose();
+  };
 
   return (
     <>
@@ -57,23 +64,50 @@ export const Filters = ({ filters, setFilters, isOpen, onClose }) => {
                   const modeValue = selectedOption
                     ? selectedOption.value
                     : null;
-                  setFilters((prev) => ({
+                  setDraftFilters((prev) => ({
                     ...prev,
                     filterMode: modeValue,
                   }));
                 }}
+                value={modesData.find(
+                  (option) => option.value === draftFilters.filterMode,
+                )}
               />
 
               <SelectFilter
                 label='Filter by user'
                 placeholder='Select user'
                 optionsData={usersData}
+                onChange={(selectedOption) => {
+                  const userValue = selectedOption
+                    ? selectedOption.value
+                    : null;
+                  setDraftFilters((prev) => ({
+                    ...prev,
+                    filterUser: userValue,
+                  }));
+                }}
+                value={usersData.find(
+                  (option) => option.value === draftFilters.filterUser,
+                )}
               />
 
               <SelectFilter
                 label='Filter by status'
                 placeholder='Select status'
                 optionsData={statusesData}
+                onChange={(selectedOption) => {
+                  const statusValue = selectedOption
+                    ? selectedOption.value
+                    : null;
+                  setDraftFilters((prev) => ({
+                    ...prev,
+                    filterStatus: statusValue,
+                  }));
+                }}
+                value={statusesData.find(
+                  (option) => option.value === draftFilters.filterStatus,
+                )}
               />
 
               <div>
@@ -84,9 +118,15 @@ export const Filters = ({ filters, setFilters, isOpen, onClose }) => {
                   placeholderText='Select date range'
                   isClearable
                   selectsRange
-                  startDate={startDate}
-                  endDate={endDate}
-                  onChange={(update) => setDateRange(update)}
+                  startDate={draftFilters.filterStartDate}
+                  endDate={draftFilters.filterEndDate}
+                  onChange={(update) =>
+                    setDraftFilters((prev) => ({
+                      ...prev,
+                      filterStartDate: update[0],
+                      filterEndDate: update[1],
+                    }))
+                  }
                   dateFormat='yyyy-MM-dd'
                   className='w-full rounded-md border border-gray-300 p-2'
                   wrapperClassName='w-full'
@@ -94,7 +134,9 @@ export const Filters = ({ filters, setFilters, isOpen, onClose }) => {
               </div>
 
               <div className='mt-auto flex md:gap-2 md:py-2'>
-                <SubmitButton className='w-full'>Apply</SubmitButton>
+                <SubmitButton onClick={handleApply} className='w-full'>
+                  Apply
+                </SubmitButton>
                 <ActionButton
                   variant={ButtonVariant.GRAY_DARK}
                   className='w-full'
