@@ -49,6 +49,19 @@ class TestTrainingProgramController:
             ]
         }
     
+    @pytest.fixture
+    def valid_search_data(self):
+        return {
+            "search_query": "",
+            "filter_mode": None,
+            "filter_user": None,
+            "filter_status": None,
+            "filter_start_date": None,
+            "filter_end_date": None,
+            "items_per_page": 10,
+            "offset": 0 
+        }
+    
     def test_get_training_setup_data(self, api_client, test_user, test_admin, test_muscle_group):
         api_client.force_authenticate(user=test_admin)
         url = reverse("training-setup-data")
@@ -192,3 +205,82 @@ class TestTrainingProgramController:
         response = api_client.post(url, valid_data, format="json")
         scheduled_program = TrainingProgram.objects.get(program_title="Scheduled Test Program")
         assert scheduled_program.status == "scheduled"
+
+    ## Training programs filters
+    def test_get_training_program_count(self, api_client, valid_search_data, test_admin, test_training_program, test_training_template):
+        api_client.force_authenticate(test_admin)
+        count_data = deepcopy(valid_search_data)
+
+        url = reverse("training-programs")
+        response = api_client.post(url, count_data, format="json")
+
+        assert response.data["total_count"] == 2
+
+    def test_get_training_program_by_search(self, api_client, valid_search_data, test_admin, test_training_program, test_training_template):
+        api_client.force_authenticate(test_admin)
+        search_data = deepcopy(valid_search_data)
+        search_data["search_query"] = "Test"
+
+        url = reverse("training-programs")
+        response = api_client.post(url, search_data, format="json")
+
+        assert response.data["total_count"] == 2
+
+        search_data["search_query"] = test_training_program.program_title[7:]
+
+        url = reverse("training-programs")
+        response = api_client.post(url, search_data, format="json")
+
+        assert response.data["total_count"] == 1
+        assert any(program["program_title"].endswith(test_training_program.program_title[7:]) for program in response.data["training_programs"])
+
+    def test_get_training_program_by_mode(self, api_client, valid_search_data, test_admin, test_training_program, test_training_template):
+        api_client.force_authenticate(test_admin)
+        mode_data = deepcopy(valid_search_data)
+        mode_data["filter_mode"] = "template"
+
+        url = reverse("training-programs")
+        response = api_client.post(url, mode_data, format="json")
+
+        assert response.data["total_count"] == 1
+
+    def test_get_training_program_by_user(self, api_client, test_user, valid_search_data, test_admin, test_training_program, test_training_template):
+        api_client.force_authenticate(test_admin)
+        user_data = deepcopy(valid_search_data)
+        user_data["filter_user"] = test_user.id
+
+        url = reverse("training-programs")
+        response = api_client.post(url, user_data, format="json")
+
+        assert response.data["total_count"] == 1
+
+    def test_get_training_program_by_status(self, api_client, valid_search_data, test_admin, test_training_program, test_training_template):
+        api_client.force_authenticate(test_admin)
+        status_data = deepcopy(valid_search_data)
+        status_data["filter_status"] = "current"
+
+        url = reverse("training-programs")
+        response = api_client.post(url, status_data, format="json")
+
+        assert response.data["total_count"] == 1
+
+    def test_get_training_program_by_start_date(self, api_client, valid_search_data, test_admin, test_training_program, test_training_template):
+        api_client.force_authenticate(test_admin)
+        start_date_data = deepcopy(valid_search_data)
+        start_date_data["filter_start_date"] = test_training_program.activation_date - timedelta(days=1)
+
+        url = reverse("training-programs")
+        response = api_client.post(url, start_date_data, format="json")
+
+        assert response.data["total_count"] == 1
+
+    def test_get_training_program_by_range_date(self, api_client, valid_search_data, test_admin, test_training_program, test_training_template):
+        api_client.force_authenticate(test_admin)
+        range_date_data = deepcopy(valid_search_data)
+        range_date_data["filter_start_date"] = test_training_program.activation_date - timedelta(days=1)
+        range_date_data["filter_end_date"] = test_training_program.activation_date + timedelta(days=1)
+
+        url = reverse("training-programs")
+        response = api_client.post(url, range_date_data, format="json")
+
+        assert response.data["total_count"] == 1

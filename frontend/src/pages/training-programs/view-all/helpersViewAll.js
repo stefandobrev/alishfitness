@@ -3,7 +3,6 @@ import { api, camelToSnake } from '@/utils';
 export const fetchTrainingProgramData = async (
   trainingProgramsFilteredData,
 ) => {
-  console.log({ trainingProgramsFilteredData });
   const transformedData = camelToSnake(trainingProgramsFilteredData);
   console.log({ transformedData });
   const response = await api('training-programs/', 'POST', transformedData);
