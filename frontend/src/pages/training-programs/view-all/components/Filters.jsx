@@ -11,8 +11,9 @@ import {
 } from '@/components/buttons';
 import { useTrainingProgramFilterData } from '../hooks';
 import { Spinner } from '@/components/common';
+import { defaultViewAllFilters } from '../..';
 
-export const Filters = ({ filters, setFilters, isOpen, onClose }) => {
+export const Filters = ({ filters, setFilters, onReset, isOpen, onClose }) => {
   const [draftFilters, setDraftFilters] = useState({ ...filters });
 
   const { modesData, usersData, statusesData, isLoading } =
@@ -24,6 +25,11 @@ export const Filters = ({ filters, setFilters, isOpen, onClose }) => {
       ...draftFilters,
     }));
     onClose();
+  };
+
+  const handleReset = () => {
+    onReset();
+    setDraftFilters(defaultViewAllFilters);
   };
 
   return (
@@ -69,9 +75,13 @@ export const Filters = ({ filters, setFilters, isOpen, onClose }) => {
                     filterMode: modeValue,
                   }));
                 }}
-                value={modesData.find(
-                  (option) => option.value === draftFilters.filterMode,
-                )}
+                value={
+                  draftFilters.filterMode
+                    ? modesData.find(
+                        (option) => option.value === draftFilters.filterMode,
+                      )
+                    : null
+                }
               />
 
               <SelectFilter
@@ -138,6 +148,7 @@ export const Filters = ({ filters, setFilters, isOpen, onClose }) => {
                   Apply
                 </SubmitButton>
                 <ActionButton
+                  onClick={handleReset}
                   variant={ButtonVariant.GRAY_DARK}
                   className='w-full'
                 >

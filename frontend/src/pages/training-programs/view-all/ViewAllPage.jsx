@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Heading, SearchAndFilterTrigger } from './components';
 import { fetchTrainingProgramData } from './helpersViewAll';
@@ -9,7 +9,7 @@ import { toUtcMidnightDateString } from '@/utils';
 
 const INITIAL_OFFSET = 0;
 const ITEMS_PER_PAGE = 10;
-const defaultFilters = {
+export const defaultViewAllFilters = {
   searchQuery: '',
   filterMode: null,
   filterUser: null,
@@ -28,7 +28,7 @@ export const ViewAllPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrograms, setTotalPrograms] = useState(0);
   const [trainingProgramsData, setTrainingProgramsData] = useState(null);
-  const [filters, setFilters] = useState(defaultFilters);
+  const [filters, setFilters] = useState(defaultViewAllFilters);
   const [pagination, setPagination] = useState(defaultPagination);
 
   useEffect(() => {
@@ -57,6 +57,11 @@ export const ViewAllPage = () => {
     }
   };
 
+  const handleReset = () => {
+    setFilters(defaultViewAllFilters);
+    setPagination(defaultPagination);
+  };
+
   const tableHeadings = [
     'Title',
     'Mode',
@@ -73,7 +78,11 @@ export const ViewAllPage = () => {
         totalPrograms={totalPrograms}
         trainingProgramsData={trainingProgramsData}
       />
-      <SearchAndFilterTrigger filters={filters} setFilters={setFilters} />
+      <SearchAndFilterTrigger
+        filters={filters}
+        setFilters={setFilters}
+        onReset={handleReset}
+      />
 
       {isLoading ? (
         <Spinner loading={isLoading} className='min-h-[60vh]' />

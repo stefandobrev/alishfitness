@@ -6,7 +6,7 @@ import { SearchInput } from '@/components/inputs';
 import { Filters } from '.';
 import { ActionButton, ButtonVariant } from '@/components/buttons';
 
-export const SearchAndFilterTrigger = ({ filters, setFilters }) => {
+export const SearchAndFilterTrigger = ({ filters, setFilters, onReset }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const toggleFilters = () => {
@@ -37,6 +37,7 @@ export const SearchAndFilterTrigger = ({ filters, setFilters }) => {
         <Filters
           filters={filters}
           setFilters={setFilters}
+          onReset={onReset}
           isOpen={isFilterOpen}
           onClose={() => setIsFilterOpen(false)}
         />
