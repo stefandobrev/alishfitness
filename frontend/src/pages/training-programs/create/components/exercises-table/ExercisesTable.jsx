@@ -45,7 +45,7 @@ export const ExercisesTable = ({ sessionIndex, session }) => {
       })}
     </div>
   ) : (
-    <div className='overflow-x-auto text-center'>
+    <div className='overflow-x-auto border border-gray-200 text-center'>
       <table className='w-full border-separate overflow-hidden border'>
         <TableHeadings tableHeadings={tableHeadings} />
 

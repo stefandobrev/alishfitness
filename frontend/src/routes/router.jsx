@@ -65,6 +65,10 @@ export const router = createBrowserRouter(
             path='/training-programs/create'
             element={<CreateProgramPage />}
           />
+          <Route
+            path='/training-programs/edit/:id'
+            element={<CreateProgramPage />}
+          />
         </Route>
 
         <Route element={<MemberRoute />}>

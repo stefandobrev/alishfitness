@@ -4,3 +4,4 @@ export { Spinner } from './Spinner';
 export { Toast } from './Toast';
 export { TableHeadings } from './TableHeadings';
 export { ConfirmationModal } from './ConfirmationModal';
+export { Pill } from './Pill';

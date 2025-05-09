@@ -91,7 +91,7 @@ class TrainingProgramController:
                 else:
                     query = query.filter(activation_date__gte=start_date)
 
-        training_programs = query[offset: offset + items_per_page].values("program_title", "assigned_user__username","status", "activation_date")
+        training_programs = query[offset: offset + items_per_page].values("id", "program_title", "assigned_user__username","mode", "status", "activation_date")
 
         return Response({
             "training_programs": list(training_programs),
