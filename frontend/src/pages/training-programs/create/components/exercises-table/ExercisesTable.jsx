@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { useTrainingSetupData } from '../../hooks';
 import { ExerciseRow, ExerciseMobileRow } from './';
-import { TableHeadings } from '@/components/common';
+import { TableHeadings } from '@/components/table';
 import { isMobile } from '@/common/constants';
 
 export const ExercisesTable = ({ sessionIndex, session }) => {

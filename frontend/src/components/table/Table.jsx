@@ -1,8 +1,6 @@
-import { TableHeadings } from '../common';
+import { TableHeadings } from '.';
 
 export const Table = ({ columns, rows, onRowClick }) => {
-  console.log({ columns, rows });
-
   return (
     <div className='mx-4 overflow-hidden border border-gray-200'>
       <table className='w-full border-separate border'>

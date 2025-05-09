@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Heading, SearchAndFilterTrigger } from './components';
 import { fetchTrainingProgramData } from './helpersViewAll';
-import {
-  ActionButton,
-  MobileTabs,
-  MobileTabVariant,
-} from '@/components/buttons';
+import { MobileTabs, MobileTabVariant } from '@/components/buttons';
 import { useTitle } from '@/hooks';
-import { Pill, Spinner } from '@/components/common';
-import { capitalize, toUtcMidnightDateString } from '@/utils';
+import { Spinner } from '@/components/common';
+import { toUtcMidnightDateString } from '@/utils';
 import { Table } from '@/components/table';
-import { useNavigate } from 'react-router-dom';
+import { formatRows } from './utils';
 
 const INITIAL_OFFSET = 0;
 const ITEMS_PER_PAGE = 10;
@@ -83,57 +80,7 @@ export const ViewAllPage = () => {
     'Action',
   ];
 
-  const pillVariants = {
-    create: 'status',
-    template: 'warning',
-    current: 'success',
-    scheduled: 'highlight',
-    archived: 'default',
-  };
-
-  const tableRows = trainingProgramsData.map((program) => {
-    const cells = [
-      {
-        id: 'title',
-        text: program.program_title,
-      },
-      {
-        id: 'mode',
-        text: (
-          <Pill
-            text={capitalize(program.mode)}
-            variant={pillVariants[program.mode]}
-          />
-        ),
-      },
-      {
-        id: 'assigned_user',
-        text: program.assigned_user__username,
-      },
-      {
-        id: 'status',
-        text: program.status ? (
-          <Pill
-            text={capitalize(program.status)}
-            variant={pillVariants[program.status]}
-          />
-        ) : null,
-      },
-      {
-        id: 'activation_date',
-        text: program.activation_date,
-      },
-      {
-        id: 'delete',
-        text: <ActionButton> Delete </ActionButton>,
-      },
-    ];
-
-    return {
-      id: program.id,
-      cells,
-    };
-  });
+  const tableRows = formatRows(trainingProgramsData);
 
   return (
     <>
@@ -146,11 +93,15 @@ export const ViewAllPage = () => {
         setFilters={setFilters}
         onReset={handleReset}
       />
-      <Table
-        columns={tableHeadings}
-        rows={tableRows}
-        onRowClick={navigateToEdit}
-      />
+      {isLoading ? (
+        <Spinner className='min-h-[60vh]' />
+      ) : (
+        <Table
+          columns={tableHeadings}
+          rows={tableRows}
+          onRowClick={navigateToEdit}
+        />
+      )}
 
       {!isLoading && trainingProgramsData.length === 0 && (
         <div className='flex flex-col items-center justify-center py-16 text-gray-500'>
