@@ -59,7 +59,8 @@ class TrainingProgramController:
         filter_mode = request.data.get("filter_mode", None)
         filter_user = request.data.get("filter_user", None)
         filter_status = request.data.get("filter_status", None)
-        filter_date = request.data.get("filter_date", None)
+        filter_start_date = request.data.get("filter_start_date", None)
+        filter_end_date = request.data.get("filter_end_date", None)
         items_per_page = request.data.get("items_per_page")
         offset = request.data.get("offset", 0)
 
@@ -80,13 +81,15 @@ class TrainingProgramController:
         if filter_status:
             query = query.filter(Q(status__iexact=filter_status))
 
-        if filter_date:
-            start_date = parse_date(filter_date.get("from"))
-            end_date = parse_date(filter_date.get("to"))
-            if start_date and end_date:
-                query = query.filter(Q(activation_date__range=(start_date, end_date)))
-            else:
-                return Response({"filter_date": "Activation date range incomplete."}, status=400)
+        if filter_start_date:
+            start_date = parse_date(filter_start_date)
+            if start_date:
+                if filter_end_date:
+                    end_date = parse_date(filter_end_date)
+                    if end_date:
+                        query = query.filter(activation_date__range=(start_date, end_date))
+                else:
+                    query = query.filter(activation_date__gte=start_date)
 
         training_programs = query[offset: offset + items_per_page].values("program_title", "assigned_user__username","status", "activation_date")
 

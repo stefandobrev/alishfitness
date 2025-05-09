@@ -5,6 +5,7 @@ import { fetchTrainingProgramData } from './helpersViewAll';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
 import { useTitle } from '@/hooks';
 import { Spinner } from '@/components/common';
+import { toUtcMidnightDateString } from '@/utils';
 
 const INITIAL_OFFSET = 0;
 const ITEMS_PER_PAGE = 10;
@@ -44,8 +45,8 @@ export const ViewAllPage = () => {
         filterMode: filters.filterMode,
         filterUser: filters.filterUser,
         filterStatus: filters.filterStatus,
-        filterStartDate: filters.filterStartDate,
-        filterEndDate: filters.filterEndtDate,
+        filterStartDate: toUtcMidnightDateString(filters.filterStartDate),
+        filterEndDate: toUtcMidnightDateString(filters.filterEndDate),
         itemsPerPage: ITEMS_PER_PAGE,
         offset: currentOffset,
       });

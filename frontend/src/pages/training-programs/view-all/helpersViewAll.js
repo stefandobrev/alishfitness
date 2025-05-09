@@ -3,7 +3,9 @@ import { api, camelToSnake } from '@/utils';
 export const fetchTrainingProgramData = async (
   trainingProgramsFilteredData,
 ) => {
+  console.log({ trainingProgramsFilteredData });
   const transformedData = camelToSnake(trainingProgramsFilteredData);
+  console.log({ transformedData });
   const response = await api('training-programs/', 'POST', transformedData);
   if (!response.ok) throw new Error('Failed to fetch training programs data.');
   return response.json();
