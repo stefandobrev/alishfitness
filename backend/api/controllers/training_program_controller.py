@@ -5,6 +5,7 @@ from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.dateparse import parse_date
+from datetime import timezone as dt_timezone
 
 from api.models import User, MuscleGroup, Exercise, TrainingProgram
 from api.serializers.common_serializers import ExerciseTitleSerializer, UserNamesSerializer
@@ -91,7 +92,7 @@ class TrainingProgramController:
                 else:
                     query = query.filter(activation_date__gte=start_date)
 
-        training_programs = query[offset: offset + items_per_page].values("id", "program_title", "assigned_user__username","assigned_user__first_name","assigned_user__last_name", "mode", "status", "activation_date")
+        training_programs = query[offset: offset + items_per_page].values("id", "program_title", "assigned_user__username","assigned_user__first_name","assigned_user__last_name" ,"mode", "status", "activation_date")
 
         return Response({
             "training_programs": list(training_programs),
@@ -217,6 +218,8 @@ class TrainingProgramController:
                 raise ValidationError({"activation_date": "Activation date is missing."})
             
             today = timezone.now().date()
+            print(f"Activation date: {activation_date}, Type: {type(activation_date)}, Today: {today}, Type: {type(today)}")
+
             if activation_date > today:
                 data["status"] = "scheduled"
             else:
@@ -226,6 +229,7 @@ class TrainingProgramController:
                 ).update(status="archived")
 
                 data["status"] = "current"
+
 
         return data
 
