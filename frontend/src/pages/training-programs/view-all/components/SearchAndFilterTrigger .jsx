@@ -6,14 +6,20 @@ import { SearchInput } from '@/components/inputs';
 import { Filters } from '.';
 import { ActionButton, ButtonVariant } from '@/components/buttons';
 
-export const SearchAndFilterTrigger = ({ filters, setFilters, onReset }) => {
+export const SearchAndFilterTrigger = ({
+  activeTab,
+  filters,
+  setFilters,
+  onReset,
+}) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const toggleFilters = () => {
     setIsFilterOpen(!isFilterOpen);
   };
+
   return (
-    <div className='m-2 flex items-start gap-4 p-2 md:flex-row'>
+    <div className='m-2 flex flex-col items-center gap-4 p-2 md:flex-row md:items-start'>
       <SearchInput
         placeholder='Search program title'
         onChange={(value) =>
@@ -23,24 +29,26 @@ export const SearchAndFilterTrigger = ({ filters, setFilters, onReset }) => {
           }))
         }
         value={filters.searchQuery}
-        className='w-full md:w-80'
+        className='w-80'
       />
-      <div className='hidden md:block'>
+      <div className='w-90 md:block'>
         <ActionButton
           variant={ButtonVariant.GRAY_DARK}
           onClick={toggleFilters}
-          className='flex items-center gap-2'
+          className='hidden items-center gap-2 md:flex'
         >
           <AdjustmentsHorizontalIcon className='h-5 w-5' />
           Filters
         </ActionButton>
-        <Filters
-          filters={filters}
-          setFilters={setFilters}
-          onReset={onReset}
-          isOpen={isFilterOpen}
-          onClose={() => setIsFilterOpen(false)}
-        />
+        <div className={`${activeTab !== 'filters' ? 'hidden md:block' : ''}`}>
+          <Filters
+            filters={filters}
+            setFilters={setFilters}
+            onReset={onReset}
+            isOpen={isFilterOpen}
+            onClose={() => setIsFilterOpen(false)}
+          />
+        </div>
       </div>
     </div>
   );

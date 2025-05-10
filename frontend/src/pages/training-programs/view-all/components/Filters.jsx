@@ -12,6 +12,7 @@ import {
 import { useTrainingProgramFilterData } from '../hooks';
 import { Spinner } from '@/components/common';
 import { defaultViewAllFilters } from '../..';
+import { isMobile } from '@/common/constants';
 
 export const Filters = ({ filters, setFilters, onReset, isOpen, onClose }) => {
   const [draftFilters, setDraftFilters] = useState({ ...filters });
@@ -35,27 +36,33 @@ export const Filters = ({ filters, setFilters, onReset, isOpen, onClose }) => {
   return (
     <>
       {/* Overlay for closing on outside click */}
-      {isOpen && (
-        <div
-          className='md:fixed md:inset-0 md:z-40 md:bg-black/50 md:backdrop-blur-xs md:transition-opacity md:duration-300'
-          onClick={onClose}
-        />
-      )}
+      {!isMobile
+        ? isOpen && (
+            <div
+              className='md:fixed md:inset-0 md:z-40 md:bg-black/50 md:backdrop-blur-xs md:transition-opacity md:duration-300'
+              onClick={onClose}
+            />
+          )
+        : ''}
 
       {/* Drawer */}
       <div
-        className={`w-full p-4 md:fixed md:top-20 md:right-0 md:z-50 md:h-[calc(100vh-108px)] md:w-80 md:transform md:overflow-y-auto md:border md:border-gray-300 md:bg-white md:shadow-xl md:transition-transform md:duration-400 md:ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`w-full p-4 md:fixed md:top-20 md:right-0 md:z-50 md:h-[calc(100vh-108px)] md:w-80 md:transform md:overflow-y-auto md:border md:border-gray-300 md:bg-white md:shadow-xl md:transition-transform md:duration-400 md:ease-in-out ${isOpen ? 'md:translate-x-0' : 'md:translate-x-full'} `}
       >
         <div className='flex h-full flex-col'>
           {/* Header */}
-          <div className='mb-6 flex items-center justify-between'>
-            <h2 className='text-xl font-semibold text-gray-800'>Filters</h2>
+          {!isMobile ? (
+            <div className='mb-6 flex items-center justify-between'>
+              <h2 className='text-xl font-semibold text-gray-800'>Filters</h2>
 
-            <XMarkIcon
-              onClick={onClose}
-              className='hover:text-logored h-5 w-5 cursor-pointer text-gray-400 transition-colors duration-200'
-            />
-          </div>
+              <XMarkIcon
+                onClick={onClose}
+                className='hover:text-logored h-5 w-5 cursor-pointer text-gray-400 transition-colors duration-200'
+              />
+            </div>
+          ) : (
+            ''
+          )}
 
           {/* Drawer */}
           {isLoading ? (
@@ -143,7 +150,7 @@ export const Filters = ({ filters, setFilters, onReset, isOpen, onClose }) => {
                 />
               </div>
 
-              <div className='mt-auto flex md:gap-2 md:py-2'>
+              <div className='mt-auto flex flex-col gap-2 py-2 md:flex-row'>
                 <SubmitButton onClick={handleApply} className='w-full'>
                   Apply
                 </SubmitButton>

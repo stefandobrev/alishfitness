@@ -29,6 +29,7 @@ const defaultPagination = {
 export const ViewAllPage = () => {
   useTitle('All Programs');
   const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('programs');
   const [totalPrograms, setTotalPrograms] = useState(0);
   const [trainingProgramsData, setTrainingProgramsData] = useState([]);
   const [filters, setFilters] = useState(defaultViewAllFilters);
@@ -82,13 +83,28 @@ export const ViewAllPage = () => {
 
   const tableRows = formatRows(trainingProgramsData);
 
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
+  const tabs = [
+    { label: 'Programs', value: 'programs' },
+    { label: 'Filters', value: 'filters' },
+  ];
   return (
     <>
+      <MobileTabs
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+        tabs={tabs}
+      />
+
       <Heading
         totalPrograms={totalPrograms}
         trainingProgramsData={trainingProgramsData}
       />
       <SearchAndFilterTrigger
+        activeTab={activeTab}
         filters={filters}
         setFilters={setFilters}
         onReset={handleReset}
@@ -96,11 +112,13 @@ export const ViewAllPage = () => {
       {isLoading ? (
         <Spinner className='min-h-[60vh]' />
       ) : (
-        <Table
-          columns={tableHeadings}
-          rows={tableRows}
-          onRowClick={navigateToEdit}
-        />
+        <div className={`${activeTab !== 'programs' ? 'hidden lg:block' : ''}`}>
+          <Table
+            columns={tableHeadings}
+            rows={tableRows}
+            onRowClick={navigateToEdit}
+          />
+        </div>
       )}
 
       {!isLoading && trainingProgramsData.length === 0 && (
