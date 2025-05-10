@@ -158,59 +158,21 @@ class TrainingProgramController:
     def update(self, request, id):
         """Update an existing program."""
         pass
-
+    
+    ## Helper functions for create and update
     def _transform_data(self, data):
         """
-        Transform sets to ints, PKs for muscle_group and exercise or 
-        is_custom_muscle_group set to True and custom_exercise_title set to None 
-        with custom exercise title. Send to serializer.
+        Helper functions for transforming sets, muscle groups and exercises.
 
         Assigns status based on activation date. Future dates will assign scheduled, today's date
         will assing current, making a previous current program archived.
         """
-        if data.get("sessions"):           
+        if data.get("sessions"):
             for session in data["sessions"]:
-                if session.get("exercises"):
-                    for exercise in session["exercises"]:
-                        if "sets" in exercise: ## On update it might already be int
-                            sets_value = exercise.get("sets")
-                            if sets_value:
-                                try:
-                                    exercise["sets"] = int(sets_value)
-                                    if exercise["sets"] < 1:
-                                        raise ValidationError({"sets": "Sets must be a positive number."})
-                                except (ValueError, TypeError):
-                                    raise ValidationError({"sets": "Sets must be a valid number."})
-
-                        if exercise.get("muscle_group_input"):
-                            muscle_group_input = exercise.pop("muscle_group_input", None)
-                            
-                            if muscle_group_input == "custom":
-                                exercise["muscle_group"] = None
-                                exercise["exercise"] = None
-                                exercise["is_custom_muscle_group"] = True
-                            
-                            else: 
-                                try:
-                                    exercise["muscle_group"] = MuscleGroup.objects.get(slug=muscle_group_input).id
-                                except MuscleGroup.DoesNotExist:
-                                    raise ValidationError(
-                                        {"muscle_group_input": f"Muscle group '{muscle_group_input}' not found."}
-                                    ) 
-                                exercise["is_custom_muscle_group"] = False
-                                exercise["custom_exercise_title"] = None
-
-                        if exercise.get("exercise_input"):
-                            exercise_input = exercise.pop("exercise_input", None)
-                            if exercise["is_custom_muscle_group"]:
-                                exercise["custom_exercise_title"] = exercise_input
-                            else:
-                                try:
-                                    exercise["exercise"] = Exercise.objects.get(slug=exercise_input).id
-                                except Exercise.DoesNotExist:
-                                    raise ValidationError(
-                                        {"exercise_input": f"Exercise '{exercise_input}' not found."}
-                                    )
+                for exercise in session.get("exercises", []):
+                    self._validate_sets(exercise)
+                    self._process_muscle_group(exercise)
+                    self._process_exercise_input(exercise)
 
         if data.get("mode") == "create" and data.get("assigned_user"): 
             activation_date = parse_date(data.get("activation_date"))
@@ -230,8 +192,53 @@ class TrainingProgramController:
 
                 data["status"] = "current"
 
-
         return data
+    
+    def _validate_sets(self, exercise):
+        """Transforms set string to int."""
+        sets_value = exercise.get("sets")
+        if not sets_value:
+            return
+        try:
+            exercise["sets"] = int(sets_value)
+            if exercise["sets"] < 1:
+                raise ValidationError({"sets": "Sets must be a positive number."})
+        except (ValueError, TypeError):
+            raise ValidationError({"sets": "Sets must be a valid number."})
+        
+    def _process_muscle_group(self, exercise):
+        """Assignes PK to muscle group. Saves as custom as alternative."""
+        muscle_group_input = exercise.pop("muscle_group_input", None)
+        if not muscle_group_input:
+            return
+        if muscle_group_input == "custom":
+            exercise.update({
+                "muscle_group": None,
+                "exercise": None,
+                "is_custom_muscle_group": True,
+            })
+        else:
+            try:
+                exercise["muscle_group"] = MuscleGroup.objects.get(slug=muscle_group_input).id
+            except MuscleGroup.DoesNotExist:
+                raise ValidationError({"muscle_group_input": f"Muscle group '{muscle_group_input}' not found."})
+            exercise.update({
+                "is_custom_muscle_group": False,
+                "custom_exercise_title": None,
+            })
+
+    def _process_exercise_input(self, exercise):
+        """Assignes PK to exercise. Saves as custom if muscle group is custom."""
+        exercise_input = exercise.pop("exercise_input", None)
+        if not exercise_input:
+            return
+        if exercise.get("is_custom_muscle_group"):
+            exercise["custom_exercise_title"] = exercise_input
+        else:
+            try:
+                exercise["exercise"] = Exercise.objects.get(slug=exercise_input).id
+            except Exercise.DoesNotExist:
+                raise ValidationError({"exercise_input": f"Exercise '{exercise_input}' not found."})
 
     def _transform_schedule(self, schedule_array, temp_id_mapping):
         """Transform temporary session IDs to actual database IDs.
