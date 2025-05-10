@@ -19,7 +19,7 @@ export const SearchAndFilterTrigger = ({
   };
 
   return (
-    <div className='m-2 flex flex-col items-center gap-4 p-2 md:flex-row md:items-start'>
+    <div className='m-2 flex flex-col items-center gap-4 p-2 lg:flex-row lg:items-start'>
       <SearchInput
         placeholder='Search program title'
         onChange={(value) =>
@@ -29,18 +29,18 @@ export const SearchAndFilterTrigger = ({
           }))
         }
         value={filters.searchQuery}
-        className='w-80'
+        className={`w-80 ${activeTab !== 'filters' ? 'hidden lg:block' : ''}`}
       />
-      <div className='w-90 md:block'>
+      <div className='w-90'>
         <ActionButton
           variant={ButtonVariant.GRAY_DARK}
           onClick={toggleFilters}
-          className='hidden items-center gap-2 md:flex'
+          className='hidden items-center gap-2 lg:flex'
         >
           <AdjustmentsHorizontalIcon className='h-5 w-5' />
           Filters
         </ActionButton>
-        <div className={`${activeTab !== 'filters' ? 'hidden md:block' : ''}`}>
+        <div className={`${activeTab !== 'filters' ? 'hidden lg:block' : ''}`}>
           <Filters
             filters={filters}
             setFilters={setFilters}

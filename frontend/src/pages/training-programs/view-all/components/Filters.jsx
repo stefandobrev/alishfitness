@@ -39,7 +39,7 @@ export const Filters = ({ filters, setFilters, onReset, isOpen, onClose }) => {
       {!isMobile
         ? isOpen && (
             <div
-              className='md:fixed md:inset-0 md:z-40 md:bg-black/50 md:backdrop-blur-xs md:transition-opacity md:duration-300'
+              className='lg:fixed lg:inset-0 lg:z-40 lg:bg-black/50 lg:backdrop-blur-xs lg:transition-opacity lg:duration-300'
               onClick={onClose}
             />
           )
@@ -47,7 +47,7 @@ export const Filters = ({ filters, setFilters, onReset, isOpen, onClose }) => {
 
       {/* Drawer */}
       <div
-        className={`w-full p-4 md:fixed md:top-20 md:right-0 md:z-50 md:h-[calc(100vh-108px)] md:w-80 md:transform md:overflow-y-auto md:border md:border-gray-300 md:bg-white md:shadow-xl md:transition-transform md:duration-400 md:ease-in-out ${isOpen ? 'md:translate-x-0' : 'md:translate-x-full'} `}
+        className={`w-full p-4 lg:fixed lg:top-20 lg:right-0 lg:z-50 lg:h-[calc(100vh-108px)] lg:w-80 lg:transform lg:overflow-y-auto lg:border lg:border-gray-300 lg:bg-white lg:shadow-xl lg:transition-transform lg:duration-400 lg:ease-in-out ${isOpen ? 'lg:translate-x-0' : 'lg:translate-x-full'} `}
       >
         <div className='flex h-full flex-col'>
           {/* Header */}
@@ -145,12 +145,12 @@ export const Filters = ({ filters, setFilters, onReset, isOpen, onClose }) => {
                     }))
                   }
                   dateFormat='yyyy-MM-dd'
-                  className='w-full rounded-md border border-gray-300 p-2'
+                  className='w-full rounded-lg border border-gray-300 p-2'
                   wrapperClassName='w-full'
                 />
               </div>
 
-              <div className='mt-auto flex flex-col gap-2 py-2 md:flex-row'>
+              <div className='mt-auto flex flex-col gap-2 py-2 lg:flex-row'>
                 <SubmitButton onClick={handleApply} className='w-full'>
                   Apply
                 </SubmitButton>
