@@ -21,7 +21,14 @@ export const ExercisesTable = ({ sessionIndex, session }) => {
     trigger(`sessions.${sessionIndex}.exercises`);
   };
 
-  const tableHeadings = ['Seq', 'Muscle Group', 'Exercise', 'Sets', 'Reps', ''];
+  const tableHeadings = [
+    { title: 'Seq' },
+    { title: 'Muscle Group' },
+    { title: 'Exercise' },
+    { title: 'Sets' },
+    { title: 'Reps' },
+    { title: '' },
+  ];
 
   return isMobile ? (
     <div className='space-y-4'>

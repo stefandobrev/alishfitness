@@ -2,7 +2,7 @@ import { TableHeadings } from '.';
 
 export const Table = ({ columns, rows, onRowClick }) => {
   return (
-    <div className='mx-4 overflow-hidden border border-gray-200'>
+    <div className='mx-4 overflow-auto border border-gray-200'>
       <table className='w-full border-separate border'>
         <TableHeadings tableHeadings={columns} />
         <tbody>

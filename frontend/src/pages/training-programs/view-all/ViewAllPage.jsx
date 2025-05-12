@@ -6,7 +6,7 @@ import { fetchTrainingProgramData } from './helpersViewAll';
 import { MobileTabs } from '@/components/buttons';
 import { useTitle } from '@/hooks';
 import { NoDataDiv, Spinner } from '@/components/common';
-import { toUtcMidnightDateString } from '@/utils';
+import { classNames, toUtcMidnightDateString } from '@/utils';
 import { formatRows } from './utils';
 
 const INITIAL_OFFSET = 0;
@@ -84,12 +84,12 @@ export const ViewAllPage = () => {
   };
 
   const tableHeadings = [
-    'Title',
-    'Mode',
-    'Assigned User',
-    'Status',
-    'Activation Date',
-    'Action',
+    { title: 'Title', width: 'min-w-[200px]' },
+    { title: 'Mode', width: 'w-[60px]' },
+    { title: 'Assigned User', width: 'w-[300px]' },
+    { title: 'Status', width: 'w-[60px]' },
+    { title: 'Activation Date', width: 'w-[150px]' },
+    { title: 'Action', width: 'w-[50px]' },
   ];
 
   const tableRows = formatRows(trainingProgramsData);
