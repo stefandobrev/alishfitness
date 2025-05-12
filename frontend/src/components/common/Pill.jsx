@@ -9,7 +9,9 @@ const pillStyles = {
 export const Pill = ({ text, variant = 'default' }) => {
   const classes = pillStyles[variant] || pillStyles.default;
   return (
-    <div className={`${classes} w-fit rounded-full px-3 py-1 text-sm`}>
+    <div
+      className={`${classes} flex w-fit min-w-[100px] justify-center rounded-full px-3 py-1 text-sm`}
+    >
       {text}
     </div>
   );
