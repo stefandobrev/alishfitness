@@ -4,10 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { Heading, TableContainer } from './components';
 import { fetchTrainingProgramData } from './helpersViewAll';
 import { MobileTabs } from '@/components/buttons';
-import { useTitle } from '@/hooks';
+import { useInfiniteScrollWindow, useTitle } from '@/hooks';
 import { NoDataDiv, Spinner } from '@/components/common';
 import { toUtcMidnightDateString } from '@/utils';
 import { formatRows } from './utils';
+import { isMobile } from '@/common/constants';
 
 const INITIAL_OFFSET = 0;
 const ITEMS_PER_PAGE = 10;
@@ -26,7 +27,6 @@ const defaultPagination = {
 };
 
 export const ViewAllPage = () => {
-  useTitle('All Programs');
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('programs');
   const [filters, setFilters] = useState(defaultViewAllFilters);
@@ -36,15 +36,29 @@ export const ViewAllPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
 
+  useTitle('All Programs');
   const navigate = useNavigate();
 
   useEffect(() => {
+    setCurrentPage(1);
+    setPagination(defaultPagination);
     loadTrainingProgramsData();
   }, [filters]);
+
+  useEffect(() => {
+    if (pagination.loadMore) {
+      loadTrainingProgramsData(pagination.offset);
+    }
+  }, [pagination.loadMore, pagination.offset]);
+
+  // Infinite scroll for window hook
+  useInfiniteScrollWindow({ pagination, setPagination });
 
   const loadTrainingProgramsData = async (offset) => {
     const currentOffset = offset ?? INITIAL_OFFSET;
     setIsLoading(true);
+
+    const scrollPosition = window.scrollY;
 
     try {
       const data = await fetchTrainingProgramData({
@@ -58,10 +72,17 @@ export const ViewAllPage = () => {
         offset: currentOffset,
       });
 
+      setTrainingProgramsData((prev) =>
+        isMobile
+          ? currentOffset === INITIAL_OFFSET
+            ? data.training_programs
+            : [...(prev || []), ...data.training_programs]
+          : data.training_programs,
+      );
+
       const total =
         data.total_count ?? currentOffset + data.training_programs.length;
       setTotalPrograms(total);
-      setTrainingProgramsData(data.training_programs);
       setTotalPages(Math.ceil(total / ITEMS_PER_PAGE));
 
       setPagination({
@@ -72,6 +93,10 @@ export const ViewAllPage = () => {
     } finally {
       setIsLoading(false);
     }
+
+    requestAnimationFrame(() => {
+      window.scrollTo(0, scrollPosition);
+    });
   };
 
   const handleReset = () => {

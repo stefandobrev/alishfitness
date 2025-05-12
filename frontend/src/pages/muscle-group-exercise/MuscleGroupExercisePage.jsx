@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { fetchExercises } from './helpersMuscleGroupExercise';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
 import { ExerciseSection, AnatomySection } from './components';
-import { useTitle } from '@/hooks';
+import { useInfiniteScrollWindow, useTitle } from '@/hooks';
 import { isMobile } from '@/common/constants';
 
 const INITIAL_OFFSET = 0;
@@ -35,7 +35,6 @@ export const MuscleGroupExercisePage = () => {
   useEffect(() => {
     setCurrentPage(1);
     setPagination(defaultPagination);
-    setIsLoading(true);
     loadExercisesData(INITIAL_OFFSET);
   }, [slugMuscleGroup, filters, navigate]);
 
@@ -45,26 +44,13 @@ export const MuscleGroupExercisePage = () => {
     }
   }, [pagination.loadMore, pagination.offset]);
 
-  useEffect(() => {
-    if (!isMobile) return;
-    const handleScroll = () => {
-      const threshold = 200;
-      const atBottom =
-        window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - threshold;
-      if (atBottom && pagination.hasMore) {
-        setPagination((prev) => ({ ...prev, loadMore: true }));
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [pagination.hasMore, pagination.loadMore]);
+  // Infinite scroll for window hook
+  useInfiniteScrollWindow({ pagination, setPagination });
 
   const loadExercisesData = async (offset) => {
     const currentOffset = offset ?? INITIAL_OFFSET;
     setIsLoading(true);
+
     const scrollPosition = window.scrollY;
 
     try {
