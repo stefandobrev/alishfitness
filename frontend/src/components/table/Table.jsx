@@ -1,10 +1,10 @@
-import { TableHeadings } from '.';
+import { TableColumns } from '.';
 
-export const Table = ({ columns, rows, onRowClick }) => {
+export const Table = ({ tableColumns, rows, onRowClick }) => {
   return (
     <div className='mx-4 overflow-auto border border-gray-200'>
       <table className='w-full border-separate border'>
-        <TableHeadings tableHeadings={columns} />
+        <TableColumns tableColumns={tableColumns} />
         <tbody>
           {rows.map((row, index) => {
             return (

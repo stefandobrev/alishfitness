@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { useTrainingSetupData } from '../../hooks';
 import { ExerciseRow, ExerciseMobileRow } from './';
-import { TableHeadings } from '@/components/table';
+import { TableColumns } from '@/components/table';
 import { isMobile } from '@/common/constants';
 
 export const ExercisesTable = ({ sessionIndex, session }) => {
@@ -21,13 +21,13 @@ export const ExercisesTable = ({ sessionIndex, session }) => {
     trigger(`sessions.${sessionIndex}.exercises`);
   };
 
-  const tableHeadings = [
-    { title: 'Seq' },
-    { title: 'Muscle Group' },
-    { title: 'Exercise' },
-    { title: 'Sets' },
-    { title: 'Reps' },
-    { title: '' },
+  const tableColumns = [
+    { title: 'Seq', width: 'w-[10px]' },
+    { title: 'Muscle Group', width: 'min-w-[150px]' },
+    { title: 'Exercise', width: 'min-w-[150px]' },
+    { title: 'Sets', width: 'w-[10px]' },
+    { title: 'Reps', width: 'w-[30px]' },
+    { title: '', width: 'w-[5px]' },
   ];
 
   return isMobile ? (
@@ -54,7 +54,7 @@ export const ExercisesTable = ({ sessionIndex, session }) => {
   ) : (
     <div className='overflow-x-auto border border-gray-200 text-center'>
       <table className='w-full border-separate overflow-hidden border'>
-        <TableHeadings tableHeadings={tableHeadings} />
+        <TableColumns tableColumns={tableColumns} />
 
         <tbody>
           {session.exercises.map((exercise, exerciseIndex) => {

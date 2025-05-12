@@ -3,7 +3,7 @@ import { Table } from '@/components/table';
 
 export const TableContainer = ({
   activeTab,
-  tableHeadings,
+  tableColumns,
   tableRows,
   navigateToEdit,
   totalPrograms,
@@ -16,7 +16,7 @@ export const TableContainer = ({
     <>
       <div className={`${activeTab !== 'programs' ? 'hidden lg:block' : ''}`}>
         <Table
-          columns={tableHeadings}
+          tableColumns={tableColumns}
           rows={tableRows}
           onRowClick={navigateToEdit}
         />

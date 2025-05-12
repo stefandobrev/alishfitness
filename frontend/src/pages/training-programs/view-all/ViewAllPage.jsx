@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Heading, SearchAndFilterTrigger, TableContainer } from './components';
+import { Heading, TableContainer } from './components';
 import { fetchTrainingProgramData } from './helpersViewAll';
 import { MobileTabs } from '@/components/buttons';
 import { useTitle } from '@/hooks';
 import { NoDataDiv, Spinner } from '@/components/common';
-import { classNames, toUtcMidnightDateString } from '@/utils';
+import { toUtcMidnightDateString } from '@/utils';
 import { formatRows } from './utils';
 
 const INITIAL_OFFSET = 0;
@@ -83,10 +83,10 @@ export const ViewAllPage = () => {
     navigate(`/training-programs/edit/${programId}`);
   };
 
-  const tableHeadings = [
+  const tableColumns = [
     { title: 'Title', width: 'min-w-[200px]' },
     { title: 'Mode', width: 'w-[60px]' },
-    { title: 'Assigned User', width: 'w-[300px]' },
+    { title: 'Assigned User', width: 'w-[400px]' },
     { title: 'Status', width: 'w-[60px]' },
     { title: 'Activation Date', width: 'w-[150px]' },
     { title: 'Action', width: 'w-[50px]' },
@@ -125,21 +125,20 @@ export const ViewAllPage = () => {
       />
 
       <Heading
-        totalPrograms={totalPrograms}
-        trainingProgramsData={trainingProgramsData}
-      />
-      <SearchAndFilterTrigger
         activeTab={activeTab}
         filters={filters}
+        totalPrograms={totalPrograms}
+        trainingProgramsData={trainingProgramsData}
         setFilters={setFilters}
         onReset={handleReset}
       />
+
       {isLoading && !trainingProgramsData.length ? (
         <Spinner className='min-h-[60vh]' />
       ) : (
         <TableContainer
           activeTab={activeTab}
-          tableHeadings={tableHeadings}
+          tableColumns={tableColumns}
           tableRows={tableRows}
           navigateToEdit={navigateToEdit}
           totalPrograms={totalPrograms}

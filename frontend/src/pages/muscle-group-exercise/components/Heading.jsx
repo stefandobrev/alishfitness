@@ -20,9 +20,9 @@ export const Heading = ({
       <div className='relative flex w-full flex-col-reverse items-center gap-y-4 lg:flex-row'>
         <div className='lg:absolute lg:left-4'>
           <SearchInput
-            value={valueSearch}
-            onChange={onSearchChange}
             placeholder='Search exercise'
+            onChange={onSearchChange}
+            value={valueSearch}
             className='w-80 max-w-md lg:w-70'
           />
         </div>

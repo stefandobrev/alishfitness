@@ -1,2 +1,2 @@
 export { Table } from './Table';
-export { TableHeadings } from './TableHeadings';
+export { TableColumns } from './TableColumns';
