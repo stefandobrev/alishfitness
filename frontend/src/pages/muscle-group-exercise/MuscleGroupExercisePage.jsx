@@ -37,7 +37,7 @@ export const MuscleGroupExercisePage = () => {
     setPagination(defaultPagination);
     setIsLoading(true);
     loadExercisesData(INITIAL_OFFSET);
-  }, [slugMuscleGroup, filters.searchQuery, navigate]);
+  }, [slugMuscleGroup, filters, navigate]);
 
   useEffect(() => {
     if (pagination.loadMore) {

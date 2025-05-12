@@ -1,6 +1,6 @@
 import { useScrollVisibility } from '@/hooks';
-import { Heading, MuscleGrid, PaginationMuscleGroupExercise } from './';
-import { Spinner } from '@/components/common';
+import { Heading, MuscleGrid } from './';
+import { NoDataDiv, Pagination, Spinner } from '@/components/common';
 
 export const ExerciseSection = ({
   activeTab,
@@ -44,6 +44,10 @@ export const ExerciseSection = ({
             onPageChange={onPageChange}
             itemsPerPage={itemsPerPage}
           />
+
+          {!isLoading && exercisesData.length === 0 && (
+            <NoDataDiv heading='No exercises found' />
+          )}
 
           {/* Infinite scroll spinner for mobile */}
           {isLoading && exercisesData.length > 0 && (
@@ -95,7 +99,7 @@ const ExerciseContent = ({
 
     {totalExercises > itemsPerPage && (
       <div className='mt-2 hidden lg:block'>
-        <PaginationMuscleGroupExercise
+        <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={onPageChange}

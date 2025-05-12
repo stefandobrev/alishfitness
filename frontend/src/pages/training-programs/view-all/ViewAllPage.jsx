@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Heading, SearchAndFilterTrigger } from './components';
+import { Heading, SearchAndFilterTrigger, TableContainer } from './components';
 import { fetchTrainingProgramData } from './helpersViewAll';
-import { MobileTabs, MobileTabVariant } from '@/components/buttons';
+import { MobileTabs } from '@/components/buttons';
 import { useTitle } from '@/hooks';
-import { Spinner } from '@/components/common';
+import { NoDataDiv, Spinner } from '@/components/common';
 import { toUtcMidnightDateString } from '@/utils';
-import { Table } from '@/components/table';
 import { formatRows } from './utils';
 
 const INITIAL_OFFSET = 0;
@@ -30,10 +29,12 @@ export const ViewAllPage = () => {
   useTitle('All Programs');
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('programs');
-  const [totalPrograms, setTotalPrograms] = useState(0);
-  const [trainingProgramsData, setTrainingProgramsData] = useState([]);
   const [filters, setFilters] = useState(defaultViewAllFilters);
   const [pagination, setPagination] = useState(defaultPagination);
+  const [trainingProgramsData, setTrainingProgramsData] = useState([]);
+  const [totalPrograms, setTotalPrograms] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
 
@@ -56,8 +57,18 @@ export const ViewAllPage = () => {
         itemsPerPage: ITEMS_PER_PAGE,
         offset: currentOffset,
       });
-      setTotalPrograms(data.total_count);
+
+      const total =
+        data.total_count ?? currentOffset + data.training_programs.length;
+      setTotalPrograms(total);
       setTrainingProgramsData(data.training_programs);
+      setTotalPages(Math.ceil(total / ITEMS_PER_PAGE));
+
+      setPagination({
+        offset: currentOffset + ITEMS_PER_PAGE,
+        loadMore: false,
+        hasMore: data.training_programs.length >= ITEMS_PER_PAGE,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -82,6 +93,20 @@ export const ViewAllPage = () => {
   ];
 
   const tableRows = formatRows(trainingProgramsData);
+
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages) return;
+
+    const newOffset = (newPage - 1) * ITEMS_PER_PAGE;
+    setCurrentPage(newPage);
+    setPagination((prev) => ({
+      ...prev,
+      offset: newOffset,
+      loadMore: false,
+    }));
+
+    loadTrainingProgramsData(newOffset);
+  };
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -109,25 +134,27 @@ export const ViewAllPage = () => {
         setFilters={setFilters}
         onReset={handleReset}
       />
-      {isLoading ? (
+      {isLoading && !trainingProgramsData.length ? (
         <Spinner className='min-h-[60vh]' />
       ) : (
-        <div className={`${activeTab !== 'programs' ? 'hidden lg:block' : ''}`}>
-          <Table
-            columns={tableHeadings}
-            rows={tableRows}
-            onRowClick={navigateToEdit}
-          />
-        </div>
+        <TableContainer
+          activeTab={activeTab}
+          tableHeadings={tableHeadings}
+          tableRows={tableRows}
+          navigateToEdit={navigateToEdit}
+          totalPrograms={totalPrograms}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          itemsPerPage={ITEMS_PER_PAGE}
+        />
       )}
 
       {!isLoading && trainingProgramsData.length === 0 && (
-        <div className='flex flex-col items-center justify-center py-16 text-gray-500'>
-          <p className='text-lg'>No training programs found</p>
-          <p className='mt-1'>
-            Try adjusting your filters or create a new program
-          </p>
-        </div>
+        <NoDataDiv
+          heading='No training programs found'
+          content='Try adjusting your filters or create a new program'
+        />
       )}
     </>
   );
