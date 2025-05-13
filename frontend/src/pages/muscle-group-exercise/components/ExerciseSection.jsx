@@ -32,7 +32,7 @@ export const ExerciseSection = ({
         onSearchChange={onSearchChange}
       />
 
-      {isLoading && !exercisesData.length ? (
+      {isLoading && !exercisesData?.length ? (
         <Spinner loading={isLoading} className='min-h-[70vh]' />
       ) : (
         <>
@@ -45,12 +45,12 @@ export const ExerciseSection = ({
             itemsPerPage={itemsPerPage}
           />
 
-          {!isLoading && exercisesData.length === 0 && (
+          {!isLoading && exercisesData?.length === 0 && (
             <NoDataDiv heading='No exercises found' />
           )}
 
           {/* Infinite scroll spinner for mobile */}
-          {isLoading && exercisesData.length > 0 && (
+          {isLoading && exercisesData?.length > 0 && (
             <div className='md:hidden'>
               <Spinner loading={isLoading} />
             </div>

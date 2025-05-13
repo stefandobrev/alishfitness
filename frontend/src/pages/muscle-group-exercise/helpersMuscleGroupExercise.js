@@ -1,10 +1,16 @@
 import { api, camelToSnake } from '@/utils';
 
 export const fetchExercises = async (muscleGroupFilteredData) => {
-  const trasnformedData = camelToSnake(muscleGroupFilteredData);
-  const response = await api('exercises/filter/', 'POST', trasnformedData);
-  if (!response.ok && response.status !== 404) {
+  const transformedData = camelToSnake(muscleGroupFilteredData);
+  const response = await api('exercises/filter/', 'POST', transformedData);
+
+  if (response.status === 404) {
+    return { error: true };
+  }
+
+  if (!response.ok) {
     throw new Error('Failed to fetch exercises.');
   }
+
   return response.json();
 };

@@ -61,6 +61,7 @@ export const MuscleGroupExercisePage = () => {
         offset: currentOffset,
       });
 
+      console.log('data.error:', data.error, typeof data.error);
       if (data.error) {
         navigate('/404', { replace: true });
       }
