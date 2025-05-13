@@ -30,7 +30,14 @@ export const manageExercises = z.object({
       { message: 'Primary group is required.' },
     ),
   secondaryGroups: z.array(z.string()).optional().default([]),
-  steps: z.array(z.string()).optional().default([]),
+  steps: z
+    .array(
+      z.object({
+        description: z.string().min(1, 'Step description is required.'),
+      }),
+    )
+    .optional()
+    .default([]),
   gifLinkFront: z
     .string()
     .min(1, 'Front GIF link is required.')
@@ -40,5 +47,12 @@ export const manageExercises = z.object({
     .min(1, 'Side GIF link is required.')
     .url('Invalid URL format'),
   videoLink: z.string().url('Invalid URL format').optional().or(z.literal('')),
-  mistakes: z.array(z.string()).optional().default([]),
+  mistakes: z
+    .array(
+      z.object({
+        description: z.string().min(1, 'Mistake description is required.'),
+      }),
+    )
+    .optional()
+    .default([]),
 });

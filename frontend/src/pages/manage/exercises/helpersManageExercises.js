@@ -25,6 +25,8 @@ export const fetchExerciseData = async (id) => {
 
 export const saveExercise = async (exerciseData, id = null) => {
   const transformedData = camelToSnake(exerciseData);
+  console.log({ transformedData });
+
   try {
     const isEditMode = Boolean(id);
     let response;
@@ -46,7 +48,7 @@ export const saveExercise = async (exerciseData, id = null) => {
     if (!response.ok) {
       const errorData = await response.json();
 
-      const key = Object.key(errorData)[0];
+      const key = Object.keys(errorData)[0];
       const errorMessage = errorData[key]?.[0] || 'Something went wrong';
 
       return {

@@ -46,11 +46,20 @@ export const DefaultForm = ({
       setValue('title', exerciseData.title);
       setValue('primaryGroup', exerciseData.primaryGroup);
       setValue('secondaryGroups', exerciseData.secondaryGroups);
-      setValue('steps', exerciseData.steps);
       setValue('gifLinkFront', exerciseData.gifLinkFront);
       setValue('gifLinkSide', exerciseData.gifLinkSide);
       setValue('videoLink', exerciseData.videoLink);
-      setValue('mistakes', exerciseData.mistakes);
+
+      const formattedSteps = exerciseData.steps.map((step) => ({
+        description: step.description || step,
+      }));
+
+      const formattedMistakes = exerciseData.mistakes.map((mistake) => ({
+        description: mistake.description || mistake,
+      }));
+      setValue('steps', formattedSteps);
+
+      setValue('mistakes', formattedMistakes);
 
       exerciseDataRef.current = exerciseData;
     }

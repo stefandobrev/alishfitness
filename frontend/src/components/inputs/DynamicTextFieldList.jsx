@@ -9,7 +9,10 @@ export const DynamicTextFieldList = ({
   textAreaRefs,
   autoResize,
 }) => {
-  const { control } = useFormContext();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -32,8 +35,9 @@ export const DynamicTextFieldList = ({
           )} ${index + 1}`}</label>
           <div className='mt-1 flex items-center space-x-1'>
             <Controller
-              name={`${labelPrefix.toLowerCase()}[${index}]`}
+              name={`${labelPrefix.toLowerCase()}[${index}].description`}
               control={control}
+              defaultValue={fieldValue.description || ''}
               render={({ field }) => (
                 <textarea
                   {...field}
@@ -52,10 +56,15 @@ export const DynamicTextFieldList = ({
               <XMarkIcon className='hover:text-logored h-5 w-5 cursor-pointer text-gray-400 transition-colors duration-200' />
             </button>
           </div>
+          {errors?.[labelPrefix.toLowerCase()]?.[index]?.description && (
+            <p className='mt-1 text-sm text-red-500'>
+              {errors[labelPrefix.toLowerCase()][index].description.message}
+            </p>
+          )}
         </div>
       ))}
       <ActionButton
-        onClick={() => append('')}
+        onClick={() => append({ description: '' })}
         variant={ButtonVariant.WHITE}
         className='flex w-full flex-row items-center gap-1 md:w-auto'
       >

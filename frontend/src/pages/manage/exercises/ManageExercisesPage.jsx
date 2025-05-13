@@ -152,12 +152,14 @@ export const ManageExercisesPage = () => {
       steps: [],
       mistakes: [],
     });
+    setMessage('');
   };
 
   const handleSelectExercise = (exerciseId) => {
     setSelectedExercise(exerciseId);
     setMode('edit');
     setActiveTab('form');
+    setMessage('');
   };
 
   const handleTabChange = (tab) => {
