@@ -192,7 +192,7 @@ export const ExerciseList = ({
           )}
 
           {isLoading && (
-            <div className='flex justify-center py-2'>
+            <div className='flex h-[60vh] justify-center py-2'>
               <Spinner
                 loading={isLoading}
                 size={exerciseTitles.length === 0 ? 'medium' : 'small'}
