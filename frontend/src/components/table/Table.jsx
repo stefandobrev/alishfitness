@@ -1,10 +1,20 @@
 import { TableColumns } from '.';
 
-export const Table = ({ tableColumns, rows, onRowClick }) => {
+export const Table = ({
+  tableColumns,
+  rows,
+  onRowClick,
+  onSort,
+  sortConfig,
+}) => {
   return (
     <div className='mx-4 overflow-auto border border-gray-200'>
       <table className='w-full border-separate border'>
-        <TableColumns tableColumns={tableColumns} />
+        <TableColumns
+          tableColumns={tableColumns}
+          onSort={onSort}
+          sortConfig={sortConfig}
+        />
         <tbody>
           {rows.map((row, index) => {
             return (

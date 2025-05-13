@@ -22,12 +22,12 @@ export const ExercisesTable = ({ sessionIndex, session }) => {
   };
 
   const tableColumns = [
-    { title: 'Seq', width: 'w-[10px]' },
-    { title: 'Muscle Group', width: 'min-w-[150px]' },
-    { title: 'Exercise', width: 'min-w-[150px]' },
-    { title: 'Sets', width: 'w-[10px]' },
-    { title: 'Reps', width: 'w-[30px]' },
-    { title: '', width: 'w-[5px]' },
+    { id: 'sequence', title: 'Seq', width: 'w-[10px]' },
+    { id: 'muscleGroup', title: 'Muscle Group', width: 'min-w-[150px]' },
+    { id: 'exercise', title: 'Exercise', width: 'min-w-[150px]' },
+    { id: 'sets', title: 'Sets', width: 'w-[10px]' },
+    { id: 'reps', title: 'Reps', width: 'w-[30px]' },
+    { id: 'action', title: '', width: 'w-[5px]' },
   ];
 
   return isMobile ? (

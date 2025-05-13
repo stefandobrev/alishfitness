@@ -108,15 +108,6 @@ export const ViewAllPage = () => {
     navigate(`/training-programs/edit/${programId}`);
   };
 
-  const tableColumns = [
-    { title: 'Title', width: 'min-w-[200px]' },
-    { title: 'Mode', width: 'w-[60px]' },
-    { title: 'Assigned User', width: 'w-[400px]' },
-    { title: 'Status', width: 'w-[60px]' },
-    { title: 'Activation Date', width: 'w-[150px]' },
-    { title: 'Action', width: 'w-[50px]' },
-  ];
-
   const tableRows = formatRows(trainingProgramsData);
 
   const handlePageChange = (newPage) => {
@@ -163,7 +154,6 @@ export const ViewAllPage = () => {
       ) : (
         <TableContainer
           activeTab={activeTab}
-          tableColumns={tableColumns}
           tableRows={tableRows}
           navigateToEdit={navigateToEdit}
           totalPrograms={totalPrograms}
