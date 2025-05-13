@@ -21,7 +21,9 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         <span style={{ transform: 'translateY(-2px)' }}>{'<'}</span>
       </ActionButton>
 
-      <span className='text-gray-700'>Page {currentPage}</span>
+      <span className='text-gray-700'>
+        Page {currentPage} of {totalPages}
+      </span>
 
       <ActionButton
         variant={ButtonVariant.WHITE}
