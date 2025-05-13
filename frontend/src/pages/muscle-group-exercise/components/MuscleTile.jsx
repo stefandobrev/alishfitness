@@ -17,6 +17,7 @@ export const MuscleTile = ({ exercise }) => {
 
   const slugTitle = slugify(exercise.title);
 
+  // Videos autoplay
   useEffect(() => {
     const tile = tileRef.current;
     const video = videoRef.current;
@@ -46,7 +47,7 @@ export const MuscleTile = ({ exercise }) => {
         {
           root: null,
           rootMargin: '0px',
-          threshold: 0.4,
+          threshold: 0.7,
         },
       );
 
@@ -66,7 +67,7 @@ export const MuscleTile = ({ exercise }) => {
     }
 
     return () => cleanup();
-  }, []);
+  }, [exercise]);
 
   const handleTileClick = () => {
     navigate(`/exercises/${slugMuscleGroup}/${slugTitle}`);
