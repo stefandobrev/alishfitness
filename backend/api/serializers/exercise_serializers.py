@@ -198,3 +198,13 @@ class ExerciseSerializer(serializers.ModelSerializer):
                 )
         
         return instance
+    
+class MuscleGroupTitleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MuscleGroup
+        fields = ["name", "slug"]
+
+class ExerciseTitleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Exercise
+        fields = ["title", "slug"]

@@ -6,9 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
 from api.models import Exercise, MuscleGroup
-from api.serializers.exercise_serializers import ExerciseSerializer
-from api.serializers.common_serializers import MuscleGroupTitleSerializer
-
+from api.serializers.exercise_serializers import ExerciseSerializer, MuscleGroupTitleSerializer
 
 class MuscleGroupView(APIView):
     """View for getting all muscle groups."""

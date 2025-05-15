@@ -9,7 +9,8 @@ from django.utils import timezone
 from django.utils.dateparse import parse_date
 
 from api.models import User, MuscleGroup, Exercise, TrainingProgram
-from api.serializers.common_serializers import ExerciseTitleSerializer, UserNamesSerializer
+from api.serializers.user_serializers import UserSummarySerializer
+from api.serializers.exercise_serializers import ExerciseTitleSerializer
 from api.serializers.training_program_serializers import TrainingProgramSerializer
 
 
@@ -24,7 +25,7 @@ class TrainingSetupDataView(APIView):
 
         data = {
             "muscle_groups": {},
-            "users": UserNamesSerializer(all_users, many=True).data
+            "users": UserSummarySerializer(all_users, many=True).data
         }
 
         for muscle_group in all_muscle_groups:
@@ -55,7 +56,7 @@ class FilterDataView(APIView):
 
         data = {
             "modes": all_modes,
-            "users": UserNamesSerializer(all_users, many=True).data,
+            "users": UserSummarySerializer(all_users, many=True).data,
             "statuses": all_statuses
         }
 
@@ -129,7 +130,7 @@ class TrainingProgramsView(APIView):
 
 
 class CreateProgramView(APIView):
-    """API view for creating a new training program."""
+    """View for creating a new training program."""
     permission_classes = [IsAdminUser]
 
     def post(self, request):
@@ -224,7 +225,7 @@ class CreateProgramView(APIView):
             raise ValidationError({"sets": "Sets must be a valid number."})
         
     def _process_muscle_group(self, exercise):
-        """Assignes PK to muscle group. Saves as custom as alternative."""
+        """Assigns PK to muscle group. Saves as custom as alternative."""
         muscle_group_input = exercise.pop("muscle_group_input", None)
         if not muscle_group_input:
             return
@@ -245,7 +246,7 @@ class CreateProgramView(APIView):
             })
 
     def _process_exercise_input(self, exercise):
-        """Assignes PK to exercise. Saves as custom if muscle group is custom."""
+        """Assigns PK to exercise. Saves as custom if muscle group is custom."""
         exercise_input = exercise.pop("exercise_input", None)
         if not exercise_input:
             return

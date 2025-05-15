@@ -212,3 +212,8 @@ class TokenRefreshSerializer(serializers.Serializer):
             )
         except Exception as e:
             raise serializers.ValidationError(f"Token validation failed: {str(e)}")
+        
+class UserSummarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "first_name", "last_name", "username"]
