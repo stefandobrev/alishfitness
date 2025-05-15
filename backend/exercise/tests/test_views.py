@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils.dateparse import parse_datetime
 from copy import deepcopy
 
-from api.models import Exercise, Step
+from exercise.models import Exercise, Step
 
 @pytest.mark.django_db(transaction=True)
 class TestExerciseController:

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from nested_admin import NestedTabularInline, NestedModelAdmin
-from api.models import TrainingProgram, TrainingSession, ProgramExercise
+from training_program.models import TrainingProgram, TrainingSession, ProgramExercise
 
 class ProgramExerciseInline(NestedTabularInline):
     model = ProgramExercise

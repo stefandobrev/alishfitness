@@ -9,7 +9,7 @@ from rest_framework_simplejwt.token_blacklist.models import (
     BlacklistedToken,
     OutstandingToken,
 )
-from api.models import User
+from user.models import User
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for user registration, profile updates, and settings updates."""

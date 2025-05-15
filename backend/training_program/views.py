@@ -8,7 +8,10 @@ from django.db.models import Q
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 
-from api.models import User, MuscleGroup, Exercise, TrainingProgram
+from user.models import User
+from exercise.models import Exercise, MuscleGroup
+from training_program.models import TrainingProgram
+
 from user.serializers import UserSummarySerializer
 from exercise.serializers import ExerciseTitleSerializer
 from training_program.serializers import TrainingProgramSerializer

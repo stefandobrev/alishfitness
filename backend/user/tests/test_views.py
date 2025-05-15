@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from datetime import timedelta
 
-from api.models import User
+from user.models import User
 
 @pytest.mark.django_db(transaction=True)
 class TestUserController:

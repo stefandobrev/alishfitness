@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
-from api.models import Exercise, MuscleGroup
+from exercise.models import Exercise, MuscleGroup
 from exercise.serializers import ExerciseSerializer, MuscleGroupTitleSerializer
 
 class MuscleGroupView(APIView):

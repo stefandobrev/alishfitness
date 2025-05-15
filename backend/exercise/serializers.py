@@ -2,7 +2,7 @@ from rest_framework import serializers
 import re
 from django.utils.text import slugify
 
-from api.models import Exercise, Step, Mistake, MuscleGroup
+from exercise.models import Exercise, Step, Mistake, MuscleGroup
 
 class StepSerializer(serializers.ModelSerializer):
     class Meta:

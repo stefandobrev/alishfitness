@@ -4,7 +4,9 @@ from rest_framework.test import APIClient
 
 from datetime import date
 
-from api.models import User, MuscleGroup, Exercise, TrainingProgram
+from user.models import User
+from exercise.models import Exercise, MuscleGroup
+from training_program.models import TrainingProgram
 
 @pytest.fixture(scope="session", autouse=True)
 def set_test_db():

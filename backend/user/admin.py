@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import User
+from user.models import User
 
 class UserAdmin(admin.ModelAdmin):
     ordering = ["username"]

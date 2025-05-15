@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from api.models import User, TrainingProgram, TrainingSession, ProgramExercise
+from user.models import User
+from training_program.models import TrainingProgram, TrainingSession, ProgramExercise
 
 class ProgramExerciseSerializer(serializers.ModelSerializer):
     class Meta:

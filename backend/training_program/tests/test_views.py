@@ -5,7 +5,7 @@ from copy import deepcopy
 
 from datetime import date, timedelta
 
-from api.models import TrainingProgram, ProgramExercise
+from training_program.models import TrainingProgram, ProgramExercise
 
 @pytest.mark.django_db(transaction=True)
 class TestTrainingProgramController:
