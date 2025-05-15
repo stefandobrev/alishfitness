@@ -7,7 +7,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from datetime import datetime, timezone
 
 from api.models import User
-from api.serializers.user_serializers import (
+from backend.user.serializers import (
     UserSerializer,
     LoginSerializer,
     UpdatePasswordSerializer,

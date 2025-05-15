@@ -1,13 +1,13 @@
 from django.urls import path
 
-from api.views.exercise_views import (
+from backend.exercise.views import (
     MuscleGroupView,
     ExerciseTitleView,
     ExerciseDetailView,
     ExerciseViewSet,
     ExerciseBySlugView
 )
-from api.views.user_views import (
+from backend.user.views import (
     CreateUserView,
     LoginView,
     ProfileView,
@@ -17,7 +17,7 @@ from api.views.user_views import (
     PasswordUpdateView
 )
 
-from api.views.training_program_views import (
+from backend.training_program.views import (
     TrainingSetupDataView,
     FilterDataView,
     HasActiveProgramView,

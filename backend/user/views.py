@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
-from api.serializers.user_serializers import (
+from user.serializers import (
     UserSerializer,
     LoginSerializer,
     UpdatePasswordSerializer,

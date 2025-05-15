@@ -9,9 +9,9 @@ from django.utils import timezone
 from django.utils.dateparse import parse_date
 
 from api.models import User, MuscleGroup, Exercise, TrainingProgram
-from api.serializers.user_serializers import UserSummarySerializer
-from api.serializers.exercise_serializers import ExerciseTitleSerializer
-from api.serializers.training_program_serializers import TrainingProgramSerializer
+from user.serializers import UserSummarySerializer
+from exercise.serializers import ExerciseTitleSerializer
+from training_program.serializers import TrainingProgramSerializer
 
 
 class TrainingSetupDataView(APIView):

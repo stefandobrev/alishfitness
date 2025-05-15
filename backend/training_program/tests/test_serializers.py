@@ -2,7 +2,7 @@ import pytest
 from rest_framework.exceptions import ValidationError
 from copy import deepcopy
 
-from api.serializers.training_program_serializers import TrainingProgramSerializer
+from backend.training_program.serializers import TrainingProgramSerializer
 
 @pytest.mark.django_db(transaction=True)
 class TestTrainingProgramSerializer:

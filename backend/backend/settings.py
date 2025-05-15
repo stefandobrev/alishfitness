@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "api",
+    "user",
+    "exercise",
+    "training_program",
     "rest_framework_simplejwt.token_blacklist",
 ]
 

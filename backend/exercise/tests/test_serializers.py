@@ -1,7 +1,7 @@
 import pytest
 from rest_framework.exceptions import ValidationError
 
-from api.serializers.exercise_serializers import ExerciseSerializer
+from backend.exercise.serializers import ExerciseSerializer
 
 @pytest.mark.django_db(transaction=True)
 class TestExerciseSerializer:
