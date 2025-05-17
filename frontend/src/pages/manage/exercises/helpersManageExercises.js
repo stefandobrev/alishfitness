@@ -18,33 +18,22 @@ export const fetchExerciseTitles = async (filterData) => {
 };
 
 export const fetchExerciseData = async (id) => {
-  console.log({ id });
-
-  const response = await api(`exercises/exercise-detail/${id}/`, 'GET');
+  const response = await api(`exercises/${id}/`, 'GET');
   if (!response.ok) throw new Error('Failed to fetch exercise data.');
   return response.json();
 };
 
 export const saveExercise = async (exerciseData, id = null) => {
   const transformedData = camelToSnake(exerciseData);
-  console.log({ transformedData });
 
   try {
     const isEditMode = Boolean(id);
     let response;
 
     if (isEditMode) {
-      response = await api(
-        `exercises/update-exercise/${id}/`,
-        'PUT',
-        transformedData,
-      );
+      response = await api(`exercises/${id}/`, 'PUT', transformedData);
     } else {
-      response = await api(
-        'exercises/create-exercise/',
-        'POST',
-        transformedData,
-      );
+      response = await api('exercises/', 'POST', transformedData);
     }
 
     if (!response.ok) {
@@ -77,7 +66,7 @@ export const saveExercise = async (exerciseData, id = null) => {
 
 export const deleteExercise = async (id) => {
   try {
-    const response = await api(`exercises/delete-exercise/${id}/`, 'DELETE');
+    const response = await api(`exercises/${id}/`, 'DELETE');
     if (!response.ok) {
       return {
         type: 'error',

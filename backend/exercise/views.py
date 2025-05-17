@@ -67,12 +67,12 @@ class ExerciseViewSet(viewsets.ViewSet):
             permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]
     
-    def retrieve(self, request, id):
+    def retrieve(self, request, pk):
         """Return an exercise's data from the DB."""
         try: 
             exercise = Exercise.objects.prefetch_related(
                 "secondary_groups", "steps", "mistakes"
-                ).select_related("primary_group").get(id=id)
+                ).select_related("primary_group").get(id=pk)
             
             return Response(self._get_exercise_data(exercise))
         except Exercise.DoesNotExist:

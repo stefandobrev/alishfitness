@@ -120,7 +120,6 @@ export const ManageExercisesPage = () => {
         const updatedData = await fetchExerciseData(selectedExercise);
         const transformedData = snakeToCamel(updatedData);
         setExerciseData(transformedData);
-        console.log({ selectedExercise });
       }
     } finally {
       setIsLoading(false);
