@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "corsheaders",
-    "api",
     "user",
     "exercise",
     "training_program",
@@ -94,7 +93,7 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = "api.User"
+AUTH_USER_MODEL = "user.User"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
