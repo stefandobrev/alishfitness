@@ -1,17 +1,22 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
 from training_program.views import (
     TrainingSetupDataView,
     FilterDataView,
     HasActiveProgramView,
-    TrainingProgramsView, 
-    CreateProgramView
+    FilteredTrainingProgramsView, 
+    TrainingProgramViewSet
 )
 
+router = DefaultRouter()
+router.register(r"", TrainingProgramViewSet, basename="training-program" )
+
 urlpatterns = [
+    path("", include(router.urls)),
     path("training-setup-data/", TrainingSetupDataView.as_view(), name="training-setup-data"),
     path("filter-data/", FilterDataView.as_view(), name="training-programs-filter-data"),
     path("has-active/", HasActiveProgramView.as_view(), name="has-active-program"),
-    path("create-program/", CreateProgramView.as_view(), name="create-program"),
-    path("", TrainingProgramsView.as_view(), name="training-programs"),
+    # path("create-program/", TrainingProgramViewSet.as_view(), name="create-program"),
+    path("filtered/", FilteredTrainingProgramsView.as_view(), name="filtered-training-programs"),
 ]

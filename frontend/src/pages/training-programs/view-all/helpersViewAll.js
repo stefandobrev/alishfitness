@@ -4,7 +4,11 @@ export const fetchTrainingProgramData = async (
   trainingProgramsFilteredData,
 ) => {
   const transformedData = camelToSnake(trainingProgramsFilteredData);
-  const response = await api('training-programs/', 'POST', transformedData);
+  const response = await api(
+    'training-programs/filtered/',
+    'POST',
+    transformedData,
+  );
   if (!response.ok) throw new Error('Failed to fetch training programs data.');
   return response.json();
 };

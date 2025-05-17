@@ -1,4 +1,4 @@
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser
@@ -82,7 +82,7 @@ class HasActiveProgramView(APIView):
         return Response(query.exists())
 
 
-class TrainingProgramsView(APIView):
+class FilteredTrainingProgramsView(APIView):
     """View for retrieving training programs."""
     permission_classes = [IsAdminUser]
 
@@ -132,11 +132,11 @@ class TrainingProgramsView(APIView):
         })
 
 
-class CreateProgramView(APIView):
+class TrainingProgramViewSet(viewsets.ViewSet):
     """View for creating a new training program."""
     permission_classes = [IsAdminUser]
 
-    def post(self, request):
+    def create(self, request):
         """
             Create a new training program or new template.
             Schedule array is removed from serializer validation (validated first)
