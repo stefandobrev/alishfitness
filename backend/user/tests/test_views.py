@@ -9,7 +9,7 @@ from datetime import timedelta
 from user.models import User
 
 @pytest.mark.django_db(transaction=True)
-class TestUserController:
+class TestUserViewSet:
     def test_create_user_success(self, api_client, test_user, test_admin):
         user_data = {
             "username": "newuser",

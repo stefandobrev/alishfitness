@@ -8,7 +8,7 @@ from datetime import date, timedelta
 from training_program.models import TrainingProgram, ProgramExercise
 
 @pytest.mark.django_db(transaction=True)
-class TestTrainingProgramController:
+class TestTrainingProgramViewSet:
     @pytest.fixture
     def valid_training_program_data(self, test_user, test_exercise, test_muscle_group):
         activation_date = date.today()
@@ -77,7 +77,7 @@ class TestTrainingProgramController:
         valid_data = deepcopy(valid_training_program_data)
 
         api_client.force_authenticate(user=test_admin)
-        url = reverse("create-program")
+        url = reverse("training-program-list")
         response = api_client.post(url, valid_data, format="json")
         assert response.status_code == status.HTTP_201_CREATED
         assert response.data.get("message") == "Program created successfully!"
@@ -103,7 +103,7 @@ class TestTrainingProgramController:
         invalid_schedule_data["schedule_array"] = []
 
         api_client.force_authenticate(user=test_admin)
-        url = reverse("create-program")
+        url = reverse("training-program-list")
         response = api_client.post(url, invalid_schedule_data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -112,7 +112,7 @@ class TestTrainingProgramController:
         invalid_schedule_data.pop("schedule_array", None)
 
         api_client.force_authenticate(user=test_admin)
-        url = reverse("create-program")
+        url = reverse("training-program-list")
         response = api_client.post(url, invalid_schedule_data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -123,7 +123,7 @@ class TestTrainingProgramController:
         invalid_sets_data["sessions"][0]["exercises"][0]["sets"] = "-1"
 
         api_client.force_authenticate(user=test_admin)
-        url = reverse("create-program")
+        url = reverse("training-program-list")
         response = api_client.post(url, invalid_sets_data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -131,7 +131,7 @@ class TestTrainingProgramController:
 
         invalid_sets_data["sessions"][0]["exercises"][0]["sets"] = "k"
         api_client.force_authenticate(user=test_admin)
-        url = reverse("create-program")
+        url = reverse("training-program-list")
         response = api_client.post(url, invalid_sets_data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -142,7 +142,7 @@ class TestTrainingProgramController:
         invalid_muscle_group_data["sessions"][0]["exercises"][0]["muscle_group_input"] = "invalid"
 
         api_client.force_authenticate(user=test_admin)
-        url = reverse("create-program")
+        url = reverse("training-program-list")
         response = api_client.post(url, invalid_muscle_group_data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -154,7 +154,7 @@ class TestTrainingProgramController:
         invalid_exercise_data["sessions"][0]["exercises"][0]["exercise_input"] = "invalid"
 
         api_client.force_authenticate(user=test_admin)
-        url = reverse("create-program")
+        url = reverse("training-program-list")
         response = api_client.post(url, invalid_exercise_data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -165,7 +165,7 @@ class TestTrainingProgramController:
         invalid_schedule_id_data["schedule_array"] = ["3"]
 
         api_client.force_authenticate(user=test_admin)
-        url = reverse("create-program")
+        url = reverse("training-program-list")
         response = api_client.post(url, invalid_schedule_id_data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -176,7 +176,7 @@ class TestTrainingProgramController:
         missing_date_data["activation_date"] = ""
 
         api_client.force_authenticate(user=test_admin)
-        url = reverse("create-program")
+        url = reverse("training-program-list")
         response = api_client.post(url, missing_date_data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -187,7 +187,7 @@ class TestTrainingProgramController:
         valid_data["program_title"] = "Current Test Program"
         
         api_client.force_authenticate(user=test_admin)
-        url = reverse("create-program")
+        url = reverse("training-program-list")
         response = api_client.post(url, valid_data, format="json")
 
         assert response.status_code == status.HTTP_201_CREATED
@@ -201,7 +201,7 @@ class TestTrainingProgramController:
         valid_data["program_title"] = "Scheduled Test Program"
         valid_data["activation_date"] += timedelta(days=1)
 
-        url = reverse("create-program")
+        url = reverse("training-program-list")
         response = api_client.post(url, valid_data, format="json")
         scheduled_program = TrainingProgram.objects.get(program_title="Scheduled Test Program")
         assert scheduled_program.status == "scheduled"
@@ -211,7 +211,7 @@ class TestTrainingProgramController:
         api_client.force_authenticate(test_admin)
         count_data = deepcopy(valid_search_data)
 
-        url = reverse("training-programs")
+        url = reverse("filtered-training-programs")
         response = api_client.post(url, count_data, format="json")
 
         assert response.data["total_count"] == 2
@@ -221,14 +221,14 @@ class TestTrainingProgramController:
         search_data = deepcopy(valid_search_data)
         search_data["search_query"] = "Test"
 
-        url = reverse("training-programs")
+        url = reverse("filtered-training-programs")
         response = api_client.post(url, search_data, format="json")
 
         assert response.data["total_count"] == 2
 
         search_data["search_query"] = test_training_program.program_title[7:]
 
-        url = reverse("training-programs")
+        url = reverse("filtered-training-programs")
         response = api_client.post(url, search_data, format="json")
 
         assert response.data["total_count"] == 1
@@ -239,7 +239,7 @@ class TestTrainingProgramController:
         mode_data = deepcopy(valid_search_data)
         mode_data["filter_mode"] = "template"
 
-        url = reverse("training-programs")
+        url = reverse("filtered-training-programs")
         response = api_client.post(url, mode_data, format="json")
 
         assert response.data["total_count"] == 1
@@ -249,7 +249,7 @@ class TestTrainingProgramController:
         user_data = deepcopy(valid_search_data)
         user_data["filter_user"] = test_user.id
 
-        url = reverse("training-programs")
+        url = reverse("filtered-training-programs")
         response = api_client.post(url, user_data, format="json")
 
         assert response.data["total_count"] == 1
@@ -259,7 +259,7 @@ class TestTrainingProgramController:
         status_data = deepcopy(valid_search_data)
         status_data["filter_status"] = "current"
 
-        url = reverse("training-programs")
+        url = reverse("filtered-training-programs")
         response = api_client.post(url, status_data, format="json")
 
         assert response.data["total_count"] == 1
@@ -269,7 +269,7 @@ class TestTrainingProgramController:
         start_date_data = deepcopy(valid_search_data)
         start_date_data["filter_start_date"] = test_training_program.activation_date - timedelta(days=1)
 
-        url = reverse("training-programs")
+        url = reverse("filtered-training-programs")
         response = api_client.post(url, start_date_data, format="json")
 
         assert response.data["total_count"] == 1
@@ -280,7 +280,7 @@ class TestTrainingProgramController:
         range_date_data["filter_start_date"] = test_training_program.activation_date - timedelta(days=1)
         range_date_data["filter_end_date"] = test_training_program.activation_date + timedelta(days=1)
 
-        url = reverse("training-programs")
+        url = reverse("filtered-training-programs")
         response = api_client.post(url, range_date_data, format="json")
 
         assert response.data["total_count"] == 1

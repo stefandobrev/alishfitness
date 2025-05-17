@@ -2,6 +2,7 @@ from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
@@ -120,6 +121,7 @@ class ExerciseViewSet(viewsets.ViewSet):
         exercise.delete()
         return Response({"message": "Exercise deleted successfully!"})
     
+    @action(detail=False, methods=["post"])
     def filtered(self, request):
         """Return exercises filtered by muscle group and search query."""
         muscle_group_id = request.data.get("muscle_group_id")

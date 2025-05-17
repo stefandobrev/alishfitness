@@ -7,7 +7,7 @@ from copy import deepcopy
 from exercise.models import Exercise, Step
 
 @pytest.mark.django_db(transaction=True)
-class TestExerciseController:
+class TestExerciseViewSet:
     @pytest.fixture
     def valid_search_data(self):
         return {
@@ -165,7 +165,7 @@ class TestExerciseController:
     def test_create(self, api_client, test_admin, test_muscle_group):
         api_client.force_authenticate(user=test_admin)
 
-        url = reverse("create-exercise")
+        url = reverse("exercise-list")
         new_exercise = {
             "title": "Test New Exercise",
             "primary_group": test_muscle_group.slug,
@@ -189,7 +189,7 @@ class TestExerciseController:
     def test_update(self, api_client, test_admin, test_exercise, test_secondary_muscle_group):
         api_client.force_authenticate(user=test_admin)
 
-        url = reverse("update-exercise", args=[test_exercise.id])
+        url = reverse("exercise-detail", args=[test_exercise.id])
 
         updated_data = {
             "title": "Updated Test Exercise",
@@ -210,7 +210,7 @@ class TestExerciseController:
     def test_delete_success(self, api_client, test_admin, test_exercise):
         api_client.force_authenticate(user=test_admin)
 
-        url = reverse("delete-exercise", args=[test_exercise.id])
+        url = reverse("exercise-detail", args=[test_exercise.id])
 
         response = api_client.delete(url)
 
@@ -219,7 +219,7 @@ class TestExerciseController:
     def test_delete_invalid(self, api_client, test_admin):
         api_client.force_authenticate(user=test_admin)
 
-        url = reverse("delete-exercise", args=[999999])
+        url = reverse("exercise-detail", args=[999999])
 
         response = api_client.delete(url)
 
@@ -228,7 +228,7 @@ class TestExerciseController:
     def test_get_exercises_group_success(self, api_client, test_user, test_muscle_group ,test_exercise):
         api_client.force_authenticate(user=test_user)
 
-        url = reverse("filter-exercises")
+        url = reverse("filtered-exercises")
 
         exercises_group = {
             "muscle_group_id": test_muscle_group.slug,
@@ -247,7 +247,7 @@ class TestExerciseController:
     def test_get_exercises_group_missing(self, api_client, test_user, test_exercise):
         api_client.force_authenticate(user=test_user)
 
-        url = reverse("filter-exercises")
+        url = reverse("filtered-exercises")
 
         missing_excercise_group = {
             "muscle_group_id": "",
@@ -263,7 +263,7 @@ class TestExerciseController:
     def test_get_exercises_group_invalid(self, api_client, test_user, test_exercise):
         api_client.force_authenticate(user=test_user)
 
-        url = reverse("filter-exercises")
+        url = reverse("filtered-exercises")
 
         invalid_excercise_group = {
             "muscle_group_id": "invalidgroup",
