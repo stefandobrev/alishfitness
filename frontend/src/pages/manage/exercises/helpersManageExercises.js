@@ -18,6 +18,8 @@ export const fetchExerciseTitles = async (filterData) => {
 };
 
 export const fetchExerciseData = async (id) => {
+  console.log({ id });
+
   const response = await api(`exercises/exercise-detail/${id}/`, 'GET');
   if (!response.ok) throw new Error('Failed to fetch exercise data.');
   return response.json();

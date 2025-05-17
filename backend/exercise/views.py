@@ -56,11 +56,18 @@ class ExerciseTitleView(APIView):
         return Response(list(exercise_titles))
 
 
-class ExerciseDetailView(APIView):
-    """View for getting exercise details by ID."""
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, id):
+class ExerciseViewSet(viewsets.ViewSet):
+    """ViewSet for exercise CRUD operations."""
+    
+    def get_permissions(self):
+        """Set appropriate permissions based on action."""
+        if self.action in ['create', 'update', 'destroy']:
+            permission_classes = [IsAdminUser]
+        else:
+            permission_classes = [IsAuthenticated]
+        return [permission() for permission in permission_classes]
+    
+    def retrieve(self, request, id):
         """Return an exercise's data from the DB."""
         try: 
             exercise = Exercise.objects.prefetch_related(
@@ -84,18 +91,6 @@ class ExerciseDetailView(APIView):
             "steps": [step.description for step in exercise.steps.all()],
             "mistakes": [mistake.description for mistake in exercise.mistakes.all()]
         }
-
-
-class ExerciseViewSet(viewsets.ViewSet):
-    """ViewSet for exercise CRUD operations."""
-    
-    def get_permissions(self):
-        """Set appropriate permissions based on action."""
-        if self.action in ['create', 'update', 'destroy']:
-            permission_classes = [IsAdminUser]
-        else:
-            permission_classes = [IsAuthenticated]
-        return [permission() for permission in permission_classes]
     
     def create(self, request):
         """Create a new exercise model with steps and mistakes."""
