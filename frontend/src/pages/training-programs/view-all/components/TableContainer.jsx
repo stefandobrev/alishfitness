@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { Pagination } from '@/components/common';
 import { Table } from '@/components/table';
 
@@ -12,32 +10,30 @@ export const TableContainer = ({
   totalPages,
   onPageChange,
   itemsPerPage,
+  sortConfig,
+  onSortChange,
 }) => {
-  const [sortConfig, setSortConfig] = useState([]);
-
   const onSort = (columnId) => {
-    setSortConfig((prevConfig) => {
-      const existingSort = prevConfig.find((config) => config.key === columnId);
+    const existingSort = sortConfig.find((config) => config.key === columnId);
 
-      if (existingSort) {
-        // Cycle sorting states: asc -> desc -> no sorting (remove it)
-        if (existingSort.direction === 'asc') {
-          return prevConfig.map((config) =>
-            config.key === columnId ? { ...config, direction: 'desc' } : config,
-          );
-        } else if (existingSort.direction === 'desc') {
-          // Remove sorting
-          return prevConfig.filter((config) => config.key !== columnId);
-        }
-      } else {
-        // Add new sorting with 'asc' as the default. Works for multiple columns sort
-        return [...prevConfig, { key: columnId, direction: 'asc' }];
+    let newSortConfig;
+    if (existingSort) {
+      // Cycle sorting states: asc -> desc -> no sorting (remove it)
+      if (existingSort.direction === 'asc') {
+        // Places latest sorting in front of the sort array
+        const newConfig = sortConfig.filter((c) => c.key !== columnId);
+        newSortConfig = [{ key: columnId, direction: 'desc' }, ...newConfig];
+      } else if (existingSort.direction === 'desc') {
+        // Remove sorting
+        newSortConfig = sortConfig.filter((c) => c.key !== columnId);
       }
-      return prevConfig;
-    });
-  };
+    } else {
+      // Add new sorting with 'asc' as the default. Works for multiple columns sort
+      newSortConfig = [{ key: columnId, direction: 'asc' }, ...sortConfig];
+    }
 
-  console.log({ sortConfig });
+    onSortChange(newSortConfig);
+  };
 
   const tableColumns = [
     { id: 'title', title: 'Title', width: 'min-w-[200px]', sortable: true },

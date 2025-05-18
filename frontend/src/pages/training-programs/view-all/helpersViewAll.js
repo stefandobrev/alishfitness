@@ -4,6 +4,8 @@ export const fetchTrainingProgramData = async (
   trainingProgramsFilteredData,
 ) => {
   const transformedData = camelToSnake(trainingProgramsFilteredData);
+  console.log({ transformedData });
+
   const response = await api(
     'training-programs/filtered/',
     'POST',

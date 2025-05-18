@@ -19,6 +19,7 @@ export const defaultViewAllFilters = {
   filterStatus: null,
   filterStartDate: null,
   filterEndDate: null,
+  sortConfig: [],
 };
 const defaultPagination = {
   offset: INITIAL_OFFSET,
@@ -68,6 +69,7 @@ export const ViewAllPage = () => {
         filterStatus: filters.filterStatus,
         filterStartDate: toUtcMidnightDateString(filters.filterStartDate),
         filterEndDate: toUtcMidnightDateString(filters.filterEndDate),
+        sortConfig: filters.sortConfig,
         itemsPerPage: ITEMS_PER_PAGE,
         offset: currentOffset,
       });
@@ -161,6 +163,10 @@ export const ViewAllPage = () => {
           totalPages={totalPages}
           onPageChange={handlePageChange}
           itemsPerPage={ITEMS_PER_PAGE}
+          sortConfig={filters.sortConfig}
+          onSortChange={(newSortConfig) =>
+            setFilters((prev) => ({ ...prev, sortConfig: newSortConfig }))
+          }
         />
       )}
 
