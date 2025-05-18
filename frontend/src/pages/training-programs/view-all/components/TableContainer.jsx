@@ -41,14 +41,20 @@ export const TableContainer = ({
     {
       id: 'assignedUser',
       title: 'Assigned User',
-      width: 'w-[400px]',
+      width: 'w-[350px]',
       sortable: true,
     },
     { id: 'status', title: 'Status', width: 'w-[60px]', sortable: true },
     {
       id: 'activationDate',
       title: 'Activation Date',
-      width: 'w-[200px]',
+      width: 'w-[160px]',
+      sortable: true,
+    },
+    {
+      id: 'lastUpdated',
+      title: 'Last Updated',
+      width: 'w-[160px]',
       sortable: true,
     },
     { id: 'action', title: 'Action', width: 'w-[50px]' },

@@ -23,7 +23,7 @@ export const TableColumns = ({
               onClick={isSortable ? () => onSort(column.id) : undefined}
               className={`border p-2 ${column.width || ''} ${isSortable ? 'cursor-pointer hover:bg-gray-200' : ''}`}
             >
-              <div className='group flex h-5 items-center'>
+              <div className='group flex h-8 items-center'>
                 {column.title}
                 {isSortable && (
                   <>

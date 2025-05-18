@@ -1,10 +1,17 @@
-import { api, camelToSnake } from '@/utils';
+import { api, camelToSnake, camelToSnakeStr } from '@/utils';
 
 export const fetchTrainingProgramData = async (
   trainingProgramsFilteredData,
 ) => {
-  const transformedData = camelToSnake(trainingProgramsFilteredData);
-  console.log({ transformedData });
+  const transformedData = {
+    ...camelToSnake(trainingProgramsFilteredData),
+    sort_config: trainingProgramsFilteredData.sortConfig?.map(
+      ({ key, direction }) => ({
+        key: camelToSnakeStr(key),
+        direction,
+      }),
+    ),
+  };
 
   const response = await api(
     'training-programs/filtered/',

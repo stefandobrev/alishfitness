@@ -1,6 +1,6 @@
 import { Pill } from '@/components/common';
 import { ActionButton } from '@/components/buttons';
-import { capitalize } from '@/utils';
+import { capitalize, toUtcMidnightDateString } from '@/utils';
 
 const pillVariants = {
   create: 'status',
@@ -46,6 +46,10 @@ export const formatRows = (programs) =>
       {
         id: 'activation_date',
         text: program.activation_date,
+      },
+      {
+        id: 'updated_at',
+        text: toUtcMidnightDateString(new Date(program.updated_at)),
       },
       {
         id: 'delete',

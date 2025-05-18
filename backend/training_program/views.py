@@ -95,6 +95,7 @@ class FilteredTrainingProgramsView(APIView):
         filter_start_date = request.data.get("filter_start_date", None)
         filter_end_date = request.data.get("filter_end_date", None)
         items_per_page = request.data.get("items_per_page")
+        sort_config = request.data.get("sort_config", [])
         offset = request.data.get("offset", 0)
 
         if not items_per_page:
@@ -123,8 +124,28 @@ class FilteredTrainingProgramsView(APIView):
                         query = query.filter(activation_date__range=(start_date, end_date))
                 else:
                     query = query.filter(activation_date__gte=start_date)
-
-        training_programs = query[offset: offset + items_per_page].values("id", "program_title", "assigned_user__username","assigned_user__first_name","assigned_user__last_name" ,"mode", "status", "activation_date")
+        
+        sort_key_map = {
+            "title": "program_title",
+            "mode": "mode",
+            "assigned_user": "assigned_user__last_name",
+            "status": "status",
+            "activation_date": "activation_date",
+            "last_updated": "updated_at"
+        }
+        
+        ordering = []
+        sort_keys = [s["key"] for s in sort_config]
+        for sort in sort_config:
+            key = sort_key_map.get(sort["key"])
+            direction = "" if sort["direction"] == "asc" else "-"
+            ordering.append(f"{direction}{key}")
+        if "last_updated" not in sort_keys:
+            ordering.append('-updated_at')
+        
+        query = query.order_by(*ordering)
+            
+        training_programs = query[offset: offset + items_per_page].values("id", "program_title", "assigned_user__username","assigned_user__first_name","assigned_user__last_name" ,"mode", "status", "activation_date", "updated_at")
 
         return Response({
             "training_programs": list(training_programs),

@@ -6,7 +6,12 @@ export {
   getNavMobileItemStyles,
 } from './classNames';
 export { getChangedFields } from './formHelpers';
-export { snakeToCamel, camelToSnake, capitalize } from './caseConverter';
+export {
+  snakeToCamel,
+  camelToSnake,
+  camelToSnakeStr,
+  capitalize,
+} from './caseConverter';
 export { toUtcMidnightDateString } from './dateConvertor';
 
 export { default as api } from './api';
