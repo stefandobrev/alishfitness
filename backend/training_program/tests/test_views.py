@@ -308,3 +308,28 @@ class TestTrainingProgramViewSet:
 
         assert programs[0]["program_title"] == "Test Template"
         assert programs[1]["program_title"] == "Test Program"
+
+    def test_delete_success(self, api_client, test_admin, test_training_program, test_training_template):
+        api_client.force_authenticate(test_admin)
+
+        all_programs = TrainingProgram.objects.all()
+
+        assert len(all_programs) == 2
+
+        url = reverse("training-program-detail", args=[test_training_program.id])
+
+        response = api_client.delete(url)
+
+        all_programs = TrainingProgram.objects.all()
+
+        assert response.status_code == status.HTTP_200_OK
+        assert len(all_programs) == 1
+
+    def test_delete_invalid(self, api_client, test_admin):
+        api_client.force_authenticate(test_admin)
+
+        url = reverse("training-program-detail", args=[999999])
+
+        response = api_client.delete(url)
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
