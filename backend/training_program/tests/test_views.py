@@ -58,8 +58,9 @@ class TestTrainingProgramViewSet:
             "filter_status": None,
             "filter_start_date": None,
             "filter_end_date": None,
+            "sort_config": [],
             "items_per_page": 10,
-            "offset": 0 
+            "offset": 0
         }
     
     def test_get_training_setup_data(self, api_client, test_user, test_admin, test_muscle_group):
@@ -284,3 +285,26 @@ class TestTrainingProgramViewSet:
         response = api_client.post(url, range_date_data, format="json")
 
         assert response.data["total_count"] == 1
+
+    def test_sort_training_program_by_mode(self, api_client, test_admin, valid_search_data, test_training_program, test_training_template):
+        api_client.force_authenticate(test_admin)
+        sort_mode_data = deepcopy(valid_search_data)
+        sort_mode_data["sort_config"] = [{"key": "mode", "direction": "asc"}]
+
+        url = reverse("filtered-training-programs")
+        response = api_client.post(url, sort_mode_data, format="json")
+        programs = response.data["training_programs"]
+        assert programs[0]["program_title"] == "Test Program"
+        assert programs[1]["program_title"] == "Test Template"
+
+    def test_sort_training_program_by_title(self, api_client, test_admin, valid_search_data, test_training_program, test_training_template):
+        api_client.force_authenticate(test_admin)
+        sort_title_data = deepcopy(valid_search_data)
+        sort_title_data["sort_config"] = [{"key": "title", "direction": "desc"}]
+
+        url = reverse("filtered-training-programs")
+        response = api_client.post(url, sort_title_data, format="json")
+        programs = response.data["training_programs"]
+
+        assert programs[0]["program_title"] == "Test Template"
+        assert programs[1]["program_title"] == "Test Program"
