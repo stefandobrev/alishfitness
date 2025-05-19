@@ -16,6 +16,6 @@ urlpatterns = [
     path("training-setup-data/", TrainingSetupDataView.as_view(), name="training-setup-data"),
     path("filter-data/", FilterDataView.as_view(), name="training-programs-filter-data"),
     path("has-active/", HasActiveProgramView.as_view(), name="has-active-program"),
-    path("", include(router.urls)),
     path("filtered/", FilteredTrainingProgramsView.as_view(), name="filtered-training-programs"),
+    path("", include(router.urls)),
 ]

@@ -10,12 +10,12 @@ const pillVariants = {
   archived: 'default',
 };
 
-export const formatRows = (programs) =>
+export const formatRows = (programs, handleDelete) =>
   programs.map((program) => {
     const cells = [
       {
         id: 'title',
-        text: program.program_title,
+        text: program.programTitle,
       },
       {
         id: 'mode',
@@ -29,9 +29,9 @@ export const formatRows = (programs) =>
         ),
       },
       {
-        id: 'assigned_user',
-        text: program.assigned_user__username
-          ? `${program.assigned_user__last_name}, ${program.assigned_user__first_name} (${program.assigned_user__username})`
+        id: 'assignedUser',
+        text: program.assignedUserUsername
+          ? `${program.assignedUserLastName}, ${program.assignedUserFirstName} (${program.assignedUserUsername})`
           : null,
       },
       {
@@ -44,16 +44,25 @@ export const formatRows = (programs) =>
         ) : null,
       },
       {
-        id: 'activation_date',
-        text: program.activation_date,
+        id: 'activationDate',
+        text: program.activationDate,
       },
       {
-        id: 'updated_at',
-        text: toUtcMidnightDateString(new Date(program.updated_at)),
+        id: 'updatedAt',
+        text: toUtcMidnightDateString(new Date(program.updatedAt)),
       },
       {
         id: 'delete',
-        text: <ActionButton> Delete </ActionButton>,
+        text: (
+          <ActionButton
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDelete(program.id, program.programTitle);
+            }}
+          >
+            Delete
+          </ActionButton>
+        ),
       },
     ];
 

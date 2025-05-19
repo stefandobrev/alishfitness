@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { toast } from 'react-toastify';
+
 import { Heading, TableContainer } from './components';
-import { fetchTrainingProgramData } from './helpersViewAll';
+import { fetchTrainingProgramData, deleteProgram } from './helpersViewAll';
 import { MobileTabs } from '@/components/buttons';
 import { useInfiniteScrollWindow, useTitle } from '@/hooks';
-import { NoDataDiv, Spinner } from '@/components/common';
-import { toUtcMidnightDateString } from '@/utils';
+import { ConfirmationModal, NoDataDiv, Spinner } from '@/components/common';
+import { snakeToCamel, toUtcMidnightDateString } from '@/utils';
 import { formatRows } from './utils';
 import { isMobile } from '@/common/constants';
 
@@ -29,6 +31,8 @@ const defaultPagination = {
 
 export const ViewAllPage = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [programToDelete, setProgramToDelete] = useState(null);
   const [activeTab, setActiveTab] = useState('programs');
   const [filters, setFilters] = useState(defaultViewAllFilters);
   const [pagination, setPagination] = useState(defaultPagination);
@@ -74,23 +78,26 @@ export const ViewAllPage = () => {
         offset: currentOffset,
       });
 
+      const transformedData = snakeToCamel(data);
+
       setTrainingProgramsData((prev) =>
         isMobile
           ? currentOffset === INITIAL_OFFSET
-            ? data.training_programs
-            : [...(prev || []), ...data.training_programs]
-          : data.training_programs,
+            ? transformedData.trainingPrograms
+            : [...(prev || []), ...transformedData.trainingPrograms]
+          : transformedData.trainingPrograms,
       );
 
       const total =
-        data.total_count ?? currentOffset + data.training_programs.length;
+        transformedData.totalCount ??
+        currentOffset + transformedData.trainingPrograms.length;
       setTotalPrograms(total);
       setTotalPages(Math.ceil(total / ITEMS_PER_PAGE));
 
       setPagination({
         offset: currentOffset + ITEMS_PER_PAGE,
         loadMore: false,
-        hasMore: data.training_programs.length >= ITEMS_PER_PAGE,
+        hasMore: transformedData.trainingPrograms.length >= ITEMS_PER_PAGE,
       });
     } finally {
       setIsLoading(false);
@@ -110,7 +117,29 @@ export const ViewAllPage = () => {
     navigate(`/training-programs/edit/${programId}`);
   };
 
-  const tableRows = formatRows(trainingProgramsData);
+  const handleDelete = (programId, programTitle) => {
+    setProgramToDelete({ id: programId, title: programTitle });
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    const response = await deleteProgram(programToDelete.id);
+    const { type, text } = response;
+
+    if (type === 'error') {
+      toast.error(text);
+      return;
+    }
+
+    if (type === 'success') {
+      toast.success(text);
+      handleReset();
+    }
+
+    setIsDeleteDialogOpen(false);
+  };
+
+  const tableRows = formatRows(trainingProgramsData, handleDelete);
 
   const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > totalPages) return;
@@ -174,6 +203,16 @@ export const ViewAllPage = () => {
         <NoDataDiv
           heading='No training programs found'
           content='Try adjusting your filters or create a new program'
+        />
+      )}
+
+      {isDeleteDialogOpen && (
+        <ConfirmationModal
+          onClose={() => setIsDeleteDialogOpen(false)}
+          onConfirm={handleDeleteConfirm}
+          heading={`Delete program: ${programToDelete.title}`}
+          message='Are you sure you want to delete the program?'
+          confirmText='Delete'
         />
       )}
     </>

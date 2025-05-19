@@ -4,9 +4,10 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.exceptions import ValidationError
 from django.db import transaction
-from django.db.models import Q
+from django.db.models import Q, F
 from django.utils import timezone
 from django.utils.dateparse import parse_date
+from django.shortcuts import get_object_or_404
 
 from user.models import User
 from exercise.models import Exercise, MuscleGroup
@@ -144,8 +145,22 @@ class FilteredTrainingProgramsView(APIView):
             ordering.append('-updated_at')
         
         query = query.order_by(*ordering)
-            
-        training_programs = query[offset: offset + items_per_page].values("id", "program_title", "assigned_user__username","assigned_user__first_name","assigned_user__last_name" ,"mode", "status", "activation_date", "updated_at")
+
+        training_programs = query[offset: offset + items_per_page].annotate(
+            assigned_user_username=F("assigned_user__username"),
+            assigned_user_first_name=F("assigned_user__first_name"),
+            assigned_user_last_name=F("assigned_user__last_name"),
+        ).values(
+            "id",
+            "program_title",
+            "assigned_user_username",
+            "assigned_user_first_name",
+            "assigned_user_last_name",
+            "mode",
+            "status",
+            "activation_date",
+            "updated_at"
+        )
 
         return Response({
             "training_programs": list(training_programs),
@@ -298,3 +313,9 @@ class TrainingProgramViewSet(viewsets.ViewSet):
                     "temp_id": f"{temp_id} is invalid session."
                 })
         return transformed
+    
+    def destroy(self, request, pk=None):
+        """Delete an existing training-program model."""
+        program = get_object_or_404(TrainingProgram, id=pk)
+        program.delete()
+        return Response({"message": "Program deleted successfully!"})
