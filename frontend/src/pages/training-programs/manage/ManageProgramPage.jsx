@@ -9,13 +9,13 @@ import { MobileTabs, MobileTabVariant } from '@/components/buttons';
 import {
   createProgramRequest,
   checkUserHasCurrentProgram,
-} from './helpersCreateProgram';
+} from './helpersManageProgram';
 import { useTitle } from '@/hooks';
 import { manageProgram } from '@/schemas';
 import { ConfirmationModal, Spinner } from '@/components/common';
 import { toUtcMidnightDateString } from '@/utils';
 
-export const CreateProgramPage = () => {
+export const ManageProgramPage = () => {
   const [isAssignedMode, setIsAssignedMode] = useState(true);
   const [pendingProgramData, setPendingProgramData] = useState(null);
   const [activeTab, setActiveTab] = useState('sessions');

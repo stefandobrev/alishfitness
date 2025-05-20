@@ -22,7 +22,7 @@ import {
   ExerciseDetailPage,
   MyProgramPage,
   ViewAllPage,
-  CreateProgramPage,
+  ManageProgramPage,
 } from '../pages';
 
 // Route Guards
@@ -63,11 +63,11 @@ export const router = createBrowserRouter(
           <Route path='/training-programs/view-all' element={<ViewAllPage />} />
           <Route
             path='/training-programs/create'
-            element={<CreateProgramPage />}
+            element={<ManageProgramPage />}
           />
           <Route
             path='/training-programs/edit/:id'
-            element={<CreateProgramPage />}
+            element={<ManageProgramPage />}
           />
         </Route>
 
