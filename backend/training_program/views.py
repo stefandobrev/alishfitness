@@ -231,7 +231,7 @@ class TrainingProgramViewSet(viewsets.ViewSet):
                     self._process_muscle_group(exercise)
                     self._process_exercise_input(exercise)
 
-        if data.get("mode") == "create" and data.get("assigned_user"): 
+        if data.get("mode") == "assigned" and data.get("assigned_user"): 
             activation_date = parse_date(data.get("activation_date"))
             if not activation_date:
                 raise ValidationError({"activation_date": "Activation date is missing."})

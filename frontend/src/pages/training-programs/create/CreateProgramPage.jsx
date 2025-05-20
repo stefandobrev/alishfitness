@@ -11,22 +11,22 @@ import {
   checkUserHasCurrentProgram,
 } from './helpersCreateProgram';
 import { useTitle } from '@/hooks';
-import { createProgram } from '@/schemas';
+import { manageProgram } from '@/schemas';
 import { ConfirmationModal, Spinner } from '@/components/common';
 import { toUtcMidnightDateString } from '@/utils';
 
 export const CreateProgramPage = () => {
-  const [isCreateMode, setIsCreateMode] = useState(true);
+  const [isAssignedMode, setIsAssignedMode] = useState(true);
   const [pendingProgramData, setPendingProgramData] = useState(null);
   const [activeTab, setActiveTab] = useState('sessions');
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 
   const methods = useForm({
-    resolver: zodResolver(createProgram),
+    resolver: zodResolver(manageProgram),
     mode: 'onChange',
     defaultValues: {
-      mode: isCreateMode ? 'create' : 'template',
+      mode: isAssignedMode ? 'assigned' : 'template',
       sessions: [],
       scheduleArray: [],
       assignedUser: null,
@@ -38,8 +38,8 @@ export const CreateProgramPage = () => {
   useTitle('Create');
 
   useEffect(() => {
-    setValue('mode', isCreateMode ? 'create' : 'template');
-  }, [isCreateMode, setValue]);
+    setValue('mode', isAssignedMode ? 'assigned' : 'template');
+  }, [isAssignedMode, setValue]);
 
   const { sessions, programTitle, assignedUser } = watch();
 
@@ -54,12 +54,12 @@ export const CreateProgramPage = () => {
   const onSubmit = async (data) => {
     const formattedData = {
       ...data,
-      activationDate: isCreateMode
+      activationDate: isAssignedMode
         ? data.activationDate
           ? toUtcMidnightDateString(data.activationDate)
           : null
         : null,
-      assignedUser: isCreateMode
+      assignedUser: isAssignedMode
         ? data.assignedUser
           ? data.assignedUser.value
           : null
@@ -106,7 +106,7 @@ export const CreateProgramPage = () => {
       }
       if (type === 'success') {
         toast.success(text);
-        setIsCreateMode(true);
+        setIsAssignedMode(true);
         setPendingProgramData(null);
         reset(methods.defaultValues);
       }
@@ -143,8 +143,8 @@ export const CreateProgramPage = () => {
               activeTab={activeTab}
               sessions={sessions}
               onRemoveSession={handleRemoveSession}
-              isCreateMode={isCreateMode}
-              setIsCreateMode={setIsCreateMode}
+              isAssignedMode={isAssignedMode}
+              setIsAssignedMode={setIsAssignedMode}
             />
 
             <Schedule activeTab={activeTab} sessions={sessions} />

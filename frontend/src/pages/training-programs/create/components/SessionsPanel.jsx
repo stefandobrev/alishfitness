@@ -14,8 +14,8 @@ export const SessionsPanel = ({
   activeTab,
   sessions,
   onRemoveSession,
-  isCreateMode,
-  setIsCreateMode,
+  isAssignedMode,
+  setIsAssignedMode,
 }) => {
   const {
     formState: { errors },
@@ -27,8 +27,8 @@ export const SessionsPanel = ({
     >
       <div className='flex flex-col px-4'>
         <Heading
-          isCreateMode={isCreateMode}
-          setIsCreateMode={setIsCreateMode}
+          isAssignedMode={isAssignedMode}
+          setIsAssignedMode={setIsAssignedMode}
         />
         <div className='mt-4'>
           {isLoading ? (
@@ -48,7 +48,10 @@ export const SessionsPanel = ({
         )}
         <AddSessionButton />
 
-        <ProgramActivationBar onSubmit={onSubmit} isCreateMode={isCreateMode} />
+        <ProgramActivationBar
+          onSubmit={onSubmit}
+          isAssignedMode={isAssignedMode}
+        />
       </div>
     </div>
   );

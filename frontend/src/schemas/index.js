@@ -1,4 +1,4 @@
-export { createProgram } from './createProgram';
+export { manageProgram } from './manageProgram';
 export { manageExercises } from './manageExercises';
 export { myProfile } from './myProfile';
 export { passwordForm } from './passwordForm';

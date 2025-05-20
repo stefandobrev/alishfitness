@@ -3,7 +3,7 @@ import { ActionButton } from '@/components/buttons';
 import { capitalize, toUtcMidnightDateString } from '@/utils';
 
 const pillVariants = {
-  create: 'status',
+  assigned: 'status',
   template: 'warning',
   current: 'success',
   scheduled: 'highlight',
@@ -21,9 +21,7 @@ export const formatRows = (programs, handleDelete) =>
         id: 'mode',
         text: (
           <Pill
-            text={
-              program.mode === 'create' ? 'Assigned' : capitalize(program.mode)
-            }
+            text={capitalize(program.mode)}
             variant={pillVariants[program.mode]}
           />
         ),

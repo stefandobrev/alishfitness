@@ -5,7 +5,7 @@ from user.models import User
 class TrainingProgram(models.Model):
     PROGRAM_MODES = [
         ("template", "Template"),
-        ("create", "Assigned"),
+        ("assigned", "Assigned"),
     ]
 
     PROGRAM_STATUSES = [
@@ -31,7 +31,7 @@ class TrainingProgram(models.Model):
         return self.mode == "template"
     
     def is_active(self):
-        return self.mode == "create" and self.assigned_user is not None
+        return self.mode == "assigned" and self.assigned_user is not None
     
 class TrainingSession(models.Model): 
     session_title = models.CharField(max_length=255)  

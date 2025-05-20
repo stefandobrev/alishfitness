@@ -32,14 +32,14 @@ const sessionSchema = z.object({
     ),
 });
 
-export const createProgram = z
+export const manageProgram = z
   .object({
     programTitle: z.string().min(1, 'Program title is required.'),
     sessions: z
       .array(sessionSchema)
       .min(1, { message: 'At least one session is required.' }),
     scheduleArray: z.array(z.string()).min(1, 'Schedule is required.'),
-    mode: z.enum(['create', 'template']),
+    mode: z.enum(['assigned', 'template']),
     assignedUser: z
       .object({
         label: z.string().min(1, 'User label is required.'),
@@ -50,7 +50,7 @@ export const createProgram = z
     activationDate: z.date().nullable().optional(),
   })
   .superRefine((data, ctx) => {
-    if (data.mode === 'create') {
+    if (data.mode === 'assigned') {
       if (!data.assignedUser) {
         ctx.addIssue({
           path: ['assignedUser'],

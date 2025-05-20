@@ -109,8 +109,8 @@ export const ViewAllPage = () => {
   };
 
   const handleReset = () => {
-    setFilters(defaultViewAllFilters);
-    setPagination(defaultPagination);
+    setFilters({ ...defaultViewAllFilters });
+    setPagination({ ...defaultPagination });
   };
 
   const navigateToEdit = (programId) => {
