@@ -15,7 +15,7 @@ class TestTrainingProgramViewSet:
 
         return {
             "program_title": "Test Program",
-            "mode": "create",
+            "mode": "assigned",
             "assigned_user": test_user.id,
             "activation_date": activation_date,
             "schedule_array": ["1", "2", "1"],

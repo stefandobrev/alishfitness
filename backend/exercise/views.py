@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
 from exercise.models import Exercise, MuscleGroup
-from exercise.serializers import ExerciseSerializer, MuscleGroupTitleSerializer
+from exercise.serializers import ExerciseSerializer, MuscleGroupTitleSerializer, ExerciseDetailSerializer
 
 class MuscleGroupView(APIView):
     """View for getting all muscle groups."""
@@ -62,7 +62,7 @@ class ExerciseViewSet(viewsets.ViewSet):
     
     def get_permissions(self):
         """Set appropriate permissions based on action."""
-        if self.action in ['create', 'update', 'destroy']:
+        if self.action in ["create", "update", "destroy"]:
             permission_classes = [IsAdminUser]
         else:
             permission_classes = [IsAuthenticated]
@@ -75,23 +75,9 @@ class ExerciseViewSet(viewsets.ViewSet):
                 "secondary_groups", "steps", "mistakes"
                 ).select_related("primary_group").get(id=pk)
             
-            return Response(self._get_exercise_data(exercise))
+            return Response(ExerciseDetailSerializer(exercise).data)
         except Exercise.DoesNotExist:
             return Response({"exercise": "Exercise not found."}, status=status.HTTP_404_NOT_FOUND)
-    
-    def _get_exercise_data(self, exercise):
-        return {
-            "id": exercise.id,
-            "title": exercise.title,
-            "slug": exercise.slug,
-            "primary_group": exercise.primary_group.slug,
-            "secondary_groups": [group.slug for group in exercise.secondary_groups.all()],
-            "gif_link_front": exercise.gif_link_front,
-            "gif_link_side": exercise.gif_link_side,
-            "video_link": exercise.video_link,
-            "steps": [step.description for step in exercise.steps.all()],
-            "mistakes": [mistake.description for mistake in exercise.mistakes.all()]
-        }
     
     def create(self, request):
         """Create a new exercise model with steps and mistakes."""
@@ -170,19 +156,6 @@ class ExerciseBySlugView(APIView):
                 "secondary_groups", "steps", "mistakes"
                 ).select_related("primary_group").get(slug=exercise_slug, primary_group=muscle_group)
             
-            data = {
-                "id": exercise.id,
-                "title": exercise.title,
-                "slug": exercise.slug,
-                "primary_group": exercise.primary_group.slug,
-                "secondary_groups": [group.slug for group in exercise.secondary_groups.all()],
-                "gif_link_front": exercise.gif_link_front,
-                "gif_link_side": exercise.gif_link_side,
-                "video_link": exercise.video_link,
-                "steps": [step.description for step in exercise.steps.all()],
-                "mistakes": [mistake.description for mistake in exercise.mistakes.all()]
-            }
-            
-            return Response(data)
+            return Response(ExerciseDetailSerializer(exercise).data)
         except Exercise.DoesNotExist:
             return Response({"exercise_slug": "Invalid exercise."}, status=status.HTTP_404_NOT_FOUND)

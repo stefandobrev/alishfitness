@@ -208,3 +208,16 @@ class ExerciseTitleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exercise
         fields = ["title", "slug"]
+
+class ExerciseDetailSerializer(serializers.ModelSerializer):
+    primary_group = serializers.SlugRelatedField(read_only=True, slug_field='slug')
+    secondary_groups = serializers.SlugRelatedField(many=True, read_only=True, slug_field='slug')
+    steps = serializers.SlugRelatedField(many=True, read_only=True, slug_field='description')
+    mistakes = serializers.SlugRelatedField(many=True, read_only=True, slug_field='description')
+
+    class Meta:
+        model = Exercise
+        fields = [
+            'id', 'title', 'slug', 'primary_group', 'secondary_groups',
+            'gif_link_front', 'gif_link_side', 'video_link', 'steps', 'mistakes'
+        ]

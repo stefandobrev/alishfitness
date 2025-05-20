@@ -1,7 +1,7 @@
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import Q, F
@@ -15,7 +15,7 @@ from training_program.models import TrainingProgram
 
 from user.serializers import UserSummarySerializer
 from exercise.serializers import ExerciseTitleSerializer
-from training_program.serializers import TrainingProgramSerializer
+from training_program.serializers import TrainingProgramSerializer, TrainingProgramDetailSerializer
 
 
 class TrainingSetupDataView(APIView):
@@ -170,7 +170,25 @@ class FilteredTrainingProgramsView(APIView):
 
 class TrainingProgramViewSet(viewsets.ViewSet):
     """View for creating a new training program."""
-    permission_classes = [IsAdminUser]
+
+    def get_permissions(self):
+        """Set appropriate permissions based on action."""
+        if self.action in ["create", "update", "destroy"]:
+            permission_classes = [IsAdminUser]
+        else:
+            permission_classes = [IsAuthenticated]
+        return [permission() for permission in permission_classes]
+
+    def retrieve(self, request, pk):
+        """Return an training program's data from the DB."""
+        try:
+            program = TrainingProgram.objects.prefetch_related(
+                "sessions__exercises"
+            ).select_related("assigned_user").get(pk=pk)
+            
+            return Response(TrainingProgramDetailSerializer(program).data)
+        except:
+            return Response({"training_program": "Training program not found"}, status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         """

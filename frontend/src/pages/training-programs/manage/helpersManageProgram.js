@@ -6,6 +6,12 @@ export const fetchTrainingSetupData = async () => {
   return response.json();
 };
 
+export const fetchTrainingProgramData = async (programId) => {
+  const response = await api(`training-programs/${programId}/`, 'GET');
+  if (!response.ok) throw new Error('Failed to fetch training program data.');
+  return response.json();
+};
+
 export const checkUserHasCurrentProgram = async (userId) => {
   const tranformedData = camelToSnake(userId);
   const response = await api(

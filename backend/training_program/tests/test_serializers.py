@@ -10,7 +10,7 @@ class TestTrainingProgramSerializer:
     def valid_training_program_data(self, test_user, test_exercise, test_muscle_group):
         return {
             "program_title": "Test Program",
-            "mode": "create",
+            "mode": "assigned",
             "assigned_user": test_user.id,
             "activation_date": "2025-11-11",
             "sessions": [

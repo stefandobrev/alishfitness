@@ -130,3 +130,48 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_date):
         """Update a program with validated data including sessions and exercises within."""
         pass
+
+class ProgramExerciseDetailSerializer(serializers.ModelSerializer):
+    exercise_title = serializers.CharField(source="exercise.title", read_only=True)
+    muscle_group_name = serializers.CharField(source="muscle_group.name", read_only=True)
+
+    class Meta:
+        model = ProgramExercise
+        fields = [
+            "id",
+            "sequence",
+            "sets",
+            "reps",
+            "is_custom_muscle_group",
+            "custom_exercise_title",
+            "exercise_title",
+            "muscle_group_name",
+        ]
+
+class TrainingSessionDetailSerializer(serializers.ModelSerializer):
+    exercises = ProgramExerciseDetailSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = TrainingSession
+        fields = [
+            "id",
+            "session_title",
+            "exercises",
+        ]
+
+class TrainingProgramDetailSerializer(serializers.ModelSerializer):
+    sessions = TrainingSessionDetailSerializer(many=True, read_only=True)
+    assigned_user = serializers.StringRelatedField()  
+
+    class Meta:
+        model = TrainingProgram
+        fields = [
+            "id",
+            "program_title",
+            "mode",
+            "status",
+            "assigned_user",
+            "activation_date",
+            "schedule_array",
+            "sessions",
+        ]

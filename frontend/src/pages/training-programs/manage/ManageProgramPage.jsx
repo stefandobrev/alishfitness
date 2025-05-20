@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { Schedule, SessionsPanel } from './components';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
 import {
+  fetchTrainingProgramData,
   createProgramRequest,
   checkUserHasCurrentProgram,
 } from './helpersManageProgram';
@@ -21,6 +22,7 @@ export const ManageProgramPage = () => {
   const [pageMode, setPageMode] = useState('create');
   const [isAssignedMode, setIsAssignedMode] = useState(true);
   const [pendingProgramData, setPendingProgramData] = useState(null);
+  const [trainingProgramData, setTraininProgramsData] = useState(null);
   const [activeTab, setActiveTab] = useState('sessions');
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
@@ -44,11 +46,22 @@ export const ManageProgramPage = () => {
   useEffect(() => {
     if (programId) {
       setPageMode('edit');
+      loadTrainingProgramData(programId);
     } else {
       setPageMode('create');
     }
   }, [programId]);
 
+  const loadTrainingProgramData = async (programId) => {
+    setIsLoading(true);
+    try {
+      const data = await fetchTrainingProgramData(programId);
+      setTraininProgramsData(data);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  console.log({ trainingProgramData });
   // Inner program processes
   useEffect(() => {
     setValue('mode', isAssignedMode ? 'assigned' : 'template');
