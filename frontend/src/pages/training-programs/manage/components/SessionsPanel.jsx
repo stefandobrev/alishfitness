@@ -11,6 +11,7 @@ import { Spinner } from '@/components/common';
 
 export const SessionsPanel = ({
   onSubmit,
+  pageMode,
   activeTab,
   sessions,
   onRemoveSession,
@@ -29,6 +30,7 @@ export const SessionsPanel = ({
         <Heading
           isAssignedMode={isAssignedMode}
           setIsAssignedMode={setIsAssignedMode}
+          pageMode={pageMode}
         />
         <div className='mt-4'>
           {isLoading ? (

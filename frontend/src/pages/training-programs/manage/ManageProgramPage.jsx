@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
@@ -16,6 +17,8 @@ import { ConfirmationModal, Spinner } from '@/components/common';
 import { toUtcMidnightDateString } from '@/utils';
 
 export const ManageProgramPage = () => {
+  const { id: programId } = useParams();
+  const [pageMode, setPageMode] = useState('create');
   const [isAssignedMode, setIsAssignedMode] = useState(true);
   const [pendingProgramData, setPendingProgramData] = useState(null);
   const [activeTab, setActiveTab] = useState('sessions');
@@ -37,6 +40,16 @@ export const ManageProgramPage = () => {
 
   useTitle('Create');
 
+  // Mode processes
+  useEffect(() => {
+    if (programId) {
+      setPageMode('edit');
+    } else {
+      setPageMode('create');
+    }
+  }, [programId]);
+
+  // Inner program processes
   useEffect(() => {
     setValue('mode', isAssignedMode ? 'assigned' : 'template');
   }, [isAssignedMode, setValue]);
@@ -51,6 +64,7 @@ export const ManageProgramPage = () => {
     reset({ ...getValues(), sessions: newSessions });
   };
 
+  // Submit processes
   const onSubmit = async (data) => {
     const formattedData = {
       ...data,
@@ -115,6 +129,7 @@ export const ManageProgramPage = () => {
     }
   };
 
+  // Tab processes
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -140,6 +155,7 @@ export const ManageProgramPage = () => {
           <div className='flex w-full flex-col lg:flex-row'>
             <SessionsPanel
               onSubmit={handleSubmit(onSubmit)}
+              pageMode={pageMode}
               activeTab={activeTab}
               sessions={sessions}
               onRemoveSession={handleRemoveSession}
