@@ -57,8 +57,12 @@ class ExerciseTitleView(APIView):
         return Response(list(exercise_titles))
 
 
-class ExerciseViewSet(viewsets.ViewSet):
+class ExerciseViewSet(viewsets.ModelViewSet):
     """ViewSet for exercise CRUD operations."""
+    serializer_class = ExerciseSerializer
+
+    def get_queryset(self):
+        return Exercise.objects.all()
     
     def get_permissions(self):
         """Set appropriate permissions based on action."""
@@ -81,7 +85,7 @@ class ExerciseViewSet(viewsets.ViewSet):
     
     def create(self, request):
         """Create a new exercise model with steps and mistakes."""
-        serializer = ExerciseSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         
         if serializer.is_valid():
             serializer.save()
@@ -89,15 +93,14 @@ class ExerciseViewSet(viewsets.ViewSet):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def update(self, request, pk=None):
+    def update(self, request, *args, **kwargs):
         """Update an existing exercise with steps and mistakes."""
-        exercise = get_object_or_404(Exercise, id=pk)
-        
-        serializer = ExerciseSerializer(exercise, data=request.data, partial=True)
-        
+        partial = kwargs.pop("partial", False)
+        exercise = self.get_object()
+        serializer = self.get_serializer(exercise, data=request.data, partial=partial)
         if serializer.is_valid():
             serializer.save()
-            return Response({"message": "Exercise updated successfully!"})
+            return Response({"message": "Exercise updated successfully!"}, status=status.HTTP_200_OK)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     

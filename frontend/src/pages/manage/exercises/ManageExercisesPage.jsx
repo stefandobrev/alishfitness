@@ -105,7 +105,6 @@ export const ManageExercisesPage = () => {
       cleanedInitData,
       submittedExerciseData,
     );
-    console.log({ changedData });
 
     setIsLoading(true);
     try {

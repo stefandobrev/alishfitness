@@ -31,7 +31,7 @@ export const saveExercise = async (exerciseData, id = null) => {
     let response;
 
     if (isEditMode) {
-      response = await api(`exercises/${id}/`, 'PUT', transformedData);
+      response = await api(`exercises/${id}/`, 'PATCH', transformedData);
     } else {
       response = await api('exercises/', 'POST', transformedData);
     }

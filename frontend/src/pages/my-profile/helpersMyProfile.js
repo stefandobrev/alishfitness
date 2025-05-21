@@ -17,7 +17,7 @@ export const updateUserProfile = async (profileData) => {
   try {
     const response = await api(
       'user/my-profile/update/',
-      'PUT',
+      'PATCH',
       transformedData,
     );
     if (!response.ok) {

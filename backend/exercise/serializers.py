@@ -98,7 +98,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
             
             if invalid_groups:
                 raise serializers.ValidationError(
-                    {"secondary_groups": f"Secondary groups not found: {', '.join(invalid_groups)}"}
+                    {"secondary_groups": f"Secondary groups not found: {", ".join(invalid_groups)}"}
                 )
             
             data["secondary_groups"] = secondary_groups
@@ -114,14 +114,14 @@ class ExerciseSerializer(serializers.ModelSerializer):
             )
             
         if instance:
-            # If primary_group is being updated but secondary_groups isn't provided
+            # If primary_group is being updated but secondary_groups isn"t provided
             if primary_group and "secondary_groups" not in data:
                 if instance.secondary_groups.filter(id=primary_group.id).exists():
                     raise serializers.ValidationError(
                         {"secondary_groups": "You cannot select the same group as primary and secondary."}
                     )
                 
-            # If secondary_groups is being updated but primary_group isn't provided
+            # If secondary_groups is being updated but primary_group isn"t provided
             if secondary_groups and "primary_group" not in data:
                 if instance.primary_group in secondary_groups:
                     raise serializers.ValidationError(
@@ -209,15 +209,25 @@ class ExerciseTitleSerializer(serializers.ModelSerializer):
         model = Exercise
         fields = ["title", "slug"]
 
+class StepDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Step
+        fields = ["description"]
+
+class MistakeDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mistake
+        fields = ["description"]
+
 class ExerciseDetailSerializer(serializers.ModelSerializer):
-    primary_group = serializers.SlugRelatedField(read_only=True, slug_field='slug')
-    secondary_groups = serializers.SlugRelatedField(many=True, read_only=True, slug_field='slug')
-    steps = serializers.SlugRelatedField(many=True, read_only=True, slug_field='description')
-    mistakes = serializers.SlugRelatedField(many=True, read_only=True, slug_field='description')
+    primary_group = serializers.SlugRelatedField(read_only=True, slug_field="slug")
+    secondary_groups = serializers.SlugRelatedField(many=True, read_only=True, slug_field="slug")
+    steps = StepDetailSerializer(many=True, read_only=True)
+    mistakes = MistakeDetailSerializer(many=True, read_only=True)
 
     class Meta:
         model = Exercise
         fields = [
-            'id', 'title', 'slug', 'primary_group', 'secondary_groups',
-            'gif_link_front', 'gif_link_side', 'video_link', 'steps', 'mistakes'
+            "id", "title", "slug", "primary_group", "secondary_groups",
+            "gif_link_front", "gif_link_side", "video_link", "steps", "mistakes"
         ]

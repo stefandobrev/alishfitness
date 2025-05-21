@@ -75,8 +75,14 @@ class ProfileView(APIView):
             "first_name": user.first_name,
             "last_name": user.last_name,
         })
-
+    
     def put(self, request):
+        return self.update(request)
+
+    def patch(self, request):
+        return self.update(request)
+
+    def update(self, request):
         """Update user profile."""
         user = request.user
         serializer = UserSerializer(user, data=request.data, partial=True)
@@ -108,8 +114,14 @@ class SettingsView(APIView):
             "first_name": user.first_name,
             "last_name": user.last_name,
         })
-
+    
     def put(self, request):
+        return self.update(request)
+
+    def patch(self, request):
+        return self.update(request)
+
+    def update(self, request):
         """Update user settings."""
         user = request.user
         serializer = UserSerializer(user, data=request.data, partial=True)

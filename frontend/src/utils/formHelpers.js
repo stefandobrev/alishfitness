@@ -1,15 +1,22 @@
 export const getChangedFields = (initData, updatedData) => {
   const changedFields = {};
   for (const key in initData) {
-    if (Array.isArray(initData[key]) && Array.isArray(updatedData[key])) {
+    const initial = initData[key];
+    const updated = updatedData[key];
+
+    if (Array.isArray(initial) && Array.isArray(updated)) {
       if (
-        initData[key].length !== updatedData[key].length ||
-        !initData[key].every((val, index) => val === updatedData[key][index])
+        initial.length !== updated.length ||
+        !initial.every((val, i) =>
+          typeof val === 'object'
+            ? JSON.stringify(val) === JSON.stringify(updated[i])
+            : val === updated[i],
+        )
       ) {
-        changedFields[key] = updatedData[key];
+        changedFields[key] = updated;
       }
-    } else if (initData[key] !== updatedData[key]) {
-      changedFields[key] = updatedData[key];
+    } else if (initial !== updated) {
+      changedFields[key] = updated;
     }
   }
   return changedFields;
