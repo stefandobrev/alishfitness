@@ -6,7 +6,12 @@ import { useTrainingSetupData } from '../hooks';
 import { DateSelect, UserSelect } from './exercises-table';
 import { SubmitButton } from '@/components/buttons';
 
-export const ProgramActivationBar = ({ onSubmit, isAssignedMode }) => {
+export const ProgramActivationBar = ({
+  onSubmit,
+  isAssignedMode,
+  pageMode,
+  dataMode,
+}) => {
   const {
     control,
     handleSubmit,
@@ -17,6 +22,15 @@ export const ProgramActivationBar = ({ onSubmit, isAssignedMode }) => {
   const { usersData } = useTrainingSetupData();
 
   const userOptions = usersData;
+
+  const typeLabel =
+    pageMode === 'create'
+      ? isAssignedMode
+        ? 'new program'
+        : 'new template'
+      : dataMode === 'assigned'
+        ? 'program'
+        : 'template';
 
   return (
     <div className='my-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
@@ -74,7 +88,8 @@ export const ProgramActivationBar = ({ onSubmit, isAssignedMode }) => {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <SubmitButton className='w-full md:w-auto'>
-          {isAssignedMode ? 'Create new program' : 'Create new template'}
+          {pageMode === 'create' ? 'Create ' : 'Edit '}
+          {typeLabel}
         </SubmitButton>
       </form>
     </div>

@@ -50,6 +50,9 @@ export const ManageProgramPage = () => {
     } else {
       setPageMode('create');
       setTraininProgramsData(null);
+      setIsAssignedMode(true);
+      setActiveTab('sessions');
+      reset(methods.defaultValues);
     }
   }, [programId]);
 

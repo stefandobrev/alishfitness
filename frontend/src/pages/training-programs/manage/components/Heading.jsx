@@ -10,6 +10,7 @@ export const Heading = ({
     setIsAssignedMode((prev) => !prev);
   };
 
+  // Page mode is for create/edit, isAssignedMode is for new/template program on create.
   const typeLabel =
     pageMode === 'create'
       ? isAssignedMode

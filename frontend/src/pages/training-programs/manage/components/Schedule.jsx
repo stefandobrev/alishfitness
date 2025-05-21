@@ -79,7 +79,7 @@ export const Schedule = ({ activeTab, sessions }) => {
     >
       <div className='z-40 flex items-end gap-2 px-6 lg:sticky lg:top-25'>
         <div className='top-40 w-full'>
-          <div className='mb-4'>
+          <div className='mt-4 mb-4 lg:mt-0'>
             <label className='text-m mb-2 block font-semibold text-gray-700'>
               Schedule
             </label>

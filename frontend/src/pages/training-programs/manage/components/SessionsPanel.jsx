@@ -55,6 +55,8 @@ export const SessionsPanel = ({
         <ProgramActivationBar
           onSubmit={onSubmit}
           isAssignedMode={isAssignedMode}
+          pageMode={pageMode}
+          dataMode={trainingProgramData?.mode}
         />
       </div>
     </div>
