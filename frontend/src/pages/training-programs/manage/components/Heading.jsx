@@ -10,18 +10,20 @@ export const Heading = ({
     setIsAssignedMode((prev) => !prev);
   };
 
-  console.log({ dataMode });
+  const typeLabel =
+    pageMode === 'create'
+      ? isAssignedMode
+        ? 'Training Program'
+        : 'Template'
+      : dataMode === 'assigned'
+        ? 'Training Program'
+        : 'Template';
 
   return (
     <>
       <h1 className='p-4 text-2xl font-bold md:text-3xl'>
-        {pageMode === 'create'
-          ? isAssignedMode
-            ? 'Create Training Program'
-            : 'Create Template'
-          : dataMode === 'assigned'
-            ? 'Edit Training Program'
-            : 'Edit Template'}
+        {pageMode === 'create' ? 'Create ' : 'Edit '}
+        {typeLabel}
       </h1>
 
       <div className='flex flex-col justify-between md:flex-row md:pl-4'>

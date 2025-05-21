@@ -49,6 +49,7 @@ export const ManageProgramPage = () => {
       loadTrainingProgramData(programId);
     } else {
       setPageMode('create');
+      setTraininProgramsData(null);
     }
   }, [programId]);
 
@@ -61,7 +62,7 @@ export const ManageProgramPage = () => {
       setIsLoading(false);
     }
   };
-  console.log({ trainingProgramData });
+
   // Inner program processes
   useEffect(() => {
     setValue('mode', isAssignedMode ? 'assigned' : 'template');
