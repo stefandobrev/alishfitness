@@ -24,10 +24,11 @@ export const DefaultForm = ({
   handleDeleteButton,
   handleViewButton,
 }) => {
-  const { handleSubmit, register, watch, setValue } = useFormContext();
+  const { handleSubmit, register, reset, watch, setValue } = useFormContext();
   const textAreaRefs = useRef([]);
   const exerciseDataRef = useRef(exerciseData);
 
+  // Reset secondary groups if primary group is changed.
   const primaryGroupValue = watch('primaryGroup');
 
   useEffect(() => {
@@ -36,34 +37,31 @@ export const DefaultForm = ({
     }
   }, [primaryGroupValue, setValue]);
 
+  // Exclude once selected group from further selection.
   const filteredMuscleGroups = muscleGroups.filter(
     (group) => group.value !== primaryGroupValue,
   );
 
+  // Pre-fill fetched data from backend.
   useEffect(() => {
     if (exerciseData) {
-      setValue('id', exerciseData.id);
-      setValue('title', exerciseData.title);
-      setValue('primaryGroup', exerciseData.primaryGroup);
-      setValue('secondaryGroups', exerciseData.secondaryGroups);
-      setValue('gifLinkFront', exerciseData.gifLinkFront);
-      setValue('gifLinkSide', exerciseData.gifLinkSide);
-      setValue('videoLink', exerciseData.videoLink);
-
-      const formattedSteps = exerciseData.steps.map((step) => ({
-        description: step.description || step,
-      }));
-
-      const formattedMistakes = exerciseData.mistakes.map((mistake) => ({
-        description: mistake.description || mistake,
-      }));
-      setValue('steps', formattedSteps);
-
-      setValue('mistakes', formattedMistakes);
-
-      exerciseDataRef.current = exerciseData;
+      const formatted = {
+        title: exerciseData.title,
+        primaryGroup: exerciseData.primaryGroup,
+        secondaryGroups: exerciseData.secondaryGroups,
+        gifLinkFront: exerciseData.gifLinkFront,
+        gifLinkSide: exerciseData.gifLinkSide,
+        videoLink: exerciseData.videoLink,
+        steps: exerciseData.steps.map((step) => ({
+          description: step.description || step,
+        })),
+        mistakes: exerciseData.mistakes.map((mistake) => ({
+          description: mistake.description || mistake,
+        })),
+      };
+      reset(formatted);
     }
-  }, [exerciseData, setValue]);
+  }, [exerciseData, reset]);
 
   // Cosmetic changes
   const autoResize = (event) => {
