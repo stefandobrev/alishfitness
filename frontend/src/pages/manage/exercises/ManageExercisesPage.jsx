@@ -100,7 +100,13 @@ export const ManageExercisesPage = () => {
   };
 
   const onSubmitEditExercise = async (submittedExerciseData) => {
-    const changedData = getChangedFields(exerciseData, submittedExerciseData);
+    const { id, slug, ...cleanedInitData } = exerciseData; // Removed unnecessary fields for submit.
+    const changedData = getChangedFields(
+      cleanedInitData,
+      submittedExerciseData,
+    );
+    console.log({ changedData });
+
     setIsLoading(true);
     try {
       const response = await saveExercise(changedData, selectedExercise);
