@@ -17,6 +17,7 @@ export const SessionsPanel = ({
   onRemoveSession,
   isAssignedMode,
   setIsAssignedMode,
+  trainingProgramData,
 }) => {
   const {
     formState: { errors },
@@ -31,6 +32,7 @@ export const SessionsPanel = ({
           isAssignedMode={isAssignedMode}
           setIsAssignedMode={setIsAssignedMode}
           pageMode={pageMode}
+          dataMode={trainingProgramData?.mode}
         />
         <div className='mt-4'>
           {isLoading ? (

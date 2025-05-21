@@ -1,14 +1,27 @@
 import { InputField } from '@/components/inputs';
 
-export const Heading = ({ isAssignedMode, setIsAssignedMode, pageMode }) => {
+export const Heading = ({
+  isAssignedMode,
+  setIsAssignedMode,
+  pageMode,
+  dataMode,
+}) => {
   const toggleIsAssignedMode = () => {
     setIsAssignedMode((prev) => !prev);
   };
 
+  console.log({ dataMode });
+
   return (
     <>
       <h1 className='p-4 text-2xl font-bold md:text-3xl'>
-        {isAssignedMode ? 'Create Training Program' : 'Create Template'}
+        {pageMode === 'create'
+          ? isAssignedMode
+            ? 'Create Training Program'
+            : 'Create Template'
+          : dataMode === 'assigned'
+            ? 'Edit Training Program'
+            : 'Edit Template'}
       </h1>
 
       <div className='flex flex-col justify-between md:flex-row md:pl-4'>

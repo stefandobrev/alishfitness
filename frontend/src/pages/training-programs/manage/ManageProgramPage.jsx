@@ -174,6 +174,7 @@ export const ManageProgramPage = () => {
               onRemoveSession={handleRemoveSession}
               isAssignedMode={isAssignedMode}
               setIsAssignedMode={setIsAssignedMode}
+              {...(trainingProgramData && { trainingProgramData })}
             />
 
             <Schedule activeTab={activeTab} sessions={sessions} />
