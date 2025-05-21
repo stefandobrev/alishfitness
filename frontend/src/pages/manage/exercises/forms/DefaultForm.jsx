@@ -79,6 +79,7 @@ export const DefaultForm = ({
     }
   }, [exerciseData]);
 
+  // Live URL checker to prevent match between gifs - they need to be different.
   const gifFront = watch('gifLinkFront');
   const gifSide = watch('gifLinkSide');
 
