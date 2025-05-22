@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -38,11 +38,11 @@ export const ManageProgramPage = () => {
       activationDate: null,
     },
   });
-  const { watch, setValue, getValues, reset, handleSubmit } = methods;
+  const { setValue, getValues, reset, handleSubmit, control } = methods;
 
   useTitle('Create');
 
-  // Mode processes
+  // Page mode processes
   useEffect(() => {
     if (programId) {
       setPageMode('edit');
@@ -66,12 +66,12 @@ export const ManageProgramPage = () => {
     }
   };
 
-  // Inner program processes
+  // Sessions within program processes
   useEffect(() => {
     setValue('mode', isAssignedMode ? 'assigned' : 'template');
   }, [isAssignedMode, setValue]);
 
-  const { sessions, programTitle, assignedUser } = watch();
+  const { sessions, programTitle, assignedUser } = useWatch({ control });
 
   const handleRemoveSession = (index) => {
     const currentSessions = getValues('sessions') || [];
@@ -81,7 +81,7 @@ export const ManageProgramPage = () => {
     reset({ ...getValues(), sessions: newSessions });
   };
 
-  // Submit processes
+  // Submit program
   const onSubmit = async (data) => {
     const formattedData = {
       ...data,

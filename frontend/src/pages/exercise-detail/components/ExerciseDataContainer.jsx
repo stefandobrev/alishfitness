@@ -27,7 +27,7 @@ export const ExerciseDataContainer = ({ exerciseData }) => {
                     {index + 1}
                   </span>
                 </div>
-                <span className='text-gray-700'>{step}</span>
+                <span className='text-gray-700'>{step.description}</span>
               </li>
             ))}
           </ol>
@@ -66,7 +66,7 @@ export const ExerciseDataContainer = ({ exerciseData }) => {
                 <div className='mt-1 mr-3 flex-shrink-0'>
                   <ExclamationTriangleIcon className='text-logored h-5 w-5' />
                 </div>
-                <span className='text-gray-700'>{mistake}</span>
+                <span className='text-gray-700'>{mistake.description}</span>
               </li>
             ))}
           </ul>
