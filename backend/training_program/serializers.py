@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from user.models import User
+from user.serializers import UserSummarySerializer
 from training_program.models import TrainingProgram, TrainingSession, ProgramExercise
 
 class ProgramExerciseSerializer(serializers.ModelSerializer):
@@ -133,7 +134,9 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
 
 class ProgramExerciseDetailSerializer(serializers.ModelSerializer):
     exercise_title = serializers.CharField(source="exercise.title", read_only=True)
+    exercise_slug = serializers.CharField(source="exercise.slug", read_only=True)
     muscle_group_name = serializers.CharField(source="muscle_group.name", read_only=True)
+    muscle_group_slug = serializers.CharField(source="muscle_group.slug", read_only=True)
 
     class Meta:
         model = ProgramExercise
@@ -145,7 +148,9 @@ class ProgramExerciseDetailSerializer(serializers.ModelSerializer):
             "is_custom_muscle_group",
             "custom_exercise_title",
             "exercise_title",
+            "exercise_slug",
             "muscle_group_name",
+            "muscle_group_slug",
         ]
 
 class TrainingSessionDetailSerializer(serializers.ModelSerializer):
@@ -161,7 +166,7 @@ class TrainingSessionDetailSerializer(serializers.ModelSerializer):
 
 class TrainingProgramDetailSerializer(serializers.ModelSerializer):
     sessions = TrainingSessionDetailSerializer(many=True, read_only=True)
-    assigned_user = serializers.StringRelatedField()  
+    assigned_user = UserSummarySerializer(read_only=True)
 
     class Meta:
         model = TrainingProgram

@@ -15,7 +15,8 @@ import {
 import { useTitle } from '@/hooks';
 import { manageProgram } from '@/schemas';
 import { ConfirmationModal, Spinner } from '@/components/common';
-import { toUtcMidnightDateString } from '@/utils';
+import { snakeToCamel, toUtcMidnightDateString } from '@/utils';
+import { mapTrainingProgramData } from './utils';
 
 export const ManageProgramPage = () => {
   const { id: programId } = useParams();
@@ -27,22 +28,34 @@ export const ManageProgramPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 
+  const defaultValues = {
+    programTitle: '',
+    mode: isAssignedMode ? 'assigned' : 'template',
+    sessions: [],
+    scheduleArray: [],
+    assignedUser: null,
+    activationDate: null,
+  };
+
   const methods = useForm({
     resolver: zodResolver(manageProgram),
     mode: 'onChange',
-    defaultValues: {
-      mode: isAssignedMode ? 'assigned' : 'template',
-      sessions: [],
-      scheduleArray: [],
-      assignedUser: null,
-      activationDate: null,
-    },
+    defaultValues,
   });
+
+  useEffect(() => {
+    if (trainingProgramData) {
+      methods.reset(mapTrainingProgramData(trainingProgramData));
+    }
+  }, trainingProgramData);
+
+  console.log({ trainingProgramData });
+
   const { setValue, getValues, reset, handleSubmit, control } = methods;
 
-  useTitle('Create');
-
   // Page mode processes
+  useTitle(`${pageMode === 'create' ? 'Create' : 'Edit'} Program`);
+
   useEffect(() => {
     if (programId) {
       setPageMode('edit');
@@ -60,7 +73,8 @@ export const ManageProgramPage = () => {
     setIsLoading(true);
     try {
       const data = await fetchTrainingProgramData(programId);
-      setTraininProgramsData(data);
+      const transformedData = snakeToCamel(data);
+      setTraininProgramsData(transformedData);
     } finally {
       setIsLoading(false);
     }

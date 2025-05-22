@@ -14,7 +14,7 @@ export const AddSessionButton = () => {
 
     setValue('sessions', [
       ...currentSessions,
-      { tempId: newId, title: '', exercises: [] },
+      { tempId: newId, sessionTitle: '', exercises: [] },
     ]);
 
     setCounter(counter + 1);

@@ -1,0 +1,1 @@
+export { mapTrainingProgramData } from './mapTrainingProgramData';

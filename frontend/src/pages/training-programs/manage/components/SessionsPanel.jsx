@@ -22,6 +22,7 @@ export const SessionsPanel = ({
   const {
     formState: { errors },
   } = useFormContext();
+
   const { isLoading } = useTrainingSetupData();
   return (
     <div

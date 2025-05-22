@@ -77,7 +77,7 @@ export const DateSelect = ({ field, userSelected }) => {
   );
 };
 
-export const UserSelect = ({ field, userOptions, setUserSelected }) => {
+export const UserSelect = ({ field, userOptions }) => {
   return (
     <Select
       options={userOptions}
@@ -89,7 +89,6 @@ export const UserSelect = ({ field, userOptions, setUserSelected }) => {
       menuPosition='fixed'
       onChange={(selected) => {
         field.onChange(selected);
-        setUserSelected(!!selected);
       }}
       value={field.value}
     />

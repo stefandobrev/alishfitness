@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useFormContext, Controller } from 'react-hook-form';
+import { useFormContext, Controller, useWatch } from 'react-hook-form';
 
 import { useTrainingSetupData } from '../hooks';
 import { DateSelect, UserSelect } from './exercises-table';
@@ -18,7 +18,7 @@ export const ProgramActivationBar = ({
     formState: { errors },
   } = useFormContext();
 
-  const [userSelected, setUserSelected] = useState(false);
+  const assignedUser = useWatch({ control, name: 'assignedUser' });
   const { usersData } = useTrainingSetupData();
 
   const userOptions = usersData;
@@ -46,11 +46,7 @@ export const ProgramActivationBar = ({
                   name='assignedUser'
                   control={control}
                   render={({ field }) => (
-                    <UserSelect
-                      field={field}
-                      userOptions={userOptions}
-                      setUserSelected={setUserSelected}
-                    />
+                    <UserSelect field={field} userOptions={userOptions} />
                   )}
                 />
               </div>
@@ -71,7 +67,7 @@ export const ProgramActivationBar = ({
                   name='activationDate'
                   control={control}
                   render={({ field }) => (
-                    <DateSelect field={field} userSelected={userSelected} />
+                    <DateSelect field={field} userSelected={!!assignedUser} />
                   )}
                 />
               </div>
