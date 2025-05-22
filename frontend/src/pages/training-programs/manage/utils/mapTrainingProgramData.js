@@ -45,14 +45,18 @@ export const mapTrainingProgramData = (initialData) => {
     assignedUser,
   } = initialData;
 
-  const formattedUser = {
-    label: `${assignedUser.lastName}, ${assignedUser.firstName} (${assignedUser.username})`,
-    value: assignedUser.id,
-  };
+  const formattedUser =
+    mode === 'assigned'
+      ? {
+          label: `${assignedUser.lastName}, ${assignedUser.firstName} (${assignedUser.username})`,
+          value: assignedUser.id,
+        }
+      : null;
 
   const formattedSessions = sessions.map(mapSessionData);
 
-  const formattedActivationDate = new Date(activationDate);
+  const formattedActivationDate =
+    mode === 'assigned' ? new Date(activationDate) : null;
   return {
     programTitle,
     mode,

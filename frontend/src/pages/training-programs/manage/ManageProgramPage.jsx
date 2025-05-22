@@ -21,16 +21,16 @@ import { mapTrainingProgramData } from './utils';
 export const ManageProgramPage = () => {
   const { id: programId } = useParams();
   const [pageMode, setPageMode] = useState('create');
-  const [isAssignedMode, setIsAssignedMode] = useState(true);
+  const [programMode, setProgramMode] = useState('assigned');
   const [pendingProgramData, setPendingProgramData] = useState(null);
-  const [trainingProgramData, setTraininProgramsData] = useState(null);
+  const [trainingProgramData, setTrainingProgramData] = useState(null);
   const [activeTab, setActiveTab] = useState('sessions');
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 
   const defaultValues = {
     programTitle: '',
-    mode: isAssignedMode ? 'assigned' : 'template',
+    mode: programMode,
     sessions: [],
     scheduleArray: [],
     assignedUser: null,
@@ -42,14 +42,14 @@ export const ManageProgramPage = () => {
     mode: 'onChange',
     defaultValues,
   });
-
+  // On Edit
   useEffect(() => {
-    if (trainingProgramData) {
-      methods.reset(mapTrainingProgramData(trainingProgramData));
+    if (!trainingProgramData) {
+      return;
     }
-  }, trainingProgramData);
-
-  console.log({ trainingProgramData });
+    methods.reset(mapTrainingProgramData(trainingProgramData));
+    setProgramMode(trainingProgramData.mode);
+  }, [trainingProgramData]);
 
   const { setValue, getValues, reset, handleSubmit, control } = methods;
 
@@ -62,10 +62,10 @@ export const ManageProgramPage = () => {
       loadTrainingProgramData(programId);
     } else {
       setPageMode('create');
-      setTraininProgramsData(null);
-      setIsAssignedMode(true);
+      setTrainingProgramData(null);
+      setProgramMode('assigned');
       setActiveTab('sessions');
-      reset(methods.defaultValues);
+      reset(defaultValues);
     }
   }, [programId]);
 
@@ -74,7 +74,7 @@ export const ManageProgramPage = () => {
     try {
       const data = await fetchTrainingProgramData(programId);
       const transformedData = snakeToCamel(data);
-      setTraininProgramsData(transformedData);
+      setTrainingProgramData(transformedData);
     } finally {
       setIsLoading(false);
     }
@@ -82,8 +82,8 @@ export const ManageProgramPage = () => {
 
   // Sessions within program processes
   useEffect(() => {
-    setValue('mode', isAssignedMode ? 'assigned' : 'template');
-  }, [isAssignedMode, setValue]);
+    setValue('mode', programMode);
+  }, [programMode, setValue, trainingProgramData?.mode]);
 
   const { sessions, programTitle, assignedUser } = useWatch({ control });
 
@@ -99,16 +99,18 @@ export const ManageProgramPage = () => {
   const onSubmit = async (data) => {
     const formattedData = {
       ...data,
-      activationDate: isAssignedMode
-        ? data.activationDate
-          ? toUtcMidnightDateString(data.activationDate)
-          : null
-        : null,
-      assignedUser: isAssignedMode
-        ? data.assignedUser
-          ? data.assignedUser.value
-          : null
-        : null,
+      activationDate:
+        programMode === 'assigned'
+          ? data.activationDate
+            ? toUtcMidnightDateString(data.activationDate)
+            : null
+          : null,
+      assignedUser:
+        programMode === 'assigned'
+          ? data.assignedUser
+            ? data.assignedUser.value
+            : null
+          : null,
     };
 
     const isToday =
@@ -151,7 +153,7 @@ export const ManageProgramPage = () => {
       }
       if (type === 'success') {
         toast.success(text);
-        setIsAssignedMode(true);
+        setProgramMode('assigned');
         setPendingProgramData(null);
         reset(methods.defaultValues);
       }
@@ -190,9 +192,8 @@ export const ManageProgramPage = () => {
               activeTab={activeTab}
               sessions={sessions}
               onRemoveSession={handleRemoveSession}
-              isAssignedMode={isAssignedMode}
-              setIsAssignedMode={setIsAssignedMode}
-              {...(trainingProgramData && { trainingProgramData })}
+              programMode={programMode}
+              setProgramMode={setProgramMode}
             />
 
             <Schedule activeTab={activeTab} sessions={sessions} />

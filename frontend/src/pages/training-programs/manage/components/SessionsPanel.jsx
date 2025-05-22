@@ -15,9 +15,8 @@ export const SessionsPanel = ({
   activeTab,
   sessions,
   onRemoveSession,
-  isAssignedMode,
-  setIsAssignedMode,
-  trainingProgramData,
+  programMode,
+  setProgramMode,
 }) => {
   const {
     formState: { errors },
@@ -30,10 +29,9 @@ export const SessionsPanel = ({
     >
       <div className='flex flex-col px-4'>
         <Heading
-          isAssignedMode={isAssignedMode}
-          setIsAssignedMode={setIsAssignedMode}
+          programMode={programMode}
+          setProgramMode={setProgramMode}
           pageMode={pageMode}
-          dataMode={trainingProgramData?.mode}
         />
         <div className='mt-4'>
           {isLoading ? (
@@ -55,9 +53,8 @@ export const SessionsPanel = ({
 
         <ProgramActivationBar
           onSubmit={onSubmit}
-          isAssignedMode={isAssignedMode}
+          programMode={programMode}
           pageMode={pageMode}
-          dataMode={trainingProgramData?.mode}
         />
       </div>
     </div>

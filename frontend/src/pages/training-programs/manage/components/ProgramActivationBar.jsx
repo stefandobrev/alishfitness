@@ -1,17 +1,10 @@
-import { useState } from 'react';
-
 import { useFormContext, Controller, useWatch } from 'react-hook-form';
 
 import { useTrainingSetupData } from '../hooks';
 import { DateSelect, UserSelect } from './exercises-table';
 import { SubmitButton } from '@/components/buttons';
 
-export const ProgramActivationBar = ({
-  onSubmit,
-  isAssignedMode,
-  pageMode,
-  dataMode,
-}) => {
+export const ProgramActivationBar = ({ onSubmit, programMode, pageMode }) => {
   const {
     control,
     handleSubmit,
@@ -25,17 +18,17 @@ export const ProgramActivationBar = ({
 
   const typeLabel =
     pageMode === 'create'
-      ? isAssignedMode
+      ? programMode === 'assigned'
         ? 'new program'
         : 'new template'
-      : dataMode === 'assigned'
+      : programMode === 'assigned'
         ? 'program'
         : 'template';
 
   return (
     <div className='my-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
       <div className='flex flex-col gap-4 sm:flex-row'>
-        {isAssignedMode ? (
+        {programMode === 'assigned' ? (
           <>
             <div className='flex flex-col'>
               <div className='w-full'>
