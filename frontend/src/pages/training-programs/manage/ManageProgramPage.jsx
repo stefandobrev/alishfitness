@@ -21,9 +21,9 @@ import { mapTrainingProgramData } from './utils';
 export const ManageProgramPage = () => {
   const { id: programId } = useParams();
   const [programMode, setProgramMode] = useState('create');
-  const [programUsageMode, setProgramUsageMode] = useState('assigned');
   const [programDataAwaitingConfirm, setProgramDataAwaitingConfirm] =
     useState(null); // Holds the data until confirm modal action
+  const [programUsageMode, setProgramUsageMode] = useState('assigned');
   const [trainingProgramData, setTrainingProgramData] = useState(null);
   const [activeTab, setActiveTab] = useState('sessions');
   const [isLoading, setIsLoading] = useState(false);
