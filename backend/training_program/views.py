@@ -337,3 +337,13 @@ class TrainingProgramViewSet(viewsets.ViewSet):
         program = get_object_or_404(TrainingProgram, id=pk)
         program.delete()
         return Response({"message": "Program deleted successfully!"})
+    
+class TrainingProgramTitleView(APIView):
+    """View for getting training program titles with template mode."""
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        "Return all training program titles with template mode from DB."
+        templates = TrainingProgram.objects.filter(mode="template").order_by("program_title")
+        template_list = templates.values("id","program_title")
+        return Response({"templates": list(template_list )})

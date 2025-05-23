@@ -6,7 +6,8 @@ from training_program.views import (
     FilterDataView,
     HasActiveProgramView,
     FilteredTrainingProgramsView, 
-    TrainingProgramViewSet
+    TrainingProgramViewSet,
+    TrainingProgramTitleView
 )
 
 router = DefaultRouter()
@@ -17,5 +18,6 @@ urlpatterns = [
     path("filter-data/", FilterDataView.as_view(), name="training-programs-filter-data"),
     path("has-active/", HasActiveProgramView.as_view(), name="has-active-program"),
     path("filtered/", FilteredTrainingProgramsView.as_view(), name="filtered-training-programs"),
+    path("templates/", TrainingProgramTitleView.as_view(), name="templates"),
     path("", include(router.urls)),
 ]

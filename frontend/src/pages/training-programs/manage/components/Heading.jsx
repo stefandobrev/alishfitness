@@ -1,3 +1,5 @@
+import Select from 'react-select';
+
 import { InputField } from '@/components/inputs';
 
 export const Heading = ({
@@ -29,9 +31,11 @@ export const Heading = ({
       </h1>
 
       <div className='flex flex-col justify-between md:flex-row md:pl-4'>
-        <div className='w-full md:max-w-xs'>
-          <InputField label='Name' id='programTitle' />
+        <div className='flex w-full flex-col items-end gap-2 md:max-w-xs lg:flex-row'>
+          <InputField label='Name' id='programTitle' className='h-9.5' />
+          <Select />
         </div>
+
         {programMode === 'create' && (
           <label className='mt-4 inline-flex cursor-pointer items-center md:mt-0'>
             <div className='flex gap-2'>
