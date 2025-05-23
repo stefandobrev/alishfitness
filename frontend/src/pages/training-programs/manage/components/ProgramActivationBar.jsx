@@ -4,7 +4,11 @@ import { useTrainingSetupData } from '../hooks';
 import { DateSelect, UserSelect } from './exercises-table';
 import { SubmitButton } from '@/components/buttons';
 
-export const ProgramActivationBar = ({ onSubmit, programMode, pageMode }) => {
+export const ProgramActivationBar = ({
+  onSubmit,
+  programUsageMode,
+  programMode,
+}) => {
   const {
     control,
     handleSubmit,
@@ -17,18 +21,18 @@ export const ProgramActivationBar = ({ onSubmit, programMode, pageMode }) => {
   const userOptions = usersData;
 
   const typeLabel =
-    pageMode === 'create'
-      ? programMode === 'assigned'
+    programMode === 'create'
+      ? programUsageMode === 'assigned'
         ? 'new program'
         : 'new template'
-      : programMode === 'assigned'
+      : programUsageMode === 'assigned'
         ? 'program'
         : 'template';
 
   return (
     <div className='my-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
       <div className='flex flex-col gap-4 sm:flex-row'>
-        {programMode === 'assigned' ? (
+        {programUsageMode === 'assigned' ? (
           <>
             <div className='flex flex-col'>
               <div className='w-full'>
@@ -77,7 +81,7 @@ export const ProgramActivationBar = ({ onSubmit, programMode, pageMode }) => {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <SubmitButton className='w-full md:w-auto'>
-          {pageMode === 'create' ? 'Create ' : 'Edit '}
+          {programMode === 'create' ? 'Create ' : 'Edit '}
           {typeLabel}
         </SubmitButton>
       </form>

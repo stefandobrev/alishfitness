@@ -11,12 +11,12 @@ import { Spinner } from '@/components/common';
 
 export const SessionsPanel = ({
   onSubmit,
-  pageMode,
+  programMode,
   activeTab,
   sessions,
   onRemoveSession,
-  programMode,
-  setProgramMode,
+  programUsageMode,
+  setProgramUsageMode,
 }) => {
   const {
     formState: { errors },
@@ -29,9 +29,9 @@ export const SessionsPanel = ({
     >
       <div className='flex flex-col px-4'>
         <Heading
+          programUsageMode={programUsageMode}
+          setProgramUsageMode={setProgramUsageMode}
           programMode={programMode}
-          setProgramMode={setProgramMode}
-          pageMode={pageMode}
         />
         <div className='mt-4'>
           {isLoading ? (
@@ -53,8 +53,8 @@ export const SessionsPanel = ({
 
         <ProgramActivationBar
           onSubmit={onSubmit}
+          programUsageMode={programUsageMode}
           programMode={programMode}
-          pageMode={pageMode}
         />
       </div>
     </div>

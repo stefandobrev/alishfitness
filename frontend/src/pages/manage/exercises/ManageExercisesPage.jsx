@@ -73,7 +73,7 @@ export const ManageExercisesPage = () => {
     }
   }, [location.state]);
 
-  const onSubmitNewExercise = async (submittedExerciseData) => {
+  const submitNewExercise = async (submittedExerciseData) => {
     setIsLoading(true);
 
     try {
@@ -99,7 +99,7 @@ export const ManageExercisesPage = () => {
     }
   };
 
-  const onSubmitEditExercise = async (submittedExerciseData) => {
+  const submitEditExercise = async (submittedExerciseData) => {
     const { id, slug, ...cleanedInitData } = exerciseData; // Removed unnecessary fields for submit.
     const changedData = getChangedFields(
       cleanedInitData,
@@ -202,8 +202,8 @@ export const ManageExercisesPage = () => {
             exerciseData={exerciseData}
             onExerciseChange={triggerRefresh}
             onAddNew={launchAddMode}
-            submittedNewExerciseData={onSubmitNewExercise}
-            submittedEditExerciseData={onSubmitEditExercise}
+            submittedNewExerciseData={submitNewExercise}
+            submittedEditExerciseData={submitEditExercise}
             handleDeleteConfirm={handleDeleteConfirm}
             message={message}
           />

@@ -23,7 +23,7 @@ export const checkUserHasCurrentProgram = async (userId) => {
   return response.json();
 };
 
-export const createProgramRequest = async (data) => {
+export const saveProgram = async (data) => {
   const tranformedData = camelToSnake(data);
   try {
     const response = await api('training-programs/', 'POST', tranformedData);

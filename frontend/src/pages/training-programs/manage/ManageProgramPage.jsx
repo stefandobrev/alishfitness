@@ -9,7 +9,7 @@ import { Schedule, SessionsPanel } from './components';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
 import {
   fetchTrainingProgramData,
-  createProgramRequest,
+  saveProgram,
   checkUserHasCurrentProgram,
 } from './helpersManageProgram';
 import { useTitle } from '@/hooks';
@@ -20,9 +20,10 @@ import { mapTrainingProgramData } from './utils';
 
 export const ManageProgramPage = () => {
   const { id: programId } = useParams();
-  const [pageMode, setPageMode] = useState('create');
-  const [programMode, setProgramMode] = useState('assigned');
-  const [pendingProgramData, setPendingProgramData] = useState(null);
+  const [programMode, setProgramMode] = useState('create');
+  const [programUsageMode, setProgramUsageMode] = useState('assigned');
+  const [programDataAwaitingConfirm, setProgramDataAwaitingConfirm] =
+    useState(null); // Holds the data until confirm modal action
   const [trainingProgramData, setTrainingProgramData] = useState(null);
   const [activeTab, setActiveTab] = useState('sessions');
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +31,7 @@ export const ManageProgramPage = () => {
 
   const defaultValues = {
     programTitle: '',
-    mode: programMode,
+    mode: programUsageMode,
     sessions: [],
     scheduleArray: [],
     assignedUser: null,
@@ -48,25 +49,22 @@ export const ManageProgramPage = () => {
       return;
     }
     methods.reset(mapTrainingProgramData(trainingProgramData));
-    setProgramMode(trainingProgramData.mode);
-    console.log({
-      sessions: mapTrainingProgramData(trainingProgramData).sessions,
-    });
+    setProgramUsageMode(trainingProgramData.mode);
   }, [trainingProgramData]);
 
   const { setValue, getValues, reset, handleSubmit, control } = methods;
 
   // Page mode processes
-  useTitle(`${pageMode === 'create' ? 'Create' : 'Edit'} Program`);
+  useTitle(`${programMode === 'create' ? 'Create' : 'Edit'} Program`);
 
   useEffect(() => {
     if (programId) {
-      setPageMode('edit');
+      setProgramMode('edit');
       loadTrainingProgramData(programId);
     } else {
-      setPageMode('create');
+      setProgramMode('create');
       setTrainingProgramData(null);
-      setProgramMode('assigned');
+      setProgramUsageMode('assigned');
       setActiveTab('sessions');
       reset(defaultValues);
     }
@@ -85,8 +83,8 @@ export const ManageProgramPage = () => {
 
   // Sessions within program processes
   useEffect(() => {
-    setValue('mode', programMode);
-  }, [programMode, setValue, trainingProgramData?.mode]);
+    setValue('mode', programUsageMode);
+  }, [programUsageMode, setValue, trainingProgramData?.mode]);
 
   const { sessions, programTitle, assignedUser } = useWatch({ control });
 
@@ -103,13 +101,13 @@ export const ManageProgramPage = () => {
     const formattedData = {
       ...data,
       activationDate:
-        programMode === 'assigned'
+        programUsageMode === 'assigned'
           ? data.activationDate
             ? toUtcMidnightDateString(data.activationDate)
             : null
           : null,
       assignedUser:
-        programMode === 'assigned'
+        programUsageMode === 'assigned'
           ? data.assignedUser
             ? data.assignedUser.value
             : null
@@ -129,25 +127,27 @@ export const ManageProgramPage = () => {
 
       if (hasCurrentProgram) {
         setIsConfirmDialogOpen(true);
-        setPendingProgramData(formattedData);
+        setProgramDataAwaitingConfirm(formattedData);
         return;
       }
     }
 
-    submitProgram(formattedData);
+    submitNewProgram(formattedData);
   };
 
-  const handleProgramConfirmation = async () => {
+  const handleProgramConfirm = async () => {
     setIsConfirmDialogOpen(false);
-    if (pendingProgramData) {
-      submitProgram(pendingProgramData);
+    if (programDataAwaitingConfirm) {
+      if (programMode === 'create') {
+        submitNewProgram(programDataAwaitingConfirm);
+      }
     }
   };
 
-  const submitProgram = async (data) => {
+  const submitNewProgram = async (data) => {
     setIsLoading(true);
     try {
-      const response = await createProgramRequest(data);
+      const response = await saveProgram(data);
       const { type, text } = response;
 
       if (type === 'error') {
@@ -156,8 +156,8 @@ export const ManageProgramPage = () => {
       }
       if (type === 'success') {
         toast.success(text);
-        setProgramMode('assigned');
-        setPendingProgramData(null);
+        setProgramUsageMode('assigned');
+        setProgramDataAwaitingConfirm(null);
         reset(methods.defaultValues);
       }
     } finally {
@@ -191,12 +191,12 @@ export const ManageProgramPage = () => {
           <div className='flex w-full flex-col lg:flex-row'>
             <SessionsPanel
               onSubmit={handleSubmit(onSubmit)}
-              pageMode={pageMode}
+              programMode={programMode}
               activeTab={activeTab}
               sessions={sessions}
               onRemoveSession={handleRemoveSession}
-              programMode={programMode}
-              setProgramMode={setProgramMode}
+              programUsageMode={programUsageMode}
+              setProgramUsageMode={setProgramUsageMode}
             />
 
             <Schedule activeTab={activeTab} sessions={sessions} />
@@ -207,7 +207,7 @@ export const ManageProgramPage = () => {
       {isConfirmDialogOpen && (
         <ConfirmationModal
           onClose={() => setIsConfirmDialogOpen(false)}
-          onConfirm={handleProgramConfirmation}
+          onConfirm={handleProgramConfirm}
           heading={`Program: ${programTitle}`}
           message={`${assignedUser.label} already has a current program. Are you sure you want to replace it with this new program?`}
         />
