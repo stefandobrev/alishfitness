@@ -49,6 +49,9 @@ export const ManageProgramPage = () => {
     }
     methods.reset(mapTrainingProgramData(trainingProgramData));
     setProgramMode(trainingProgramData.mode);
+    console.log({
+      sessions: mapTrainingProgramData(trainingProgramData).sessions,
+    });
   }, [trainingProgramData]);
 
   const { setValue, getValues, reset, handleSubmit, control } = methods;
