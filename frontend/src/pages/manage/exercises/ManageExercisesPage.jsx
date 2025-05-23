@@ -33,6 +33,7 @@ export const ManageExercisesPage = () => {
   const { reset } = methods;
   useTitle('Manage');
 
+  // Load muscle groups
   useEffect(() => {
     const loadMuscleGroups = async () => {
       const muscleGroupsData = await fetchMuscleGroups();
@@ -46,6 +47,7 @@ export const ManageExercisesPage = () => {
     loadMuscleGroups();
   }, []);
 
+  // On Edit
   useEffect(() => {
     const loadExerciseData = async () => {
       if (!selectedExercise) {
@@ -73,6 +75,14 @@ export const ManageExercisesPage = () => {
     }
   }, [location.state]);
 
+  const handleSelectExercise = (exerciseId) => {
+    setSelectedExercise(exerciseId);
+    setMode('edit');
+    setActiveTab('form');
+    setMessage('');
+  };
+
+  // Submit exercise
   const submitNewExercise = async (submittedExerciseData) => {
     setIsLoading(true);
 
@@ -131,6 +141,7 @@ export const ManageExercisesPage = () => {
     }
   };
 
+  // Delete exercise
   const handleDeleteConfirm = async () => {
     const response = await deleteExercise(selectedExercise);
     const { type, text } = response;
@@ -148,8 +159,10 @@ export const ManageExercisesPage = () => {
     }
   };
 
+  // Refresh exercise titles list on create/edit/delete
   const triggerRefresh = () => setRefreshTitleListKey((prev) => prev + 1);
 
+  // Change add mode
   const launchAddMode = () => {
     setMode('add');
     setSelectedExercise(null);
@@ -160,13 +173,7 @@ export const ManageExercisesPage = () => {
     setMessage('');
   };
 
-  const handleSelectExercise = (exerciseId) => {
-    setSelectedExercise(exerciseId);
-    setMode('edit');
-    setActiveTab('form');
-    setMessage('');
-  };
-
+  // Tab processes
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };

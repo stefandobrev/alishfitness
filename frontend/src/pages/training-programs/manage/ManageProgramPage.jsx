@@ -132,7 +132,13 @@ export const ManageProgramPage = () => {
       }
     }
 
-    submitNewProgram(formattedData);
+    if (programMode === 'create') {
+      submitNewProgram(formattedData);
+    }
+
+    if (programMode === 'edit') {
+      console.log({ programMode });
+    }
   };
 
   const handleProgramConfirm = async () => {
