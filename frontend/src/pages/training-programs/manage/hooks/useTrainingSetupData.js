@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { fetchTrainingSetupData } from '@/pages/training-programs/manage/helpersManageProgram';
+import { snakeToCamel } from '@/utils';
 
 export const useTrainingSetupData = () => {
   const [muscleGroupsAndExercises, setMuscleGroupsAndExercises] = useState({});
@@ -14,24 +15,27 @@ export const useTrainingSetupData = () => {
 
       try {
         const data = await fetchTrainingSetupData();
-        setMuscleGroupsAndExercises(data.muscle_groups);
+        const transformedData = snakeToCamel(data);
+        setMuscleGroupsAndExercises(transformedData.muscleGroups);
 
-        const transformedMuscleGroups = Object.values(data.muscle_groups).map(
-          (group) => ({
-            label: group.name,
-            value: group.slug,
-          }),
-        );
+        const transformedMuscleGroups = Object.values(
+          transformedData.muscleGroups,
+        ).map((group) => ({
+          label: group.name,
+          value: group.slug,
+        }));
 
         transformedMuscleGroups.push({
           label: 'Custom',
           value: 'custom',
         });
 
-        const transformedUserData = Object.values(data.users).map((user) => ({
-          label: `${user.last_name}, ${user.first_name} (${user.username})`,
-          value: user.id,
-        }));
+        const transformedUserData = Object.values(transformedData.users).map(
+          (user) => ({
+            label: `${user.lastName}, ${user.firstName} (${user.username})`,
+            value: user.id,
+          }),
+        );
 
         setMuscleGroups(transformedMuscleGroups);
         setUsersData(transformedUserData);
