@@ -22,6 +22,7 @@ export const ManageProgramPage = () => {
   const { id: programId } = useParams();
   const [programMode, setProgramMode] = useState('create');
   const [programUsageMode, setProgramUsageMode] = useState('assigned');
+  const [selectedTemplateId, setSelectedTemplateId] = useState(null);
   const [programDataAwaitingConfirm, setProgramDataAwaitingConfirm] =
     useState(null); // Holds the data until confirm modal action
   const [trainingProgramData, setTrainingProgramData] = useState(null);
@@ -61,6 +62,8 @@ export const ManageProgramPage = () => {
     if (programId) {
       setProgramMode('edit');
       loadTrainingProgramData(programId);
+    } else if (selectedTemplateId) {
+      loadTrainingProgramData(selectedTemplateId);
     } else {
       setProgramMode('create');
       setTrainingProgramData(null);
@@ -68,7 +71,7 @@ export const ManageProgramPage = () => {
       setActiveTab('sessions');
       reset(defaultValues);
     }
-  }, [programId]);
+  }, [programId, selectedTemplateId]);
 
   const loadTrainingProgramData = async (programId) => {
     setIsLoading(true);
@@ -203,6 +206,8 @@ export const ManageProgramPage = () => {
               onRemoveSession={handleRemoveSession}
               programUsageMode={programUsageMode}
               setProgramUsageMode={setProgramUsageMode}
+              setSelectedTemplateId={setSelectedTemplateId}
+              selectedTemplateId={selectedTemplateId}
             />
 
             <Schedule activeTab={activeTab} sessions={sessions} />

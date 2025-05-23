@@ -17,6 +17,8 @@ export const SessionsPanel = ({
   onRemoveSession,
   programUsageMode,
   setProgramUsageMode,
+  setSelectedTemplateId,
+  selectedTemplateId,
 }) => {
   const {
     formState: { errors },
@@ -32,6 +34,8 @@ export const SessionsPanel = ({
           programUsageMode={programUsageMode}
           setProgramUsageMode={setProgramUsageMode}
           programMode={programMode}
+          setSelectedTemplateId={setSelectedTemplateId}
+          selectedTemplateId={selectedTemplateId}
         />
         <div className='mt-4'>
           {isLoading ? (

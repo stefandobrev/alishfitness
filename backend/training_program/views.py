@@ -346,4 +346,4 @@ class TrainingProgramTitleView(APIView):
         "Return all training program titles with template mode from DB."
         templates = TrainingProgram.objects.filter(mode="template").order_by("program_title")
         template_list = templates.values("id","program_title")
-        return Response({"templates": list(template_list )})
+        return Response(list(template_list))
