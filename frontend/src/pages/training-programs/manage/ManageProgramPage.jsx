@@ -55,10 +55,12 @@ export const ManageProgramPage = () => {
       return;
     }
     methods.reset(mapTrainingProgramData(trainingProgramData));
-    setProgramUsageMode(trainingProgramData.mode);
+    if (programMode === 'edit') {
+      setProgramUsageMode(trainingProgramData.mode);
+    }
   }, [trainingProgramData]);
 
-  const { setValue, getValues, reset, handleSubmit, control } = methods;
+  const { setValue, getValues, reset, control } = methods;
 
   // Page mode processes
   useTitle(`${programMode === 'create' ? 'Create' : 'Edit'} Program`);
@@ -73,7 +75,6 @@ export const ManageProgramPage = () => {
       setProgramMode('create');
       setTrainingProgramData(null);
       setProgramUsageMode('assigned');
-      setActiveTab('sessions');
       reset(defaultValues);
     }
   }, [programId, selectedTemplateId]);
@@ -92,7 +93,7 @@ export const ManageProgramPage = () => {
   // Sessions within program processes
   useEffect(() => {
     setValue('mode', programUsageMode);
-  }, [programUsageMode, setValue, trainingProgramData?.mode]);
+  }, [programUsageMode, setValue]);
 
   const { sessions, programTitle, assignedUser } = useWatch({ control });
 
