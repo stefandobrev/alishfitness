@@ -30,7 +30,7 @@ export const ProgramActivationBar = ({
         : 'template';
 
   return (
-    <div className='my-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
+    <div className='m-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
       <div className='flex flex-col gap-4 sm:flex-row'>
         {programUsageMode === 'assigned' ? (
           <>

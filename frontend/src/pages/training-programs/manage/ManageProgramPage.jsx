@@ -5,7 +5,12 @@ import { useParams } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 
-import { Schedule, SessionsPanel } from './components';
+import {
+  Heading,
+  Schedule,
+  SessionPanel,
+  ProgramActivationBar,
+} from './components';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
 import {
   fetchTrainingProgramData,
@@ -198,17 +203,26 @@ export const ManageProgramPage = () => {
       ) : (
         <FormProvider {...methods}>
           <div className='flex w-full flex-col lg:flex-row'>
-            <SessionsPanel
-              onSubmit={handleSubmit(onSubmit)}
-              programMode={programMode}
-              activeTab={activeTab}
-              sessions={sessions}
-              onRemoveSession={handleRemoveSession}
-              programUsageMode={programUsageMode}
-              setProgramUsageMode={setProgramUsageMode}
-              setSelectedTemplateId={setSelectedTemplateId}
-              selectedTemplateId={selectedTemplateId}
-            />
+            <div
+              className={`flex flex-col lg:w-[70%] xl:w-[80%] ${activeTab !== 'sessions' ? 'hidden lg:block' : ''}`}
+            >
+              <Heading
+                programUsageMode={programUsageMode}
+                setProgramUsageMode={setProgramUsageMode}
+                programMode={programMode}
+                setSelectedTemplateId={setSelectedTemplateId}
+                selectedTemplateId={selectedTemplateId}
+              />
+              <SessionPanel
+                sessions={sessions}
+                onRemoveSession={handleRemoveSession}
+              />
+              <ProgramActivationBar
+                onSubmit={onSubmit}
+                programUsageMode={programUsageMode}
+                programMode={programMode}
+              />
+            </div>
 
             <Schedule activeTab={activeTab} sessions={sessions} />
           </div>
