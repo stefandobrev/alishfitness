@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import Select from 'react-select';
 
 import {
@@ -17,28 +17,17 @@ export const Schedule = ({ activeTab, sessions }) => {
     register,
     setValue,
     trigger,
-    watch,
     formState: { errors, isSubmitted },
   } = useFormContext();
 
-  const schedule = watch('scheduleArray') || [];
-
+  // Registers scheduleArray based on defaultValue - useWatch prevents issues
+  // with race conditions
+  const schedule = useWatch({ name: 'scheduleArray', defaultValue: [] });
   useEffect(() => {
     register('scheduleArray');
-    if (!schedule.length) {
-      setValue('scheduleArray', []);
-    }
   }, [register]);
 
-  const handleSessionSelect = (selected) => {
-    if (selected) {
-      const newSchedule = [...schedule, selected.value];
-      setValue('scheduleArray', newSchedule);
-      trigger('scheduleArray');
-      setSelectedSession(null); // Reset dropdown after selection
-    }
-  };
-
+  // Assign options in the select dropdown
   const scheduleOptions =
     sessions?.map((session, index) => {
       return {
@@ -46,6 +35,16 @@ export const Schedule = ({ activeTab, sessions }) => {
         value: session.tempId,
       };
     }) || [];
+
+  // Select, remove and move sessions from schedule positions
+  const handleSessionSelect = (selected) => {
+    if (selected) {
+      const newSchedule = [...schedule, selected.value];
+      setValue('scheduleArray', newSchedule);
+      trigger('scheduleArray');
+      setSelectedSession(null); // Reset dropdown after selection.
+    }
+  };
 
   const handleRemoveFromSchedule = (index) => {
     const newSchedule = schedule.filter((_, idx) => idx !== index);
@@ -77,6 +76,7 @@ export const Schedule = ({ activeTab, sessions }) => {
         activeTab !== 'schedule' ? 'hidden lg:block' : ''
       }`}
     >
+      {/* Schedule dropdown and label */}
       <div className='z-40 flex items-end gap-2 px-6 lg:sticky lg:top-25'>
         <div className='top-40 w-full'>
           <div className='mt-4 mb-4 lg:mt-0'>
@@ -97,6 +97,7 @@ export const Schedule = ({ activeTab, sessions }) => {
         </div>
       </div>
 
+      {/* Error message and default empty schedule array text */}
       <div className='flex flex-col gap-3 px-6 pt-4 lg:sticky lg:top-50'>
         {isSubmitted && errors.scheduleArray && (
           <p className='text-m my-2 flex justify-center text-red-500'>
@@ -109,6 +110,7 @@ export const Schedule = ({ activeTab, sessions }) => {
           </div>
         ) : (
           <>
+            {/* Schedule order mapping */}
             <h3 className='text-m text-m mb-1 font-semibold text-gray-700'>
               Schedule order
             </h3>

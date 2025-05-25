@@ -54,7 +54,9 @@ export const ManageProgramPage = () => {
     if (!trainingProgramData) {
       return;
     }
-    methods.reset(mapTrainingProgramData(trainingProgramData));
+
+    const mappedData = mapTrainingProgramData(trainingProgramData);
+    methods.reset(mappedData);
     if (programMode === 'edit') {
       setProgramUsageMode(trainingProgramData.mode);
     }
