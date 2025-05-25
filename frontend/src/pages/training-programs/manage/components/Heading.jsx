@@ -13,6 +13,7 @@ export const Heading = ({
 }) => {
   const [templates, setTemplates] = useState([]);
 
+  // Load templates titles and ids
   useEffect(() => {
     const loadTemplates = async () => {
       const data = await fetchTemplates();
@@ -34,7 +35,7 @@ export const Heading = ({
     );
   };
 
-  // Page mode is for create/edit, programUsageMode is for new/template program on create.
+  // Page mode is for create/edit, programUsageMode is for new/template program on create
   const typeLabel =
     programMode === 'create'
       ? programUsageMode === 'assigned'
@@ -44,7 +45,7 @@ export const Heading = ({
         ? 'Training Program'
         : 'Template';
 
-  // Find the selected template option for the Select component.
+  // Find the selected template option for the Select component
   const selectedTemplateOption =
     templates.find((template) => template.value === selectedTemplateId) || null;
 
@@ -54,6 +55,7 @@ export const Heading = ({
         {programMode === 'create' ? 'Create ' : 'Edit '}
         {typeLabel}
       </h1>
+      {/* Program title field. */}
       <div className='m-4 flex flex-col justify-between md:flex-row'>
         <div className='flex flex-col gap-2 md:flex-row md:items-end'>
           <div className='flex flex-col gap-2 lg:flex-row'>
@@ -63,22 +65,26 @@ export const Heading = ({
               className='h-9.5 md:w-75'
             />
           </div>
-          <div className='flex flex-col gap-2 md:items-end lg:flex-row'>
-            <Select
-              options={templates}
-              placeholder='Select template'
-              isClearable
-              className='w-full md:w-75'
-              classNamePrefix='react-select'
-              menuPlacement='auto'
-              menuPosition='fixed'
-              onChange={(selected) => {
-                setSelectedTemplateId(selected ? selected.value : null);
-              }}
-              value={selectedTemplateOption}
-            />
-          </div>
+          {/* Template dropdown select. */}
+          {programMode === 'create' && (
+            <div className='flex flex-col gap-2 md:items-end lg:flex-row'>
+              <Select
+                options={templates}
+                placeholder='Select template'
+                isClearable
+                className='w-full md:w-75'
+                classNamePrefix='react-select'
+                menuPlacement='auto'
+                menuPosition='fixed'
+                onChange={(selected) => {
+                  setSelectedTemplateId(selected ? selected.value : null);
+                }}
+                value={selectedTemplateOption}
+              />
+            </div>
+          )}
         </div>
+        {/* Toggle button. */}
         {programMode === 'create' && (
           <div className='mt-4 inline-flex cursor-pointer items-center md:mt-0'>
             <div className='ml-2 flex items-center'>
