@@ -15,7 +15,7 @@ export const ProgramActivationBar = ({
     formState: { errors },
   } = useFormContext();
 
-  const assignedUser = useWatch({ control, name: 'assignedUser' });
+  const assignedUser = useWatch({ name: 'assignedUser' });
   const { usersData } = useTrainingSetupData();
 
   const userOptions = usersData;

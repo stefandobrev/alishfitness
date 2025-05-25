@@ -1,26 +1,20 @@
-import { useState, useEffect } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import { ToggleableMuscleView } from '@/components/muscleviews';
 
 export const AnatomyPanel = ({ activeTab }) => {
-  const [muscleSelection, setMuscleSelection] = useState({
-    primary: null,
-    secondary: [],
-  });
-
-  const { setValue, getValues, methods, watch } = useFormContext();
+  const { setValue, getValues, control } = useFormContext();
 
   // Watch form changes to update muscle visualization
-  useEffect(() => {
-    const subscription = watch((values) => {
-      setMuscleSelection({
-        primary: values.primaryGroup || null,
-        secondary: values.secondaryGroups || [],
-      });
-    });
-    return () => subscription.unsubscribe();
-  }, [methods]);
+  const primaryGroup = useWatch({
+    control,
+    name: 'primaryGroup',
+  });
+
+  const secondaryGroups = useWatch({
+    control,
+    name: 'secondaryGroups',
+  });
 
   const handleMuscleClick = (muscle) => {
     const currentPrimary = getValues('primaryGroup');
@@ -48,8 +42,8 @@ export const AnatomyPanel = ({ activeTab }) => {
     >
       <ToggleableMuscleView
         handleMuscleClick={handleMuscleClick}
-        selectedPrimaryMuscle={muscleSelection.primary}
-        selectedSecondaryMuscles={muscleSelection.secondary}
+        selectedPrimaryMuscle={primaryGroup ?? null}
+        selectedSecondaryMuscles={secondaryGroups ?? []}
       />
     </div>
   );

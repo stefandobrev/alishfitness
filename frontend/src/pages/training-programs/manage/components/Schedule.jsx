@@ -21,7 +21,7 @@ export const Schedule = ({ activeTab, sessions }) => {
   } = useFormContext();
 
   // Registers scheduleArray based on defaultValue - useWatch prevents issues
-  // with race conditions
+  // with race conditions, setting defaultValue prevents undefined
   const schedule = useWatch({ name: 'scheduleArray', defaultValue: [] });
   useEffect(() => {
     register('scheduleArray');
