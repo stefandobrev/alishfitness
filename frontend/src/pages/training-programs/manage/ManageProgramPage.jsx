@@ -20,7 +20,11 @@ import {
 import { useTitle } from '@/hooks';
 import { manageProgram } from '@/schemas';
 import { ConfirmationModal, Spinner } from '@/components/common';
-import { snakeToCamel, toUtcMidnightDateString } from '@/utils';
+import {
+  getChangedFields,
+  snakeToCamel,
+  toUtcMidnightDateString,
+} from '@/utils';
 import { mapTrainingProgramData } from './utils';
 
 export const ManageProgramPage = () => {
@@ -31,6 +35,7 @@ export const ManageProgramPage = () => {
   const [programDataAwaitingConfirm, setProgramDataAwaitingConfirm] =
     useState(null); // Holds the data until confirm modal action
   const [trainingProgramData, setTrainingProgramData] = useState(null);
+  const [initCompareData, setInitCompareData] = useState(null);
   const [activeTab, setActiveTab] = useState('sessions');
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
@@ -49,6 +54,9 @@ export const ManageProgramPage = () => {
     mode: 'onChange',
     defaultValues,
   });
+
+  const { setValue, getValues, reset, control } = methods;
+
   // On Edit
   useEffect(() => {
     if (!trainingProgramData) {
@@ -56,13 +64,17 @@ export const ManageProgramPage = () => {
     }
 
     const mappedData = mapTrainingProgramData(trainingProgramData);
-    methods.reset(mappedData);
+    // Returns just the id of the user as backend expects just user id and formats the date to string - activation Date expects date.
+    setInitCompareData({
+      ...mappedData,
+      assignedUser: mappedData.assignedUser?.value ?? null,
+      activationDate: mappedData.activationDate?.toISOString().slice(0, 10),
+    });
+    reset(mappedData);
     if (programMode === 'edit') {
       setProgramUsageMode(trainingProgramData.mode);
     }
   }, [trainingProgramData]);
-
-  const { setValue, getValues, reset, control } = methods;
 
   // Page mode processes
   useTitle(`${programMode === 'create' ? 'Create' : 'Edit'} Program`);
@@ -107,20 +119,21 @@ export const ManageProgramPage = () => {
     reset({ ...getValues(), sessions: newSessions });
   };
 
-  // Submit program
-  const onSubmit = async (data) => {
+  // Submit program. First format the user and date depending on programUsageMode
+  const onSubmit = async () => {
+    const formData = getValues();
     const formattedData = {
-      ...data,
+      ...formData,
       activationDate:
         programUsageMode === 'assigned'
-          ? data.activationDate
-            ? toUtcMidnightDateString(data.activationDate)
+          ? formData.activationDate
+            ? toUtcMidnightDateString(formData.activationDate)
             : null
           : null,
       assignedUser:
         programUsageMode === 'assigned'
-          ? data.assignedUser
-            ? data.assignedUser.value
+          ? formData.assignedUser
+            ? formData.assignedUser.value
             : null
           : null,
     };
@@ -148,7 +161,10 @@ export const ManageProgramPage = () => {
     }
 
     if (programMode === 'edit') {
-      console.log({ programMode });
+      // submitEditProgram(formattedData, programId);
+      const changedData = getChangedFields(initCompareData, formattedData);
+      console.log({ initCompareData, formattedData });
+      console.log({ changedData });
     }
   };
 
@@ -176,6 +192,26 @@ export const ManageProgramPage = () => {
         setProgramUsageMode('assigned');
         setProgramDataAwaitingConfirm(null);
         reset(methods.defaultValues);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const submitEditProgram = async (data, id) => {
+    setIsLoading(true);
+    change;
+    try {
+      const response = await saveProgram(data, id);
+      const { type, text } = response;
+
+      if (type === 'error') {
+        toast.error(text);
+        return;
+      }
+      if (type === 'success') {
+        toast.success(text);
+        setProgramDataAwaitingConfirm(null);
       }
     } finally {
       setIsLoading(false);
