@@ -25,9 +25,10 @@ export const EditForm = ({
 
   useEffect(() => {
     if (!exerciseData) return;
-
-    const changedData = getChangedFields(exerciseData, formValues);
+    const { id, slug, ...initCompareData } = exerciseData;
+    const changedData = getChangedFields(initCompareData, formValues);
     setHasChanges(Object.keys(changedData).length > 0);
+    console.log({ changedData });
   }, [formValues, exerciseData]);
 
   // Delete dialog opener

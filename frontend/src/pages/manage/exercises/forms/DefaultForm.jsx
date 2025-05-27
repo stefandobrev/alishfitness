@@ -84,6 +84,7 @@ export const DefaultForm = ({
   const gifSide = watch('gifLinkSide');
 
   const areUrlsInvalid = gifFront && gifSide && gifFront === gifSide;
+  console.log({ hasChanges, areUrlsInvalid });
 
   return (
     <div className='flex w-full max-w-sm flex-col md:max-w-md lg:max-w-lg'>
