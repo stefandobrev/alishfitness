@@ -8,6 +8,7 @@ export const ProgramActivationBar = ({
   onSubmit,
   programUsageMode,
   programMode,
+  hasChanges,
 }) => {
   const {
     control,
@@ -80,7 +81,7 @@ export const ProgramActivationBar = ({
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <SubmitButton className='w-full md:w-auto'>
+        <SubmitButton disabled={!hasChanges} className='w-full md:w-auto'>
           {programMode === 'create' ? 'Create ' : 'Edit '}
           {typeLabel}
         </SubmitButton>

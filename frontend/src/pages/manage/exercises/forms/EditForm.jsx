@@ -16,7 +16,7 @@ export const EditForm = ({
   handleDeleteConfirm,
   message,
 }) => {
-  const [hasChanges, setHasChanges] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false); // Checks if there are changes on edit
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -28,7 +28,6 @@ export const EditForm = ({
     const { id, slug, ...initCompareData } = exerciseData;
     const changedData = getChangedFields(initCompareData, formValues);
     setHasChanges(Object.keys(changedData).length > 0);
-    console.log({ changedData });
   }, [formValues, exerciseData]);
 
   // Delete dialog opener

@@ -31,6 +31,7 @@ export const ManageProgramPage = () => {
   const { id: programId } = useParams();
   const [programMode, setProgramMode] = useState('create'); // Defines Create / Edit mode
   const [programUsageMode, setProgramUsageMode] = useState('assigned'); // Defines assigned / template mode
+  const [hasChanges, setHasChanges] = useState(false);
   const [selectedTemplateId, setSelectedTemplateId] = useState(null);
   const [programDataAwaitingConfirm, setProgramDataAwaitingConfirm] =
     useState(null); // Holds the data until confirm modal action
@@ -56,6 +57,38 @@ export const ManageProgramPage = () => {
   });
 
   const { setValue, getValues, reset, control } = methods;
+
+  const { sessions, programTitle, assignedUser } = useWatch({ control });
+  const watchedValues = useWatch({ control });
+
+  // If program mode is assigned - formats assignedUser and activationDate according program mode
+  const formatCurrentFormData = (formData) => {
+    return {
+      ...formData,
+      activationDate:
+        programUsageMode === 'assigned'
+          ? formData.activationDate
+            ? toUtcMidnightDateString(formData.activationDate)
+            : null
+          : null,
+      assignedUser:
+        programUsageMode === 'assigned'
+          ? formData.assignedUser
+            ? formData.assignedUser.value
+            : null
+          : null,
+    };
+  };
+
+  // Checks for edits to switch hasChanges value
+  useEffect(() => {
+    if (programMode !== 'edit') return;
+
+    const formattedCurrentData = formatCurrentFormData(watchedValues);
+    const changedData = getChangedFields(initCompareData, formattedCurrentData);
+
+    setHasChanges(Object.keys(changedData).length > 0);
+  }, [watchedValues]);
 
   // On Edit
   useEffect(() => {
@@ -115,8 +148,6 @@ export const ManageProgramPage = () => {
     setValue('mode', programUsageMode);
   }, [programUsageMode, setValue]);
 
-  const { sessions, programTitle, assignedUser } = useWatch({ control });
-
   const handleRemoveSession = (index) => {
     const currentSessions = getValues('sessions') || [];
     const newSessions = currentSessions.filter((_, i) => i !== index);
@@ -125,26 +156,12 @@ export const ManageProgramPage = () => {
     reset({ ...getValues(), sessions: newSessions });
   };
 
-  // Submit program. First format the user and date depending on programUsageMode
+  // Submit program
   const onSubmit = async () => {
     const formData = getValues();
     console.log({ formData });
 
-    const formattedData = {
-      ...formData,
-      activationDate:
-        programUsageMode === 'assigned'
-          ? formData.activationDate
-            ? toUtcMidnightDateString(formData.activationDate)
-            : null
-          : null,
-      assignedUser:
-        programUsageMode === 'assigned'
-          ? formData.assignedUser
-            ? formData.assignedUser.value
-            : null
-          : null,
-    };
+    const formattedData = formatCurrentFormData(formData);
 
     const isToday =
       formattedData.activationDate === toUtcMidnightDateString(new Date());
@@ -268,6 +285,7 @@ export const ManageProgramPage = () => {
                 onSubmit={onSubmit}
                 programUsageMode={programUsageMode}
                 programMode={programMode}
+                hasChanges={hasChanges}
               />
             </div>
 
