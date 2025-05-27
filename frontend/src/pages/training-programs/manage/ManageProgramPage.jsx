@@ -29,8 +29,8 @@ import { mapTrainingProgramData } from './utils';
 
 export const ManageProgramPage = () => {
   const { id: programId } = useParams();
-  const [programMode, setProgramMode] = useState('create');
-  const [programUsageMode, setProgramUsageMode] = useState('assigned');
+  const [programMode, setProgramMode] = useState('create'); // Defines Create / Edit mode
+  const [programUsageMode, setProgramUsageMode] = useState('assigned'); // Defines assigned / template mode
   const [selectedTemplateId, setSelectedTemplateId] = useState(null);
   const [programDataAwaitingConfirm, setProgramDataAwaitingConfirm] =
     useState(null); // Holds the data until confirm modal action
@@ -68,9 +68,15 @@ export const ManageProgramPage = () => {
     setInitCompareData({
       ...mappedData,
       assignedUser: mappedData.assignedUser?.value ?? null,
-      activationDate: mappedData.activationDate?.toISOString().slice(0, 10),
+      activationDate:
+        mappedData.activationDate?.toISOString().slice(0, 10) ?? null,
     });
-    reset(mappedData);
+    // Use different programUsageMode only on edit, on create it's always assigned.
+    const resetData = {
+      ...mappedData,
+      mode: programMode === 'create' ? 'assigned' : mappedData.mode,
+    };
+    reset(resetData);
     if (programMode === 'edit') {
       setProgramUsageMode(trainingProgramData.mode);
     }
@@ -122,6 +128,8 @@ export const ManageProgramPage = () => {
   // Submit program. First format the user and date depending on programUsageMode
   const onSubmit = async () => {
     const formData = getValues();
+    console.log({ formData });
+
     const formattedData = {
       ...formData,
       activationDate:
