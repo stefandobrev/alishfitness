@@ -5,7 +5,7 @@ export {
   getNavItemStyles,
   getNavMobileItemStyles,
 } from './classNames';
-export { getChangedFields } from './formHelpers';
+export { getChangedFields, getChangedProgramFields } from './changeDetection';
 export {
   snakeToCamel,
   camelToSnake,

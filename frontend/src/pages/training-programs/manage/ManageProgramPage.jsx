@@ -22,6 +22,7 @@ import { manageProgram } from '@/schemas';
 import { ConfirmationModal, Spinner } from '@/components/common';
 import {
   getChangedFields,
+  getChangedProgramFields,
   snakeToCamel,
   toUtcMidnightDateString,
 } from '@/utils';
@@ -187,7 +188,10 @@ export const ManageProgramPage = () => {
 
     if (programMode === 'edit') {
       // submitEditProgram(formattedData, programId);
-      const changedData = getChangedFields(initCompareData, formattedData);
+      const changedData = getChangedProgramFields(
+        initCompareData,
+        formattedData,
+      );
       console.log({ initCompareData, formattedData });
       console.log({ changedData });
     }

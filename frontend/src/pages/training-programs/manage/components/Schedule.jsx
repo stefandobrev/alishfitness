@@ -16,6 +16,7 @@ export const Schedule = ({ activeTab, sessions }) => {
   const {
     register,
     setValue,
+    getValues,
     trigger,
     formState: { errors, isSubmitted },
   } = useFormContext();
@@ -23,9 +24,26 @@ export const Schedule = ({ activeTab, sessions }) => {
   // Registers scheduleArray based on defaultValue - useWatch prevents issues
   // with race conditions, setting defaultValue prevents undefined
   const schedule = useWatch({ name: 'scheduleArray', defaultValue: [] });
+
   useEffect(() => {
     register('scheduleArray');
   }, [register]);
+
+  // Clean up schedule array when sessions are removed
+  useEffect(() => {
+    if (sessions && schedule.length > 0) {
+      const validSessionIds = sessions.map((session) => session.tempId);
+      const cleanedSchedule = schedule.filter((sessionId) =>
+        validSessionIds.includes(sessionId),
+      );
+
+      // Only update if there's a difference
+      if (cleanedSchedule.length !== schedule.length) {
+        setValue('scheduleArray', cleanedSchedule);
+        trigger('scheduleArray');
+      }
+    }
+  }, [sessions, schedule, setValue, trigger]);
 
   // Assign options in the select dropdown
   const scheduleOptions =
@@ -39,35 +57,41 @@ export const Schedule = ({ activeTab, sessions }) => {
   // Select, remove and move sessions from schedule positions
   const handleSessionSelect = (selected) => {
     if (selected) {
-      const newSchedule = [...schedule, selected.value];
+      const currentSchedule = getValues('scheduleArray') || [];
+      const newSchedule = [...currentSchedule, selected.value];
       setValue('scheduleArray', newSchedule);
       trigger('scheduleArray');
-      setSelectedSession(null); // Reset dropdown after selection.
+      setSelectedSession(null); // Reset dropdown after selection
     }
   };
 
   const handleRemoveFromSchedule = (index) => {
-    const newSchedule = schedule.filter((_, idx) => idx !== index);
+    const currentSchedule = getValues('scheduleArray') || [];
+    const newSchedule = currentSchedule.filter((_, idx) => idx !== index);
     setValue('scheduleArray', newSchedule);
     trigger('scheduleArray');
   };
 
   const moveSessionUp = (index) => {
     if (index === 0) return;
-    const newSchedule = [...schedule];
+    const currentSchedule = getValues('scheduleArray') || [];
+    const newSchedule = [...currentSchedule];
     const temp = newSchedule[index];
     newSchedule[index] = newSchedule[index - 1];
     newSchedule[index - 1] = temp;
     setValue('scheduleArray', newSchedule);
+    trigger('scheduleArray');
   };
 
   const moveSessionDown = (index) => {
-    if (index === schedule.length - 1) return;
-    const newSchedule = [...schedule];
+    const currentSchedule = getValues('scheduleArray') || [];
+    if (index === currentSchedule.length - 1) return;
+    const newSchedule = [...currentSchedule];
     const temp = newSchedule[index];
     newSchedule[index] = newSchedule[index + 1];
     newSchedule[index + 1] = temp;
     setValue('scheduleArray', newSchedule);
+    trigger('scheduleArray');
   };
 
   return (

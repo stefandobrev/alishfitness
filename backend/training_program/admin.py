@@ -5,7 +5,12 @@ from training_program.models import TrainingProgram, TrainingSession, ProgramExe
 class ProgramExerciseInline(NestedTabularInline):
     model = ProgramExercise
     extra = 0
-    fields = ["exercise", "muscle_group","is_custom_muscle_group", "custom_exercise_title", "sequence", "sets", "reps"]
+    fields = ["exercise", "muscle_group","is_custom_muscle_group", "custom_exercise_title", "sequence", "sets", "reps", "display_id"]
+    readonly_fields = ["display_id"]
+    
+    def display_id(self, obj):
+        return obj.id
+    display_id.short_description = "ID"
 
 class TrainingSessionInline(NestedTabularInline):
     model = TrainingSession
