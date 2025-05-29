@@ -1,13 +1,14 @@
-node_modules
+node_modules/
 
-
-# Editor directories and files
+# Editor dirs and files
 .idea
+.vscode
 .DS_Store
 
-# Python cache files
+# Python cache
 __pycache__/
 *.pyc
 
-# Default vscode debugger
-.vscode/
+# Python virtual env
+env/
+

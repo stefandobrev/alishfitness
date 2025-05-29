@@ -23,10 +23,19 @@ export const checkUserHasCurrentProgram = async (userId) => {
   return response.json();
 };
 
-export const saveProgram = async (data) => {
+export const saveProgram = async (data, id = null) => {
   const tranformedData = camelToSnake(data);
+
   try {
-    const response = await api('training-programs/', 'POST', tranformedData);
+    const isEditMode = Boolean(id);
+    let response;
+
+    if (isEditMode) {
+      response = await api(`training-programs/${id}/`, 'PATCH', tranformedData);
+    } else {
+      response = await api('training-programs/', 'POST', tranformedData);
+    }
+
     if (!response.ok) {
       const errorData = await response.json();
 

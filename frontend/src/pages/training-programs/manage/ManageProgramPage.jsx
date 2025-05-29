@@ -160,10 +160,10 @@ export const ManageProgramPage = () => {
   // Submit program
   const onSubmit = async () => {
     const formData = getValues();
-    console.log({ formData });
 
     const formattedData = formatCurrentFormData(formData);
-
+    console.log({ initCompareData });
+    console.log({ formattedData });
     const isToday =
       formattedData.activationDate === toUtcMidnightDateString(new Date());
 
@@ -187,13 +187,13 @@ export const ManageProgramPage = () => {
     }
 
     if (programMode === 'edit') {
-      // submitEditProgram(formattedData, programId);
       const changedData = getChangedProgramFields(
         initCompareData,
         formattedData,
       );
-      console.log({ initCompareData, formattedData });
       console.log({ changedData });
+
+      submitEditProgram(changedData, programId);
     }
   };
 
@@ -229,7 +229,6 @@ export const ManageProgramPage = () => {
 
   const submitEditProgram = async (data, id) => {
     setIsLoading(true);
-    change;
     try {
       const response = await saveProgram(data, id);
       const { type, text } = response;

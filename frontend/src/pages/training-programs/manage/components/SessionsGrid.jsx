@@ -53,7 +53,7 @@ export const SessionsGrid = ({ sessions, onRemoveSession }) => {
         return (
           <div
             key={session.tempId}
-            className='w-full rounded-lg border p-4 shadow-sm xl:w-[calc(50%-0.2rem)]'
+            className='w-full rounded-lg border p-4 shadow-sm 2xl:w-[calc(50%-0.2rem)]'
           >
             <div className='space-y-3'>
               <div className='flex items-start'>

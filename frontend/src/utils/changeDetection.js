@@ -1,16 +1,13 @@
 // Compares basic key-value fields in any two objects (used at all levels)
 export const getChangedFields = (initData, updatedData) => {
   const changedFields = {};
-
   for (const key in initData) {
     const initial = initData[key];
     const updated = updatedData[key];
-
     if (!isEqual(initial, updated)) {
       changedFields[key] = updated;
     }
   }
-
   return changedFields;
 };
 
@@ -24,11 +21,9 @@ const isEqual = (a, b) => {
     b === null
   )
     return a === b; // Bool comparison of values if neither is object or null
-
   const aKeys = Object.keys(a);
   const bKeys = Object.keys(b);
   if (aKeys.length !== bKeys.length) return false;
-
   return aKeys.every((key) => isEqual(a[key], b[key])); // Recursively compare
 };
 
@@ -50,7 +45,13 @@ export const getChangedProgramFields = (initData, updatedData) => {
       if (!initSession) {
         sessionChanges.push(session); // New session - push fully
         return;
-      } // Skip if session is newly added or doesn't exist initially
+      }
+
+      // Compare session properties (excluding exercises to avoid the nested issue)
+      const sessionPropsChanged = getChangedFields(
+        { ...initSession, exercises: undefined },
+        { ...session, exercises: undefined },
+      );
 
       // Compare exercises by ID, collect those that changed or are new as array
       const updatedExercises = session.exercises.filter((exercise) => {
@@ -66,12 +67,27 @@ export const getChangedProgramFields = (initData, updatedData) => {
         .map((ex) => ex.id); // Returns only erased exercises' ids
 
       // Only store the session if anything changed
-      if (updatedExercises.length || deletedExerciseIds.length) {
-        sessionChanges.push({
+      if (
+        Object.keys(sessionPropsChanged).length ||
+        updatedExercises.length ||
+        deletedExerciseIds.length
+      ) {
+        const sessionChange = {
           id: session.id,
-          exercises: updatedExercises,
-          deletedExerciseIds,
-        });
+          ...sessionPropsChanged, // Include any changed session properties
+        };
+
+        // Only add exercises array if there are exercise changes
+        if (updatedExercises.length) {
+          sessionChange.exercises = updatedExercises;
+        }
+
+        // Only add deletedExerciseIds if there are deleted exercises
+        if (deletedExerciseIds.length) {
+          sessionChange.deletedExerciseIds = deletedExerciseIds;
+        }
+
+        sessionChanges.push(sessionChange);
       }
     });
 
