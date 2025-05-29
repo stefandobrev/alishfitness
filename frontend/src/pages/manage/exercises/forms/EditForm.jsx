@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { DefaultForm } from './';
@@ -16,27 +16,31 @@ export const EditForm = ({
   handleDeleteConfirm,
   message,
 }) => {
-  const [hasChanges, setHasChanges] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false); // Checks if there are changes on edit
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const navigate = useNavigate();
-  const { watch } = useFormContext();
+
+  // Compares initially loaded data with potential edits
+  const formValues = useWatch();
 
   useEffect(() => {
     if (!exerciseData) return;
-
-    const formValues = watch();
-    const changedData = getChangedFields(exerciseData, formValues);
+    const { id, slug, ...initCompareData } = exerciseData;
+    const changedData = getChangedFields(initCompareData, formValues);
     setHasChanges(Object.keys(changedData).length > 0);
-  }, [watch(), exerciseData]);
+  }, [formValues, exerciseData]);
 
+  // Delete dialog opener
   const handleDelete = () => {
     setIsDeleteDialogOpen(true);
   };
 
+  // View edit
   const handleView = () => {
     navigate(`/exercises/${exerciseData.primaryGroup}/${exerciseData.slug}`);
   };
 
+  // Title of the page + add new exercise button
   const editFormTitle = (
     <div className='flex items-center justify-between px-2'>
       <h2 className='sticky top-0 z-10 mb-3 bg-white text-center text-2xl font-semibold'>

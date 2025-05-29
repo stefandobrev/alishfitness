@@ -50,3 +50,9 @@ export const saveProgram = async (data) => {
     };
   }
 };
+
+export const fetchTemplates = async () => {
+  const response = await api('training-programs/templates/', 'GET');
+  if (!response.ok) throw new Error('Failed to fetch templates.');
+  return response.json();
+};

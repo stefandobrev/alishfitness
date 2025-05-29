@@ -9,6 +9,7 @@ const mapSessionData = ({ id, exercises, sessionTitle }, i) => {
 };
 
 const mapExerciseData = ({
+  id,
   sequence,
   sets,
   reps,
@@ -29,6 +30,7 @@ const mapExerciseData = ({
   }
   return {
     ...muscleGroupExerciseRelation,
+    id,
     sequence,
     sets: sets.toString(), // Backend returns int for sets
     reps,

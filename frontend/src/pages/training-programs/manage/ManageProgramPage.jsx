@@ -5,7 +5,12 @@ import { useParams } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 
-import { Schedule, SessionsPanel } from './components';
+import {
+  Heading,
+  Schedule,
+  SessionPanel,
+  ProgramActivationBar,
+} from './components';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
 import {
   fetchTrainingProgramData,
@@ -15,16 +20,24 @@ import {
 import { useTitle } from '@/hooks';
 import { manageProgram } from '@/schemas';
 import { ConfirmationModal, Spinner } from '@/components/common';
-import { snakeToCamel, toUtcMidnightDateString } from '@/utils';
+import {
+  getChangedFields,
+  getChangedProgramFields,
+  snakeToCamel,
+  toUtcMidnightDateString,
+} from '@/utils';
 import { mapTrainingProgramData } from './utils';
 
 export const ManageProgramPage = () => {
   const { id: programId } = useParams();
-  const [programMode, setProgramMode] = useState('create');
+  const [programMode, setProgramMode] = useState('create'); // Defines Create / Edit mode
+  const [programUsageMode, setProgramUsageMode] = useState('assigned'); // Defines assigned / template mode
+  const [hasChanges, setHasChanges] = useState(false);
+  const [selectedTemplateId, setSelectedTemplateId] = useState(null);
   const [programDataAwaitingConfirm, setProgramDataAwaitingConfirm] =
     useState(null); // Holds the data until confirm modal action
-  const [programUsageMode, setProgramUsageMode] = useState('assigned');
   const [trainingProgramData, setTrainingProgramData] = useState(null);
+  const [initCompareData, setInitCompareData] = useState(null);
   const [activeTab, setActiveTab] = useState('sessions');
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
@@ -43,16 +56,65 @@ export const ManageProgramPage = () => {
     mode: 'onChange',
     defaultValues,
   });
+
+  const { setValue, getValues, reset, control } = methods;
+
+  const { sessions, programTitle, assignedUser } = useWatch({ control });
+  const watchedValues = useWatch({ control });
+
+  // If program mode is assigned - formats assignedUser and activationDate according program mode
+  const formatCurrentFormData = (formData) => {
+    return {
+      ...formData,
+      activationDate:
+        programUsageMode === 'assigned'
+          ? formData.activationDate
+            ? toUtcMidnightDateString(formData.activationDate)
+            : null
+          : null,
+      assignedUser:
+        programUsageMode === 'assigned'
+          ? formData.assignedUser
+            ? formData.assignedUser.value
+            : null
+          : null,
+    };
+  };
+
+  // Checks for edits to switch hasChanges value
+  useEffect(() => {
+    if (programMode !== 'edit') return;
+
+    const formattedCurrentData = formatCurrentFormData(watchedValues);
+    const changedData = getChangedFields(initCompareData, formattedCurrentData);
+
+    setHasChanges(Object.keys(changedData).length > 0);
+  }, [watchedValues]);
+
   // On Edit
   useEffect(() => {
     if (!trainingProgramData) {
       return;
     }
-    methods.reset(mapTrainingProgramData(trainingProgramData));
-    setProgramUsageMode(trainingProgramData.mode);
-  }, [trainingProgramData]);
 
-  const { setValue, getValues, reset, handleSubmit, control } = methods;
+    const mappedData = mapTrainingProgramData(trainingProgramData);
+    // Returns just the id of the user as backend expects just user id and formats the date to string - activation Date expects date.
+    setInitCompareData({
+      ...mappedData,
+      assignedUser: mappedData.assignedUser?.value ?? null,
+      activationDate:
+        mappedData.activationDate?.toISOString().slice(0, 10) ?? null,
+    });
+    // Use different programUsageMode only on edit, on create it's always assigned.
+    const resetData = {
+      ...mappedData,
+      mode: programMode === 'create' ? 'assigned' : mappedData.mode,
+    };
+    reset(resetData);
+    if (programMode === 'edit') {
+      setProgramUsageMode(trainingProgramData.mode);
+    }
+  }, [trainingProgramData]);
 
   // Page mode processes
   useTitle(`${programMode === 'create' ? 'Create' : 'Edit'} Program`);
@@ -61,14 +123,15 @@ export const ManageProgramPage = () => {
     if (programId) {
       setProgramMode('edit');
       loadTrainingProgramData(programId);
+    } else if (selectedTemplateId) {
+      loadTrainingProgramData(selectedTemplateId);
     } else {
       setProgramMode('create');
       setTrainingProgramData(null);
       setProgramUsageMode('assigned');
-      setActiveTab('sessions');
       reset(defaultValues);
     }
-  }, [programId]);
+  }, [programId, selectedTemplateId]);
 
   const loadTrainingProgramData = async (programId) => {
     setIsLoading(true);
@@ -84,9 +147,7 @@ export const ManageProgramPage = () => {
   // Sessions within program processes
   useEffect(() => {
     setValue('mode', programUsageMode);
-  }, [programUsageMode, setValue, trainingProgramData?.mode]);
-
-  const { sessions, programTitle, assignedUser } = useWatch({ control });
+  }, [programUsageMode, setValue]);
 
   const handleRemoveSession = (index) => {
     const currentSessions = getValues('sessions') || [];
@@ -97,22 +158,11 @@ export const ManageProgramPage = () => {
   };
 
   // Submit program
-  const onSubmit = async (data) => {
-    const formattedData = {
-      ...data,
-      activationDate:
-        programUsageMode === 'assigned'
-          ? data.activationDate
-            ? toUtcMidnightDateString(data.activationDate)
-            : null
-          : null,
-      assignedUser:
-        programUsageMode === 'assigned'
-          ? data.assignedUser
-            ? data.assignedUser.value
-            : null
-          : null,
-    };
+  const onSubmit = async () => {
+    const formData = getValues();
+    console.log({ formData });
+
+    const formattedData = formatCurrentFormData(formData);
 
     const isToday =
       formattedData.activationDate === toUtcMidnightDateString(new Date());
@@ -137,7 +187,13 @@ export const ManageProgramPage = () => {
     }
 
     if (programMode === 'edit') {
-      console.log({ programMode });
+      // submitEditProgram(formattedData, programId);
+      const changedData = getChangedProgramFields(
+        initCompareData,
+        formattedData,
+      );
+      console.log({ initCompareData, formattedData });
+      console.log({ changedData });
     }
   };
 
@@ -171,6 +227,26 @@ export const ManageProgramPage = () => {
     }
   };
 
+  const submitEditProgram = async (data, id) => {
+    setIsLoading(true);
+    change;
+    try {
+      const response = await saveProgram(data, id);
+      const { type, text } = response;
+
+      if (type === 'error') {
+        toast.error(text);
+        return;
+      }
+      if (type === 'success') {
+        toast.success(text);
+        setProgramDataAwaitingConfirm(null);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Tab processes
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -195,15 +271,27 @@ export const ManageProgramPage = () => {
       ) : (
         <FormProvider {...methods}>
           <div className='flex w-full flex-col lg:flex-row'>
-            <SessionsPanel
-              onSubmit={handleSubmit(onSubmit)}
-              programMode={programMode}
-              activeTab={activeTab}
-              sessions={sessions}
-              onRemoveSession={handleRemoveSession}
-              programUsageMode={programUsageMode}
-              setProgramUsageMode={setProgramUsageMode}
-            />
+            <div
+              className={`flex flex-col lg:w-[70%] xl:w-[80%] ${activeTab !== 'sessions' ? 'hidden lg:block' : ''}`}
+            >
+              <Heading
+                programUsageMode={programUsageMode}
+                setProgramUsageMode={setProgramUsageMode}
+                programMode={programMode}
+                setSelectedTemplateId={setSelectedTemplateId}
+                selectedTemplateId={selectedTemplateId}
+              />
+              <SessionPanel
+                sessions={sessions}
+                onRemoveSession={handleRemoveSession}
+              />
+              <ProgramActivationBar
+                onSubmit={onSubmit}
+                programUsageMode={programUsageMode}
+                programMode={programMode}
+                hasChanges={hasChanges}
+              />
+            </div>
 
             <Schedule activeTab={activeTab} sessions={sessions} />
           </div>

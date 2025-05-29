@@ -1,23 +1,27 @@
-import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { ActionButton } from '@/components/buttons';
 
 export const AddSessionButton = () => {
-  const [counter, setCounter] = useState(1);
   const { getValues, setValue, clearErrors } = useFormContext();
 
+  // Adding new sessions while watching for loaded sessions on Edit
   const handleAddSession = () => {
     const currentSessions = getValues('sessions') || [];
-    const newId = `${counter}`;
+
+    const existingTempIds = currentSessions
+      .map((s) => parseInt(s.tempId, 10)) // Convert tempId strings to numbers. Parse the string as a base-10
+      .filter((n) => !isNaN(n)); // Remove invalid/non-numeric tempIds
+
+    const maxTempId = Math.max(0, ...existingTempIds); // Can't use Max on empty array, set defaultin 0
+    const newId = `${maxTempId + 1}`;
 
     setValue('sessions', [
       ...currentSessions,
       { tempId: newId, sessionTitle: '', exercises: [] },
     ]);
 
-    setCounter(counter + 1);
     clearErrors('sessions');
   };
 

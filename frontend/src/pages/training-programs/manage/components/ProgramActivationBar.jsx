@@ -8,6 +8,7 @@ export const ProgramActivationBar = ({
   onSubmit,
   programUsageMode,
   programMode,
+  hasChanges,
 }) => {
   const {
     control,
@@ -15,7 +16,7 @@ export const ProgramActivationBar = ({
     formState: { errors },
   } = useFormContext();
 
-  const assignedUser = useWatch({ control, name: 'assignedUser' });
+  const assignedUser = useWatch({ name: 'assignedUser' });
   const { usersData } = useTrainingSetupData();
 
   const userOptions = usersData;
@@ -30,7 +31,7 @@ export const ProgramActivationBar = ({
         : 'template';
 
   return (
-    <div className='my-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
+    <div className='m-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
       <div className='flex flex-col gap-4 sm:flex-row'>
         {programUsageMode === 'assigned' ? (
           <>
@@ -80,7 +81,7 @@ export const ProgramActivationBar = ({
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <SubmitButton className='w-full md:w-auto'>
+        <SubmitButton disabled={!hasChanges} className='w-full md:w-auto'>
           {programMode === 'create' ? 'Create ' : 'Edit '}
           {typeLabel}
         </SubmitButton>
