@@ -235,6 +235,26 @@ class TrainingProgramViewSet(viewsets.ViewSet):
 
         return Response({"message": "Program created successfully!"}, status=status.HTTP_201_CREATED)
     
+    def partial_update(self, request, pk=None):
+        """
+        Update an existing program.
+        
+        Args:
+            Id, request: HTTP request containing data.
+
+        Returns:
+            Response with messages.
+        """
+        program = TrainingProgram.objects.get(pk=pk)
+        transformed_data = self._transform_data(request.data)
+        print(transformed_data)
+        serializer = TrainingProgramSerializer(program, data=transformed_data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Program updated successfully!"}, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
     def _transform_data(self, data):
         """
         Helper functions for transforming sets, muscle groups and exercises.
@@ -332,6 +352,8 @@ class TrainingProgramViewSet(viewsets.ViewSet):
                 })
         return transformed
     
+    
+
     def destroy(self, request, pk=None):
         """Delete an existing training-program model."""
         program = get_object_or_404(TrainingProgram, id=pk)

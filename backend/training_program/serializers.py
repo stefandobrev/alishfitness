@@ -86,14 +86,15 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
         activation_date = data.get("activation_date")
         assigned_user = data.get("assigned_user")
         
-        if title and len(title) < 3:
+        if title is not None and len(title) < 3:
             raise serializers.ValidationError({"program_title": "Title must be at least 3 characters long."})
 
-        valid_modes = [entry[0] for entry in TrainingProgram.PROGRAM_MODES]
-        if mode not in valid_modes:
-            raise serializers.ValidationError({"mode": "Invalid mode."})
+        if mode is not None:
+            valid_modes = [entry[0] for entry in TrainingProgram.PROGRAM_MODES]
+            if mode not in valid_modes:
+                raise serializers.ValidationError({"mode": "Invalid mode."})
 
-        if mode == "create":
+        if mode == "assigned":
             if not assigned_user:
                 raise serializers.ValidationError({"assigned_user": "Assigned user is missing."})
 
