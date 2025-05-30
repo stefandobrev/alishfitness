@@ -1,9 +1,9 @@
 from django.contrib import admin
 from nested_admin import NestedTabularInline, NestedModelAdmin
-from training_program.models import TrainingProgram, TrainingSession, ProgramExercise
+from training_program.models import TrainingProgram, TrainingSession, TrainingExercise
 
-class ProgramExerciseInline(NestedTabularInline):
-    model = ProgramExercise
+class TrainingExerciseInline(NestedTabularInline):
+    model = TrainingExercise
     extra = 0
     fields = ["exercise", "muscle_group","is_custom_muscle_group", "custom_exercise_title", "sequence", "sets", "reps", "display_id"]
     readonly_fields = ["display_id"]
@@ -17,7 +17,7 @@ class TrainingSessionInline(NestedTabularInline):
     extra = 0
     fields = ["session_title", "display_id"]
     readonly_fields = ["display_id"]
-    inlines = [ProgramExerciseInline]
+    inlines = [TrainingExerciseInline]
 
     def display_id(self, obj):
         return obj.id

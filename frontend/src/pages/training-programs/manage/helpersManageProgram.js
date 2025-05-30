@@ -25,6 +25,7 @@ export const checkUserHasCurrentProgram = async (userId) => {
 
 export const saveProgram = async (data, id = null) => {
   const tranformedData = camelToSnake(data);
+  console.log({ tranformedData });
 
   try {
     const isEditMode = Boolean(id);

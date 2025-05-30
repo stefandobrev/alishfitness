@@ -92,14 +92,14 @@ export const getChangedProgramFields = (initData, updatedData) => {
     });
 
     // Find any deleted sessions (present initially but missing in updated)
-    const deletedSessions = initData.sessions.filter(
+    const deletedSessionIds = initData.sessions.filter(
       (initSession) =>
         !updatedData.sessions.some((s) => s.id === initSession.id),
     );
 
     // Include deleted session IDs if any
-    if (deletedSessions.length) {
-      changedFields.deletedSessions = deletedSessions.map((s) => s.id);
+    if (deletedSessionIds.length) {
+      changedFields.deletedSessionIds = deletedSessionIds.map((s) => s.id);
     }
 
     // Include session changes if any

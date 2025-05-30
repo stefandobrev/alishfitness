@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 
 from user.models import User
 from exercise.models import Exercise, MuscleGroup
-from training_program.models import TrainingProgram
+from training_program.models import TrainingProgram, TrainingSession, TrainingExercise
 
 from user.serializers import UserSummarySerializer
 from exercise.serializers import ExerciseTitleSerializer
@@ -246,6 +246,21 @@ class TrainingProgramViewSet(viewsets.ViewSet):
             Response with messages.
         """
         program = TrainingProgram.objects.get(pk=pk)
+
+        deleted_session_ids = request.data.pop("deleted_session_ids", [])
+        deleted_exercise_ids = []
+        for session_id in deleted_session_ids:
+            session = TrainingSession.objects.get(id=session_id)
+            session.delete()
+
+        for session in request.data.get("sessions", []):
+            erased_exercise_ids = session.pop("deleted_exercise_ids", [])
+            deleted_exercise_ids.extend(erased_exercise_ids)
+
+        for exercise_id in deleted_exercise_ids:
+            exercise = TrainingExercise.objects.get(id=exercise_id)
+            exercise.delete()
+
         transformed_data = self._transform_data(request.data)
         print(transformed_data)
         serializer = TrainingProgramSerializer(program, data=transformed_data, partial=True)
@@ -352,8 +367,6 @@ class TrainingProgramViewSet(viewsets.ViewSet):
                 })
         return transformed
     
-    
-
     def destroy(self, request, pk=None):
         """Delete an existing training-program model."""
         program = get_object_or_404(TrainingProgram, id=pk)

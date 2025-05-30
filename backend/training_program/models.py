@@ -44,7 +44,7 @@ class TrainingSession(models.Model):
     def __str__(self):
         return f"{self.program.program_title} - {self.session_title}"
 
-class ProgramExercise(models.Model):
+class TrainingExercise(models.Model):
     session = models.ForeignKey(
         TrainingSession, 
         related_name="exercises", 

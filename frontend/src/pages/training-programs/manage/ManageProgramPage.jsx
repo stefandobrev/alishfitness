@@ -191,7 +191,6 @@ export const ManageProgramPage = () => {
         initCompareData,
         formattedData,
       );
-      console.log({ changedData });
 
       submitEditProgram(changedData, programId);
     }

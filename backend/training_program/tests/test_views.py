@@ -5,7 +5,7 @@ from copy import deepcopy
 
 from datetime import date, timedelta
 
-from training_program.models import TrainingProgram, ProgramExercise
+from training_program.models import TrainingProgram, TrainingExercise
 
 @pytest.mark.django_db(transaction=True)
 class TestTrainingProgramViewSet:
@@ -95,9 +95,9 @@ class TestTrainingProgramViewSet:
         assert day_1_session is not None
         assert day_2_session is not None
         
-        assert ProgramExercise.objects.filter(session=day_2_session, sequence="A").exists()
+        assert TrainingExercise.objects.filter(session=day_2_session, sequence="A").exists()
 
-        assert ProgramExercise.objects.filter(session=day_1_session, sequence="A").exists()
+        assert TrainingExercise.objects.filter(session=day_1_session, sequence="A").exists()
 
     def test_invalid_schedule(self, valid_training_program_data, api_client, test_admin):
         invalid_schedule_data = deepcopy(valid_training_program_data)

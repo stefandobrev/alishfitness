@@ -2,11 +2,11 @@ from rest_framework import serializers
 
 from user.models import User
 from user.serializers import UserSummarySerializer
-from training_program.models import TrainingProgram, TrainingSession, ProgramExercise
+from training_program.models import TrainingProgram, TrainingSession, TrainingExercise
 
-class ProgramExerciseSerializer(serializers.ModelSerializer):
+class TrainingExerciseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ProgramExercise
+        model = TrainingExercise
         fields = [
             "muscle_group",
             "is_custom_muscle_group", 
@@ -31,7 +31,7 @@ class ProgramExerciseSerializer(serializers.ModelSerializer):
         
 class TrainingSessionSerializer(serializers.ModelSerializer):
     temp_id = serializers.CharField(write_only=True, required=False)
-    exercises = ProgramExerciseSerializer(many=True)
+    exercises = TrainingExerciseSerializer(many=True)
 
     class Meta:
         model = TrainingSession
@@ -124,23 +124,23 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
             temp_id_mapping[temp_id] = session.id
 
             for exercise_data in exercises_data: 
-                ProgramExercise.objects.create(session=session, **exercise_data)
+                TrainingExercise.objects.create(session=session, **exercise_data)
 
         return program, temp_id_mapping
 
 
-    def update(self, instance, validated_date):
+    def update(self, instance, validated_data):
         """Update a program with validated data including sessions and exercises within."""
-        pass
+        print("Validated data:", validated_data)
 
-class ProgramExerciseDetailSerializer(serializers.ModelSerializer):
+class TrainingExerciseDetailSerializer(serializers.ModelSerializer):
     exercise_title = serializers.CharField(source="exercise.title", read_only=True)
     exercise_slug = serializers.CharField(source="exercise.slug", read_only=True)
     muscle_group_name = serializers.CharField(source="muscle_group.name", read_only=True)
     muscle_group_slug = serializers.CharField(source="muscle_group.slug", read_only=True)
 
     class Meta:
-        model = ProgramExercise
+        model = TrainingExercise
         fields = [
             "id",
             "sequence",
@@ -155,7 +155,7 @@ class ProgramExerciseDetailSerializer(serializers.ModelSerializer):
         ]
 
 class TrainingSessionDetailSerializer(serializers.ModelSerializer):
-    exercises = ProgramExerciseDetailSerializer(many=True, read_only=True)
+    exercises = TrainingExerciseDetailSerializer(many=True, read_only=True)
 
     class Meta:
         model = TrainingSession
