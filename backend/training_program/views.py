@@ -262,7 +262,6 @@ class TrainingProgramViewSet(viewsets.ViewSet):
             exercise.delete()
 
         transformed_data = self._transform_data(request.data)
-        print(transformed_data)
         serializer = TrainingProgramSerializer(program, data=transformed_data, partial=True)
         if serializer.is_valid():
             serializer.save()

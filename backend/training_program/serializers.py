@@ -5,9 +5,12 @@ from user.serializers import UserSummarySerializer
 from training_program.models import TrainingProgram, TrainingSession, TrainingExercise
 
 class TrainingExerciseSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
+
     class Meta:
         model = TrainingExercise
         fields = [
+            "id",
             "muscle_group",
             "is_custom_muscle_group", 
             "exercise",
@@ -30,12 +33,13 @@ class TrainingExerciseSerializer(serializers.ModelSerializer):
         return data
         
 class TrainingSessionSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
     temp_id = serializers.CharField(write_only=True, required=False)
     exercises = TrainingExerciseSerializer(many=True)
 
     class Meta:
         model = TrainingSession
-        fields = ["session_title", "temp_id", "exercises"]
+        fields = ["id", "session_title", "temp_id", "exercises"]
 
     def validate(self, data):
         """Validating reps and sequnce. Sets are handled by controller."""
@@ -132,6 +136,53 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         """Update a program with validated data including sessions and exercises within."""
         print("Validated data:", validated_data)
+        sessions_data = validated_data.pop("sessions", None)
+        assigned_user = validated_data.pop("assigned_user", None)
+
+        # Update user
+        if assigned_user:
+            instance.assigned_user = assigned_user
+        
+        # Update date, program title
+        for attr, value in  validated_data.items():
+            setattr(instance, attr, value)
+
+        temp_id_mapping = {}
+
+        if sessions_data:
+            for session_data in sessions_data:
+                session_id = session_data.get("id", None)
+                temp_id = session_data.pop("temp_id", None)
+                exercises_data = session_data.pop("exercises", None)
+
+                # Update existing session
+                session = None
+                if session_id:
+                    session = TrainingSession.objects.get(id=session_id, program=instance)
+                    for key, val in session_data.items():
+                        if key != "id":
+                            setattr(session, key, val)
+                    session.save()
+                else:
+                    session = TrainingSession.objects.create(program=instance, **session_data)
+
+                if exercises_data:
+                    for exercise_data in exercises_data:
+                        exercise_id = exercise_data.get("id", None)
+
+                        if exercise_id:
+                            exercise = TrainingExercise.objects.get(id=exercise_id, session=session)
+                            for key, val in exercise_data.items():
+                                if key != "id":
+                                    setattr(exercise, key, val)
+                            exercise.save()
+                        else:
+                            TrainingExercise.objects.create(session=session, **exercise_data)
+
+        instance.save()
+
+        return instance
+
 
 class TrainingExerciseDetailSerializer(serializers.ModelSerializer):
     exercise_title = serializers.CharField(source="exercise.title", read_only=True)
