@@ -99,6 +99,7 @@ export const ManageProgramPage = () => {
 
     const mappedData = mapTrainingProgramData(trainingProgramData);
     // Returns just the id of the user as backend expects just user id and formats the date to string - activation Date expects date.
+
     setInitCompareData({
       ...mappedData,
       assignedUser: mappedData.assignedUser?.value ?? null,
@@ -162,6 +163,7 @@ export const ManageProgramPage = () => {
     const formData = getValues();
 
     const formattedData = formatCurrentFormData(formData);
+    console.log({ trainingProgramData });
     console.log({ initCompareData });
     console.log({ formattedData });
     const isToday =

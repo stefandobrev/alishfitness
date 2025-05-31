@@ -21,8 +21,7 @@ export const Schedule = ({ activeTab, sessions }) => {
     formState: { errors, isSubmitted },
   } = useFormContext();
 
-  // Registers scheduleArray based on defaultValue - useWatch prevents issues
-  // with race conditions, setting defaultValue prevents undefined
+  // Schedule is now consistently an array of objects: [{ tempId, realId }]
   const schedule = useWatch({ name: 'scheduleArray', defaultValue: [] });
 
   useEffect(() => {
@@ -32,9 +31,9 @@ export const Schedule = ({ activeTab, sessions }) => {
   // Clean up schedule array when sessions are removed
   useEffect(() => {
     if (sessions && schedule.length > 0) {
-      const validSessionIds = sessions.map((session) => session.tempId);
-      const cleanedSchedule = schedule.filter((sessionId) =>
-        validSessionIds.includes(sessionId),
+      const validSessionTempIds = sessions.map((session) => session.tempId);
+      const cleanedSchedule = schedule.filter((scheduleItem) =>
+        validSessionTempIds.includes(scheduleItem.tempId),
       );
 
       // Only update if there's a difference
@@ -45,29 +44,35 @@ export const Schedule = ({ activeTab, sessions }) => {
     }
   }, [sessions, schedule, setValue, trigger]);
 
-  // Assign options in the select dropdown
+  // Show all sessions as options (allow multiple selections)
   const scheduleOptions =
-    sessions?.map((session, index) => {
-      return {
-        label: `Session ${index + 1}${session.sessionTitle ? ` : ${session.sessionTitle}` : ''}`,
-        value: session.tempId,
-      };
-    }) || [];
+    sessions?.map((session, index) => ({
+      label: `Session ${index + 1}${
+        session.sessionTitle ? ` : ${session.sessionTitle}` : ''
+      }`,
+      value: session.tempId,
+    })) || [];
 
-  // Select, remove and move sessions from schedule positions
+  // Handle session selection - consistently store as objects
   const handleSessionSelect = (selected) => {
     if (selected) {
+      const session = sessions.find((s) => s.tempId === selected.value);
       const currentSchedule = getValues('scheduleArray') || [];
-      const newSchedule = [...currentSchedule, selected.value];
+      // Assign real session id (if any) as value to tempId as key
+      const newScheduleItem = {
+        tempId: selected.value,
+        realId: session?.id ?? null,
+      };
+      const newSchedule = [...currentSchedule, newScheduleItem];
       setValue('scheduleArray', newSchedule);
       trigger('scheduleArray');
-      setSelectedSession(null); // Reset dropdown after selection
+      setSelectedSession(null);
     }
   };
 
   const handleRemoveFromSchedule = (index) => {
     const currentSchedule = getValues('scheduleArray') || [];
-    const newSchedule = currentSchedule.filter((_, idx) => idx !== index);
+    const newSchedule = currentSchedule.filter((_, i) => i !== index);
     setValue('scheduleArray', newSchedule);
     trigger('scheduleArray');
   };
@@ -76,9 +81,10 @@ export const Schedule = ({ activeTab, sessions }) => {
     if (index === 0) return;
     const currentSchedule = getValues('scheduleArray') || [];
     const newSchedule = [...currentSchedule];
-    const temp = newSchedule[index];
-    newSchedule[index] = newSchedule[index - 1];
-    newSchedule[index - 1] = temp;
+    [newSchedule[index - 1], newSchedule[index]] = [
+      newSchedule[index],
+      newSchedule[index - 1],
+    ];
     setValue('scheduleArray', newSchedule);
     trigger('scheduleArray');
   };
@@ -87,9 +93,10 @@ export const Schedule = ({ activeTab, sessions }) => {
     const currentSchedule = getValues('scheduleArray') || [];
     if (index === currentSchedule.length - 1) return;
     const newSchedule = [...currentSchedule];
-    const temp = newSchedule[index];
-    newSchedule[index] = newSchedule[index + 1];
-    newSchedule[index + 1] = temp;
+    [newSchedule[index], newSchedule[index + 1]] = [
+      newSchedule[index + 1],
+      newSchedule[index],
+    ];
     setValue('scheduleArray', newSchedule);
     trigger('scheduleArray');
   };
@@ -138,17 +145,19 @@ export const Schedule = ({ activeTab, sessions }) => {
             <h3 className='text-m text-m mb-1 font-semibold text-gray-700'>
               Schedule order
             </h3>
-            {schedule.map((sessionId, index) => {
+            {schedule.map((scheduleItem, index) => {
               const session = sessions?.find(
-                (session) => session.tempId === sessionId,
+                (session) => session.tempId === scheduleItem.tempId,
               );
               if (!session) return null;
+
               const sessionIndex = sessions.findIndex(
-                (s) => s.tempId === sessionId,
+                (s) => s.tempId === scheduleItem.tempId,
               );
+
               return (
                 <div
-                  key={`${sessionId}-${index}`}
+                  key={`${scheduleItem.tempId}-${index}`}
                   className='flex h-full w-full items-center overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md'
                 >
                   <div
@@ -159,7 +168,9 @@ export const Schedule = ({ activeTab, sessions }) => {
                       <div className='flex size-6 items-center justify-center rounded-full border border-gray-300 bg-gray-100 text-sm font-semibold text-gray-700 shadow-sm'>
                         {index + 1}
                       </div>
-                      <p className='line-clamp-2 max-w-20 font-medium break-words'>{`${session.sessionTitle ? `${session.sessionTitle}` : `Session ${sessionIndex + 1}`}`}</p>{' '}
+                      <p className='line-clamp-2 max-w-20 font-medium break-words'>
+                        {session.sessionTitle || `Session ${sessionIndex + 1}`}
+                      </p>
                     </div>
 
                     <div className='flex items-center'>

@@ -211,27 +211,27 @@ class TrainingProgramViewSet(viewsets.ViewSet):
                 raise ValidationError({"schedule_array": "Schedule is missing!"})
         except ValidationError as e:
             return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
-        
         try:
             transformed_data = self._transform_data(request.data)
         except ValidationError as e:
             return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
 
+        # print("Schedule array is: ", transformed_data["schedule_array"])
         serializer = TrainingProgramSerializer(data=transformed_data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         with transaction.atomic():
-            program, temp_id_mapping = serializer.save()
-            
             try:
+                program, temp_id_mapping = serializer.save()
+                
                 transformed_schedule = self._transform_schedule(schedule_array, temp_id_mapping) 
+                
+                program.schedule_array = transformed_schedule
+                
+                program.save()
             except ValidationError as e:
                 return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
-
-            program.schedule_array = transformed_schedule
-            
-            program.save()
 
         return Response({"message": "Program created successfully!"}, status=status.HTTP_201_CREATED)
     
@@ -357,7 +357,8 @@ class TrainingProgramViewSet(viewsets.ViewSet):
         Args:
             schedule_array: List of session strings references to transform as ids"""
         transformed = []
-        for temp_id in schedule_array:
+        for entry in schedule_array:
+            temp_id = entry.get("temp_id")
             if temp_id in temp_id_mapping:
                 transformed.append(temp_id_mapping[temp_id])
             else:

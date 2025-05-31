@@ -56,9 +56,10 @@ export const mapTrainingProgramData = (initialData) => {
     formattedSessions.map((s) => [s.id, s.tempId]),
   );
 
-  const formattedScheduleArray = scheduleArray.map(
-    (id) => sessionIdMap[id] ?? id,
-  );
+  const formattedScheduleArray = scheduleArray.map((realId) => ({
+    tempId: sessionIdMap[realId],
+    realId: realId,
+  }));
 
   // Conditionals to apply null for activationDate and assignedUser on Template program mode.
   const formattedUser =

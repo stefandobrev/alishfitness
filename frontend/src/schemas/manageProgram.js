@@ -32,13 +32,19 @@ const sessionSchema = z.object({
     ),
 });
 
+// Schema for schedule items
+const scheduleItemSchema = z.object({
+  tempId: z.string().min(1, 'Session tempId is required.'),
+  realId: z.number().nullable(), // Can be null for new sessions, number when exists
+});
+
 export const manageProgram = z
   .object({
     programTitle: z.string().min(1, 'Program title is required.'),
     sessions: z
       .array(sessionSchema)
       .min(1, { message: 'At least one session is required.' }),
-    scheduleArray: z.array(z.string()).min(1, 'Schedule is required.'),
+    scheduleArray: z.array(scheduleItemSchema).min(1, 'Schedule is required.'),
     mode: z.enum(['assigned', 'template']),
     assignedUser: z
       .object({
@@ -58,7 +64,6 @@ export const manageProgram = z
           code: z.ZodIssueCode.custom,
         });
       }
-
       if (!data.activationDate) {
         ctx.addIssue({
           path: ['activationDate'],
@@ -69,10 +74,10 @@ export const manageProgram = z
     }
 
     // Ensure every session appears at least once in scheduleArray
+    const scheduledTempIds = data.scheduleArray.map((item) => item.tempId);
     const missingSessions = data.sessions.filter(
-      (s) => !data.scheduleArray.includes(s.tempId),
+      (s) => !scheduledTempIds.includes(s.tempId),
     );
-
     if (missingSessions.length > 0) {
       ctx.addIssue({
         path: ['scheduleArray'],

@@ -81,7 +81,10 @@ export const ProgramActivationBar = ({
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <SubmitButton disabled={!hasChanges} className='w-full md:w-auto'>
+        <SubmitButton
+          disabled={programMode === 'edit' && !hasChanges}
+          className='w-full md:w-auto'
+        >
           {programMode === 'create' ? 'Create ' : 'Edit '}
           {typeLabel}
         </SubmitButton>
