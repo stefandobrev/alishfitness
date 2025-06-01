@@ -46,7 +46,7 @@ export const ManageProgramPage = () => {
     programTitle: '',
     mode: programUsageMode,
     sessions: [],
-    scheduleArray: [],
+    scheduleData: [],
     assignedUser: null,
     activationDate: null,
   };

@@ -216,7 +216,6 @@ class TrainingProgramViewSet(viewsets.ViewSet):
         except ValidationError as e:
             return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
 
-        # print("Schedule array is: ", transformed_data["schedule_data"])
         serializer = TrainingProgramSerializer(data=transformed_data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -261,13 +260,34 @@ class TrainingProgramViewSet(viewsets.ViewSet):
             exercise = TrainingExercise.objects.get(id=exercise_id)
             exercise.delete()
 
+        schedule_data = None
+        if "schedule_data" in request.data:
+            schedule_data = request.data["schedule_data"]
+            if len(schedule_data) < 1:
+                raise ValidationError({"schedule_data": "Schedule cannot be empty."})
+
         transformed_data = self._transform_data(request.data)
         serializer = TrainingProgramSerializer(program, data=transformed_data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "Program updated successfully!"}, status=status.HTTP_200_OK)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        with transaction.atomic():
+            try:
+                program, temp_id_mapping = serializer.save()
+                
+                if schedule_data:
+                    existing_ids = {entry["temp_id"]: entry["real_id"] for entry in schedule_data if entry.get("real_id")}
+                    updated_id_mapping = {**existing_ids, **temp_id_mapping}
+                    
+                    transformed_schedule = self._transform_schedule(schedule_data, updated_id_mapping) 
+                
+                    program.schedule_data = transformed_schedule
+                
+                program.save()
+            except ValidationError as e:
+                return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response({"message": "Program updated successfully!"}, status=status.HTTP_200_OK)
     
     def _transform_data(self, data):
         """
@@ -350,12 +370,19 @@ class TrainingProgramViewSet(viewsets.ViewSet):
                 raise ValidationError({"exercise_input": f"Exercise '{exercise_input}' not found."})
 
     def _transform_schedule(self, schedule_data, temp_id_mapping):
-        """Transform temporary session IDs to actual database IDs.
+        """
+        Transform temporary session IDs to actual database IDs.
         temp_id_mapping is a dict where temp_ids are they key and values are
         the backend unique ids.
     
         Args:
-            schedule_data: List of session strings references to transform as ids"""
+            schedule_data: List of session objects with temp ids as keys and
+            real ids for values references to transform as ids. On create values
+            are none, with atomic transaction ids are assigned to temp_id_mapping.
+
+            temp_id_mapping: dict containint newly created real ids for sessions
+            assigned to temp ids.
+        """
         transformed = []
         for entry in schedule_data:
             temp_id = entry.get("temp_id")

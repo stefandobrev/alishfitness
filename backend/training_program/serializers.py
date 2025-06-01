@@ -135,7 +135,6 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         """Update a program with validated data including sessions and exercises within."""
-        print("Validated data:", validated_data)
         sessions_data = validated_data.pop("sessions", None)
         assigned_user = validated_data.pop("assigned_user", None)
 
@@ -165,7 +164,9 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
                     session.save()
                 else:
                     session = TrainingSession.objects.create(program=instance, **session_data)
-
+                    if temp_id is not None:
+                        temp_id_mapping[temp_id] = session.id
+                
                 if exercises_data:
                     for exercise_data in exercises_data:
                         exercise_id = exercise_data.get("id", None)
@@ -178,10 +179,10 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
                             exercise.save()
                         else:
                             TrainingExercise.objects.create(session=session, **exercise_data)
-
+        print("Temp id mapping: ", temp_id_mapping)                            
         instance.save()
 
-        return instance
+        return instance, temp_id_mapping
 
 
 class TrainingExerciseDetailSerializer(serializers.ModelSerializer):

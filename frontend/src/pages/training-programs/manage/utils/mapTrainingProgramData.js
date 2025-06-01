@@ -49,6 +49,12 @@ export const mapTrainingProgramData = (initialData) => {
 
   const formattedSessions = sessions.map(mapSessionData);
 
+  const sessionIdOrder = scheduleData;
+
+  const sortedSessions = [...formattedSessions].sort(
+    (a, b) => sessionIdOrder.indexOf(a.id) - sessionIdOrder.indexOf(b.id),
+  );
+
   // Assign session ids as keys to tempId values from formattedSessions and replace the values
   // within scheduleData with str tempIds that match
 
@@ -75,7 +81,7 @@ export const mapTrainingProgramData = (initialData) => {
   return {
     programTitle,
     mode,
-    sessions: formattedSessions,
+    sessions: sortedSessions,
     scheduleData: formattedScheduleData,
     activationDate: formattedActivationDate,
     assignedUser: formattedUser,
