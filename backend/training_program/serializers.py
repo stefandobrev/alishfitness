@@ -229,6 +229,6 @@ class TrainingProgramDetailSerializer(serializers.ModelSerializer):
             "status",
             "assigned_user",
             "activation_date",
-            "schedule_array",
+            "schedule_data",
             "sessions",
         ]

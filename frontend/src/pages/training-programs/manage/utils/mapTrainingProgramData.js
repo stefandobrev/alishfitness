@@ -42,7 +42,7 @@ export const mapTrainingProgramData = (initialData) => {
     programTitle,
     mode,
     sessions,
-    scheduleArray,
+    scheduleData,
     activationDate,
     assignedUser,
   } = initialData;
@@ -50,13 +50,13 @@ export const mapTrainingProgramData = (initialData) => {
   const formattedSessions = sessions.map(mapSessionData);
 
   // Assign session ids as keys to tempId values from formattedSessions and replace the values
-  // within schedule array with str tempIds that match
+  // within scheduleData with str tempIds that match
 
   const sessionIdMap = Object.fromEntries(
     formattedSessions.map((s) => [s.id, s.tempId]),
   );
 
-  const formattedScheduleArray = scheduleArray.map((realId) => ({
+  const formattedScheduleData = scheduleData.map((realId) => ({
     tempId: sessionIdMap[realId],
     realId: realId,
   }));
@@ -76,7 +76,7 @@ export const mapTrainingProgramData = (initialData) => {
     programTitle,
     mode,
     sessions: formattedSessions,
-    scheduleArray: formattedScheduleArray,
+    scheduleData: formattedScheduleData,
     activationDate: formattedActivationDate,
     assignedUser: formattedUser,
   };

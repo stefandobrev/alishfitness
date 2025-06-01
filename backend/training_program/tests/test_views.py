@@ -18,7 +18,7 @@ class TestTrainingProgramViewSet:
             "mode": "assigned",
             "assigned_user": test_user.id,
             "activation_date": activation_date,
-            "schedule_array": ["1", "2", "1"],
+            "schedule_data": ["1", "2", "1"],
             "sessions": [
                 {
                     "session_title": "Day 1",
@@ -90,7 +90,7 @@ class TestTrainingProgramViewSet:
         day_1_session = program.sessions.filter(session_title="Day 1").first()
         day_2_session = program.sessions.filter(session_title="Day 2").first()
 
-        assert program.schedule_array == [day_1_session.id, day_2_session.id, day_1_session.id]
+        assert program.schedule_data == [day_1_session.id, day_2_session.id, day_1_session.id]
         
         assert day_1_session is not None
         assert day_2_session is not None
@@ -101,23 +101,23 @@ class TestTrainingProgramViewSet:
 
     def test_invalid_schedule(self, valid_training_program_data, api_client, test_admin):
         invalid_schedule_data = deepcopy(valid_training_program_data)
-        invalid_schedule_data["schedule_array"] = []
+        invalid_schedule_data["schedule_data"] = []
 
         api_client.force_authenticate(user=test_admin)
         url = reverse("training-program-list")
         response = api_client.post(url, invalid_schedule_data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert response.data.get("schedule_array") == "Schedule cannot be empty."
+        assert response.data.get("schedule_data") == "Schedule cannot be empty."
 
-        invalid_schedule_data.pop("schedule_array", None)
+        invalid_schedule_data.pop("schedule_data", None)
 
         api_client.force_authenticate(user=test_admin)
         url = reverse("training-program-list")
         response = api_client.post(url, invalid_schedule_data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert response.data.get("schedule_array") == "Schedule is missing!"
+        assert response.data.get("schedule_data") == "Schedule is missing!"
 
     def test_invalid_sets(self, valid_training_program_data, api_client, test_admin):
         invalid_sets_data = deepcopy(valid_training_program_data)
@@ -163,7 +163,7 @@ class TestTrainingProgramViewSet:
 
     def test_invalid_schedule_id(self, valid_training_program_data, api_client, test_admin):
         invalid_schedule_id_data = deepcopy(valid_training_program_data)
-        invalid_schedule_id_data["schedule_array"] = ["3"]
+        invalid_schedule_id_data["schedule_data"] = ["3"]
 
         api_client.force_authenticate(user=test_admin)
         url = reverse("training-program-list")

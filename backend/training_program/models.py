@@ -20,7 +20,7 @@ class TrainingProgram(models.Model):
         User, null=True, blank=True, on_delete=models.CASCADE
     )
     activation_date = models.DateField(null=True, blank=True)
-    schedule_array = models.JSONField(default=list)
+    schedule_data = models.JSONField(default=list)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

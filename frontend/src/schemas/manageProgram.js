@@ -44,7 +44,7 @@ export const manageProgram = z
     sessions: z
       .array(sessionSchema)
       .min(1, { message: 'At least one session is required.' }),
-    scheduleArray: z.array(scheduleItemSchema).min(1, 'Schedule is required.'),
+    scheduleData: z.array(scheduleItemSchema).min(1, 'Schedule is required.'),
     mode: z.enum(['assigned', 'template']),
     assignedUser: z
       .object({
@@ -73,14 +73,14 @@ export const manageProgram = z
       }
     }
 
-    // Ensure every session appears at least once in scheduleArray
-    const scheduledTempIds = data.scheduleArray.map((item) => item.tempId);
+    // Ensure every session appears at least once in scheduleData
+    const scheduledTempIds = data.scheduleData.map((item) => item.tempId);
     const missingSessions = data.sessions.filter(
       (s) => !scheduledTempIds.includes(s.tempId),
     );
     if (missingSessions.length > 0) {
       ctx.addIssue({
-        path: ['scheduleArray'],
+        path: ['scheduleData'],
         message: 'Sessions missing.',
         code: z.ZodIssueCode.custom,
       });

@@ -22,10 +22,10 @@ export const Schedule = ({ activeTab, sessions }) => {
   } = useFormContext();
 
   // Schedule is now consistently an array of objects: [{ tempId, realId }]
-  const schedule = useWatch({ name: 'scheduleArray', defaultValue: [] });
+  const schedule = useWatch({ name: 'scheduleData', defaultValue: [] });
 
   useEffect(() => {
-    register('scheduleArray');
+    register('scheduleData');
   }, [register]);
 
   // Clean up schedule array when sessions are removed
@@ -38,8 +38,8 @@ export const Schedule = ({ activeTab, sessions }) => {
 
       // Only update if there's a difference
       if (cleanedSchedule.length !== schedule.length) {
-        setValue('scheduleArray', cleanedSchedule);
-        trigger('scheduleArray');
+        setValue('scheduleData', cleanedSchedule);
+        trigger('scheduleData');
       }
     }
   }, [sessions, schedule, setValue, trigger]);
@@ -57,48 +57,48 @@ export const Schedule = ({ activeTab, sessions }) => {
   const handleSessionSelect = (selected) => {
     if (selected) {
       const session = sessions.find((s) => s.tempId === selected.value);
-      const currentSchedule = getValues('scheduleArray') || [];
+      const currentSchedule = getValues('scheduleData') || [];
       // Assign real session id (if any) as value to tempId as key
       const newScheduleItem = {
         tempId: selected.value,
         realId: session?.id ?? null,
       };
       const newSchedule = [...currentSchedule, newScheduleItem];
-      setValue('scheduleArray', newSchedule);
-      trigger('scheduleArray');
+      setValue('scheduleData', newSchedule);
+      trigger('scheduleData');
       setSelectedSession(null);
     }
   };
 
   const handleRemoveFromSchedule = (index) => {
-    const currentSchedule = getValues('scheduleArray') || [];
+    const currentSchedule = getValues('scheduleData') || [];
     const newSchedule = currentSchedule.filter((_, i) => i !== index);
-    setValue('scheduleArray', newSchedule);
-    trigger('scheduleArray');
+    setValue('scheduleData', newSchedule);
+    trigger('scheduleData');
   };
 
   const moveSessionUp = (index) => {
     if (index === 0) return;
-    const currentSchedule = getValues('scheduleArray') || [];
+    const currentSchedule = getValues('scheduleData') || [];
     const newSchedule = [...currentSchedule];
     [newSchedule[index - 1], newSchedule[index]] = [
       newSchedule[index],
       newSchedule[index - 1],
     ];
-    setValue('scheduleArray', newSchedule);
-    trigger('scheduleArray');
+    setValue('scheduleData', newSchedule);
+    trigger('scheduleData');
   };
 
   const moveSessionDown = (index) => {
-    const currentSchedule = getValues('scheduleArray') || [];
+    const currentSchedule = getValues('scheduleData') || [];
     if (index === currentSchedule.length - 1) return;
     const newSchedule = [...currentSchedule];
     [newSchedule[index], newSchedule[index + 1]] = [
       newSchedule[index + 1],
       newSchedule[index],
     ];
-    setValue('scheduleArray', newSchedule);
-    trigger('scheduleArray');
+    setValue('scheduleData', newSchedule);
+    trigger('scheduleData');
   };
 
   return (
@@ -130,9 +130,9 @@ export const Schedule = ({ activeTab, sessions }) => {
 
       {/* Error message and default empty schedule array text */}
       <div className='flex flex-col gap-3 px-6 pt-4 lg:sticky lg:top-50'>
-        {isSubmitted && errors.scheduleArray && (
+        {isSubmitted && errors.scheduleData && (
           <p className='text-m my-2 flex justify-center text-red-500'>
-            {errors.scheduleArray.message}
+            {errors.scheduleData.message}
           </p>
         )}
         {schedule.length === 0 ? (

@@ -203,12 +203,12 @@ class TrainingProgramViewSet(viewsets.ViewSet):
                 Response with messages.
         """
         try:
-            if "schedule_array" in request.data:
-                schedule_array = request.data["schedule_array"]
-                if len(schedule_array) < 1:
-                    raise ValidationError({"schedule_array": "Schedule cannot be empty."})
+            if "schedule_data" in request.data:
+                schedule_data = request.data["schedule_data"]
+                if len(schedule_data) < 1:
+                    raise ValidationError({"schedule_data": "Schedule cannot be empty."})
             else:
-                raise ValidationError({"schedule_array": "Schedule is missing!"})
+                raise ValidationError({"schedule_data": "Schedule is missing!"})
         except ValidationError as e:
             return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
         try:
@@ -216,7 +216,7 @@ class TrainingProgramViewSet(viewsets.ViewSet):
         except ValidationError as e:
             return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
 
-        # print("Schedule array is: ", transformed_data["schedule_array"])
+        # print("Schedule array is: ", transformed_data["schedule_data"])
         serializer = TrainingProgramSerializer(data=transformed_data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -225,9 +225,9 @@ class TrainingProgramViewSet(viewsets.ViewSet):
             try:
                 program, temp_id_mapping = serializer.save()
                 
-                transformed_schedule = self._transform_schedule(schedule_array, temp_id_mapping) 
+                transformed_schedule = self._transform_schedule(schedule_data, temp_id_mapping) 
                 
-                program.schedule_array = transformed_schedule
+                program.schedule_data = transformed_schedule
                 
                 program.save()
             except ValidationError as e:
@@ -349,15 +349,15 @@ class TrainingProgramViewSet(viewsets.ViewSet):
             except Exercise.DoesNotExist:
                 raise ValidationError({"exercise_input": f"Exercise '{exercise_input}' not found."})
 
-    def _transform_schedule(self, schedule_array, temp_id_mapping):
+    def _transform_schedule(self, schedule_data, temp_id_mapping):
         """Transform temporary session IDs to actual database IDs.
         temp_id_mapping is a dict where temp_ids are they key and values are
         the backend unique ids.
     
         Args:
-            schedule_array: List of session strings references to transform as ids"""
+            schedule_data: List of session strings references to transform as ids"""
         transformed = []
-        for entry in schedule_array:
+        for entry in schedule_data:
             temp_id = entry.get("temp_id")
             if temp_id in temp_id_mapping:
                 transformed.append(temp_id_mapping[temp_id])
