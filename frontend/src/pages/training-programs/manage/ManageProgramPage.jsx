@@ -199,11 +199,15 @@ export const ManageProgramPage = () => {
     }
   };
 
+  // Modal confirm
   const handleProgramConfirm = async () => {
     setIsConfirmDialogOpen(false);
     if (programDataAwaitingConfirm) {
       if (programMode === 'create') {
         submitNewProgram(programDataAwaitingConfirm);
+      }
+      if (programMode === 'edit') {
+        submitEditProgram(programDataAwaitingConfirm, programId);
       }
     }
   };
