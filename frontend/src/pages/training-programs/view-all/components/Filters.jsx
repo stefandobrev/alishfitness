@@ -104,9 +104,13 @@ export const Filters = ({ filters, setFilters, onReset, isOpen, onClose }) => {
                     filterUser: userValue,
                   }));
                 }}
-                value={usersData.find(
-                  (option) => option.value === draftFilters.filterUser,
-                )}
+                value={
+                  draftFilters.filterUser
+                    ? modesData.find(
+                        (option) => option.value === draftFilters.filterUser,
+                      )
+                    : null
+                }
               />
 
               <SelectFilter
@@ -122,9 +126,13 @@ export const Filters = ({ filters, setFilters, onReset, isOpen, onClose }) => {
                     filterStatus: statusValue,
                   }));
                 }}
-                value={statusesData.find(
-                  (option) => option.value === draftFilters.filterStatus,
-                )}
+                value={
+                  draftFilters.filterStatus
+                    ? modesData.find(
+                        (option) => option.value === draftFilters.filterStatus,
+                      )
+                    : null
+                }
               />
 
               <div>
