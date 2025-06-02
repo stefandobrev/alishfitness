@@ -48,24 +48,24 @@ export const ManageExercisesPage = () => {
   }, []);
 
   // On Edit
+  const loadExerciseData = async () => {
+    if (!selectedExercise) {
+      setExerciseData(null);
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const data = await fetchExerciseData(selectedExercise);
+      const transformedData = snakeToCamel(data);
+      setExerciseData(transformedData);
+      reset({});
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const loadExerciseData = async () => {
-      if (!selectedExercise) {
-        setExerciseData(null);
-        return;
-      }
-
-      setIsLoading(true);
-      try {
-        const data = await fetchExerciseData(selectedExercise);
-        const transformedData = snakeToCamel(data);
-        setExerciseData(transformedData);
-        reset({});
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     loadExerciseData();
   }, [selectedExercise]);
 

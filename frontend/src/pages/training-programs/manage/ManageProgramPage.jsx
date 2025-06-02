@@ -98,8 +98,9 @@ export const ManageProgramPage = () => {
     }
 
     const mappedData = mapTrainingProgramData(trainingProgramData);
-    // Returns just the id of the user as backend expects just user id and formats the date to string - activation Date expects date.
 
+    /* Returns just the id of the user as backend expects just user id and formats the date to 
+    string - activation Date expects date. */
     setInitCompareData({
       ...mappedData,
       assignedUser: mappedData.assignedUser?.value ?? null,
@@ -120,6 +121,9 @@ export const ManageProgramPage = () => {
   // Page mode processes
   useTitle(`${programMode === 'create' ? 'Create' : 'Edit'} Program`);
 
+  /* First if - programId from useParams for edit mode
+  Second if - usage of templates for create mode
+  Third if - resets all values on create */
   useEffect(() => {
     if (programId) {
       setProgramMode('edit');
@@ -163,15 +167,12 @@ export const ManageProgramPage = () => {
     const formData = getValues();
 
     const formattedData = formatCurrentFormData(formData);
-    console.log({ trainingProgramData });
-    console.log({ initCompareData });
-    console.log({ formattedData });
     const isToday =
       formattedData.activationDate === toUtcMidnightDateString(new Date());
 
-    // Checks if date is today and if there is currently active assigned program on the
-    // assigned user. If yes, a confirmation must warn the admin that previous current program
-    // will be immediately replaced with the one created now.
+    /* Checks if date is today and if there is currently active assigned program on the
+    assigned user. If yes, a confirmation must warn the admin that previous current program
+    will be immediately replaced with the one created now. */
     if (formattedData.assignedUser && isToday) {
       const hasCurrentProgram = await checkUserHasCurrentProgram({
         assignedUser: formattedData.assignedUser,
@@ -241,6 +242,11 @@ export const ManageProgramPage = () => {
       if (type === 'success') {
         toast.success(text);
         setProgramDataAwaitingConfirm(null);
+        setHasChanges(false);
+
+        const updatedData = await fetchTrainingProgramData(programId);
+        const transformedData = snakeToCamel(updatedData);
+        setTrainingProgramData(transformedData);
       }
     } finally {
       setIsLoading(false);

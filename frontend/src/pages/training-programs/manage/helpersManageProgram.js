@@ -49,9 +49,13 @@ export const saveProgram = async (data, id = null) => {
       };
     }
 
+    const successMessage = isEditMode
+      ? 'Program edited successfully!'
+      : 'Program created successfully!';
+
     return {
       type: 'success',
-      text: 'Program created successfully!',
+      text: successMessage,
     };
   } catch (error) {
     return {
