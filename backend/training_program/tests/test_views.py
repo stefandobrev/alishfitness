@@ -18,7 +18,7 @@ class TestTrainingProgramViewSet:
             "mode": "assigned",
             "assigned_user": test_user.id,
             "activation_date": activation_date,
-            "schedule_data": ["1", "2", "1"],
+            "schedule_data": [{"temp_id": "1", "real_id": None}, {"temp_id": "2", "real_id": None}, {"temp_id": "1", "real_id": None}],
             "sessions": [
                 {
                     "session_title": "Day 1",
@@ -163,7 +163,7 @@ class TestTrainingProgramViewSet:
 
     def test_invalid_schedule_id(self, valid_training_program_data, api_client, test_admin):
         invalid_schedule_id_data = deepcopy(valid_training_program_data)
-        invalid_schedule_id_data["schedule_data"] = ["3"]
+        invalid_schedule_id_data["schedule_data"] = [{"temp_id": "3", "real_id": None}]
 
         api_client.force_authenticate(user=test_admin)
         url = reverse("training-program-list")
