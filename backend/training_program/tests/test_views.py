@@ -9,9 +9,7 @@ from training_program.models import TrainingProgram, TrainingExercise
 
 
 @pytest.mark.django_db(transaction=True)
-class TestTrainingSetupDataView:
-    """Tests for TrainingSetupDataView"""
-    
+class TestTrainingSetupDataView:   
     def test_get_training_setup_data(self, api_client, test_user, test_admin, test_muscle_group):
         api_client.force_authenticate(user=test_admin)
         url = reverse("training-setup-data")
@@ -25,9 +23,7 @@ class TestTrainingSetupDataView:
 
 
 @pytest.mark.django_db(transaction=True)
-class TestFilterDataView:
-    """Tests for FilterDataView"""
-    
+class TestFilterDataView: 
     def test_get_filter_data(self, api_client, test_admin):
         api_client.force_authenticate(user=test_admin)
         url = reverse("training-programs-filter-data")  
@@ -41,8 +37,6 @@ class TestFilterDataView:
 
 @pytest.mark.django_db(transaction=True)
 class TestHasActiveProgramView:
-    """Tests for HasActiveProgramView"""
-    
     def test_user_has_active_program(self, api_client, test_admin, test_training_program, test_user):
         api_client.force_authenticate(user=test_admin)
         url = reverse("has-active-program")  
@@ -75,8 +69,6 @@ class TestHasActiveProgramView:
 
 @pytest.mark.django_db(transaction=True)
 class TestFilteredTrainingProgramsView:
-    """Tests for FilteredTrainingProgramsView"""
-    
     @pytest.fixture
     def valid_search_data(self):
         return {
@@ -205,8 +197,6 @@ class TestFilteredTrainingProgramsView:
 
 @pytest.mark.django_db(transaction=True)
 class TestTrainingProgramViewSet:
-    """Tests for TrainingProgramViewSet"""
-    
     @pytest.fixture
     def valid_training_program_data(self, test_user, test_exercise, test_muscle_group):
         activation_date = date.today()
@@ -248,7 +238,6 @@ class TestTrainingProgramViewSet:
         }
 
     def test_retrieve_program(self, api_client, test_admin, test_training_program):
-        """Test retrieving a training program"""
         api_client.force_authenticate(user=test_admin)
         url = reverse("training-program-detail", args=[test_training_program.id])
         response = api_client.get(url)
@@ -257,7 +246,6 @@ class TestTrainingProgramViewSet:
         assert response.data["program_title"] == test_training_program.program_title
 
     def test_retrieve_nonexistent_program(self, api_client, test_admin):
-        """Test retrieving a non-existent training program"""
         api_client.force_authenticate(user=test_admin)
         url = reverse("training-program-detail", args=[999999])
         response = api_client.get(url)
@@ -397,7 +385,6 @@ class TestTrainingProgramViewSet:
         assert scheduled_program.status == "scheduled"
 
     def test_update_program(self, api_client, test_admin, test_training_program):
-        """Test updating a training program"""
         api_client.force_authenticate(user=test_admin)
         url = reverse("training-program-detail", args=[test_training_program.id])
         
@@ -435,8 +422,6 @@ class TestTrainingProgramViewSet:
 
 @pytest.mark.django_db(transaction=True)
 class TestTrainingProgramTitleView:
-    """Tests for TrainingProgramTitleView"""
-    
     def test_get_template_titles(self, api_client, test_admin, test_training_template):
         api_client.force_authenticate(user=test_admin)
         url = reverse("templates") 
@@ -447,7 +432,6 @@ class TestTrainingProgramTitleView:
         assert any(program["program_title"] == test_training_template.program_title for program in response.data)
 
     def test_only_templates_returned(self, api_client, test_admin, test_training_program, test_training_template):
-        """Test that only template programs are returned, not assigned ones"""
         api_client.force_authenticate(user=test_admin)
         url = reverse("templates")
         response = api_client.get(url)
