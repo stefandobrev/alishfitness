@@ -17,25 +17,14 @@ const mapExerciseData = ({
   muscleGroupSlug,
   exerciseSlug,
   customExerciseTitle,
-}) => {
-  let muscleGroupExerciseRelation = {
-    muscleGroupInput: muscleGroupSlug,
-    exerciseInput: exerciseSlug,
-  };
-  if (isCustomMuscleGroup) {
-    muscleGroupExerciseRelation = {
-      muscleGroupInput: 'custom',
-      exerciseInput: customExerciseTitle,
-    };
-  }
-  return {
-    ...muscleGroupExerciseRelation,
-    id,
-    sequence,
-    sets: sets.toString(), // Backend returns int for sets
-    reps,
-  };
-};
+}) => ({
+  muscleGroupInput: isCustomMuscleGroup ? 'custom' : muscleGroupSlug,
+  exerciseInput: isCustomMuscleGroup ? customExerciseTitle : exerciseSlug,
+  id,
+  sequence,
+  sets: sets.toString(), // Backend returns ints
+  reps,
+});
 
 export const mapTrainingProgramData = (initialData) => {
   const {
@@ -47,19 +36,16 @@ export const mapTrainingProgramData = (initialData) => {
     assignedUser,
   } = initialData;
 
-  const formattedSessions = sessions.map(mapSessionData);
+  /* Assign session tempId to the rest of the attributes and
+  order session according to their position in scheduleData */
+  const sortedSessions = [...sessions]
+    .map(mapSessionData)
+    .sort((a, b) => scheduleData.indexOf(a.id) - scheduleData.indexOf(b.id));
 
-  const sessionIdOrder = scheduleData;
-
-  const sortedSessions = [...formattedSessions].sort(
-    (a, b) => sessionIdOrder.indexOf(a.id) - sessionIdOrder.indexOf(b.id),
-  );
-
-  // Assign session ids as keys to tempId values from formattedSessions and replace the values
-  // within scheduleData with str tempIds that match
-
+  /* Assign session ids as keys to tempId values from formattedSessions and replace the values
+   within scheduleData with str tempIds that match */
   const sessionIdMap = Object.fromEntries(
-    formattedSessions.map((s) => [s.id, s.tempId]),
+    sortedSessions.map((s) => [s.id, s.tempId]),
   );
 
   const formattedScheduleData = scheduleData.map((realId) => ({
