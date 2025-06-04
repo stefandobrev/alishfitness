@@ -2,7 +2,7 @@ import { api, camelToSnake } from '@/utils';
 import { store } from '@/store/store';
 
 export const fetchUserSettings = async () => {
-  const response = await api('user/settings/', 'GET');
+  const response = await api('users/settings/', 'GET');
   if (!response.ok) throw new Error('Failed to fetch settings.');
   return response.json();
 };
@@ -11,7 +11,7 @@ export const updateUserSettings = async (data) => {
   const transformedData = camelToSnake(data);
   try {
     const response = await api(
-      'user/settings/update/',
+      'users/settings/update/',
       'PATCH',
       transformedData,
     );
@@ -44,7 +44,7 @@ export const updateUserPassword = async (data) => {
     refresh: refreshToken,
   };
 
-  const response = await api('user/settings/password/', 'PUT', requestData);
+  const response = await api('users/settings/password/', 'PUT', requestData);
 
   if (!response.ok) {
     const errorData = await response.json();

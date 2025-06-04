@@ -3,7 +3,7 @@ import { api, camelToSnake } from '@/utils';
 export const loginUser = async (userData) => {
   const transformedData = camelToSnake(userData);
   try {
-    const response = await api('user/login/', 'POST', transformedData);
+    const response = await api('users/login/', 'POST', transformedData);
 
     if (!response.ok) {
       const errorData = await response.json();

@@ -26,7 +26,7 @@ export const makeRequest = async (path, method, data, token) => {
   const headers = {
     'Content-Type': 'application/json',
     ...(token &&
-      path !== 'user/refresh-token/' && { Authorization: `Bearer ${token}` }),
+      path !== 'users/refresh-token/' && { Authorization: `Bearer ${token}` }),
   };
 
   return fetch(`/api/${path}`, {
@@ -64,7 +64,7 @@ const api = async (path, method, data = null) => {
   try {
     let response = await makeRequest(path, method, data, accessToken);
 
-    if (response.status === 401 && path !== 'user/login/') {
+    if (response.status === 401 && path !== 'users/login/') {
       if (!isRefreshing) {
         isRefreshing = true;
         try {

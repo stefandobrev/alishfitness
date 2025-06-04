@@ -11,7 +11,7 @@ export const AuthWrapper = ({ children }) => {
     if (!accessToken && refreshToken) {
       const refreshTokens = async () => {
         try {
-          const response = await api('user/refresh-token/', 'POST', {
+          const response = await api('users/refresh-token/', 'POST', {
             refresh: refreshToken,
           });
 

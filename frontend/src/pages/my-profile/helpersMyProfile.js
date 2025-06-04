@@ -2,7 +2,7 @@ import { api, camelToSnake } from '@/utils';
 
 export const fetchUserProfile = async () => {
   try {
-    const response = await api('user/my-profile/', 'GET');
+    const response = await api('users/my-profile/', 'GET');
     if (!response.ok) {
       throw new Error('Failed to fetch user profile');
     }
@@ -16,7 +16,7 @@ export const updateUserProfile = async (profileData) => {
   const transformedData = camelToSnake(profileData);
   try {
     const response = await api(
-      'user/my-profile/update/',
+      'users/my-profile/update/',
       'PATCH',
       transformedData,
     );

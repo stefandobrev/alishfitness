@@ -3,7 +3,7 @@ import { api, camelToSnake } from '@/utils';
 export const registerUser = async (userData) => {
   const transformedData = camelToSnake(userData);
   try {
-    const response = await api('user/create-user/', 'POST', transformedData);
+    const response = await api('users/create-user/', 'POST', transformedData);
 
     if (!response.ok) {
       const errorData = await response.json();

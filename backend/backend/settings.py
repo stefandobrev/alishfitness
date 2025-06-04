@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "user",
     "exercise",
     "training_program",
+    "session_logging",
     "rest_framework_simplejwt.token_blacklist",
 ]
 

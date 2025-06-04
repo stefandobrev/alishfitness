@@ -2,7 +2,7 @@ import { makeRequest } from '@/utils/api';
 
 export const refreshAccessToken = async (refreshToken) => {
   try {
-    const response = await makeRequest('user/refresh-token/', 'POST', {
+    const response = await makeRequest('users/refresh-token/', 'POST', {
       refresh: refreshToken,
     });
 
@@ -18,7 +18,7 @@ export const blacklistToken = async (refreshToken) => {
   }
 
   try {
-    const response = await makeRequest('user/blacklist-token/', 'POST', {
+    const response = await makeRequest('users/blacklist-token/', 'POST', {
       refresh: refreshToken,
     });
 
