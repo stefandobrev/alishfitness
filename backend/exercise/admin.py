@@ -1,5 +1,4 @@
 from django.contrib import admin
-from nested_admin import NestedTabularInline, NestedModelAdmin
 from exercise.models import  MuscleGroup, Exercise, Step, Mistake
 
 class MuscleGroupAdmin(admin.ModelAdmin):
