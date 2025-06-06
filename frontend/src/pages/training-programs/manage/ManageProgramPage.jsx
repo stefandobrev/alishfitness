@@ -62,10 +62,25 @@ export const ManageProgramPage = () => {
   const { sessions, programTitle, assignedUser } = useWatch({ control });
   const watchedValues = useWatch({ control });
 
+  const persistId = (id) => {
+    return programMode === 'edit' ? id : undefined;
+  };
+
   // If program mode is assigned - formats assignedUser and activationDate according program mode
   const formatCurrentFormData = (formData) => {
     return {
-      ...formData,
+      ...{
+        ...formData,
+        sessions: formData.sessions.map((s) => ({
+          ...s,
+          id: persistId(s.id),
+          exercises: s.exercises.map((e) => ({ ...e, id: persistId(e.id) })),
+        })),
+        scheduleData: formData.scheduleData.map((sd) => ({
+          ...sd,
+          realId: persistId(sd.realId),
+        })),
+      },
       activationDate:
         programUsageMode === 'assigned'
           ? formData.activationDate
@@ -226,6 +241,7 @@ export const ManageProgramPage = () => {
         toast.success(text);
         setProgramUsageMode('assigned');
         setProgramDataAwaitingConfirm(null);
+        setSelectedTemplateId(null);
         reset(methods.defaultValues);
       }
     } finally {
