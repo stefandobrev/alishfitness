@@ -66,7 +66,8 @@ export const ManageProgramPage = () => {
     return programMode === 'edit' ? id : undefined;
   };
 
-  // If program mode is assigned - formats assignedUser and activationDate according program mode
+  /* If program mode is assigned - formats assignedUser and activationDate according program mode
+  removes real ids from template loaded sessions and exercises */
   const formatCurrentFormData = (formData) => {
     return {
       ...{
