@@ -17,6 +17,7 @@ export const MyProgramPage = () => {
         const data = await fetchTrainingProgramData();
         const transformedData = snakeToCamel(data);
         setTrainingProgramData(transformedData);
+        console.log({ transformedData });
       } finally {
         setIsLoading(false);
       }
@@ -54,11 +55,17 @@ export const MyProgramPage = () => {
           <div className='mb-6'>
             <div className='mb-4 text-center'>
               <h2 className='font-semi-bold mb-2 text-xl text-gray-800'>
-                Recommended Next Session
+                Recommended next session
               </h2>
             </div>
             <div className='mx-auto max-w-xl'>
-              <SessionBlock session={mainSession} isMain={true} />
+              <SessionBlock
+                session={mainSession}
+                isMain={true}
+                dayNumber={
+                  trainingProgramData.scheduleData.indexOf(mainSession.id) + 1
+                }
+              />
             </div>
           </div>
         )}
@@ -68,13 +75,19 @@ export const MyProgramPage = () => {
           <div>
             <div className='mb-6 text-center'>
               <h2 className='font-semi-bold mb-2 text-xl text-gray-800'>
-                Explore Other Sessions
+                Explore other sessions
               </h2>
             </div>
-
-            <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
+            <div className='flex flex-wrap justify-center gap-4'>
               {otherSessions.map((session) => (
-                <SessionBlock key={session.id} session={session} />
+                <div key={session.id} className='w-full md:max-w-xs'>
+                  <SessionBlock
+                    session={session}
+                    dayNumber={
+                      trainingProgramData.scheduleData.indexOf(session.id) + 1
+                    }
+                  />
+                </div>
               ))}
             </div>
           </div>
