@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from django.shortcuts import render
+from django.utils.timezone import now
 
 from collections import defaultdict
 
@@ -18,6 +18,7 @@ class ActiveProgramView(APIView):
         training_program = TrainingProgram.objects.get(assigned_user=user, status="current")
         training_sessions = TrainingSession.objects.filter(program=training_program)
 
+        # Get updated_at dates and count the completed session
         session_ids = training_sessions.values_list("id", flat=True)
         completed_logs = SessionLog.objects.filter(
             training_program=training_program,
@@ -33,6 +34,16 @@ class ActiveProgramView(APIView):
                 log.completed_at > summary[s_id]["last_completed_at"]):
                 summary[s_id]["last_completed_at"] = log.completed_at
 
+        # Get sessions with today updates to include in recommended
+        today = now().date()
+
+        today_logs = SessionLog.objects.filter(
+            training_program=training_program,
+            session_id__in=session_ids,
+            updated_at__date=today,
+        )
+
+        today_status_map = {log.session_id: log.status for log in today_logs}
 
         data = {
             "id": training_program.id,
@@ -49,6 +60,7 @@ class ActiveProgramView(APIView):
                 "title": session.session_title,
                 "last_completed_at": session_summary["last_completed_at"],
                 "completed_count": session_summary["completed_count"],
+                "status": today_status_map.get(session.id),
             })
 
         return Response(data)

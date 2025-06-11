@@ -12,6 +12,7 @@ class SessionLog(models.Model):
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="in_progress")
     completed_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class SetLog(models.Model):
     session_log = models.ForeignKey(SessionLog, on_delete=models.CASCADE, related_name="set_logs", db_index=True)
@@ -22,3 +23,7 @@ class SetLog(models.Model):
 
     class Meta:
         unique_together = ("session_log", "exercise", "set_number")
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.session_log.save()  

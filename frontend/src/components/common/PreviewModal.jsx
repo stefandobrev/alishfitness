@@ -1,13 +1,13 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+
 import { ActionButton, ButtonVariant } from '@/components/buttons';
 
-export const ConfirmationModal = ({
+export const PreviewModal = ({
   onClose,
-  onConfirm,
+  onCreate,
+  onView,
   heading,
-  message,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
+  sessionData,
 }) => {
   return (
     <Dialog open={true} onClose={onClose} className='relative z-50'>
@@ -16,23 +16,30 @@ export const ConfirmationModal = ({
           <DialogTitle className='truncate text-2xl font-semibold text-gray-900'>
             {heading}
           </DialogTitle>
-          <p className='text-lg text-gray-700'>{message}</p>
+
           <div className='flex flex-col gap-4 sm:flex-row sm:justify-end'>
             <ActionButton
               variant={ButtonVariant.GRAY_DARK}
               onClick={onClose}
               className='w-full sm:w-auto'
             >
-              {cancelText}
+              Cancel
+            </ActionButton>
+            <ActionButton
+              variant={ButtonVariant.GRAY_DARK}
+              onClick={onView}
+              className='w-full sm:w-auto'
+            >
+              View
             </ActionButton>
             <ActionButton
               onClick={() => {
-                onConfirm();
+                onCreate();
                 onClose();
               }}
               className='w-full sm:w-auto'
             >
-              {confirmText}
+              Create
             </ActionButton>
           </div>
         </DialogPanel>

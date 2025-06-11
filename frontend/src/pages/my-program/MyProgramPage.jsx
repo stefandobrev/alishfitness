@@ -9,7 +9,9 @@ import { Spinner } from '@/components/common';
 export const MyProgramPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [trainingProgramData, setTrainingProgramData] = useState([]);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
 
+  // Load training program data on mount
   useEffect(() => {
     const loadTrainingProgramData = async () => {
       setIsLoading(true);
@@ -58,7 +60,13 @@ export const MyProgramPage = () => {
                 Recommended next session
               </h2>
             </div>
-            <div className='mx-auto max-w-xl'>
+            <div
+              className='mx-auto max-w-xl'
+              onClick={() => {
+                if (!session.status) setIsViewDialogOpen(true);
+                else navigateToSession(session);
+              }}
+            >
               <SessionBlock
                 session={mainSession}
                 isMain={true}
@@ -80,7 +88,14 @@ export const MyProgramPage = () => {
             </div>
             <div className='flex flex-wrap justify-center gap-4'>
               {otherSessions.map((session) => (
-                <div key={session.id} className='w-full md:max-w-xs'>
+                <div
+                  key={session.id}
+                  className='w-full md:max-w-xs'
+                  onClick={() => {
+                    if (!session.status) setIsViewDialogOpen(true);
+                    else navigateToSession(session);
+                  }}
+                >
                   <SessionBlock
                     session={session}
                     dayNumber={

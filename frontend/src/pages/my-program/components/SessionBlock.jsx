@@ -44,7 +44,11 @@ export const SessionBlock = ({ session, isMain = false, dayNumber }) => {
       {isMain ? (
         <div className='mt-6 flex items-center justify-between'>
           <span className='text-sm font-medium text-gray-700'>
-            Ready to start
+            {session.status === 'inProgress'
+              ? 'Continue session'
+              : session.status === 'completed'
+                ? 'Edit session'
+                : 'Ready to start'}
           </span>
           <div className='flex h-8 w-8 items-center justify-center rounded-full bg-white/20 transition-colors group-hover:bg-white/30'>
             <svg className='h-4 w-4' fill='currentColor' viewBox='0 0 20 20'>
