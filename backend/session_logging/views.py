@@ -64,3 +64,6 @@ class ActiveProgramView(APIView):
             })
 
         return Response(data)
+    
+class TrainingSessionView(APIView):
+    pass

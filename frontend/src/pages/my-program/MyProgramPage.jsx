@@ -1,15 +1,21 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { fetchTrainingProgramData } from './helpersMyProgram';
-import { SessionBlock } from './components';
+import { SessionBlock, PreviewModal } from './components';
 import { snakeToCamel } from '@/utils';
 import { NoDataDiv } from '@/components/common';
 import { Spinner } from '@/components/common';
+import { useTitle } from '@/hooks';
 
 export const MyProgramPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [trainingProgramData, setTrainingProgramData] = useState([]);
+  const [selectedSession, setSelectedSession] = useState(null);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+
+  const navigate = useNavigate();
+  useTitle('My Program');
 
   // Load training program data on mount
   useEffect(() => {
@@ -27,6 +33,15 @@ export const MyProgramPage = () => {
     loadTrainingProgramData();
   }, []);
 
+  const navigateToSession = () => {
+    navigate();
+  };
+
+  const handlePreviewModal = () => {
+    setIsViewDialogOpen(true);
+  };
+
+  // Recommended vs rest sessions deconstruct
   const [mainSession, ...otherSessions] = trainingProgramData.sessions || [];
 
   // On load return
@@ -43,71 +58,90 @@ export const MyProgramPage = () => {
   }
 
   return (
-    <div className='bg-gradient-to-br from-gray-50 to-blue-50/30'>
-      <div className='container mx-auto px-4 py-6'>
-        {/* Header */}
-        <div className='mb-4 text-center'>
-          <h1 className='p-4 text-2xl font-bold md:text-3xl'>
-            {trainingProgramData.programTitle}
-          </h1>
+    <>
+      <div className='bg-gradient-to-br from-gray-50 to-blue-50/30'>
+        <div className='container mx-auto px-4 py-6'>
+          {/* Header */}
+          <div className='mb-4 text-center'>
+            <h1 className='p-4 text-2xl font-bold md:text-3xl'>
+              {trainingProgramData.programTitle}
+            </h1>
+          </div>
+
+          {/* Main Session Section */}
+          {mainSession && (
+            <div className='mb-6'>
+              <div className='mb-4 text-center'>
+                <h2 className='font-semi-bold mb-2 text-xl text-gray-800'>
+                  Recommended next session
+                </h2>
+              </div>
+              <div
+                className='mx-auto max-w-xl'
+                onClick={() => {
+                  if (!mainSession.status) {
+                    setSelectedSession(mainSession);
+                    handlePreviewModal();
+                  } else {
+                    navigateToSession(mainSession);
+                  }
+                }}
+              >
+                <SessionBlock
+                  session={mainSession}
+                  isMain={true}
+                  dayNumber={
+                    trainingProgramData.scheduleData.indexOf(mainSession.id) + 1
+                  }
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Other Sessions Section */}
+          {otherSessions.length > 0 && (
+            <div>
+              <div className='mb-6 text-center'>
+                <h2 className='font-semi-bold mb-2 text-xl text-gray-800'>
+                  Explore other sessions
+                </h2>
+              </div>
+              <div className='flex flex-wrap justify-center gap-4'>
+                {otherSessions.map((session) => (
+                  <div
+                    key={session.id}
+                    className='w-full md:max-w-xs'
+                    onClick={() => {
+                      if (!session.status) {
+                        setSelectedSession(session);
+                        handlePreviewModal();
+                      } else {
+                        navigateToSession(session);
+                      }
+                    }}
+                  >
+                    <SessionBlock
+                      session={session}
+                      dayNumber={
+                        trainingProgramData.scheduleData.indexOf(session.id) + 1
+                      }
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-
-        {/* Main Session Section */}
-        {mainSession && (
-          <div className='mb-6'>
-            <div className='mb-4 text-center'>
-              <h2 className='font-semi-bold mb-2 text-xl text-gray-800'>
-                Recommended next session
-              </h2>
-            </div>
-            <div
-              className='mx-auto max-w-xl'
-              onClick={() => {
-                if (!session.status) setIsViewDialogOpen(true);
-                else navigateToSession(session);
-              }}
-            >
-              <SessionBlock
-                session={mainSession}
-                isMain={true}
-                dayNumber={
-                  trainingProgramData.scheduleData.indexOf(mainSession.id) + 1
-                }
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Other Sessions Section */}
-        {otherSessions.length > 0 && (
-          <div>
-            <div className='mb-6 text-center'>
-              <h2 className='font-semi-bold mb-2 text-xl text-gray-800'>
-                Explore other sessions
-              </h2>
-            </div>
-            <div className='flex flex-wrap justify-center gap-4'>
-              {otherSessions.map((session) => (
-                <div
-                  key={session.id}
-                  className='w-full md:max-w-xs'
-                  onClick={() => {
-                    if (!session.status) setIsViewDialogOpen(true);
-                    else navigateToSession(session);
-                  }}
-                >
-                  <SessionBlock
-                    session={session}
-                    dayNumber={
-                      trainingProgramData.scheduleData.indexOf(session.id) + 1
-                    }
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
-    </div>
+
+      {isViewDialogOpen && (
+        <PreviewModal
+          onClose={() => setIsViewDialogOpen(false)}
+          onCreate={navigateToSession}
+          heading={`Session: ${selectedSession.title}`}
+          selectedSessionId={selectedSession.id}
+        />
+      )}
+    </>
   );
 };
