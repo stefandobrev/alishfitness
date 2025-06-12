@@ -6,8 +6,8 @@ export const fetchTrainingProgramData = async () => {
   return response.json();
 };
 
-export const fetchSessionData = async () => {
-  const response = await api('session-logs/session-data-view/', 'GET');
+export const fetchSessionData = async (id) => {
+  const response = await api(`session-logs/session-data-view/${id}/`, 'GET');
   if (!response.ok) throw new Error('Failed to fetch session data.');
   return response.json();
 };

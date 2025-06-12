@@ -8,5 +8,5 @@ from session_logging.views import (
 
 urlpatterns = [
     path("active-training-program/", ActiveProgramView.as_view(), name="active-training-program"),
-    path("session-data-view/", TrainingSessionView.as_view(), name="session-data-view"),
+    path("session-data-view/<int:id>/", TrainingSessionView.as_view(), name="session-data-view"),
 ]

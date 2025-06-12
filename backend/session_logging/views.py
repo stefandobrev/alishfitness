@@ -2,11 +2,14 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.utils.timezone import now
+from django.shortcuts import get_object_or_404
 
 from collections import defaultdict
 
 from training_program.models import TrainingProgram, TrainingSession
 from session_logging.models import SessionLog
+
+from training_program.serializers import TrainingExerciseDetailSerializer
 
 class ActiveProgramView(APIView):
     """View for get current active training program for logged user."""
@@ -66,4 +69,24 @@ class ActiveProgramView(APIView):
         return Response(data)
     
 class TrainingSessionView(APIView):
-    pass
+    """View for get training session ,part of assigned training program."""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id):
+        """Returns filtered exercise data for all exercises related to the selected session."""
+        session = get_object_or_404(TrainingSession, id=id)
+        exercises = session.exercises.all()
+        serializer_data = TrainingExerciseDetailSerializer(exercises, many=True).data
+
+        filtered_data = []
+
+        for ex in serializer_data:
+            title = ex["exercise_title"] or ex["custom_exercise_title"]
+            filtered_data.append({
+                "sequence": ex["sequence"],
+                "sets": ex["sets"],
+                "reps": ex["reps"],
+                "exercise_title": title,
+            })
+
+        return Response(filtered_data)
