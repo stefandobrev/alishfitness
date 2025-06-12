@@ -21,17 +21,11 @@ export const PreviewModal = ({
     try {
       const data = await fetchSessionData(selectedSessionId);
       const transformedData = snakeToCamel(data);
-      console.log({ transformedData });
       setPreviewData(transformedData);
       setShowPreview(true);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const onBack = () => {
-    setShowPreview(false);
-    setPreviewData(null);
   };
 
   return (
@@ -119,7 +113,7 @@ export const PreviewModal = ({
                       {previewData.map((exercise, index) => (
                         <div
                           key={index}
-                          className='flex items-center justify-between rounded-lg border border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100 p-4 transition-shadow hover:shadow-md'
+                          className='flex items-center justify-between rounded-lg border border-gray-200 bg-gray-100 p-4'
                         >
                           <div className='flex items-center space-x-4'>
                             <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-500 text-lg font-bold text-white'>
@@ -150,21 +144,6 @@ export const PreviewModal = ({
                     </div>
                   ) : (
                     <div className='py-8 text-center text-gray-500'>
-                      <div className='mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100'>
-                        <svg
-                          className='h-8 w-8 text-gray-400'
-                          fill='none'
-                          stroke='currentColor'
-                          viewBox='0 0 24 24'
-                        >
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth={2}
-                            d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
-                          />
-                        </svg>
-                      </div>
                       <p>No exercises found for this session</p>
                     </div>
                   )}
@@ -173,10 +152,10 @@ export const PreviewModal = ({
                 <div className='flex flex-col gap-4 border-t border-gray-200 pt-6 sm:flex-row sm:justify-center'>
                   <ActionButton
                     variant={ButtonVariant.GRAY_DARK}
-                    onClick={onBack}
+                    onClick={onClose}
                     className='w-full px-6 py-2.5 sm:w-auto'
                   >
-                    ← Back
+                    Close
                   </ActionButton>
                   <ActionButton
                     onClick={() => {
@@ -185,13 +164,6 @@ export const PreviewModal = ({
                     }}
                   >
                     Create New Session
-                  </ActionButton>
-                  <ActionButton
-                    variant={ButtonVariant.GRAY_DARK}
-                    onClick={onClose}
-                    className='w-full px-6 py-2.5 sm:w-auto'
-                  >
-                    Close
                   </ActionButton>
                 </div>
               </>
