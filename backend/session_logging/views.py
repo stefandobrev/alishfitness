@@ -18,7 +18,7 @@ class ActiveProgramView(APIView):
     def get(self, request):
         """Return all sessions related to current active training program data."""
         user = request.user
-        training_program = TrainingProgram.objects.get(assigned_user=user, status="current")
+        training_program = get_object_or_404(TrainingProgram, assigned_user=user, status="current")
         training_sessions = TrainingSession.objects.filter(program=training_program)
 
         # Get updated_at dates and count the completed session
@@ -81,7 +81,7 @@ class TrainingSessionView(APIView):
         filtered_data = []
 
         for ex in serializer_data:
-            title = ex["exercise_title"] or ex["custom_exercise_title"]
+            title = ex.get("exercise_title") or ex.get("custom_exercise_title")
             filtered_data.append({
                 "sequence": ex["sequence"],
                 "sets": ex["sets"],

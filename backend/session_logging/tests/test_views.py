@@ -104,12 +104,21 @@ class TestActiveProgramView:
 class TestTrainingSessionView:
     def test_get_session_preview(self, api_client, test_user, training_session):
         api_client.force_authenticate(test_user)
-        url = reverse("session-data-view", args=[1])
+        url = reverse("session-data-view", args=[training_session.id])
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_200_OK
-        assert response.data["session_title"] == "Test Session Title"
-    
+        title = response.data[0].get("exercise_title")
+        custom_title = response.data[1].get("exercise_title")
+        assert title == "Test Exercise"
+        assert custom_title == "Custom Test Exercise"
+
+    def test_get_session_preview_no_active_session(self, api_client, test_user):
+        api_client.force_authenticate(test_user)
+        url = reverse("session-data-view", args=[999999])
+        response = api_client.get(url)
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
 
 @pytest.mark.django_db(transaction=True)
 class TestSetLogsViewSet:
