@@ -37,7 +37,7 @@ class ActiveProgramView(APIView):
                 log.completed_at > summary[s_id]["last_completed_at"]):
                 summary[s_id]["last_completed_at"] = log.completed_at
 
-        # Get sessions with today updates to include in recommended
+        # Get sessions with today updates to include in recommended. Status is used to look for it.
         today = now().date()
 
         today_logs = SessionLog.objects.filter(

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { fetchTrainingProgramData } from './helpersMyProgram';
 import { SessionBlock, PreviewModal } from './components';
@@ -10,6 +11,7 @@ import { useTitle } from '@/hooks';
 
 export const MyProgramPage = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isCreateLoading, setIsCreateLoading] = useState(false);
   const [trainingProgramData, setTrainingProgramData] = useState([]);
   const [selectedSession, setSelectedSession] = useState(null);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
@@ -25,7 +27,6 @@ export const MyProgramPage = () => {
         const data = await fetchTrainingProgramData();
         const transformedData = snakeToCamel(data);
         setTrainingProgramData(transformedData);
-        console.log({ transformedData });
       } finally {
         setIsLoading(false);
       }
@@ -33,10 +34,20 @@ export const MyProgramPage = () => {
     loadTrainingProgramData();
   }, []);
 
-  const navigateToSession = () => {
-    navigate();
+  // On create navigate to training session, if created just open today setLog
+  const navigateToSession = async ({ id }) => {
+    setIsCreateLoading(true);
+    try {
+      await createSetLog(id);
+      navigate(`/session/${id}`);
+    } catch {
+      toast.error('Session create failed');
+    } finally {
+      setIsCreateLoading(false);
+    }
   };
 
+  // Modal for sessions without status (in progress, completed - today)
   const handlePreviewModal = () => {
     setIsViewDialogOpen(true);
   };
@@ -45,7 +56,7 @@ export const MyProgramPage = () => {
   const [mainSession, ...otherSessions] = trainingProgramData.sessions || [];
 
   // On load return
-  if (isLoading && !trainingProgramData.length) {
+  if ((isLoading && !trainingProgramData.length) || isCreateLoading) {
     return <Spinner loading={isLoading} className='min-h-[70vh]' />;
   }
 
@@ -83,7 +94,7 @@ export const MyProgramPage = () => {
                     setSelectedSession(mainSession);
                     handlePreviewModal();
                   } else {
-                    navigateToSession(mainSession);
+                    navigateToSession({ id: mainSession.id });
                   }
                 }}
               >
@@ -116,7 +127,7 @@ export const MyProgramPage = () => {
                         setSelectedSession(session);
                         handlePreviewModal();
                       } else {
-                        navigateToSession(session);
+                        navigateToSession({ id: session.id });
                       }
                     }}
                   >

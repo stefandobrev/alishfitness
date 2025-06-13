@@ -87,7 +87,7 @@ export const PreviewModal = ({
                   </ActionButton>
                   <ActionButton
                     onClick={() => {
-                      onCreate();
+                      onCreate({ id: selectedSessionId });
                       onClose();
                     }}
                   >
@@ -159,7 +159,7 @@ export const PreviewModal = ({
                   </ActionButton>
                   <ActionButton
                     onClick={() => {
-                      onCreate();
+                      onCreate({ id: selectedSessionId });
                       onClose();
                     }}
                   >
