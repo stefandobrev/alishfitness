@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { fetchTrainingProgramData } from './helpersMyProgram';
+import { createSessionLog, fetchTrainingProgramData } from './helpersMyProgram';
 import { SessionBlock, PreviewModal } from './components';
 import { snakeToCamel } from '@/utils';
 import { NoDataDiv } from '@/components/common';
@@ -37,9 +37,13 @@ export const MyProgramPage = () => {
   // On create navigate to training session, if created just open today setLog
   const navigateToSession = async ({ id }) => {
     setIsCreateLoading(true);
+    const payload = {
+      sessionId: id,
+      trainingProgramId: trainingProgramData.id,
+    };
     try {
-      await createSetLog(id);
-      navigate(`/my-sessions/${id}`);
+      const data = await createSessionLog(payload);
+      navigate(`/my-sessions/${data.id}`);
     } catch {
       toast.error('Session create failed');
     } finally {

@@ -121,10 +121,10 @@ class TestTrainingSessionView:
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
 @pytest.mark.django_db(transaction=True)
-class TestSetLogsViewSet:
+class TestSessionLogsViewSet:
     def test_create_new_session_log(self, api_client, test_user, training_session):
         api_client.force_authenticate(test_user)
-        url = reverse("session-data-detail", args=[1])
+        url = reverse("session-logs-detail", args=[1])
         response = api_client.post(url)
         
         assert response.status_code == status.HTTP_201_CREATED
@@ -138,9 +138,24 @@ class TestSetLogsViewSet:
 
         assert today_session_quantity.count() == 1
 
-    def test_update_session_log(self, api_client, test_user, training_session, existing_session_log, session_log_with_set_logs):
+    def test_update_session_status_to_completed(self, api_client, test_user, training_session, existing_session_log):
         api_client.force_authenticate(test_user)
-        url = reverse("session-data-detail", args=[existing_session_log.id])
+        
+        url = reverse("session-logs-detail", args=[existing_session_log.id])
+        update_data = {"status": "completed"}
+        response = api_client.patch(url, data=update_data)
+        
+        assert response.status_code == status.HTTP_200_OK
+        
+        existing_session_log.refresh_from_db()
+        assert existing_session_log.status == "completed"
+
+
+@pytest.mark.django_db(transaction=True)
+class TestSetLogsViewSet:
+    def test_update_set_log(self, api_client, test_user, training_session, existing_session_log, session_log_with_set_logs):
+        api_client.force_authenticate(test_user)
+        url = reverse("set-logs-detail", args=[existing_session_log.id])
 
         update_data = {
             "set_number": 3,
@@ -155,7 +170,7 @@ class TestSetLogsViewSet:
     def test_get_fresh_session_data_after_create(self, api_client, test_user, training_session, existing_session_log):
         api_client.force_authenticate(test_user)
         
-        url = reverse("session-data-detail", args=[existing_session_log.id])
+        url = reverse("set-logs-detail", args=[existing_session_log.id])
         response = api_client.get(url)
         
         assert response.status_code == status.HTTP_200_OK
@@ -164,7 +179,7 @@ class TestSetLogsViewSet:
     def test_get_session_data_with_existing_set_logs(self, api_client, test_user, training_session, session_log_with_set_logs, existing_session_log):
         api_client.force_authenticate(test_user)
         
-        url = reverse("session-data-detail", args=[existing_session_log.id])
+        url = reverse("set-logs-detail", args=[existing_session_log.id])
         response = api_client.get(url)
         
         assert response.status_code == status.HTTP_200_OK
@@ -179,15 +194,5 @@ class TestSetLogsViewSet:
         second_set = response.data["set_logs"][1]
         assert second_set["weight"] == 55
 
-    def test_update_session_status_to_completed(self, api_client, test_user, training_session, existing_session_log):
-        api_client.force_authenticate(test_user)
-        
-        url = reverse("session-data-detail", args=[existing_session_log.id])
-        update_data = {"status": "completed"}
-        response = api_client.patch(url, data=update_data)
-        
-        assert response.status_code == status.HTTP_200_OK
-        
-        existing_session_log.refresh_from_db()
-        assert existing_session_log.status == "completed"
+
     

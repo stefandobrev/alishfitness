@@ -1,3 +1,4 @@
+from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -90,3 +91,24 @@ class TrainingSessionView(APIView):
             })
 
         return Response(filtered_data)
+    
+class SessionLogsViewSet(viewsets.ViewSet):
+    """View for session log (daily trainings) operations"""
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request):
+        """ Create a sessionLog and return it's id."""
+        pass
+
+    def partial_update(self, request):
+        pass
+
+class SetLogsViewSet(viewsets.ViewSet):
+    """View for creating and updating setLogs"""
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request):
+        pass
+
+    def partial_update(self, request):
+        pass

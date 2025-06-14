@@ -1,4 +1,4 @@
-import { api } from '@/utils';
+import { api, camelToSnake } from '@/utils';
 
 export const fetchTrainingProgramData = async () => {
   const response = await api('session-logs/active-training-program/', 'GET');
@@ -12,8 +12,9 @@ export const fetchSessionData = async (id) => {
   return response.json();
 };
 
-export const createSetLog = async (id) => {
-  const response = await api(`session-logs/session-data/${id}/`, 'POST');
+export const createSessionLog = async (payload) => {
+  const transformedData = camelToSnake(payload);
+  const response = await api('session-logs/', 'POST', transformedData);
   if (!response.ok) throw new Error('Failed to create session log.');
   return response.json();
 };
