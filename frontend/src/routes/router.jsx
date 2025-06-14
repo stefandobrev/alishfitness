@@ -23,6 +23,7 @@ import {
   MyProgramPage,
   ViewAllPage,
   ManageProgramPage,
+  MySessionPage,
 } from '../pages';
 
 // Route Guards
@@ -73,6 +74,7 @@ export const router = createBrowserRouter(
 
         <Route element={<MemberRoute />}>
           <Route path='/my-program' element={<MyProgramPage />} />
+          <Route path='/my-sessions/:id' element={<MySessionPage />} />
         </Route>
       </Route>
 

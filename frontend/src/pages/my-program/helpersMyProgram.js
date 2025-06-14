@@ -14,6 +14,6 @@ export const fetchSessionData = async (id) => {
 
 export const createSetLog = async (id) => {
   const response = await api(`session-logs/session-data/${id}/`, 'POST');
-  if (!response.ok) throw new Error('Failed to create session.');
+  if (!response.ok) throw new Error('Failed to create session log.');
   return response.json();
 };

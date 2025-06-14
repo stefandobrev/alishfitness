@@ -10,3 +10,4 @@ export * from './my-profile';
 export * from './exercise-detail';
 export * from './my-program';
 export * from './training-programs';
+export * from './my-session';

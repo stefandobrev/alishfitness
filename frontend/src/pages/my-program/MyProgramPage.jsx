@@ -10,7 +10,7 @@ import { Spinner } from '@/components/common';
 import { useTitle } from '@/hooks';
 
 export const MyProgramPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(false);
   const [isCreateLoading, setIsCreateLoading] = useState(false);
   const [trainingProgramData, setTrainingProgramData] = useState([]);
   const [selectedSession, setSelectedSession] = useState(null);
@@ -22,13 +22,13 @@ export const MyProgramPage = () => {
   // Load training program data on mount
   useEffect(() => {
     const loadTrainingProgramData = async () => {
-      setIsLoading(true);
+      setIsPageLoading(true);
       try {
         const data = await fetchTrainingProgramData();
         const transformedData = snakeToCamel(data);
         setTrainingProgramData(transformedData);
       } finally {
-        setIsLoading(false);
+        setIsPageLoading(false);
       }
     };
     loadTrainingProgramData();
@@ -39,7 +39,7 @@ export const MyProgramPage = () => {
     setIsCreateLoading(true);
     try {
       await createSetLog(id);
-      navigate(`/session/${id}`);
+      navigate(`/my-sessions/${id}`);
     } catch {
       toast.error('Session create failed');
     } finally {
@@ -56,13 +56,13 @@ export const MyProgramPage = () => {
   const [mainSession, ...otherSessions] = trainingProgramData.sessions || [];
 
   // On load return
-  if ((isLoading && !trainingProgramData.length) || isCreateLoading) {
-    return <Spinner loading={isLoading} className='min-h-[70vh]' />;
+  if ((isPageLoading && !trainingProgramData.length) || isCreateLoading) {
+    return <Spinner loading={isPageLoading} className='min-h-[70vh]' />;
   }
 
   // No training data paragraph return
   if (
-    !isLoading &&
+    !isPageLoading &&
     (!trainingProgramData.sessions || trainingProgramData.sessions.length === 0)
   ) {
     return <NoDataDiv heading='No active training program found.' />;
