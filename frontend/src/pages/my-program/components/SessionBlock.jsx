@@ -1,3 +1,5 @@
+import { ChevronRightIcon } from '@heroicons/react/24/outline';
+
 export const SessionBlock = ({ session, isMain = false, dayNumber }) => {
   const formatDate = (date) => {
     if (!date) return 'No sessions completed';
@@ -44,20 +46,14 @@ export const SessionBlock = ({ session, isMain = false, dayNumber }) => {
       {isMain ? (
         <div className='mt-6 flex items-center justify-between'>
           <span className='text-sm font-medium text-gray-700'>
-            {session.status === 'inProgress'
+            {session.status === 'in_progress'
               ? 'Continue session'
               : session.status === 'completed'
                 ? 'Edit session'
                 : 'Ready to start'}
           </span>
           <div className='flex h-8 w-8 items-center justify-center rounded-full bg-white/20 transition-colors group-hover:bg-white/30'>
-            <svg className='h-4 w-4' fill='currentColor' viewBox='0 0 20 20'>
-              <path
-                fillRule='evenodd'
-                d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 111.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z'
-                clipRule='evenodd'
-              />
-            </svg>
+            <ChevronRightIcon className='h-4' />
           </div>
         </div>
       ) : (
@@ -66,17 +62,7 @@ export const SessionBlock = ({ session, isMain = false, dayNumber }) => {
             Tap to select
           </span>
           <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 transition-colors group-hover:bg-gray-300'>
-            <svg
-              className='h-4 w-4 text-gray-400 transition-colors group-hover:text-gray-600'
-              fill='currentColor'
-              viewBox='0 0 20 20'
-            >
-              <path
-                fillRule='evenodd'
-                d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 111.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z'
-                clipRule='evenodd'
-              />
-            </svg>
+            <ChevronRightIcon className='h-4' />
           </div>
         </div>
       )}

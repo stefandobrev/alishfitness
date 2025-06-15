@@ -36,18 +36,27 @@ export const MyProgramPage = () => {
 
   // On create navigate to training session, if created just open today setLog
   const navigateToSession = async ({ id }) => {
-    setIsCreateLoading(true);
-    const payload = {
-      sessionId: id,
-      trainingProgramId: trainingProgramData.id,
-    };
-    try {
-      const data = await createSessionLog(payload);
-      navigate(`/my-sessions/${data.id}`);
-    } catch {
-      toast.error('Session create failed');
-    } finally {
-      setIsCreateLoading(false);
+    const sessionLogId = trainingProgramData.sessions.find(
+      (s) => s.id === id,
+    )?.sessionLogId;
+
+    if (sessionLogId) {
+      navigate(`/my-sessions/${sessionLogId}`);
+    } else {
+      setIsCreateLoading(true);
+      const payload = {
+        sessionId: id,
+        trainingProgramId: trainingProgramData.id,
+      };
+
+      try {
+        const data = await createSessionLog(payload);
+        navigate(`/my-sessions/${data.id}`);
+      } catch {
+        toast.error('Session create failed');
+      } finally {
+        setIsCreateLoading(false);
+      }
     }
   };
 

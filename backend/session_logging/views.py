@@ -8,9 +8,10 @@ from django.shortcuts import get_object_or_404
 from collections import defaultdict
 
 from training_program.models import TrainingProgram, TrainingSession
-from session_logging.models import SessionLog
+from session_logging.models import SessionLog, SetLog
 
 from training_program.serializers import TrainingExerciseDetailSerializer
+from session_logging.serializers import SessionLogSerializer
 
 class ActiveProgramView(APIView):
     """View for get current active training program for logged user."""
@@ -38,7 +39,7 @@ class ActiveProgramView(APIView):
                 log.completed_at > summary[s_id]["last_completed_at"]):
                 summary[s_id]["last_completed_at"] = log.completed_at
 
-        # Get sessions with today updates to include in recommended. Status is used to look for it.
+        # Get sessions with today updates to include in recommended along with status and session log id
         today = now().date()
 
         today_logs = SessionLog.objects.filter(
@@ -47,7 +48,7 @@ class ActiveProgramView(APIView):
             updated_at__date=today,
         )
 
-        today_status_map = {log.session_id: log.status for log in today_logs}
+        today_status_map = {log.session_id: {"id": log.id, "status": log.status} for log in today_logs}
 
         data = {
             "id": training_program.id,
@@ -64,7 +65,8 @@ class ActiveProgramView(APIView):
                 "title": session.session_title,
                 "last_completed_at": session_summary["last_completed_at"],
                 "completed_count": session_summary["completed_count"],
-                "status": today_status_map.get(session.id),
+                "status": today_status_map.get(session.id, {}).get("status"),
+                "session_log_id": today_status_map.get(session.id, {}).get("id"),
             })
 
         return Response(data)
@@ -97,8 +99,22 @@ class SessionLogsViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
     def create(self, request):
-        """ Create a sessionLog and return it's id."""
-        pass
+        """
+            Create a new daily session log.
+            Session log on default is changed to in progress + 
+            complete_at and updated_at set current time.
+
+            Args:
+                request: training program and training session ids.
+
+            Returns:
+                Response with session log id.
+        """
+        serializer = SessionLogSerializer(data = request.data)
+        serializer.is_valid(raise_exception=True)
+        session_log = serializer.save()
+
+        return Response({"id": session_log.id}, status=status.HTTP_201_CREATED)
 
     def partial_update(self, request):
         pass

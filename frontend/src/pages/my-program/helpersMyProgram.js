@@ -14,6 +14,7 @@ export const fetchSessionData = async (id) => {
 
 export const createSessionLog = async (payload) => {
   const transformedData = camelToSnake(payload);
+
   const response = await api('session-logs/', 'POST', transformedData);
   if (!response.ok) throw new Error('Failed to create session log.');
   return response.json();
