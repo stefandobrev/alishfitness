@@ -24,7 +24,7 @@ class SetLogAdmin(admin.TabularInline):
 
 class SessionLogAdmin(admin.ModelAdmin):
     ordering = ["training_program__program_title"]
-    list_display = ["program_title", "assigned_user", "session_title", "status", "completed_at"]
+    list_display = ["program_title", "assigned_user", "session_title", "status", "created_at"]
     search_fields = ["training_program__program_title", "training_program__assined_user", "session__session_title"]
     inlines = [SetLogAdmin]  
     

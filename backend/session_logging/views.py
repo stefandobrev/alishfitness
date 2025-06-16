@@ -36,8 +36,8 @@ class ActiveProgramView(APIView):
             s_id = log.session_id
             summary[s_id]["completed_count"] += 1
             if (summary[s_id]["last_completed_at"] is None or 
-                log.completed_at > summary[s_id]["last_completed_at"]):
-                summary[s_id]["last_completed_at"] = log.completed_at
+                log.updated_at > summary[s_id]["last_completed_at"]):
+                summary[s_id]["last_completed_at"] = log.updated_at
 
         # Get sessions with today updates to include in recommended along with status and session log id
         today = now().date()
@@ -97,6 +97,17 @@ class TrainingSessionView(APIView):
 class SessionLogsViewSet(viewsets.ViewSet):
     """View for session log (daily trainings) operations"""
     permission_classes = [IsAuthenticated]
+
+    def retrieve(self, request, pk):
+        """Returns session log data."""
+        try:
+            session_log_dates = SessionLog.objects.only("created_at", "updated_at").get(pk=pk)
+            if session_log_dates.created_at.replace(microsecond=0) == session_log_dates.updated_at.replace(microsecond=0):
+                pass
+            else:
+                pass
+        except:
+            return Response({"session_log": "Session log not found"}, status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         """

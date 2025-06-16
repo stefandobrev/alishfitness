@@ -11,7 +11,7 @@ class SessionLog(models.Model):
     session = models.ForeignKey(TrainingSession, on_delete=models.CASCADE, db_index=True)
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="in_progress")
-    completed_at = models.DateTimeField(auto_now_add=True) ## Same as created at
+    created_at = models.DateTimeField(auto_now_add=True) 
     updated_at = models.DateTimeField(auto_now=True)
 
 class SetLog(models.Model):
