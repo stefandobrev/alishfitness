@@ -12,5 +12,6 @@ export const fetchExercises = async (muscleGroupFilteredData) => {
     throw new Error('Failed to fetch exercises.');
   }
 
-  return response.json();
+  const data = await response.json();
+  return data;
 };

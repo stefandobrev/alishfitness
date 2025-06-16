@@ -3,13 +3,15 @@ import { api, camelToSnake } from '@/utils';
 export const fetchTrainingSetupData = async () => {
   const response = await api('training-programs/training-setup-data/', 'GET');
   if (!response.ok) throw new Error('Failed to fetch training setup data.');
-  return response.json();
+  const data = await response.json();
+  return data;
 };
 
 export const fetchTrainingProgramData = async (programId) => {
   const response = await api(`training-programs/${programId}/`, 'GET');
   if (!response.ok) throw new Error('Failed to fetch training program data.');
-  return response.json();
+  const data = await response.json();
+  return data;
 };
 
 export const checkUserHasCurrentProgram = async (userId) => {
@@ -20,7 +22,8 @@ export const checkUserHasCurrentProgram = async (userId) => {
     tranformedData,
   );
   if (!response.ok) throw new Error('Failed to check for current programs.');
-  return response.json();
+  const data = await response.json();
+  return data;
 };
 
 export const saveProgram = async (data, id = null) => {
@@ -68,5 +71,6 @@ export const saveProgram = async (data, id = null) => {
 export const fetchTemplates = async () => {
   const response = await api('training-programs/templates/', 'GET');
   if (!response.ok) throw new Error('Failed to fetch templates.');
-  return response.json();
+  const data = await response.json();
+  return data;
 };

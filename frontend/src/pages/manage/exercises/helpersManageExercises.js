@@ -3,7 +3,8 @@ import { api, camelToSnake } from '@/utils';
 export const fetchMuscleGroups = async () => {
   const response = await api('exercises/muscle-groups/', 'GET');
   if (!response.ok) throw new Error('Failed to fetch muscle groups.');
-  return response.json();
+  const data = await response.json();
+  return data;
 };
 
 export const fetchExerciseTitles = async (filterData) => {
@@ -14,13 +15,15 @@ export const fetchExerciseTitles = async (filterData) => {
     transformedData,
   );
   if (!response.ok) throw new Error('Failed to fetch exercise titles.');
-  return response.json();
+  const data = await response.json();
+  return data;
 };
 
 export const fetchExerciseData = async (id) => {
   const response = await api(`exercises/${id}/`, 'GET');
   if (!response.ok) throw new Error('Failed to fetch exercise data.');
-  return response.json();
+  const data = await response.json();
+  return data;
 };
 
 export const saveExercise = async (exerciseData, id = null) => {

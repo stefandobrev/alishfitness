@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { fetchSessionData } from './helpersMySession';
 import { snakeToCamel } from '@/utils';
 import { Spinner } from '@/components/common';
+import { useTitle } from '@/hooks';
 
 export const MySessionPage = () => {
   const { id: sessionId } = useParams();
-  const [sessionData, setSessionData] = useState([]);
+  const [sessionLogData, setSessionLogData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+  useTitle('Daily Workout');
 
   // Load session log data
   useEffect(() => {
@@ -17,7 +21,9 @@ export const MySessionPage = () => {
       try {
         const data = await fetchSessionData(sessionId);
         const transformedData = snakeToCamel(data);
-        setSessionData(transformedData);
+        setSessionLogData(transformedData);
+      } catch (error) {
+        navigate('/404', { replace: true });
       } finally {
         setIsLoading(false);
       }
@@ -26,9 +32,17 @@ export const MySessionPage = () => {
   }, []);
 
   // Initial loading spinner on session fetch
-  if (isLoading && !sessionData.length) {
-    return <Spinner loading={isLoading} className='min-h-[70vh]' />;
+  if (isLoading && !sessionLogData.length) {
+    return <Spinner loading={isLoading} className='min-h-[80vh]' />;
   }
 
-  return <div>MySessionPage</div>;
+  console.log({ sessionLogData });
+
+  return (
+    <div className='flex justify-center'>
+      <h1 className='p-4 text-2xl font-bold md:text-3xl'>
+        {sessionLogData?.session?.sessionTitle}
+      </h1>
+    </div>
+  );
 };
