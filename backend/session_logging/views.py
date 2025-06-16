@@ -11,7 +11,7 @@ from training_program.models import TrainingProgram, TrainingSession
 from session_logging.models import SessionLog, SetLog
 
 from training_program.serializers import TrainingExerciseDetailSerializer
-from session_logging.serializers import SessionLogSerializer
+from session_logging.serializers import SessionLogSerializer, SessionLogWithExercisesSerializer
 
 class ActiveProgramView(APIView):
     """View for get current active training program for logged user."""
@@ -99,13 +99,14 @@ class SessionLogsViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
     def retrieve(self, request, pk):
-        """Returns session log data."""
+        """Returns session log data. On create serializer doesn't include set logs."""
         try:
-            session_log_dates = SessionLog.objects.only("created_at", "updated_at").get(pk=pk)
-            if session_log_dates.created_at.replace(microsecond=0) == session_log_dates.updated_at.replace(microsecond=0):
-                pass
+            session_log = SessionLog.objects.select_related("session").get(pk=pk)
+            if session_log.created_at.replace(microsecond=0) == session_log.updated_at.replace(microsecond=0):
+                serializer = SessionLogWithExercisesSerializer(session_log)
+                return Response(serializer.data)
             else:
-                pass
+                pass ## Serializer with SetLogs
         except:
             return Response({"session_log": "Session log not found"}, status=status.HTTP_404_NOT_FOUND)
 
