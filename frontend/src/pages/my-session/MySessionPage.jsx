@@ -10,7 +10,7 @@ export const MySessionPage = () => {
   const [sessionData, setSessionData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Load session data
+  // Load session log data
   useEffect(() => {
     const loadSessionData = async () => {
       setIsLoading(true);

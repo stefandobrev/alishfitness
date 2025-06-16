@@ -24,8 +24,8 @@ class SetLogAdmin(admin.TabularInline):
 
 class SessionLogAdmin(admin.ModelAdmin):
     ordering = ["training_program__program_title"]
-    list_display = ["program_title", "session_title", "status", "completed_at"]
-    search_fields = ["training_program__program_title", "session__session_title"]
+    list_display = ["program_title", "assigned_user", "session_title", "status", "completed_at"]
+    search_fields = ["training_program__program_title", "training_program__assined_user", "session__session_title"]
     inlines = [SetLogAdmin]  
     
     def program_title(self, obj):
@@ -37,5 +37,10 @@ class SessionLogAdmin(admin.ModelAdmin):
         return obj.session.session_title
     session_title.admin_order_field = "session__session_title"
     session_title.short_description = "Session Title"
+
+    def assigned_user(self, obj):
+        return obj.training_program.assigned_user
+    assigned_user.admin_order_field = "training_program__assined_user"
+    assigned_user.short_description = "Assigned User"
 
 admin.site.register(SessionLog, SessionLogAdmin)
