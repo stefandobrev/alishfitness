@@ -11,7 +11,7 @@ import {
   MdScreenButtons,
   SmScreenButtons,
 } from '../components/DefaultFormButtons';
-import { isMobile } from '@/common/constants';
+import { useIsMobile } from '@/common/constants';
 
 export const DefaultForm = ({
   submittedExerciseData,
@@ -24,6 +24,7 @@ export const DefaultForm = ({
   handleDeleteButton,
   handleViewButton,
 }) => {
+  const isMobile = useIsMobile();
   const { handleSubmit, register, reset, watch, setValue } = useFormContext();
   const textAreaRefs = useRef([]);
   const exerciseDataRef = useRef(exerciseData);

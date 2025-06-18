@@ -3,9 +3,10 @@ import { useFormContext } from 'react-hook-form';
 import { useTrainingSetupData } from '../../hooks';
 import { ExerciseRow, ExerciseMobileRow } from './';
 import { TableColumns } from '@/components/table';
-import { isMobile } from '@/common/constants';
+import { useIsMobile } from '@/common/constants';
 
 export const ExercisesTable = ({ sessionIndex, session }) => {
+  const isMobile = useIsMobile();
   const { setValue, getValues, trigger } = useFormContext();
   const { muscleGroups, getExerciseOptionsForMuscleGroup } =
     useTrainingSetupData();

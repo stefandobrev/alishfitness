@@ -12,9 +12,10 @@ import {
 import { useTrainingProgramFilterData } from '../hooks';
 import { Spinner } from '@/components/common';
 import { defaultViewAllFilters } from '../..';
-import { isMobile } from '@/common/constants';
+import { useIsMobile } from '@/common/constants';
 
 export const Filters = ({ filters, setFilters, onReset, isOpen, onClose }) => {
+  const isMobile = useIsMobile();
   const [draftFilters, setDraftFilters] = useState({ ...filters });
 
   const { modesData, usersData, statusesData, isLoading } =

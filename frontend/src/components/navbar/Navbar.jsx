@@ -11,9 +11,12 @@ import {
   NavigationItems,
   NavbarLogo,
 } from './components';
-import { isMobile } from '../../common/constants';
+import { useIsMobile } from '../../common/constants';
 
 const Navbar = () => {
+  const isMobile = useIsMobile();
+  const dispatch = useDispatch();
+
   const {
     isMenuOpen,
     setIsMenuOpen,
@@ -29,7 +32,6 @@ const Navbar = () => {
     isOpen: (isMenuOpen || isProfileOpen) && isMobile,
   });
 
-  const dispatch = useDispatch();
   const { isAuthenticated, isAdmin } = useSelector((state) => state.auth);
   const hamburgerButtonRef = useRef(null);
   const navigation = getNavigation(isAuthenticated, isAdmin);

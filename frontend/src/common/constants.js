@@ -1,3 +1,9 @@
+import { useMediaQuery } from 'react-responsive';
+
+export function useIsMobile() {
+  return useMediaQuery({ maxWidth: 768 });
+}
+
 export const frontMuscleGroupNames = {
   abdominals: 'abdominals',
   adductors: 'adductors',
@@ -47,5 +53,3 @@ export const getLightColors = (index) => {
   ];
   return bgColors[index % bgColors.length];
 };
-
-export const isMobile = window.innerWidth <= 768;

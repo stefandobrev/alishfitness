@@ -5,7 +5,7 @@ import { fetchExercises } from './helpersMuscleGroupExercise';
 import { MobileTabs, MobileTabVariant } from '@/components/buttons';
 import { ExerciseSection, AnatomySection } from './components';
 import { useInfiniteScrollWindow, useTitle } from '@/hooks';
-import { isMobile } from '@/common/constants';
+import { useIsMobile } from '@/common/constants';
 
 const INITIAL_OFFSET = 0;
 const ITEMS_PER_PAGE = 6;
@@ -17,6 +17,7 @@ const defaultPagination = {
 };
 
 export const MuscleGroupExercisePage = () => {
+  const isMobile = useIsMobile();
   const { slugMuscleGroup } = useParams();
   const navigate = useNavigate();
 

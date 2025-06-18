@@ -6,9 +6,10 @@ import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
 import { logoutWithBlacklist } from '@/store/slices/authSlice';
 import { profileMenuItems } from '@/config/navigation';
 import { getNavMobileItemStyles } from '@/utils';
-import { isMobile } from '@/common/constants';
+import { useIsMobile } from '@/common/constants';
 
 export const ProfileMenu = ({ isOpen, setIsOpen }) => {
+  const isMobile = useIsMobile();
   const profile = useSelector((state) => state.user.profile);
   const menuRef = useRef(null);
   const dispatch = useDispatch();

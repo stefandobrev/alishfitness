@@ -10,7 +10,7 @@ import { useInfiniteScrollWindow, useTitle } from '@/hooks';
 import { ConfirmationModal, NoDataDiv, Spinner } from '@/components/common';
 import { snakeToCamel, toUtcMidnightDateString } from '@/utils';
 import { formatRows } from './utils';
-import { isMobile } from '@/common/constants';
+import { useIsMobile } from '@/common/constants';
 
 const INITIAL_OFFSET = 0;
 const ITEMS_PER_PAGE = 10;
@@ -30,6 +30,7 @@ const defaultPagination = {
 };
 
 export const ViewAllPage = () => {
+  const isMobile = useIsMobile();
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [programToDelete, setProgramToDelete] = useState(null);

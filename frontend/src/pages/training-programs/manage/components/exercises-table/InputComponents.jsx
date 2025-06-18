@@ -1,8 +1,9 @@
 import { useFormContext } from 'react-hook-form';
 
-import { isMobile } from '@/common/constants';
+import { useIsMobile } from '@/common/constants';
 
 export const SequenceInput = ({ field, sessionIndex }) => {
+  const isMobile = useIsMobile();
   const { trigger } = useFormContext();
   return (
     <input

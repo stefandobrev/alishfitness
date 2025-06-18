@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { isMobile } from '@/common/constants';
+import { useIsMobile } from '@/common/constants';
 
 export function useInfiniteScrollWindow({ pagination, setPagination }) {
+  const isMobile = useIsMobile();
   useEffect(() => {
     if (!isMobile) return;
     const handleScroll = () => {
