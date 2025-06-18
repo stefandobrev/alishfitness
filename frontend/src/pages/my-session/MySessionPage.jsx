@@ -20,10 +20,12 @@ export const MySessionPage = () => {
   const isMobile = useIsMobile();
   useTitle('Daily Workout');
 
-  // const methods = useForm({
-  //   resolver: zodResolver(),
-  //   mode: 'onChange'
-  // })
+  const defaultValues = {}; // Include set logs later
+
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues,
+  });
 
   // Load session log data
   useEffect(() => {
@@ -47,18 +49,24 @@ export const MySessionPage = () => {
     return <Spinner loading={isLoading} className='min-h-[80vh]' />;
   }
 
-  console.log({ sessionLogData });
-
   return (
     <>
-      <div className='flex justify-center'>
-        <h1 className='p-4 text-2xl font-bold md:text-3xl'>
-          {sessionLogData?.session?.sessionTitle}
-        </h1>
-      </div>
-      <FormProvider>
-        {isMobile ? <SessionTableMobile /> : <SessionTableDesktop />}
-      </FormProvider>
+      {sessionLogData?.session && (
+        <>
+          <div className='flex justify-center'>
+            <h1 className='p-4 text-2xl font-bold md:text-3xl'>
+              {sessionLogData.session.sessionTitle}
+            </h1>
+          </div>
+          <FormProvider {...methods}>
+            {isMobile ? (
+              <SessionTableMobile sessionLogData={sessionLogData} />
+            ) : (
+              <SessionTableDesktop sessionLogData={sessionLogData} />
+            )}
+          </FormProvider>
+        </>
+      )}
     </>
   );
 };
