@@ -37,6 +37,12 @@ export const SessionTableDesktop = ({ sessionLogData }) => {
                 Set {i + 1}
               </th>
             ))}
+            <th
+              rowSpan={2}
+              className='w-[120px] border border-gray-300 bg-gray-200 px-2 py-1.5 text-lg font-semibold'
+            >
+              Progress
+            </th>
           </tr>
           <tr className='bg-gray-50 text-center'>
             {Array.from({ length: maxSets }, (_, i) => (
