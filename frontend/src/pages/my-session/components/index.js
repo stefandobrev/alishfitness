@@ -3,3 +3,8 @@ export { InputBlockMobile } from './InputBlockMobile';
 export { InputRowDesktop } from './InputRowDesktop';
 export { SessionTableMobile } from './SessionTableMobile';
 export { SessionTableDesktop } from './SessionTableDesktop';
+export {
+  SetHeader,
+  SetSubHeaders,
+  SetCells,
+} from './SessionTableDesktopComponents';

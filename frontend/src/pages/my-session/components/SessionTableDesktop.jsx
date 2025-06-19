@@ -1,4 +1,5 @@
-import React from 'react';
+import { ActionButton, ButtonVariant } from '@/components/buttons';
+import { SetHeader, SetSubHeaders, SetCells } from '.';
 
 export const SessionTableDesktop = ({ sessionLogData }) => {
   const { session } = sessionLogData;
@@ -8,86 +9,92 @@ export const SessionTableDesktop = ({ sessionLogData }) => {
   const openExercisePage = (muscleGroupSlug, exerciseSlug) => {
     window.open(`/exercises/${muscleGroupSlug}/${exerciseSlug}/`, '_blank');
   };
-  console.log({ sessionLogData });
+
   return (
     <div className='mx-4 overflow-auto'>
-      <table className='mx-auto table-fixed border-separate border border-gray-300 text-sm'>
+      <table className='mx-auto table-fixed border-separate border-spacing-0 overflow-hidden rounded-lg border border-gray-300 text-sm'>
         <thead>
           <tr className='text-center'>
             <th
               rowSpan={2}
-              className='w-[60px] border border-gray-300 bg-gray-200 px-2 py-1.5 text-lg font-semibold'
+              className='w-[60px] border-r border-b border-gray-300 bg-gray-200 px-2 py-2 text-lg font-semibold text-gray-800'
             >
               Seq
             </th>
             <th
               rowSpan={2}
-              className='w-[400px] border border-gray-300 bg-gray-200 px-3 py-1.5 text-left text-lg font-semibold'
+              className='w-[400px] border-r border-b border-gray-300 bg-gray-200 px-3 py-2 text-left text-lg font-semibold text-gray-800'
             >
               Exercise
             </th>
             <th
               rowSpan={2}
-              className='w-[90px] border border-gray-300 bg-gray-200 px-2 py-1.5 text-lg font-semibold'
+              className='w-[90px] border-r border-b border-gray-300 bg-gray-200 px-2 py-2 text-lg font-semibold text-gray-800'
             >
               Reps
             </th>
             {Array.from({ length: maxSets }, (_, i) => (
-              <th
+              <SetHeader
                 key={`set-${i}`}
-                colSpan={3}
-                className='border border-gray-300 bg-gradient-to-r from-gray-100 to-gray-200 px-2 py-1.5 font-semibold'
-              >
-                Set {i + 1}
-              </th>
+                setNumber={i + 1}
+                isLast={i === maxSets - 1}
+              />
             ))}
             <th
               rowSpan={2}
-              className='w-[120px] border border-gray-300 bg-gray-200 px-2 py-1.5 text-lg font-semibold'
+              className='w-[120px] border-b border-l border-gray-300 bg-gray-200 px-2 py-2 text-lg font-semibold text-gray-800'
             >
               Progress
             </th>
           </tr>
           <tr className='bg-gray-50 text-center'>
             {Array.from({ length: maxSets }, (_, i) => (
-              <React.Fragment key={`group-${i}`}>
-                <th
-                  key={`w-${i}`}
-                  className='text-s w-[80px] border border-gray-300 px-2 py-1 font-medium text-gray-700'
-                >
-                  Weight
-                </th>
-                <th
-                  key={`r-${i}`}
-                  className='text-s w-[80px] border border-gray-300 px-2 py-1 font-medium text-gray-700'
-                >
-                  Reps
-                </th>
-                <th
-                  key={`t-${i}`}
-                  className='text-s w-[80px] border border-gray-300 px-2 py-1 font-medium text-gray-700'
-                >
-                  Target
-                </th>
-              </React.Fragment>
+              <SetSubHeaders
+                key={`group-${i}`}
+                setIndex={i}
+                maxSets={maxSets}
+              />
             ))}
           </tr>
         </thead>
         <tbody>
           {exercises.map((ex, index) => (
-            <tr key={index} className='text-center'>
-              <td className='border bg-gray-200 px-2 py-1 text-xl font-semibold'>
+            <tr
+              key={index}
+              className={`text-center transition-colors hover:bg-gray-50 ${
+                index % 2 === 0 ? 'bg-white' : 'bg-gray-25'
+              }`}
+            >
+              <td className='border-r border-b border-gray-300 bg-gray-200 px-2 py-3 text-xl font-semibold text-gray-800'>
                 {ex.sequence}
               </td>
               <td
-                className='cursor-pointer border px-2 py-1 text-left text-xl hover:bg-gray-200 hover:font-bold'
+                className='cursor-pointer border-r border-b border-gray-300 px-3 py-3 text-left text-lg text-gray-800 transition-all duration-200 hover:bg-gray-200 hover:font-bold'
                 onClick={() =>
                   openExercisePage(ex.muscleGroupSlug, ex.exerciseSlug)
                 }
               >
                 {ex.exerciseTitle || ex.customExerciseTitle}
               </td>
-              <td className='border px-2 py-1 text-xl'>{ex.reps}</td>
+              <td className='border-r border-b border-gray-300 px-2 py-3 text-lg font-medium text-gray-800'>
+                {ex.reps}
+              </td>
+              {Array.from({ length: maxSets }, (_, j) => (
+                <SetCells
+                  key={`group-${j}`}
+                  setIndex={j}
+                  maxSets={maxSets}
+                  isAvailable={j < ex.sets}
+                />
+              ))}
+              <td className='border-r border-b border-l border-gray-300 px-2 py-3'>
+                <ActionButton
+                  variant={ButtonVariant.GRAY_DARK}
+                  className='text-xs font-medium'
+                >
+                  View Trends
+                </ActionButton>
+              </td>
             </tr>
           ))}
         </tbody>

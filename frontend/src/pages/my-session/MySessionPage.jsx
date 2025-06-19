@@ -10,6 +10,7 @@ import { Spinner } from '@/components/common';
 import { useTitle } from '@/hooks';
 import { useIsMobile } from '@/common/constants';
 import { SessionTableDesktop, SessionTableMobile } from './components';
+import { ActionButton } from '@/components/buttons';
 
 export const MySessionPage = () => {
   const { id: sessionId } = useParams();
@@ -44,6 +45,9 @@ export const MySessionPage = () => {
     loadSessionData();
   }, []);
 
+  // Complete button just changes status of session log
+  const onComplete = () => {};
+
   // Initial loading spinner on session log data fetch
   if (isLoading && !sessionLogData.length) {
     return <Spinner loading={isLoading} className='min-h-[80vh]' />;
@@ -65,6 +69,14 @@ export const MySessionPage = () => {
               <SessionTableDesktop sessionLogData={sessionLogData} />
             )}
           </FormProvider>
+          <div className='mt-6 flex justify-center'>
+            <ActionButton
+              onClick={onComplete}
+              className='mx-2 w-full md:w-auto'
+            >
+              Complete Session
+            </ActionButton>
+          </div>
         </>
       )}
     </>
