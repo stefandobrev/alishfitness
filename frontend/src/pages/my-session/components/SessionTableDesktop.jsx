@@ -62,20 +62,28 @@ export const SessionTableDesktop = ({ sessionLogData }) => {
             <tr
               key={index}
               className={`text-center transition-colors hover:bg-gray-50 ${
-                index % 2 === 0 ? 'bg-white' : 'bg-gray-25'
+                index % 2 === 0 ? 'bg-white' : 'bg-gray-100'
               }`}
             >
               <td className='border-r border-b border-gray-300 bg-gray-200 px-2 py-3 text-xl font-semibold text-gray-800'>
                 {ex.sequence}
               </td>
               <td
-                className='cursor-pointer border-r border-b border-gray-300 px-3 py-3 text-left text-lg text-gray-800 transition-all duration-200 hover:bg-gray-200 hover:font-bold'
-                onClick={() =>
-                  openExercisePage(ex.muscleGroupSlug, ex.exerciseSlug)
+                className={`border-r border-b border-gray-300 px-3 py-3 text-left text-lg text-gray-800 transition-all duration-200 ${
+                  ex.exerciseTitle
+                    ? 'cursor-pointer hover:bg-gray-200 hover:font-bold'
+                    : ''
+                }`}
+                onClick={
+                  ex.exerciseTitle
+                    ? () =>
+                        openExercisePage(ex.muscleGroupSlug, ex.exerciseSlug)
+                    : undefined
                 }
               >
                 {ex.exerciseTitle || ex.customExerciseTitle}
               </td>
+
               <td className='border-r border-b border-gray-300 px-2 py-3 text-lg font-medium text-gray-800'>
                 {ex.reps}
               </td>
