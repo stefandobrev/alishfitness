@@ -89,11 +89,14 @@ export const SessionTableDesktop = ({ sessionLogData }) => {
               </td>
               {Array.from({ length: maxSets }, (_, j) => (
                 <SetCells
-                  key={`group-${j}`}
+                  key={`${ex.id}-set-${j}`}
                   setIndex={j}
                   maxSets={maxSets}
+                  exerciseIndex={index}
                   isAvailable={j < ex.sets}
                   customExercise={ex.customExerciseTitle}
+                  exerciseId={ex.id}
+                  sequence={ex.sequence}
                 />
               ))}
               <td className='border-b border-l border-gray-300 px-2 py-3'>

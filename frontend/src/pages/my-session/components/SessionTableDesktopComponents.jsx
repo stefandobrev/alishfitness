@@ -1,5 +1,6 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 const FlexibleInput = ({ disabled, placeholder, type = 'decimal' }) => {
   const handleInput = (e) => {
@@ -61,35 +62,67 @@ export const SetSubHeaders = ({ setIndex, maxSets }) => (
   </React.Fragment>
 );
 
-export const SetCells = ({ setIndex, maxSets, isAvailable }) => (
-  <React.Fragment>
-    <td className='border-r border-b border-gray-300 p-1'>
-      <Controller
-        name={`session.${exerciseIndex}.sets.${setIndex}.weight`}
-        control={control}
-        render={({ field }) => (
-          <FlexibleInput
-            {...field}
-            disabled={!isAvailable}
-            placeholder={isAvailable ? '' : '—'}
-          />
-        )}
-      ></Controller>
-    </td>
+export const SetCells = ({
+  setIndex,
+  maxSets,
+  exerciseIndex,
+  isAvailable,
+  exerciseId,
+  sequence,
+}) => {
+  const { control } = useFormContext();
+  return (
+    <React.Fragment>
+      <td className='border-r border-b border-gray-300 p-1'>
+        <Controller
+          name={`session.${exerciseIndex}.sets.${setIndex}.weight`}
+          control={control}
+          render={({ field }) => (
+            <FlexibleInput
+              {...field}
+              disabled={!isAvailable}
+              placeholder={isAvailable ? '' : '—'}
+              onBlur={() =>
+                updateSet({
+                  exerciseId,
+                  sequence,
+                  setIndex,
+                  fieldValue: field.value,
+                })
+              }
+            />
+          )}
+        />
+      </td>
 
-    <td className='border-r border-b border-gray-300 p-1'>
-      <FlexibleInput
-        disabled={!isAvailable}
-        placeholder={isAvailable ? '' : '—'}
-        type='integer'
-      />
-    </td>
-    <td
-      className={`border-b border-gray-300 px-2 py-3 text-sm font-medium ${
-        isAvailable ? 'text-gray-800' : 'text-gray-400'
-      } ${setIndex === maxSets - 1 ? 'border-r-0' : 'border-r'}`}
-    >
-      {isAvailable ? '0 kg' : '—'}
-    </td>
-  </React.Fragment>
-);
+      <td className='border-r border-b border-gray-300 p-1'>
+        <Controller
+          name={`session.${exerciseIndex}.sets.${setIndex}.reps`}
+          control={control}
+          render={({ field }) => (
+            <FlexibleInput
+              {...field}
+              disabled={!isAvailable}
+              placeholder={isAvailable ? '' : '—'}
+              onBlur={() =>
+                updateSet({
+                  exerciseId,
+                  sequence,
+                  setIndex,
+                  fieldValue: field.value,
+                })
+              }
+            />
+          )}
+        />
+      </td>
+      <td
+        className={`border-b border-gray-300 px-2 py-3 text-sm font-medium ${
+          isAvailable ? 'text-gray-800' : 'text-gray-400'
+        } ${setIndex === maxSets - 1 ? 'border-r-0' : 'border-r'}`}
+      >
+        {isAvailable ? '0 kg' : '—'}
+      </td>
+    </React.Fragment>
+  );
+};
