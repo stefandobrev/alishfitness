@@ -1,23 +1,26 @@
 import React from 'react';
 
-const DecimalInput = ({ disabled, placeholder }) => {
+const FlexibleInput = ({ disabled, placeholder, type = 'decimal' }) => {
+  const handleInput = (e) => {
+    if (type === 'integer') {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    } else {
+      e.target.value = e.target.value.replace(/[^0-9.,]/g, '');
+      e.target.value = e.target.value.replace(',', '.');
+      const parts = e.target.value.split('.');
+      if (parts.length > 2) {
+        e.target.value = parts[0] + '.' + parts.slice(1).join('');
+      }
+    }
+  };
+
   return (
     <input
       type='text'
       disabled={disabled}
-      pattern='[0-9]*[.,]?[0-9]*'
-      inputMode='decimal'
-      onInput={(e) => {
-        // Allow only numbers, dots, and commas
-        e.target.value = e.target.value.replace(/[^0-9.,]/g, '');
-        // Replace comma with dot for consistency
-        e.target.value = e.target.value.replace(',', '.');
-        // Prevent multiple dots
-        const parts = e.target.value.split('.');
-        if (parts.length > 2) {
-          e.target.value = parts[0] + '.' + parts.slice(1).join('');
-        }
-      }}
+      pattern={type === 'integer' ? '[0-9]*' : '[0-9]*[.,]?[0-9]*'}
+      inputMode={type === 'integer' ? 'numeric' : 'decimal'}
+      onInput={handleInput}
       className={`w-full appearance-none rounded border px-2 py-2 text-center text-sm transition-all duration-200 [-moz-appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
         !disabled
           ? 'border-gray-300 bg-white text-gray-800 focus:border-red-500 focus:ring-1 focus:ring-red-200'
@@ -60,15 +63,16 @@ export const SetSubHeaders = ({ setIndex, maxSets }) => (
 export const SetCells = ({ setIndex, maxSets, isAvailable }) => (
   <React.Fragment>
     <td className='border-r border-b border-gray-300 p-1'>
-      <DecimalInput
+      <FlexibleInput
         disabled={!isAvailable}
-        placeholder={isAvailable ? '0' : '—'}
+        placeholder={isAvailable ? '' : '—'}
       />
     </td>
     <td className='border-r border-b border-gray-300 p-1'>
-      <DecimalInput
+      <FlexibleInput
         disabled={!isAvailable}
-        placeholder={isAvailable ? '0' : '—'}
+        placeholder={isAvailable ? '' : '—'}
+        type='integer'
       />
     </td>
     <td

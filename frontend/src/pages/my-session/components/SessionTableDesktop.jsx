@@ -85,6 +85,7 @@ export const SessionTableDesktop = ({ sessionLogData }) => {
                   setIndex={j}
                   maxSets={maxSets}
                   isAvailable={j < ex.sets}
+                  customExercise={ex.customExerciseTitle}
                 />
               ))}
               <td className='border-b border-l border-gray-300 px-2 py-3'>

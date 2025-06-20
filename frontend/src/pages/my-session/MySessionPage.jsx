@@ -11,6 +11,7 @@ import { useTitle } from '@/hooks';
 import { useIsMobile } from '@/common/constants';
 import { SessionTableDesktop, SessionTableMobile } from './components';
 import { ActionButton } from '@/components/buttons';
+import { manageSession } from '@/schemas';
 
 export const MySessionPage = () => {
   const { id: sessionId } = useParams();
@@ -24,6 +25,7 @@ export const MySessionPage = () => {
   const defaultValues = {}; // Include set logs later
 
   const methods = useForm({
+    resolver: zodResolver(manageSession),
     mode: 'onChange',
     defaultValues,
   });
@@ -44,6 +46,8 @@ export const MySessionPage = () => {
     };
     loadSessionData();
   }, []);
+
+  console.log({ sessionLogData });
 
   // Complete button just changes status of session log
   const onComplete = () => {};
