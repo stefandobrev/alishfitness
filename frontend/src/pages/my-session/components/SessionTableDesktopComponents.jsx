@@ -1,4 +1,5 @@
 import React from 'react';
+import { Controller } from 'react-hook-form';
 
 const FlexibleInput = ({ disabled, placeholder, type = 'decimal' }) => {
   const handleInput = (e) => {
@@ -63,11 +64,19 @@ export const SetSubHeaders = ({ setIndex, maxSets }) => (
 export const SetCells = ({ setIndex, maxSets, isAvailable }) => (
   <React.Fragment>
     <td className='border-r border-b border-gray-300 p-1'>
-      <FlexibleInput
-        disabled={!isAvailable}
-        placeholder={isAvailable ? '' : '—'}
-      />
+      <Controller
+        name={`session.${exerciseIndex}.sets.${setIndex}.weight`}
+        control={control}
+        render={({ field }) => (
+          <FlexibleInput
+            {...field}
+            disabled={!isAvailable}
+            placeholder={isAvailable ? '' : '—'}
+          />
+        )}
+      ></Controller>
     </td>
+
     <td className='border-r border-b border-gray-300 p-1'>
       <FlexibleInput
         disabled={!isAvailable}

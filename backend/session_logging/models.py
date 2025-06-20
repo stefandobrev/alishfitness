@@ -18,11 +18,12 @@ class SetLog(models.Model):
     session_log = models.ForeignKey(SessionLog, on_delete=models.CASCADE, related_name="set_logs", db_index=True)
     exercise = models.ForeignKey(TrainingExercise, on_delete=models.CASCADE, db_index=True)
     set_number = models.PositiveIntegerField() 
+    sequence = models.CharField(max_length=10)
     weight = models.PositiveIntegerField(null=True, blank=True)
     reps = models.PositiveIntegerField(null=True, blank=True)
 
     class Meta:
-        unique_together = ("session_log", "exercise", "set_number")
+        unique_together = ("session_log", "set_number", "sequence")
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
