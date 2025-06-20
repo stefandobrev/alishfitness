@@ -12,7 +12,7 @@ export const SessionTableDesktop = ({ sessionLogData }) => {
 
   return (
     <div className='mx-4 overflow-auto'>
-      <table className='mx-auto table-fixed border-separate border-spacing-0 overflow-hidden rounded-lg border border-gray-300 text-sm'>
+      <table className='mx-auto table-fixed border-separate border-spacing-0 overflow-hidden rounded-lg border-t border-r border-l border-gray-300 text-sm'>
         <thead>
           <tr className='text-center'>
             <th
@@ -87,7 +87,7 @@ export const SessionTableDesktop = ({ sessionLogData }) => {
                   isAvailable={j < ex.sets}
                 />
               ))}
-              <td className='border-r border-b border-l border-gray-300 px-2 py-3'>
+              <td className='border-b border-l border-gray-300 px-2 py-3'>
                 <ActionButton
                   variant={ButtonVariant.GRAY_DARK}
                   className='text-xs font-medium'
