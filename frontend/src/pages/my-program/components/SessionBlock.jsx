@@ -38,7 +38,7 @@ export const SessionBlock = ({ session, isMain = false, dayNumber }) => {
           <p>Sessions completed</p>
         </div>
         <div className='flex items-center gap-2'>
-          <p>Last completed: {formatDate(session.lastUpdatedAt)}</p>
+          <p>Last completed: {formatDate(session.lastCompletedAt)}</p>
         </div>
       </div>
 

@@ -60,6 +60,8 @@ export const MyProgramPage = () => {
     }
   };
 
+  console.log({ trainingProgramData });
+
   // Modal for sessions without status (in progress, completed - today)
   const handlePreviewModal = () => {
     setIsViewDialogOpen(true);
