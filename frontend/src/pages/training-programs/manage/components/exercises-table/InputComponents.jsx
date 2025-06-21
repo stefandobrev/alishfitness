@@ -20,6 +20,7 @@ export const SequenceInput = ({ field, sessionIndex }) => {
 };
 
 export const SetsInput = ({ field }) => {
+  const isMobile = useIsMobile();
   return (
     <input
       {...field}
@@ -39,6 +40,7 @@ export const SetsInput = ({ field }) => {
 };
 
 export const RepsInput = ({ field }) => {
+  const isMobile = useIsMobile();
   return (
     <input
       {...field}
@@ -51,6 +53,7 @@ export const RepsInput = ({ field }) => {
 };
 
 export const CustomInput = ({ field }) => {
+  const isMobile = useIsMobile();
   return (
     <input
       {...field}
