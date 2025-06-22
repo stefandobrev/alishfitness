@@ -1,0 +1,1 @@
+export { SessionTableMobile } from './SessionTableMobile';

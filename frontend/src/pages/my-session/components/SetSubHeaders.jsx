@@ -1,0 +1,19 @@
+import React from 'react';
+
+export const SetSubHeaders = ({ setIndex, maxSets }) => (
+  <React.Fragment>
+    <th className='w-[85px] border-r border-b border-gray-300 px-2 py-1.5 text-sm font-medium text-gray-700'>
+      Weight
+    </th>
+    <th className='w-[85px] border-r border-b border-gray-300 px-2 py-1.5 text-sm font-medium text-gray-700'>
+      Reps/Time
+    </th>
+    <th
+      className={`w-[80px] border-b border-gray-300 px-2 py-1.5 text-sm font-medium text-gray-700 ${
+        setIndex === maxSets - 1 ? 'border-r-0' : 'border-r'
+      }`}
+    >
+      Target
+    </th>
+  </React.Fragment>
+);

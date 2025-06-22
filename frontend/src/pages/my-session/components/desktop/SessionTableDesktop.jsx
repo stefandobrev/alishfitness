@@ -1,9 +1,7 @@
 import { ActionButton, ButtonVariant } from '@/components/buttons';
-import { SetHeader, SetSubHeaders, SetCells } from '.';
+import { SetHeader, SetSubHeaders, SetCells } from '..';
 
-export const SessionTableDesktop = ({ sessionLogData }) => {
-  const { session } = sessionLogData;
-  const { exercises } = session;
+export const SessionTableDesktop = ({ exercises }) => {
   const maxSets = Math.max(...exercises.map((ex) => ex.sets));
 
   const openExercisePage = (muscleGroupSlug, exerciseSlug) => {

@@ -1,0 +1,1 @@
+export { SessionTableDesktop } from './SessionTableDesktop';

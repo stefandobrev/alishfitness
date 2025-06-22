@@ -9,7 +9,8 @@ import { snakeToCamel } from '@/utils';
 import { Spinner } from '@/components/common';
 import { useTitle } from '@/hooks';
 import { useIsMobile } from '@/common/constants';
-import { SessionTableDesktop, SessionTableMobile } from './components';
+import { SessionTableDesktop } from './components/desktop';
+import { SessionTableMobile } from './components/mobile';
 import { ActionButton } from '@/components/buttons';
 import { manageSession } from '@/schemas';
 
@@ -21,6 +22,9 @@ export const MySessionPage = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   useTitle('Daily Workout');
+
+  const session = sessionLogData?.session || {};
+  const exercises = session.exercises || [];
 
   const defaultValues = {}; // Include set logs later
 
@@ -68,9 +72,9 @@ export const MySessionPage = () => {
           </div>
           <FormProvider {...methods}>
             {isMobile ? (
-              <SessionTableMobile sessionLogData={sessionLogData} />
+              <SessionTableMobile exercises={exercises} />
             ) : (
-              <SessionTableDesktop sessionLogData={sessionLogData} />
+              <SessionTableDesktop exercises={exercises} />
             )}
           </FormProvider>
           <div className='mt-6 flex justify-center'>
