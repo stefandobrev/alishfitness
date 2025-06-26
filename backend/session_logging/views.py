@@ -11,7 +11,7 @@ from training_program.models import TrainingProgram, TrainingSession
 from session_logging.models import SessionLog, SetLog
 
 from training_program.serializers import TrainingExerciseDetailSerializer
-from session_logging.serializers import SessionLogSerializer, SessionLogWithExercisesSerializer
+from session_logging.serializers import SessionLogSerializer, SessionLogDetailSerializer
 
 class ActiveProgramView(APIView):
     """View for get current active training program for logged user."""
@@ -99,20 +99,21 @@ class SessionLogsViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
     def retrieve(self, request, pk):
-        """Returns session log data. On create serializer doesn't include set logs."""
+        """Returns session log data. All set logs created with empty string."""
         try:
             session_log = SessionLog.objects.select_related("session").get(pk=pk)
             if session_log.created_at.replace(microsecond=0) == session_log.updated_at.replace(microsecond=0):
-                serializer = SessionLogWithExercisesSerializer(session_log)
+                serializer = SessionLogDetailSerializer(session_log)
                 return Response(serializer.data)
             else:
-                pass ## Serializer with SetLogs
+                return Response({"message": "Editing this session is no longer allowed."}, status=status.HTTP_403_FORBIDDEN)
         except:
             return Response({"session_log": "Session log not found"}, status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         """
-            Create a new daily session log.
+            Create a new daily session log along with all set logs based on number of sets
+            for each exercise.
             Session log on default is changed to in progress + 
             complete_at and updated_at set current time.
 
@@ -131,12 +132,8 @@ class SessionLogsViewSet(viewsets.ViewSet):
     def partial_update(self, request):
         pass
 
-class SetLogsViewSet(viewsets.ViewSet):
+class SetLogsView(APIView):
     """View for creating and updating setLogs"""
     permission_classes = [IsAuthenticated]
 
-    def create(self, request):
-        pass
-
-    def partial_update(self, request):
-        pass
+    pass
