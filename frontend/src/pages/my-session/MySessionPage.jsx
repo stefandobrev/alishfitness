@@ -32,8 +32,19 @@ export const MySessionPage = () => {
 
   const methods = useForm({
     resolver: zodResolver(manageSession),
-    mode: 'onChange',
+    defaultValues: {
+      setLogs: {},
+    },
   });
+
+  const {
+    handleSubmit,
+    getValues,
+    formState: { errors },
+    reset,
+  } = methods;
+
+  console.log({ errors, values: getValues() });
 
   // Load session log data
   useEffect(() => {
@@ -50,29 +61,49 @@ export const MySessionPage = () => {
       }
     };
     loadSessionData();
-  }, []);
+  }, [sessionId, navigate]);
 
   console.log({ sessionLogData });
 
-  // Set the values on sessionLogData load
+  // Set the values on sessionLogData change
   useEffect(() => {
-    if (sessionLogData) {
-      const transformedData = {
-        setLogs: sessionLogData.setLogs?.map((log) => ({
-          id: log.id,
-          weight: log.weight ?? '',
-          reps: log.reps ?? '',
-        })),
-      };
-      methods.reset(transformedData);
-    }
-  }, [sessionLogData]);
+    if (!sessionLogData?.setLogs) return;
+
+    const transformedData = {
+      setLogs: sessionLogData.setLogs.reduce(
+        (acc, { id, reps, weight, sequence, setNumber }) => {
+          if (!acc[sequence]) {
+            acc[sequence] = { sets: {} };
+          }
+          acc[sequence].sets[setNumber] = {
+            id,
+            reps,
+            weight,
+          };
+          return acc;
+        },
+        {},
+      ),
+    };
+
+    console.log({ transformedData });
+
+    // Use reset with the correct structure and clear any existing form state
+    reset(transformedData, {
+      keepDefaultValues: false,
+      keepValues: false,
+      keepDirty: false,
+      keepTouched: false,
+    });
+  }, [sessionLogData, reset]);
 
   // Save input changes
-  const onSave = () => {};
+  const handleSave = (data) => {
+    console.log('Form submission data:', data);
+  };
 
   // Complete button just changes status of session log
-  const onComplete = () => {};
+  const handleComplete = () => {};
 
   // Initial loading spinner on session log data fetch
   if (isLoading && !sessionLogData.length) {
@@ -89,26 +120,27 @@ export const MySessionPage = () => {
             </h1>
           </div>
           <FormProvider {...methods}>
-            {isMobile ? (
-              <SessionTableMobile exercises={exercises} />
-            ) : (
-              <SessionTableDesktop exercises={exercises} />
-            )}
-            <div className='mt-6 flex flex-col justify-center gap-4 md:flex-row'>
-              <SubmitButton
-                variant={ButtonVariant.GREEN}
-                onClick={onSave}
-                className='mx-2 md:w-auto'
-              >
-                Save Changes
-              </SubmitButton>
-              <ActionButton
-                onClick={onComplete}
-                className={`${sessionLogData?.status !== 'completed' ? '' : 'hidden'} mx-2 md:w-auto`}
-              >
-                Complete Session
-              </ActionButton>
-            </div>
+            <form onSubmit={handleSubmit(handleSave)}>
+              {isMobile ? (
+                <SessionTableMobile exercises={exercises} />
+              ) : (
+                <SessionTableDesktop exercises={exercises} />
+              )}
+              <div className='mt-6 flex flex-col justify-center gap-4 md:flex-row'>
+                <SubmitButton
+                  variant={ButtonVariant.GREEN}
+                  className='mx-2 md:w-auto'
+                >
+                  Save Changes
+                </SubmitButton>
+                <ActionButton
+                  onClick={handleComplete}
+                  className={`${sessionLogData?.status !== 'completed' ? '' : 'hidden'} mx-2 md:w-auto`}
+                >
+                  Complete Session
+                </ActionButton>
+              </div>
+            </form>
           </FormProvider>
         </>
       )}

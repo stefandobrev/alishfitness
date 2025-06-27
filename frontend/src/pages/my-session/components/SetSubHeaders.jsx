@@ -1,7 +1,5 @@
-import React from 'react';
-
 export const SetSubHeaders = ({ setIndex, maxSets }) => (
-  <React.Fragment>
+  <>
     <th className='w-[85px] border-r border-b border-gray-300 px-2 py-1.5 text-sm font-medium text-gray-700'>
       Weight
     </th>
@@ -15,5 +13,5 @@ export const SetSubHeaders = ({ setIndex, maxSets }) => (
     >
       Target
     </th>
-  </React.Fragment>
+  </>
 );

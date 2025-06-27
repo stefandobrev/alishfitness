@@ -1,13 +1,15 @@
 import { z } from 'zod';
 
 export const manageSession = z.object({
-  session: z.array(
+  setLogs: z.record(
+    z.string(),
     z.object({
-      exerciseId: z.number(),
-      sets: z.array(
+      sets: z.record(
+        z.string(),
         z.object({
-          weight: z.number().nonnegative().optional(),
-          reps: z.number().int().nonnegative().optional(),
+          id: z.number(),
+          weight: z.number().nonnegative().nullable(),
+          reps: z.number().int().nonnegative().nullable(),
         }),
       ),
     }),

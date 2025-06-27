@@ -1,28 +1,46 @@
-import React from 'react';
 import { Controller } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 
-const FlexibleInput = ({ disabled, placeholder, type = 'decimal' }) => {
-  const handleInput = (e) => {
+const FlexibleInput = ({
+  value,
+  onChange,
+  disabled,
+  placeholder,
+  type = 'decimal',
+}) => {
+  // Handle change = real time sanitization transformation. Pattern - validates
+  const handleChange = (e) => {
+    let inputValue = e.target.value;
+
     if (type === 'integer') {
-      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+      inputValue = inputValue.replace(/[^0-9]/g, '');
     } else {
-      e.target.value = e.target.value.replace(/[^0-9.,]/g, '');
-      e.target.value = e.target.value.replace(',', '.');
-      const parts = e.target.value.split('.');
+      inputValue = inputValue.replace(/[^0-9.,]/g, '');
+      inputValue = inputValue.replace(',', '.');
+      const parts = inputValue.split('.');
       if (parts.length > 2) {
-        e.target.value = parts[0] + '.' + parts.slice(1).join('');
+        inputValue = parts[0] + '.' + parts.slice(1).join('');
       }
+    }
+
+    // Convert to number or null
+    if (inputValue === '') {
+      onChange(null);
+    } else {
+      const numericValue =
+        type === 'integer' ? parseInt(inputValue, 10) : parseFloat(inputValue);
+      onChange(isNaN(numericValue) ? null : numericValue);
     }
   };
 
   return (
     <input
       type='text'
+      value={value || ''}
+      onChange={handleChange}
       disabled={disabled}
       pattern={type === 'integer' ? '[0-9]*' : '[0-9]*[.,]?[0-9]*'}
       inputMode={type === 'integer' ? 'numeric' : 'decimal'}
-      onInput={handleInput}
       className={`w-full appearance-none rounded border px-2 py-2 text-center text-sm transition-all duration-200 [-moz-appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
         !disabled
           ? 'border-gray-300 bg-white text-gray-800 focus:border-red-500 focus:ring-1 focus:ring-red-200'
@@ -33,47 +51,39 @@ const FlexibleInput = ({ disabled, placeholder, type = 'decimal' }) => {
   );
 };
 
-export const SetCells = ({
-  setIndex,
-  maxSets,
-  exerciseIndex,
-  isAvailable,
-  exerciseId,
-  sequence,
-}) => {
+export const SetCells = ({ setIndex, maxSets, isAvailable, sequence }) => {
   const { control } = useFormContext();
+
+  // Convert 0-based setIndex to 1-based setNumber to match your data structure
+  const setNumber = setIndex + 1;
+
   return (
-    <React.Fragment>
+    <>
       <td className='border-r border-b border-gray-300 p-1'>
         <Controller
-          name={`session.${exerciseIndex}.sets.${setIndex}.weight`}
+          name={`setLogs.${sequence}.sets.${setNumber}.weight`}
           control={control}
           render={({ field }) => (
             <FlexibleInput
-              {...field}
+              value={field.value}
+              onChange={field.onChange}
               disabled={!isAvailable}
               placeholder={isAvailable ? '' : '—'}
-              onChange={(e) => {
-                field.onChange(e);
-              }}
             />
           )}
         />
       </td>
-
       <td className='border-r border-b border-gray-300 p-1'>
         <Controller
-          name={`session.${exerciseIndex}.sets.${setIndex}.reps`}
+          name={`setLogs.${sequence}.sets.${setNumber}.reps`}
           control={control}
           render={({ field }) => (
             <FlexibleInput
-              {...field}
+              value={field.value}
+              onChange={field.onChange}
               type='integer'
               disabled={!isAvailable}
               placeholder={isAvailable ? '' : '—'}
-              onChange={(e) => {
-                field.onChange(e);
-              }}
             />
           )}
         />
@@ -85,6 +95,6 @@ export const SetCells = ({
       >
         {isAvailable ? '0 kg' : '—'}
       </td>
-    </React.Fragment>
+    </>
   );
 };
