@@ -102,9 +102,9 @@ class SessionLogsViewSet(viewsets.ViewSet):
         """Returns session log data. All set logs created with empty string."""
         try:
             session_log = SessionLog.objects.select_related("session").get(pk=pk)
-            if session_log.created_at.replace(microsecond=0) == session_log.updated_at.replace(microsecond=0):
+            if session_log.created_at.date() == session_log.updated_at.date():
                 serializer = SessionLogDetailSerializer(session_log)
-                return Response(serializer.data)
+                return Response(serializer.data) 
             else:
                 return Response({"message": "Editing this session is no longer allowed."}, status=status.HTTP_403_FORBIDDEN)
         except:

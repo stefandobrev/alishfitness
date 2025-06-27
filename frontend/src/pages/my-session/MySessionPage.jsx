@@ -26,12 +26,9 @@ export const MySessionPage = () => {
   const session = sessionLogData?.session || {};
   const exercises = session.exercises || [];
 
-  const defaultValues = {}; // Include set logs later
-
   const methods = useForm({
     resolver: zodResolver(manageSession),
     mode: 'onChange',
-    defaultValues,
   });
 
   // Load session log data
@@ -52,6 +49,20 @@ export const MySessionPage = () => {
   }, []);
 
   console.log({ sessionLogData });
+
+  // Set the values on sessionLogData load
+  useEffect(() => {
+    if (sessionLogData) {
+      const transformedData = {
+        setLogs: sessionLogData.setLogs?.map((log) => ({
+          id: log.id,
+          weight: log.weight ?? '',
+          reps: log.reps ?? '',
+        })),
+      };
+      methods.reset(transformedData);
+    }
+  }, [sessionLogData]);
 
   // Complete button just changes status of session log
   const onComplete = () => {};

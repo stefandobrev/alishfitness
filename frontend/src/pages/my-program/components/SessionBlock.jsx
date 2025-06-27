@@ -16,7 +16,15 @@ export const SessionBlock = ({ session, isMain = false, dayNumber }) => {
     >
       {/* Header with icon */}
       <div className='mb-4 flex items-center gap-3'>
-        <div className='bg-logored h-4 w-4 rounded-full'></div>
+        <div
+          className={`h-4 w-4 rounded-full ${
+            session.status === 'in_progress'
+              ? 'bg-blue-600'
+              : session.status === 'completed'
+                ? 'bg-green-600'
+                : 'bg-logored'
+          }`}
+        />
         <h2
           className={`font-bold ${isMain ? 'text-2xl' : 'text-xl text-gray-800'}`}
         >
