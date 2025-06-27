@@ -17,6 +17,10 @@ const variants = {
     baseStyle,
     'bg-white hover:bg-gray-300 text-gray-800 hover:text-gray-900 disabled:bg-gray-300 disabled:text-gray-700',
   ),
+  [ButtonVariant.GREEN]: classNames(
+    baseStyle,
+    'bg-green-600 hover:bg-green-400 text-white hover:text-gray-900 disabled:bg-gray-300 disabled:text-gray-700',
+  ),
   [ButtonVariant.BLANK]: '',
 };
 

@@ -11,7 +11,11 @@ import { useTitle } from '@/hooks';
 import { useIsMobile } from '@/common/constants';
 import { SessionTableDesktop } from './components/desktop';
 import { SessionTableMobile } from './components/mobile';
-import { ActionButton } from '@/components/buttons';
+import {
+  ActionButton,
+  ButtonVariant,
+  SubmitButton,
+} from '@/components/buttons';
 import { manageSession } from '@/schemas';
 
 export const MySessionPage = () => {
@@ -64,6 +68,9 @@ export const MySessionPage = () => {
     }
   }, [sessionLogData]);
 
+  // Save input changes
+  const onSave = () => {};
+
   // Complete button just changes status of session log
   const onComplete = () => {};
 
@@ -87,15 +94,22 @@ export const MySessionPage = () => {
             ) : (
               <SessionTableDesktop exercises={exercises} />
             )}
+            <div className='mt-6 flex flex-col justify-center gap-4 md:flex-row'>
+              <SubmitButton
+                variant={ButtonVariant.GREEN}
+                onClick={onSave}
+                className='mx-2 md:w-auto'
+              >
+                Save Changes
+              </SubmitButton>
+              <ActionButton
+                onClick={onComplete}
+                className={`${sessionLogData?.status !== 'completed' ? '' : 'hidden'} mx-2 md:w-auto`}
+              >
+                Complete Session
+              </ActionButton>
+            </div>
           </FormProvider>
-          <div className='mt-6 flex justify-center'>
-            <ActionButton
-              onClick={onComplete}
-              className='mx-2 w-full md:w-auto'
-            >
-              Complete Session
-            </ActionButton>
-          </div>
         </>
       )}
     </>
