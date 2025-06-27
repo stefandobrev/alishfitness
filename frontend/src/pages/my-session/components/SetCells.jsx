@@ -55,14 +55,6 @@ export const SetCells = ({
               placeholder={isAvailable ? '' : '—'}
               onChange={(e) => {
                 field.onChange(e);
-
-                updateSet({
-                  exerciseId,
-                  sequence,
-                  setIndex,
-                  field: 'weight',
-                  fieldValue: e.target.value,
-                });
               }}
             />
           )}
@@ -76,18 +68,11 @@ export const SetCells = ({
           render={({ field }) => (
             <FlexibleInput
               {...field}
+              type='integer'
               disabled={!isAvailable}
               placeholder={isAvailable ? '' : '—'}
               onChange={(e) => {
                 field.onChange(e);
-
-                updateSet({
-                  exerciseId,
-                  sequence,
-                  setIndex,
-                  field: 'reps',
-                  fieldValue: e.target.value,
-                });
               }}
             />
           )}
