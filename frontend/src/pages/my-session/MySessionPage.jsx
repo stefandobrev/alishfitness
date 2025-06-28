@@ -3,8 +3,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'react-toastify';
 
-import { fetchSessionData } from './helpersMySession';
+import { fetchSessionData, saveSessionData } from './helpersMySession';
 import { snakeToCamel } from '@/utils';
 import { Spinner } from '@/components/common';
 import { useTitle } from '@/hooks';
@@ -22,6 +23,7 @@ export const MySessionPage = () => {
   const { id: sessionId } = useParams();
   const [sessionLogData, setSessionLogData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -37,14 +39,7 @@ export const MySessionPage = () => {
     },
   });
 
-  const {
-    handleSubmit,
-    getValues,
-    formState: { errors },
-    reset,
-  } = methods;
-
-  console.log({ errors, values: getValues() });
+  const { handleSubmit, reset } = methods;
 
   // Load session log data
   useEffect(() => {
@@ -86,11 +81,9 @@ export const MySessionPage = () => {
       ),
     };
 
-    console.log({ transformedData });
-
     // Use reset with the correct structure and clear any existing form state
     reset(transformedData, {
-      keepDefaultValues: false,
+      keepDefaultValues: false, //Possibly omit those on retrieve on edit
       keepValues: false,
       keepDirty: false,
       keepTouched: false,
@@ -98,8 +91,16 @@ export const MySessionPage = () => {
   }, [sessionLogData, reset]);
 
   // Save input changes
-  const handleSave = (data) => {
-    console.log('Form submission data:', data);
+  const handleSave = async (data) => {
+    setIsSaving(true);
+    try {
+      await saveSessionData(data, sessionLogData.id);
+      toast.success('Session saved!');
+    } catch {
+      toast.error('Save unsuccessful.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   // Complete button just changes status of session log
@@ -131,7 +132,7 @@ export const MySessionPage = () => {
                   variant={ButtonVariant.GREEN}
                   className='mx-2 md:w-auto'
                 >
-                  Save Changes
+                  {isSaving ? 'Saving...' : 'Save Changes'}
                 </SubmitButton>
                 <ActionButton
                   onClick={handleComplete}
