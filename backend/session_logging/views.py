@@ -11,7 +11,7 @@ from training_program.models import TrainingProgram, TrainingSession
 from session_logging.models import SessionLog, SetLog
 
 from training_program.serializers import TrainingExerciseDetailSerializer
-from session_logging.serializers import SessionLogSerializer, SessionLogDetailSerializer
+from session_logging.serializers import SessionLogSerializer, SessionLogDetailSerializer, SetLogSerializer
 
 class ActiveProgramView(APIView):
     """View for get current active training program for logged user."""
@@ -139,7 +139,11 @@ class SetLogsView(APIView):
     def patch(self, request, id):
         """Using only patch method to update.""" 
         set_logs_data = request.data
-        print(f"SessionLog ID: {id}")
-        print(set_logs_data)
+
+        for key, set_data in set_logs_data.items():
+            set_log = SetLog.objects.get(id=set_data["id"])
+            serializer = SetLogSerializer(set_log, data=set_data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
 
         return Response({"message": "Iei"}, status=status.HTTP_200_OK)

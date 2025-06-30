@@ -17,26 +17,20 @@ const FlexibleInput = ({
     } else {
       inputValue = inputValue.replace(/[^0-9.,]/g, '');
       inputValue = inputValue.replace(',', '.');
+
       const parts = inputValue.split('.');
       if (parts.length > 2) {
         inputValue = parts[0] + '.' + parts.slice(1).join('');
       }
     }
 
-    // Convert to number or null
-    if (inputValue === '') {
-      onChange(null);
-    } else {
-      const numericValue =
-        type === 'integer' ? parseInt(inputValue, 10) : parseFloat(inputValue);
-      onChange(isNaN(numericValue) ? null : numericValue);
-    }
+    onChange(inputValue); // ✅ Keep raw input (string)
   };
 
   return (
     <input
       type='text'
-      value={value || ''}
+      value={value ?? ''}
       onChange={handleChange}
       disabled={disabled}
       pattern={type === 'integer' ? '[0-9]*' : '[0-9]*[.,]?[0-9]*'}

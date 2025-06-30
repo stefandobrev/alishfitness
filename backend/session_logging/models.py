@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 from training_program.models import TrainingProgram, TrainingSession, TrainingExercise
 
 class SessionLog(models.Model):
@@ -19,7 +20,13 @@ class SetLog(models.Model):
     exercise = models.ForeignKey(TrainingExercise, on_delete=models.CASCADE, db_index=True)
     set_number = models.PositiveIntegerField() 
     sequence = models.CharField(max_length=10)
-    weight = models.PositiveIntegerField(null=True, blank=True)
+    weight = models.DecimalField(
+        max_digits=6, 
+        decimal_places=2, 
+        null=True, 
+        blank=True, 
+        validators=[MinValueValidator(0)]
+    )
     reps = models.PositiveIntegerField(null=True, blank=True)
 
     class Meta:

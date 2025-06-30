@@ -42,10 +42,19 @@ class SessionLogSerializer(serializers.ModelSerializer):
 
 class SetLogDetailSerializer(serializers.ModelSerializer):
     """Serializer for set logs."""
+    weight = serializers.SerializerMethodField()
     
     class Meta:
         model = SetLog
         fields = ["id", "exercise", "set_number", "sequence", "weight", "reps"]
+
+    def get_weight(self, obj):
+        """If weight is whole number, return int, else float"""
+        if obj.weight is None:
+            return None
+        if obj.weight == obj.weight.to_integral():
+            return int(obj.weight)
+        return float(obj.weight)
 
 
 class SessionLogDetailSerializer(serializers.ModelSerializer):
@@ -58,4 +67,26 @@ class SessionLogDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SessionLog
-        fields = ["id", "status", "session", "set_logs"]      
+        fields = ["id", "status", "session", "set_logs"]  
+
+class SetLogSerializer(serializers.ModelSerializer):
+    """
+        Serializer which updates the set logs.
+    """    
+    class Meta:
+        model=SetLog
+        fields = ["id", "weight", "reps"]
+        read_only_fields = ["id"]
+
+    def validate_weight(self, value):
+        if value is not None and value < 0:
+            raise serializers.ValidationError("Weight cannot be negative.")
+        return value
+    
+    def validate_reps(self, value):
+        if value is not None:
+            if value < 0:
+                raise serializers.ValidationError("Reps cannot be negative.")
+            if not isinstance(value, int):
+                raise serializers.ValidationError("Reps must be a whole number.")
+        return value

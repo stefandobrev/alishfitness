@@ -8,8 +8,27 @@ export const manageSession = z.object({
         z.string(), // Inner string - set numbers
         z.object({
           id: z.number(),
-          weight: z.number().nonnegative().nullable(),
-          reps: z.number().int().nonnegative().nullable(),
+          weight: z
+            .union([
+              z
+                .string()
+                .regex(/^\d*\.?\d*$/)
+                .transform((val) => (val === '' ? null : parseFloat(val))),
+              z.number(),
+              z.null(),
+            ])
+            .nullable(),
+
+          reps: z
+            .union([
+              z
+                .string()
+                .regex(/^\d+$/)
+                .transform((val) => (val === '' ? null : parseInt(val, 10))),
+              z.number().int(),
+              z.null(),
+            ])
+            .nullable(),
         }),
       ),
     }),
