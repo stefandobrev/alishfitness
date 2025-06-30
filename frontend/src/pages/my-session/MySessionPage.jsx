@@ -112,9 +112,6 @@ export const MySessionPage = () => {
     const transformedSetLogs = flattenSetLogs(data.setLogs);
     const changedData = getChangedFields(initialSetLogs, transformedSetLogs);
 
-    console.log({ changedData });
-    console.log({ data });
-
     setIsSaving(true);
     try {
       await saveSessionData(changedData, sessionLogData.id);

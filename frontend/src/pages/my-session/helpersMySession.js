@@ -8,8 +8,9 @@ export const fetchSessionData = async (id) => {
 };
 
 export const saveSessionData = async (sessionLogdata, sessionLogId) => {
+  console.log({ sessionLogdata });
   const transformedData = camelToSnake(sessionLogdata);
-  console.log('sent to backedn:', transformedData);
+  console.log({ transformedData });
 
   const response = await api(
     `session-logs/${sessionLogId}/set-logs/`,

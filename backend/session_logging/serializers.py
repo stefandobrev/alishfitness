@@ -40,7 +40,7 @@ class SessionLogSerializer(serializers.ModelSerializer):
 
         return session_log
 
-class SetLogSerializer(serializers.ModelSerializer):
+class SetLogDetailSerializer(serializers.ModelSerializer):
     """Serializer for set logs."""
     
     class Meta:
@@ -54,7 +54,7 @@ class SessionLogDetailSerializer(serializers.ModelSerializer):
         and exercises related to it.
     """
     session = TrainingSessionDetailSerializer(read_only=True)
-    set_logs = SetLogSerializer(many=True, read_only=True)
+    set_logs = SetLogDetailSerializer(many=True, read_only=True)
 
     class Meta:
         model = SessionLog

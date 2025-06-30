@@ -25,10 +25,7 @@ export const camelToSnake = (obj) => {
 
   if (typeof obj === 'object' && obj !== null) {
     return Object.keys(obj).reduce((acc, key) => {
-      const snakeKey = key.replace(
-        /[A-Z]/g,
-        (letter) => `_${letter.toLowerCase()}`,
-      );
+      const snakeKey = key.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase();
       acc[snakeKey] = camelToSnake(obj[key]);
       return acc;
     }, {});
