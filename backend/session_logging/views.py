@@ -133,7 +133,13 @@ class SessionLogsViewSet(viewsets.ViewSet):
         pass
 
 class SetLogsView(APIView):
-    """View for creating and updating setLogs"""
+    """View for updating setLogs"""
     permission_classes = [IsAuthenticated]
 
-    pass
+    def patch(self, request, id):
+        """Using only patch method to update.""" 
+        set_logs_data = request.data
+        print(f"SessionLog ID: {id}")
+        print(set_logs_data)
+
+        return Response({"message": "Iei"}, status=status.HTTP_200_OK)

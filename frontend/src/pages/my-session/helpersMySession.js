@@ -1,4 +1,4 @@
-import { api } from '@/utils';
+import { api, camelToSnake } from '@/utils';
 
 export const fetchSessionData = async (id) => {
   const response = await api(`session-logs/${id}/`, 'GET');
@@ -8,10 +8,13 @@ export const fetchSessionData = async (id) => {
 };
 
 export const saveSessionData = async (sessionLogdata, sessionLogId) => {
+  const transformedData = camelToSnake(sessionLogdata);
+  console.log('sent to backedn:', transformedData);
+
   const response = await api(
     `session-logs/${sessionLogId}/set-logs/`,
     'PATCH',
-    sessionLogdata,
+    transformedData,
   );
   if (!response.ok) throw new Error('Failed to save session log data.');
   const data = await response.json();

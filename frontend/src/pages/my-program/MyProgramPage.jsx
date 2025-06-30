@@ -36,6 +36,7 @@ export const MyProgramPage = () => {
 
   // On create navigate to training session, if created just open today setLog
   const navigateToSession = async ({ id }) => {
+    setIsCreateLoading(true);
     const sessionLogId = trainingProgramData.sessions.find(
       (s) => s.id === id,
     )?.sessionLogId;
@@ -43,7 +44,6 @@ export const MyProgramPage = () => {
     if (sessionLogId) {
       navigate(`/my-sessions/${sessionLogId}`);
     } else {
-      setIsCreateLoading(true);
       const payload = {
         sessionId: id,
         trainingProgramId: trainingProgramData.id,
@@ -70,7 +70,12 @@ export const MyProgramPage = () => {
 
   // On load return
   if ((isPageLoading && !trainingProgramData.length) || isCreateLoading) {
-    return <Spinner loading={isPageLoading} className='min-h-[70vh]' />;
+    return (
+      <Spinner
+        loading={isPageLoading || isCreateLoading}
+        className='min-h-[70vh]'
+      />
+    );
   }
 
   // No training data paragraph return

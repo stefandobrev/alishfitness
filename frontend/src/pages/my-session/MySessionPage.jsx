@@ -58,7 +58,7 @@ export const MySessionPage = () => {
   // Load session log data
   useEffect(() => {
     const loadSessionData = async () => {
-      if (!sessionId) return; // Guard against missing sessionId
+      if (!sessionId) return;
 
       setIsLoading(true);
       try {
@@ -112,14 +112,12 @@ export const MySessionPage = () => {
     const transformedSetLogs = flattenSetLogs(data.setLogs);
     const changedData = getChangedFields(initialSetLogs, transformedSetLogs);
 
-    console.log({ transformedSetLogs });
-
     console.log({ changedData });
     console.log({ data });
 
     setIsSaving(true);
     try {
-      await saveSessionData(data, sessionLogData.id);
+      await saveSessionData(changedData, sessionLogData.id);
 
       // Update initial state after successful save
       setInitialSetLogs(transformedSetLogs);
