@@ -24,7 +24,7 @@ const FlexibleInput = ({
       }
     }
 
-    onChange(inputValue); // ✅ Keep raw input (string)
+    onChange(inputValue);
   };
 
   return (

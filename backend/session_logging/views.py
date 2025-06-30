@@ -1,6 +1,7 @@
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import PermissionDenied, NotFound
 from rest_framework.response import Response
 from django.utils.timezone import now
 from django.shortcuts import get_object_or_404
@@ -138,6 +139,14 @@ class SetLogsView(APIView):
 
     def patch(self, request, id):
         """Using only patch method to update.""" 
+        try:
+            session_log = SessionLog.objects.select_related("training_program").get(id=id)
+        except SessionLog.DoesNotExist:
+            raise NotFound("Session log not found.")
+
+        if session_log.training_program.assigned_user != request.user:
+            raise PermissionDenied("You do not have permission to update this session.")
+
         set_logs_data = request.data
 
         for key, set_data in set_logs_data.items():

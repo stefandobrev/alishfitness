@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+// Validates and transforms text to dec/int
 export const manageSession = z.object({
   setLogs: z.record(
     z.string(), // Outer string - sequence
