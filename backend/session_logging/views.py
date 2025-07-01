@@ -130,8 +130,16 @@ class SessionLogsViewSet(viewsets.ViewSet):
 
         return Response({"id": session_log.id}, status=status.HTTP_201_CREATED)
 
-    def partial_update(self, request):
-        pass
+    def partial_update(self, request, pk):
+        """
+        Completes the session. Change of the status to completed.
+        """
+        print("Request data:", request.data)
+        session_log = SessionLog.objects.get(pk=pk)
+        serializer = SessionLogSerializer(session_log, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message", "Session completed!"})
 
 class SetLogsView(APIView):
     """View for updating setLogs"""

@@ -19,7 +19,7 @@ class SessionLogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SessionLog
-        fields = ["training_program_id", "session_id"]
+        fields = ["training_program_id", "session_id", "status"]
 
     def create(self, validated_data):
         """

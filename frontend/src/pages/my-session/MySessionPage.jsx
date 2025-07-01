@@ -5,7 +5,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 
-import { fetchSessionData, saveSessionData } from './helpersMySession';
+import {
+  completeSession,
+  fetchSessionData,
+  saveSessionData,
+} from './helpersMySession';
 import { getChangedFields, snakeToCamel } from '@/utils';
 import { Spinner } from '@/components/common';
 import { useTitle } from '@/hooks';
@@ -26,6 +30,7 @@ export const MySessionPage = () => {
   const [initialSetLogs, setInitialSetLogs] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isCompleting, setIsCompleting] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
 
   const navigate = useNavigate();
@@ -103,12 +108,7 @@ export const MySessionPage = () => {
     };
 
     // Use reset with the correct structure
-    reset(transformedData, {
-      keepDefaultValues: false,
-      keepValues: false,
-      keepDirty: false,
-      keepTouched: false,
-    });
+    reset(transformedData);
   }, [sessionLogData, reset]);
 
   // Save input changes
@@ -118,7 +118,7 @@ export const MySessionPage = () => {
 
     setIsSaving(true);
     try {
-      await saveSessionData(changedData, sessionLogData.id);
+      await saveSessionData(sessionLogData.id, changedData);
 
       // Update initial state after successful save
       setInitialSetLogs(transformedSetLogs);
@@ -135,13 +135,14 @@ export const MySessionPage = () => {
   // Complete button just changes status of session log
   const handleComplete = async () => {
     // Add implementation for completing session
+    setIsCompleting(true);
     try {
-      // You'll need to implement this function or add it to saveSessionData
-      // await completeSession(sessionLogData.id);
+      await completeSession(sessionLogData.id, { status: 'completed' });
       toast.success('Session completed!');
     } catch (error) {
-      console.error('Complete session error:', error);
       toast.error('Failed to complete session.');
+    } finally {
+      setIsCompleting(false);
     }
   };
 
@@ -182,8 +183,12 @@ export const MySessionPage = () => {
               {isSaving ? 'Saving...' : 'Save Changes'}
             </SubmitButton>
             {sessionLogData?.status !== 'completed' && (
-              <ActionButton onClick={handleComplete} className='mx-2 md:w-auto'>
-                Complete Session
+              <ActionButton
+                onClick={handleComplete}
+                disabled={isSaving || isCompleting}
+                className='mx-2 md:w-auto'
+              >
+                {isCompleting ? 'Completing...' : 'Complete Session'}
               </ActionButton>
             )}
           </div>
