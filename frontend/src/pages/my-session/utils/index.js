@@ -1,1 +1,5 @@
-export { flattenSetLogsArray, flattenSetLogs } from './setLogUtils';
+export {
+  flattenSetLogsArray,
+  flattenSetLogs,
+  normalizeValues,
+} from './setLogUtils';

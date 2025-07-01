@@ -18,7 +18,7 @@ import {
   SubmitButton,
 } from '@/components/buttons';
 import { manageSession } from '@/schemas';
-import { flattenSetLogsArray, flattenSetLogs } from './utils';
+import { flattenSetLogsArray, flattenSetLogs, normalizeValues } from './utils';
 
 export const MySessionPage = () => {
   const { id: sessionId } = useParams();
@@ -26,6 +26,7 @@ export const MySessionPage = () => {
   const [initialSetLogs, setInitialSetLogs] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
 
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -43,17 +44,20 @@ export const MySessionPage = () => {
 
   const { handleSubmit, reset, watch } = methods;
 
-  // Watch form changes to determine if save button should be disabled
-  const watchedSetLogs = watch('setLogs');
-
   // Check if there are changes to save
-  const hasChanges = () => {
-    if (!watchedSetLogs || Object.keys(initialSetLogs).length === 0)
-      return false;
-    const transformedSetLogs = flattenSetLogs(watchedSetLogs);
-    const changedData = getChangedFields(initialSetLogs, transformedSetLogs);
-    return Object.keys(changedData).length > 0;
-  };
+  useEffect(() => {
+    const subscription = watch((value) => {
+      if (!value?.setLogs || initialSetLogs == null) return;
+
+      const transformed = normalizeValues(flattenSetLogs(value.setLogs));
+      const normalizedInitial = normalizeValues(initialSetLogs);
+
+      const changed = getChangedFields(normalizedInitial, transformed);
+      setHasChanges(Object.keys(changed).length > 0);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, initialSetLogs]);
 
   // Load session log data
   useEffect(() => {
@@ -173,7 +177,7 @@ export const MySessionPage = () => {
             <SubmitButton
               variant={ButtonVariant.GREEN}
               className='mx-2 md:w-auto'
-              disabled={isSaving || !hasChanges()}
+              disabled={isSaving || !hasChanges}
             >
               {isSaving ? 'Saving...' : 'Save Changes'}
             </SubmitButton>

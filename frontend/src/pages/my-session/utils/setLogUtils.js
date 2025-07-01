@@ -1,3 +1,4 @@
+// Flatten nested structure into simple key-value pairs
 export const flattenSetLogsArray = (setLogsArray) => {
   const flat = {};
   setLogsArray.forEach(({ id, weight, reps, sequence, setNumber }) => {
@@ -17,4 +18,17 @@ export const flattenSetLogs = (setLogData) => {
     }
   }
   return flat;
+};
+
+// Converts all fields to string.Initial empty set logs are null.
+export const normalizeValues = (obj) => {
+  const normalized = {};
+  for (const key in obj) {
+    normalized[key] = {};
+    for (const field in obj[key]) {
+      normalized[key][field] =
+        obj[key][field] === null ? '' : String(obj[key][field]);
+    }
+  }
+  return normalized;
 };
