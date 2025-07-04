@@ -32,6 +32,15 @@ class ActiveProgramView(APIView):
             status="completed"
         )
 
+        # Find the current schedule data saved in the last completed session log
+        latest_completed_log = completed_logs.order_by("-updated_at").first()
+
+        if latest_completed_log and latest_completed_log.next_schedule_data:
+            current_schedule = latest_completed_log.next_schedule_data
+        else:
+            current_schedule = training_program.schedule_data
+
+        # Summary for each session completed count and last update date
         summary = defaultdict(lambda: {"last_completed_at": None, "completed_count": 0})
         for log in completed_logs:
             s_id = log.session_id
@@ -51,15 +60,23 @@ class ActiveProgramView(APIView):
 
         today_status_map = {log.session_id: {"id": log.id, "status": log.status} for log in today_logs}
 
+        # Reorder sessions according to current schedule data
+        session_map = {session.id: session for session in training_sessions}
+
+        ordered_sessions = []
+        for session_id in current_schedule:
+            if session_id in session_map:
+                ordered_sessions.append(session_map[session_id])
+
         data = {
             "id": training_program.id,
             "program_title": training_program.program_title,
-            "schedule_data": training_program.schedule_data,
+            "schedule_data": current_schedule,
             "sessions": [],
         }
         
         data["sessions"] = []
-        for session in training_sessions:
+        for session in ordered_sessions:
             session_summary = summary.get(session.id, {"last_completed_at": None, "completed_count": 0})
             data["sessions"].append({
                 "id": session.id,

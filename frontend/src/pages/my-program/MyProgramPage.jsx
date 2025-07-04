@@ -12,7 +12,7 @@ import { useTitle } from '@/hooks';
 export const MyProgramPage = () => {
   const [isPageLoading, setIsPageLoading] = useState(false);
   const [isCreateLoading, setIsCreateLoading] = useState(false);
-  const [trainingProgramData, setTrainingProgramData] = useState([]);
+  const [trainingProgramData, setTrainingProgramData] = useState(null);
   const [selectedSession, setSelectedSession] = useState(null);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
 
@@ -65,11 +65,10 @@ export const MyProgramPage = () => {
     setIsViewDialogOpen(true);
   };
 
-  // Recommended vs rest sessions deconstruct
-  const [mainSession, ...otherSessions] = trainingProgramData.sessions || [];
+  console.log({ trainingProgramData });
 
   // On load return
-  if ((isPageLoading && !trainingProgramData.length) || isCreateLoading) {
+  if ((isPageLoading && !trainingProgramData) || isCreateLoading) {
     return (
       <Spinner
         loading={isPageLoading || isCreateLoading}
@@ -81,10 +80,19 @@ export const MyProgramPage = () => {
   // No training data paragraph return
   if (
     !isPageLoading &&
-    (!trainingProgramData.sessions || trainingProgramData.sessions.length === 0)
+    (!trainingProgramData?.sessions ||
+      trainingProgramData.sessions.length === 0)
   ) {
     return <NoDataDiv heading='No active training program found.' />;
   }
+
+  // Recommended vs rest sessions deconstruct
+  const [mainSession, ...otherSessions] = trainingProgramData?.sessions || [];
+
+  const dayNumberMap = {};
+  trainingProgramData?.defaultSchedule.forEach((id, idx) => {
+    if (!(id in dayNumberMap)) dayNumberMap[id] = idx + 1;
+  });
 
   return (
     <>
@@ -119,9 +127,7 @@ export const MyProgramPage = () => {
                 <SessionBlock
                   session={mainSession}
                   isMain={true}
-                  dayNumber={
-                    trainingProgramData.scheduleData.indexOf(mainSession.id) + 1
-                  }
+                  dayNumber={dayNumberMap[mainSession.id]}
                 />
               </div>
             </div>
@@ -151,9 +157,7 @@ export const MyProgramPage = () => {
                   >
                     <SessionBlock
                       session={session}
-                      dayNumber={
-                        trainingProgramData.scheduleData.indexOf(session.id) + 1
-                      }
+                      dayNumber={dayNumberMap[session.id]}
                     />
                   </div>
                 ))}

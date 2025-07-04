@@ -10,6 +10,7 @@ class SessionLog(models.Model):
 
     training_program = models.ForeignKey(TrainingProgram, on_delete=models.CASCADE, db_index=True)
     session = models.ForeignKey(TrainingSession, on_delete=models.CASCADE, db_index=True)
+    next_schedule_data = models.JSONField(null=True, blank=True)
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="in_progress")
     created_at = models.DateTimeField(auto_now_add=True) 
