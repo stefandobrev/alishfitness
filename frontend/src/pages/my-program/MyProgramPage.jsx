@@ -65,8 +65,6 @@ export const MyProgramPage = () => {
     setIsViewDialogOpen(true);
   };
 
-  console.log({ trainingProgramData });
-
   // On load return
   if ((isPageLoading && !trainingProgramData) || isCreateLoading) {
     return (
@@ -86,13 +84,19 @@ export const MyProgramPage = () => {
     return <NoDataDiv heading='No active training program found.' />;
   }
 
-  // Recommended vs rest sessions deconstruct
-  const [mainSession, ...otherSessions] = trainingProgramData?.sessions || [];
-
-  const dayNumberMap = {};
-  trainingProgramData?.defaultSchedule.forEach((id, idx) => {
-    if (!(id in dayNumberMap)) dayNumberMap[id] = idx + 1;
+  // Build sessions with their orders by matching sessionId from scheduleData
+  const sessionsWithOrder = trainingProgramData.scheduleData.map((schedule) => {
+    const session = trainingProgramData.sessions.find(
+      (s) => s.id === schedule.sessionId,
+    );
+    return {
+      ...session,
+      order: schedule.order,
+    };
   });
+
+  // Recommended vs rest sessions deconstruct
+  const [mainSession, ...otherSessions] = sessionsWithOrder;
 
   return (
     <>
@@ -127,7 +131,7 @@ export const MyProgramPage = () => {
                 <SessionBlock
                   session={mainSession}
                   isMain={true}
-                  dayNumber={dayNumberMap[mainSession.id]}
+                  dayOrder={[mainSession.order]}
                 />
               </div>
             </div>
@@ -142,9 +146,9 @@ export const MyProgramPage = () => {
                 </h2>
               </div>
               <div className='flex flex-wrap justify-center gap-4'>
-                {otherSessions.map((session) => (
+                {otherSessions.map((session, index) => (
                   <div
-                    key={session.id}
+                    key={`${session.id}-${session.order}`}
                     className='w-full md:max-w-xs'
                     onClick={() => {
                       if (!session.status) {
@@ -157,7 +161,7 @@ export const MyProgramPage = () => {
                   >
                     <SessionBlock
                       session={session}
-                      dayNumber={dayNumberMap[session.id]}
+                      dayOrder={[session.order]}
                     />
                   </div>
                 ))}

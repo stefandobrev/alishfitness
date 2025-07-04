@@ -64,7 +64,8 @@ class ActiveProgramView(APIView):
         session_map = {session.id: session for session in training_sessions}
 
         ordered_sessions = []
-        for session_id in current_schedule:
+        for item in current_schedule:
+            session_id = item["session_id"]
             if session_id in session_map:
                 ordered_sessions.append(session_map[session_id])
 
@@ -74,6 +75,8 @@ class ActiveProgramView(APIView):
             "schedule_data": current_schedule,
             "sessions": [],
         }
+
+        print("Current schedule:", current_schedule)
         
         data["sessions"] = []
         for session in ordered_sessions:

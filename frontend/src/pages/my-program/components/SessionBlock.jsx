@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 
-export const SessionBlock = ({ session, isMain = false, dayNumber }) => {
+export const SessionBlock = ({ session, isMain = false, dayOrder }) => {
   const formatDate = (date) => {
     if (!date) return 'N/A';
     return new Date(date).toLocaleDateString();
@@ -57,7 +57,7 @@ export const SessionBlock = ({ session, isMain = false, dayNumber }) => {
         className={`space-y-3 ${isMain ? 'text-gray-800' : 'text-gray-700'}`}
       >
         <div className='flex items-center'>
-          <p className='font-semibold'>Day {dayNumber}</p>
+          <p className='font-semibold'>Day {dayOrder}</p>
         </div>
         <div className='flex items-center gap-2'>
           <div className='text-m flex h-5 w-5 items-center justify-center rounded-full font-bold'>
