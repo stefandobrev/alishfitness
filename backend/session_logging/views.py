@@ -32,13 +32,6 @@ class ActiveProgramView(APIView):
             status="completed"
         )
 
-        # Find the current schedule data saved in the last completed session log
-        latest_completed_log = completed_logs.order_by("-updated_at").first()
-
-        if latest_completed_log and latest_completed_log.next_schedule_data:
-            current_schedule = latest_completed_log.next_schedule_data
-        else:
-            current_schedule = training_program.schedule_data
 
         # Summary for each session completed count and last update date
         summary = defaultdict(lambda: {"last_completed_at": None, "completed_count": 0})
@@ -62,6 +55,8 @@ class ActiveProgramView(APIView):
 
         # Reorder sessions according to current schedule data
         session_map = {session.id: session for session in training_sessions}
+
+        current_schedule = training_program.schedule_data
 
         ordered_sessions = []
         for item in current_schedule:
@@ -144,11 +139,12 @@ class SessionLogsViewSet(viewsets.ViewSet):
             Returns:
                 Response with session log id.
         """
-        serializer = SessionLogSerializer(data = request.data)
-        serializer.is_valid(raise_exception=True)
-        session_log = serializer.save()
-
-        return Response({"id": session_log.id}, status=status.HTTP_201_CREATED)
+        print("Request data:", request.data)
+        # serializer = SessionLogSerializer(data = request.data)
+        # serializer.is_valid(raise_exception=True)
+        # session_log = serializer.save()
+        return Response(status=status.HTTP_201_CREATED)
+        # return Response({"id": session_log.id}, status=status.HTTP_201_CREATED)
 
     def partial_update(self, request, pk):
         """

@@ -8,9 +8,9 @@ class SessionLog(models.Model):
         ("completed", "Completed"),
     ]
 
-    training_program = models.ForeignKey(TrainingProgram, on_delete=models.CASCADE, db_index=True)
-    session = models.ForeignKey(TrainingSession, on_delete=models.CASCADE, db_index=True)
-    next_schedule_data = models.JSONField(null=True, blank=True)
+    training_program = models.ForeignKey(TrainingProgram, on_delete=models.SET_NULL, null=True, blank=True, db_index=True)
+    session = models.ForeignKey(TrainingSession, on_delete=models.SET_NULL, null=True, blank=True, db_index=True)
+    order = models.PositiveSmallIntegerField()
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="in_progress")
     created_at = models.DateTimeField(auto_now_add=True) 
@@ -18,8 +18,8 @@ class SessionLog(models.Model):
 
 class SetLog(models.Model):
     session_log = models.ForeignKey(SessionLog, on_delete=models.CASCADE, related_name="set_logs", db_index=True)
-    exercise = models.ForeignKey(TrainingExercise, on_delete=models.CASCADE, db_index=True)
-    set_number = models.PositiveIntegerField() 
+    exercise = models.ForeignKey(TrainingExercise, on_delete=models.SET_NULL, null=True, blank=True, db_index=True)
+    set_number = models.PositiveSmallIntegerField() 
     sequence = models.CharField(max_length=10)
     weight = models.DecimalField(
         max_digits=6, 
