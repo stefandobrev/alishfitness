@@ -39,7 +39,7 @@ class TrainingSessionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TrainingSession
-        fields = ["id", "session_title", "temp_id", "exercises"]
+        fields = ["id", "session_title", "temp_id",  "exercises"]
 
     def validate(self, data):
         """Validating reps and sequnce. Sets are handled by controller."""
@@ -117,7 +117,7 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
         program = TrainingProgram.objects.create(assigned_user_id=user_id, **validated_data)
         program.save()
 
-        temp_id_mapping = {} # Create a mapping track to assign correlation between ids and temp_ids
+        temp_id_array= [] # Create a mapping track to assign correlation between ids and temp_ids
 
         for session_data in sessions_data:
             temp_id = session_data.pop("temp_id", None)
@@ -125,16 +125,20 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
             
             session = TrainingSession.objects.create(program=program, **session_data)
 
-            temp_id_mapping[temp_id] = session.id
+            temp_id_array.append({
+                "temp_id": temp_id,
+                "session_id": session.id
+            })
 
             for exercise_data in exercises_data: 
                 TrainingExercise.objects.create(session=session, **exercise_data)
 
-        return program, temp_id_mapping
+        return program, temp_id_array
 
 
     def update(self, instance, validated_data):
         """Update a program with validated data including sessions and exercises within."""
+        print("Val data:", validated_data)
         sessions_data = validated_data.pop("sessions", None)
         assigned_user = validated_data.pop("assigned_user", None)
 
@@ -146,7 +150,7 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
         for attr, value in  validated_data.items():
             setattr(instance, attr, value)
 
-        temp_id_mapping = {}
+        temp_id_array = []
 
         if sessions_data:
             for session_data in sessions_data:
@@ -164,8 +168,12 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
                     session.save()
                 else:
                     session = TrainingSession.objects.create(program=instance, **session_data)
+
                     if temp_id is not None:
-                        temp_id_mapping[temp_id] = session.id
+                        temp_id_array.append({
+                            "temp_id": temp_id,
+                            "session_id": session.id
+                        })
                 
                 if exercises_data:
                     for exercise_data in exercises_data:
@@ -182,7 +190,7 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
                          
         instance.save()
 
-        return instance, temp_id_mapping
+        return instance, temp_id_array
 
 
 class TrainingExerciseDetailSerializer(serializers.ModelSerializer):

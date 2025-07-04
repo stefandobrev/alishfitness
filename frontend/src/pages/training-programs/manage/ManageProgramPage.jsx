@@ -77,9 +77,10 @@ export const ManageProgramPage = () => {
           id: persistId(s.id),
           exercises: s.exercises.map((e) => ({ ...e, id: persistId(e.id) })),
         })),
-        scheduleData: formData.scheduleData.map((sd) => ({
+        scheduleData: formData.scheduleData.map((sd, idx) => ({
           ...sd,
           realId: persistId(sd.realId),
+          order: idx + 1,
         })),
       },
       activationDate:

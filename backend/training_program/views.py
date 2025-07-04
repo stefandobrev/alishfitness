@@ -222,9 +222,9 @@ class TrainingProgramViewSet(viewsets.ViewSet):
         
         with transaction.atomic():
             try:
-                program, temp_id_mapping = serializer.save()
-                
-                transformed_schedule = self._transform_schedule(schedule_data, temp_id_mapping) 
+                program, temp_id_array = serializer.save()
+                order_to_session_id = self._transform_order_to_session_id(schedule_data, temp_id_array)
+                transformed_schedule = self._transform_schedule(schedule_data, order_to_session_id) 
                 
                 program.schedule_data = transformed_schedule
                 
@@ -273,12 +273,11 @@ class TrainingProgramViewSet(viewsets.ViewSet):
         
         with transaction.atomic():
             try:
-                program, temp_id_mapping = serializer.save()
-                
+                program, temp_id_array = serializer.save()
                 if schedule_data:
-                    existing_ids = {entry["temp_id"]: entry["real_id"] for entry in schedule_data if entry.get("real_id")}
-                    updated_id_mapping = {**existing_ids, **temp_id_mapping}
-                    
+                    existing_ids = {entry["order"]: entry["real_id"] for entry in schedule_data if entry.get("real_id")}
+                    order_to_session_id = self._transform_order_to_session_id(schedule_data, temp_id_array)
+                    updated_id_mapping = {**existing_ids, **order_to_session_id}
                     transformed_schedule = self._transform_schedule(schedule_data, updated_id_mapping) 
                 
                     program.schedule_data = transformed_schedule
@@ -369,6 +368,17 @@ class TrainingProgramViewSet(viewsets.ViewSet):
             except Exercise.DoesNotExist:
                 raise ValidationError({"exercise_input": f"Exercise '{exercise_input}' not found."})
 
+    def _transform_order_to_session_id(self, schedule_data, temp_id_array):
+        print("temp_id_array:", temp_id_array)
+        print("schedule_data:", schedule_data)
+        return {
+            entry["order"]: item["session_id"]
+            for entry in schedule_data
+            for item in temp_id_array
+            if entry["temp_id"] == item["temp_id"]
+        }   
+        
+
     def _transform_schedule(self, schedule_data, temp_id_mapping):
         """
         Transform temporary session IDs to actual database IDs.
@@ -385,12 +395,12 @@ class TrainingProgramViewSet(viewsets.ViewSet):
         """
         transformed = []
         for entry in schedule_data:
-            temp_id = entry.get("temp_id")
-            if temp_id in temp_id_mapping:
-                transformed.append(temp_id_mapping[temp_id])
+            order = entry.get("order")
+            if order in temp_id_mapping:
+                transformed.append({"order":order,"session_id":temp_id_mapping[order]})
             else:
                 raise ValidationError({
-                    "temp_id": f"{temp_id} is invalid session."
+                    "order": f"{order} is invalid session."
                 })
         return transformed
     

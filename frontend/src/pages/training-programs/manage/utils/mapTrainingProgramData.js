@@ -38,9 +38,13 @@ export const mapTrainingProgramData = (initialData) => {
 
   /* Assign session tempId to the rest of the attributes and
   order session according to their position in scheduleData */
+  const flatScheduleData = scheduleData.flatMap((obj) => obj.sessionId);
+
   const sortedSessions = [...sessions]
     .map(mapSessionData)
-    .sort((a, b) => scheduleData.indexOf(a.id) - scheduleData.indexOf(b.id));
+    .sort(
+      (a, b) => flatScheduleData.indexOf(a.id) - flatScheduleData.indexOf(b.id),
+    );
 
   /* Assign session ids as keys to tempId values from formattedSessions and replace the values
    within scheduleData with str tempIds that match */
@@ -48,7 +52,9 @@ export const mapTrainingProgramData = (initialData) => {
     sortedSessions.map((s) => [s.id, s.tempId]),
   );
 
-  const formattedScheduleData = scheduleData.map((realId) => ({
+  console.log({ flatScheduleData });
+
+  const formattedScheduleData = flatScheduleData.map((realId) => ({
     tempId: sessionIdMap[realId],
     realId: realId,
   }));
