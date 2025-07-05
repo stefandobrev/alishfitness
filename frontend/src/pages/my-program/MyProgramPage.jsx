@@ -35,18 +35,16 @@ export const MyProgramPage = () => {
   }, []);
 
   // On create navigate to training session, if created just open today setLog
-  const navigateToSession = async ({ id }) => {
+  const navigateToSession = async ({ session }) => {
     setIsCreateLoading(true);
-    const sessionLogId = trainingProgramData.sessions.find(
-      (s) => s.id === id,
-    )?.sessionLogId;
 
-    if (sessionLogId) {
-      navigate(`/my-sessions/${sessionLogId}`);
+    if (session.sessionLogId) {
+      navigate(`/my-sessions/${session.sessionLogId}`);
     } else {
       const payload = {
-        sessionId: id,
+        sessionId: session.id,
         trainingProgramId: trainingProgramData.id,
+        order: session.order,
       };
 
       try {
@@ -59,6 +57,7 @@ export const MyProgramPage = () => {
       }
     }
   };
+  console.log({ trainingProgramData });
 
   // Modal for sessions without status (in progress, completed - today)
   const handlePreviewModal = () => {
@@ -87,12 +86,9 @@ export const MyProgramPage = () => {
   // Build sessions with their orders by matching sessionId from scheduleData
   const sessionsWithOrder = trainingProgramData.scheduleData.map((schedule) => {
     const session = trainingProgramData.sessions.find(
-      (s) => s.id === schedule.sessionId,
+      (s) => s.id === schedule.sessionId && s.order === schedule.order,
     );
-    return {
-      ...session,
-      order: schedule.order,
-    };
+    return session;
   });
 
   // Recommended vs rest sessions deconstruct
@@ -124,7 +120,7 @@ export const MyProgramPage = () => {
                     setSelectedSession(mainSession);
                     handlePreviewModal();
                   } else {
-                    navigateToSession({ id: mainSession.id });
+                    navigateToSession({ session: mainSession });
                   }
                 }}
               >
@@ -146,7 +142,7 @@ export const MyProgramPage = () => {
                 </h2>
               </div>
               <div className='flex flex-wrap justify-center gap-4'>
-                {otherSessions.map((session, index) => (
+                {otherSessions.map((session) => (
                   <div
                     key={`${session.id}-${session.order}`}
                     className='w-full md:max-w-xs'
@@ -155,7 +151,7 @@ export const MyProgramPage = () => {
                         setSelectedSession(session);
                         handlePreviewModal();
                       } else {
-                        navigateToSession({ id: session.id });
+                        navigateToSession({ session: session });
                       }
                     }}
                   >
@@ -174,7 +170,11 @@ export const MyProgramPage = () => {
       {isViewDialogOpen && (
         <PreviewModal
           onClose={() => setIsViewDialogOpen(false)}
-          onCreate={navigateToSession}
+          onCreate={() =>
+            navigateToSession({
+              session: selectedSession,
+            })
+          }
           heading={`Session: ${selectedSession.title}`}
           selectedSessionId={selectedSession.id}
         />

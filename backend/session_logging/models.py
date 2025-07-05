@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 from django.core.validators import MinValueValidator
 from training_program.models import TrainingProgram, TrainingSession, TrainingExercise
 
@@ -15,6 +16,14 @@ class SessionLog(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="in_progress")
     created_at = models.DateTimeField(auto_now_add=True) 
     updated_at = models.DateTimeField(auto_now=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.status == "completed" and self.completed_at is None:
+            self.completed_at = now()
+        elif self.status != "completed":
+            self.completed_at = None
+        super().save(*args, **kwargs)
 
 class SetLog(models.Model):
     session_log = models.ForeignKey(SessionLog, on_delete=models.CASCADE, related_name="set_logs", db_index=True)

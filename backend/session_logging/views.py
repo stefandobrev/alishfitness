@@ -51,8 +51,10 @@ class ActiveProgramView(APIView):
             updated_at__date=today,
         )
 
-        today_status_map = {log.session_id: {"id": log.id, "status": log.status} for log in today_logs}
-
+        today_status_map = {
+            (log.session_id, log.order): {"id": log.id, "status": log.status}
+            for log in today_logs
+        }
         # Reorder sessions according to current schedule data
         session_map = {session.id: session for session in training_sessions}
 
@@ -70,19 +72,25 @@ class ActiveProgramView(APIView):
             "schedule_data": current_schedule,
             "sessions": [],
         }
-
-        print("Current schedule:", current_schedule)
         
         data["sessions"] = []
-        for session in ordered_sessions:
-            session_summary = summary.get(session.id, {"last_completed_at": None, "completed_count": 0})
+        for item in current_schedule:
+            session_id = item["session_id"]
+            order = item["order"]
+            session = session_map.get(session_id)
+            if not session:
+                continue
+
+            key = (session_id, order)
+            session_summary = summary.get(key, {"last_completed_at": None, "completed_count": 0})
             data["sessions"].append({
                 "id": session.id,
                 "title": session.session_title,
+                "order": order,
                 "last_completed_at": session_summary["last_completed_at"],
                 "completed_count": session_summary["completed_count"],
-                "status": today_status_map.get(session.id, {}).get("status"),
-                "session_log_id": today_status_map.get(session.id, {}).get("id"),
+                "status": today_status_map.get(key, {}).get("status"),
+                "session_log_id": today_status_map.get(key, {}).get("id"),
             })
 
         return Response(data)
@@ -134,17 +142,15 @@ class SessionLogsViewSet(viewsets.ViewSet):
             complete_at and updated_at set current time.
 
             Args:
-                request: training program and training session ids.
+                request: training program, training session ids and order number(int).
 
             Returns:
                 Response with session log id.
         """
-        print("Request data:", request.data)
-        # serializer = SessionLogSerializer(data = request.data)
-        # serializer.is_valid(raise_exception=True)
-        # session_log = serializer.save()
-        return Response(status=status.HTTP_201_CREATED)
-        # return Response({"id": session_log.id}, status=status.HTTP_201_CREATED)
+        serializer = SessionLogSerializer(data = request.data)
+        serializer.is_valid(raise_exception=True)
+        session_log = serializer.save()
+        return Response({"id": session_log.id}, status=status.HTTP_201_CREATED)
 
     def partial_update(self, request, pk):
         """
