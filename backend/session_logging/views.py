@@ -19,80 +19,85 @@ class ActiveProgramView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        """Return all sessions related to current active training program data."""
+        """
+        Return all sessions related to current active training program data.
+        Includes the statuses of the active session logs for today.
+        Includes last updated date of each session id + order.
+        Includes counter based on session ids only (no order included).
+        Reordes schedule data if there are completed session logs to put the recommended
+        (next) session on first place in the new ordered schedule data.
+        """
         user = request.user
-        training_program = get_object_or_404(TrainingProgram, assigned_user=user, status="current")
+        training_program = get_object_or_404(
+            TrainingProgram, assigned_user=user, status="current"
+        )
         training_sessions = TrainingSession.objects.filter(program=training_program)
-
-        # Get updated_at dates and count the completed session
+        # Gather completed sessions
         session_ids = training_sessions.values_list("id", flat=True)
         completed_logs = SessionLog.objects.filter(
             training_program=training_program,
             session_id__in=session_ids,
             status="completed"
         )
-
-
-        # Summary for each session completed count and last update date
-        summary = defaultdict(lambda: {"last_completed_at": None, "completed_count": 0})
+        # Track count per session_id
+        counter = defaultdict(int)
+    
+        # Track last completed time per (session_id, order)
+        last_completed = {}
         for log in completed_logs:
-            s_id = log.session_id
-            summary[s_id]["completed_count"] += 1
-            if (summary[s_id]["last_completed_at"] is None or 
-                log.updated_at > summary[s_id]["last_completed_at"]):
-                summary[s_id]["last_completed_at"] = log.updated_at
-
-        # Get sessions with today updates to include in recommended along with status and session log id
+            counter[log.session_id] += 1
+            key = (log.session_id, log.order)
+            if key not in last_completed or log.completed_at > last_completed[key]:
+                last_completed[key] = log.completed_at
+        
+        # Check for sessions which were updated today
         today = now().date()
-
         today_logs = SessionLog.objects.filter(
             training_program=training_program,
             session_id__in=session_ids,
             updated_at__date=today,
         )
-
         today_status_map = {
             (log.session_id, log.order): {"id": log.id, "status": log.status}
             for log in today_logs
         }
-        # Reorder sessions according to current schedule data
         session_map = {session.id: session for session in training_sessions}
-
         current_schedule = training_program.schedule_data
-
-        ordered_sessions = []
-        for item in current_schedule:
-            session_id = item["session_id"]
-            if session_id in session_map:
-                ordered_sessions.append(session_map[session_id])
-
+        
+        # Reorder schedule based on last completed session
+        if completed_logs.exists():
+            last_completed_log = max(completed_logs, key=lambda log: log.completed_at)
+            last_completed_order = last_completed_log.order
+            
+            # Split schedule into items after last_completed_order and the rest
+            items_after = [item for item in current_schedule if item["order"] > last_completed_order]
+            items_before_and_including = [item for item in current_schedule if item["order"] <= last_completed_order]
+            
+            # Reorder: items after last_completed_order first, then the rest
+            current_schedule = items_after + items_before_and_including
+        
         data = {
             "id": training_program.id,
             "program_title": training_program.program_title,
             "schedule_data": current_schedule,
             "sessions": [],
         }
-        
-        data["sessions"] = []
         for item in current_schedule:
             session_id = item["session_id"]
             order = item["order"]
             session = session_map.get(session_id)
             if not session:
                 continue
-
             key = (session_id, order)
-            session_summary = summary.get(key, {"last_completed_at": None, "completed_count": 0})
             data["sessions"].append({
                 "id": session.id,
                 "title": session.session_title,
                 "order": order,
-                "last_completed_at": session_summary["last_completed_at"],
-                "completed_count": session_summary["completed_count"],
+                "last_completed_at": last_completed.get(key),
+                "completed_count": counter.get(session_id, 0),
                 "status": today_status_map.get(key, {}).get("status"),
                 "session_log_id": today_status_map.get(key, {}).get("id"),
             })
-
         return Response(data)
     
 class TrainingSessionView(APIView):
@@ -185,4 +190,4 @@ class SetLogsView(APIView):
             serializer.is_valid(raise_exception=True)
             serializer.save()
 
-        return Response({"message": "Iei"}, status=status.HTTP_200_OK)
+        return Response({"message": "Set updated."}, status=status.HTTP_200_OK)
