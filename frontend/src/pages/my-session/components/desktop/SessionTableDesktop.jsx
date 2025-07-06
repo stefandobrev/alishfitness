@@ -10,7 +10,7 @@ export const SessionTableDesktop = ({ exercises }) => {
 
   return (
     <div className='mx-4 overflow-auto'>
-      <table className='mx-auto table-fixed border-separate border-spacing-0 overflow-hidden rounded-lg border-t border-r border-l border-gray-300 text-sm'>
+      <table className='mx-auto table-fixed border-separate border-spacing-0 overflow-hidden border-t border-r border-l border-gray-300 text-sm'>
         <thead>
           <tr className='text-center'>
             <th
