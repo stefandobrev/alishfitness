@@ -19,6 +19,8 @@ import { SessionTableMobile } from './components/mobile';
 import {
   ActionButton,
   ButtonVariant,
+  MobileTabs,
+  MobileTabVariant,
   SubmitButton,
 } from '@/components/buttons';
 import { manageSession } from '@/schemas';
@@ -32,6 +34,7 @@ export const MySessionPage = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
+  const [activeTab, setActiveTab] = useState('inputs');
 
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -125,7 +128,6 @@ export const MySessionPage = () => {
 
       toast.success('Session saved!');
     } catch (error) {
-      console.error('Save error:', error);
       toast.error('Save unsuccessful.');
     } finally {
       setIsSaving(false);
@@ -160,8 +162,24 @@ export const MySessionPage = () => {
     );
   }
 
+  // Mobile tabs
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
+  const tabs = [
+    { label: 'Inputs', value: 'inputs' },
+    { label: 'Exercise Info', value: 'info' },
+  ];
+
   return (
     <>
+      <MobileTabs
+        tabs={tabs}
+        variant={MobileTabVariant.HIDE}
+        onTabChange={handleTabChange}
+      />
+
       <div className='flex justify-center'>
         <h1 className='p-4 text-2xl font-bold md:text-3xl'>
           {sessionLogData.session.sessionTitle}
@@ -170,7 +188,7 @@ export const MySessionPage = () => {
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(handleSave)}>
           {isMobile ? (
-            <SessionTableMobile exercises={exercises} />
+            <SessionTableMobile exercises={exercises} activeTab={activeTab} />
           ) : (
             <SessionTableDesktop exercises={exercises} />
           )}

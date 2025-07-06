@@ -22,7 +22,8 @@ class ActiveProgramView(APIView):
         """
             Gathers all related training program sessions data.
             Reorders schedule data if there are completed session logs to put the recommended
-            (next) session on first place in the new ordered schedule data.
+            (next) session on first place in the new ordered schedule data. Excludes today's 
+            completed session log to keep it at the recommended spot.
         
             Returns:
                 All sessions related to current active training program data.
