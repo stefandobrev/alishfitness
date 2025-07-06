@@ -20,12 +20,15 @@ class ActiveProgramView(APIView):
 
     def get(self, request):
         """
-        Return all sessions related to current active training program data.
-        Includes the statuses of the active session logs for today.
-        Includes last updated date of each session id + order.
-        Includes counter based on session ids only (no order included).
-        Reordes schedule data if there are completed session logs to put the recommended
-        (next) session on first place in the new ordered schedule data.
+            Gathers all related training program sessions data.
+            Reorders schedule data if there are completed session logs to put the recommended
+            (next) session on first place in the new ordered schedule data.
+        
+            Returns:
+                All sessions related to current active training program data.
+                The statuses of the active session logs for today.
+                Last updated date of each session id + order.
+                Counter based on session ids only (no order included).
         """
         user = request.user
         training_program = get_object_or_404(
@@ -65,8 +68,10 @@ class ActiveProgramView(APIView):
         current_schedule = training_program.schedule_data
         
         # Reorder schedule based on last completed session
-        if completed_logs.exists():
-            last_completed_log = max(completed_logs, key=lambda log: log.completed_at)
+        past_completed_logs = completed_logs.exclude(completed_at__date=today)
+        print("past_completed_logs:", past_completed_logs)
+        if past_completed_logs.exists():
+            last_completed_log = max(past_completed_logs, key=lambda log: log.completed_at)
             last_completed_order = last_completed_log.order
             
             # Split schedule into items after last_completed_order and the rest
@@ -141,7 +146,7 @@ class SessionLogsViewSet(viewsets.ViewSet):
 
     def create(self, request):
         """
-            Create a new daily session log along with all set logs based on number of sets
+            Creates a new daily session log along with all set logs based on number of sets
             for each exercise.
             Session log on default is changed to in progress + 
             complete_at and updated_at set current time.

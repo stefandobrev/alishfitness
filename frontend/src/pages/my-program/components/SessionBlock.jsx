@@ -20,7 +20,7 @@ export const SessionBlock = ({ session, isMain = false, dayOrder }) => {
       statusProps = {
         bgColor: 'bg-green-600',
         textColor: 'text-green-600',
-        description: 'Edit session',
+        description: 'Edit completed session',
       };
       break;
     default:
