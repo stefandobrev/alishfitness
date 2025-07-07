@@ -10,6 +10,8 @@ export const fetchSessionData = async (id) => {
 export const saveSessionData = async (sessionLogId, sessionLogData) => {
   const transformedData = camelToSnake(sessionLogData);
 
+  console.log({ transformedData });
+
   const response = await api(
     `session-logs/${sessionLogId}/set-logs/`,
     'PATCH',

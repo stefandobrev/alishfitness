@@ -70,7 +70,7 @@ class ActiveProgramView(APIView):
         
         # Reorder schedule based on last completed session
         past_completed_logs = completed_logs.exclude(completed_at__date=today)
-        print("past_completed_logs:", past_completed_logs)
+
         if past_completed_logs.exists():
             last_completed_log = max(past_completed_logs, key=lambda log: log.completed_at)
             last_completed_order = last_completed_log.order
@@ -99,7 +99,7 @@ class ActiveProgramView(APIView):
                 "id": session.id,
                 "title": session.session_title,
                 "order": order,
-                "last_completed_at": last_completed.get(key),
+                "last_completed_at": last_completed.get(key).isoformat() if last_completed.get(key) else None,
                 "completed_count": counter.get(session_id, 0),
                 "status": today_status_map.get(key, {}).get("status"),
                 "session_log_id": today_status_map.get(key, {}).get("id"),
