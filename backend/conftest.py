@@ -79,7 +79,7 @@ def test_training_program(test_user):
         status="current",
         assigned_user=test_user,
         activation_date=activation_date,
-        schedule_data=[1, 2, 1],
+        schedule_data=[{"order": 1, "session_id": 1}, {"order": 2, "session_id": 2}, {"order": 3, "session_id": 1}],
     )
     return training_program
 
@@ -90,6 +90,6 @@ def test_training_template():
         mode="template",
         assigned_user=None,
         activation_date=None,
-        schedule_data=[1, 2, 1],
+        schedule_data=[{"order": 1, "session_id": 1}, {"order": 2, "session_id": 2}, {"order": 3, "session_id": 1}],
     )
     return training_program

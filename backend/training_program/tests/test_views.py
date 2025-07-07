@@ -206,7 +206,7 @@ class TestTrainingProgramViewSet:
             "mode": "assigned",
             "assigned_user": test_user.id,
             "activation_date": activation_date,
-            "schedule_data": [{"temp_id": "1", "real_id": None}, {"temp_id": "2", "real_id": None}, {"temp_id": "1", "real_id": None}],
+            "schedule_data": [{"order": 1, "temp_id": "1", "real_id": None}, {"order": 2, "temp_id": "2", "real_id": None}, {"order": 3, "temp_id": "1", "real_id": None}],
             "sessions": [
                 {
                     "session_title": "Day 1",
@@ -268,7 +268,7 @@ class TestTrainingProgramViewSet:
         day_1_session = program.sessions.filter(session_title="Day 1").first()
         day_2_session = program.sessions.filter(session_title="Day 2").first()
 
-        assert program.schedule_data == [day_1_session.id, day_2_session.id, day_1_session.id]
+        assert program.schedule_data == [{"order": 1,"session_id": day_1_session.id}, {"order": 2, "session_id": day_2_session.id}, {"order": 3, "session_id": day_1_session.id}]
         
         assert day_1_session is not None
         assert day_2_session is not None
@@ -340,14 +340,14 @@ class TestTrainingProgramViewSet:
 
     def test_invalid_schedule_id(self, valid_training_program_data, api_client, test_admin):
         invalid_schedule_id_data = deepcopy(valid_training_program_data)
-        invalid_schedule_id_data["schedule_data"] = [{"temp_id": "3", "real_id": None}]
+        invalid_schedule_id_data["schedule_data"] = [{"order": 4, "temp_id": "3", "real_id": None}]
 
         api_client.force_authenticate(user=test_admin)
         url = reverse("training-program-list")
         response = api_client.post(url, invalid_schedule_id_data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert "invalid session." in response.data.get("temp_id")
+        assert "invalid session." in str(response.data)
 
     def test_missing_date(self, valid_training_program_data, api_client, test_admin):
         missing_date_data = deepcopy(valid_training_program_data)

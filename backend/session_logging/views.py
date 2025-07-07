@@ -167,7 +167,6 @@ class SessionLogsViewSet(viewsets.ViewSet):
         """
         Completes the session. Change of the status to completed.
         """
-        print("Request data:", request.data)
         session_log = SessionLog.objects.get(pk=pk)
         serializer = SessionLogSerializer(session_log, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)

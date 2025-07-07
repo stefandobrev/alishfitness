@@ -52,8 +52,6 @@ export const mapTrainingProgramData = (initialData) => {
     sortedSessions.map((s) => [s.id, s.tempId]),
   );
 
-  console.log({ flatScheduleData });
-
   const formattedScheduleData = flatScheduleData.map((realId) => ({
     tempId: sessionIdMap[realId],
     realId: realId,

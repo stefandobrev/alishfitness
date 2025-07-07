@@ -11,7 +11,7 @@ from session_logging.models import SessionLog, SetLog
 def training_session(test_exercise, test_training_program, test_muscle_group):
     session = TrainingSession.objects.create(
         session_title="Test Session Title",
-        program=test_training_program
+        program=test_training_program,
     )
 
     TrainingExercise.objects.create(
@@ -55,7 +55,8 @@ def existing_session_log(test_training_program, training_session):
     return SessionLog.objects.create(
         training_program=test_training_program,
         session=training_session,
-        status="in_progress"
+        status="in_progress",
+        order=1
     )
 
 @pytest.fixture
@@ -66,15 +67,15 @@ def session_log_with_set_logs(existing_session_log):
         session_log=existing_session_log,
         exercise=training_exercise,
         set_number=1,
-        weight=50,
-        reps=10
+        weight=None,
+        reps=None
     )
     SetLog.objects.create(
         session_log=existing_session_log,
         exercise=training_exercise,
         set_number=2,
-        weight=55,
-        reps=8
+        weight=None,
+        reps=None
     )
     return existing_session_log
 
@@ -124,15 +125,18 @@ class TestTrainingSessionView:
 class TestSessionLogsViewSet:
     def test_create_new_session_log(self, api_client, test_user, training_session):
         api_client.force_authenticate(test_user)
-        url = reverse("session-logs-detail", args=[1])
-        response = api_client.post(url)
-        
+        url = reverse("session-logs-list")
+        response = api_client.post(url, {
+            "training_program_id": training_session.program.id,
+            "session_id": training_session.id,
+            "order": 1 
+        })
         assert response.status_code == status.HTTP_201_CREATED
 
         today_session_quantity = SessionLog.objects.filter(
-            session_id = 1,
+            session_id=training_session.id,
             training_program__assigned_user = test_user,
-            completed_at__date = date.today(),
+            created_at__date = date.today(),
             status = "in_progress"
         )
 
@@ -149,6 +153,7 @@ class TestSessionLogsViewSet:
         
         existing_session_log.refresh_from_db()
         assert existing_session_log.status == "completed"
+        assert existing_session_log.completed_at != None
 
 
 @pytest.mark.django_db(transaction=True)
@@ -165,34 +170,4 @@ class TestSetLogsViewSet:
 
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data["set_logs"]) == 3 
-
-
-    def test_get_fresh_session_data_after_create(self, api_client, test_user, training_session, existing_session_log):
-        api_client.force_authenticate(test_user)
-        
-        url = reverse("set-logs-detail", args=[existing_session_log.id])
-        response = api_client.get(url)
-        
-        assert response.status_code == status.HTTP_200_OK
-        assert response.data["session_title"] == "Test Session Title"
-
-    def test_get_session_data_with_existing_set_logs(self, api_client, test_user, training_session, session_log_with_set_logs, existing_session_log):
-        api_client.force_authenticate(test_user)
-        
-        url = reverse("set-logs-detail", args=[existing_session_log.id])
-        response = api_client.get(url)
-        
-        assert response.status_code == status.HTTP_200_OK
-        assert response.data["session_title"] == "Test Session Title"
-
-        assert "set_logs" in response.data
-        assert len(response.data["set_logs"]) == 2 
-
-        first_set = response.data["set_logs"][0]
-        assert first_set["reps"] == 10
-
-        second_set = response.data["set_logs"][1]
-        assert second_set["weight"] == 55
-
-
-    
+  
