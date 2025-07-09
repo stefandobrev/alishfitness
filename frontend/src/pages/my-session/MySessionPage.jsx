@@ -10,7 +10,7 @@ import {
   fetchSessionData,
   saveSessionData,
 } from './helpersMySession';
-import { getChangedFields, snakeToCamel } from '@/utils';
+import { snakeToCamel } from '@/utils';
 import { Spinner } from '@/components/common';
 import { useTitle } from '@/hooks';
 import { useIsMobile } from '@/common/constants';
@@ -18,22 +18,18 @@ import { SessionTableDesktop } from './components/desktop';
 import { SessionTableMobile } from './components/mobile';
 import {
   ActionButton,
-  ButtonVariant,
   MobileTabs,
   MobileTabVariant,
-  SubmitButton,
 } from '@/components/buttons';
 import { manageSession } from '@/schemas';
-import { flattenSetLogsArray, flattenSetLogs, normalizeValues } from './utils';
+import { sanitizeInputValue, shouldSaveField } from './utils';
 
 export const MySessionPage = () => {
   const { id: sessionId } = useParams();
   const [sessionLogData, setSessionLogData] = useState(null);
-  const [initialSetLogs, setInitialSetLogs] = useState({});
+
   const [isLoading, setIsLoading] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
-  const [hasChanges, setHasChanges] = useState(false);
   const [activeTab, setActiveTab] = useState('inputs');
 
   const navigate = useNavigate();
@@ -50,22 +46,7 @@ export const MySessionPage = () => {
     },
   });
 
-  const { handleSubmit, reset, watch } = methods;
-
-  // Check if there are changes to save
-  useEffect(() => {
-    const subscription = watch((value) => {
-      if (!value?.setLogs || initialSetLogs == null) return;
-
-      const transformed = normalizeValues(flattenSetLogs(value.setLogs));
-      const normalizedInitial = normalizeValues(initialSetLogs);
-
-      const changed = getChangedFields(normalizedInitial, transformed);
-      setHasChanges(Object.keys(changed).length > 0);
-    });
-
-    return () => subscription.unsubscribe();
-  }, [watch, initialSetLogs]);
+  const { reset, getValues } = methods;
 
   // Load session log data
   useEffect(() => {
@@ -77,10 +58,8 @@ export const MySessionPage = () => {
         const data = await fetchSessionData(sessionId);
         const transformedData = snakeToCamel(data);
 
-        setInitialSetLogs(flattenSetLogsArray(transformedData.setLogs));
         setSessionLogData(transformedData);
       } catch (error) {
-        console.error('Error loading session data:', error);
         navigate('/404', { replace: true });
       } finally {
         setIsLoading(false);
@@ -114,23 +93,33 @@ export const MySessionPage = () => {
     reset(transformedData);
   }, [sessionLogData, reset]);
 
-  // Save input changes
-  const handleSave = async (data) => {
-    const transformedSetLogs = flattenSetLogs(data.setLogs);
-    const changedData = getChangedFields(initialSetLogs, transformedSetLogs);
+  // Save handleBlur changes
+  const handleBlur = async ({ name, type }) => {
+    const fieldValues = getValues();
+    const value = name.split('.').reduce((acc, key) => acc?.[key], fieldValues);
 
-    setIsSaving(true);
-    try {
-      await saveSessionData(sessionLogData.id, changedData);
+    const [, sequence, , setNumber] = name.split('.');
+    const originalEntry = sessionLogData.setLogs.find(
+      (log) =>
+        log.sequence === sequence && log.setNumber === parseInt(setNumber, 10),
+    );
 
-      // Update initial state after successful save
-      setInitialSetLogs(transformedSetLogs);
+    if (originalEntry) {
+      const fieldType = type === 'integer' ? 'reps' : 'weight';
 
-      toast.success('Session saved!');
-    } catch (error) {
-      toast.error('Save unsuccessful.');
-    } finally {
-      setIsSaving(false);
+      if (shouldSaveField(value, originalEntry[fieldType], type)) {
+        const saveData = {
+          [`${sequence.toLowerCase()}_${setNumber}`]: {
+            id: originalEntry.id,
+            [fieldType]: sanitizeInputValue(value, type),
+          },
+        };
+        try {
+          await saveSessionData(sessionLogData.id, saveData);
+        } catch (error) {
+          toast.error('Failed to save changes');
+        }
+      }
     }
   };
 
@@ -186,24 +175,24 @@ export const MySessionPage = () => {
         </h1>
       </div>
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(handleSave)}>
+        <form>
           {isMobile ? (
-            <SessionTableMobile exercises={exercises} activeTab={activeTab} />
+            <SessionTableMobile
+              exercises={exercises}
+              activeTab={activeTab}
+              handleBlur={handleBlur}
+            />
           ) : (
-            <SessionTableDesktop exercises={exercises} />
+            <SessionTableDesktop
+              exercises={exercises}
+              handleBlur={handleBlur}
+            />
           )}
-          <div className='mt-6 flex flex-col justify-center gap-4 md:flex-row'>
-            <SubmitButton
-              variant={ButtonVariant.GREEN}
-              className='mx-2 md:w-auto'
-              disabled={isSaving || !hasChanges}
-            >
-              {isSaving ? 'Saving...' : 'Save Changes'}
-            </SubmitButton>
+          <div className='mt-6 flex flex-col justify-center md:flex-row'>
             {sessionLogData?.status !== 'completed' && (
               <ActionButton
                 onClick={handleComplete}
-                disabled={isSaving || isCompleting}
+                disabled={isCompleting}
                 className='mx-2 md:w-auto'
               >
                 {isCompleting ? 'Completing...' : 'Complete Session'}

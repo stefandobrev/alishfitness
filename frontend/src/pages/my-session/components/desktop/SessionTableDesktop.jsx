@@ -1,7 +1,7 @@
 import { ActionButton, ButtonVariant } from '@/components/buttons';
 import { SetHeader, SetSubHeaders, SetCells } from '..';
 
-export const SessionTableDesktop = ({ exercises }) => {
+export const SessionTableDesktop = ({ exercises, handleBlur }) => {
   const maxSets = Math.max(...exercises.map((ex) => ex.sets));
 
   const openExercisePage = (muscleGroupSlug, exerciseSlug) => {
@@ -95,6 +95,7 @@ export const SessionTableDesktop = ({ exercises }) => {
                   customExercise={ex.customExerciseTitle}
                   exerciseId={ex.id}
                   sequence={ex.sequence}
+                  handleBlur={handleBlur}
                 />
               ))}
               <td className='border-b border-l border-gray-300 px-2 py-3'>

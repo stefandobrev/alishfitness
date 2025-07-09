@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 const FlexibleInput = ({
   value,
   onChange,
+  onBlur,
   disabled,
   placeholder,
   type = 'decimal',
@@ -27,15 +28,20 @@ const FlexibleInput = ({
     onChange(inputValue);
   };
 
+  const handleBlur = (e) => {
+    onBlur(e);
+  };
+
   return (
     <input
       type='text'
       value={value ?? ''}
       onChange={handleChange}
+      onBlur={handleBlur}
       disabled={disabled}
       pattern={type === 'integer' ? '[0-9]*' : '[0-9]*[.,]?[0-9]*'}
       inputMode={type === 'integer' ? 'numeric' : 'decimal'}
-      className={`w-full appearance-none rounded border px-2 py-2 text-center text-sm transition-all duration-200 [-moz-appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
+      className={`w-full appearance-none rounded border px-2 py-2 text-center text-lg transition-all duration-200 [-moz-appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
         !disabled
           ? 'border-gray-300 bg-white text-gray-800 focus:border-red-500 focus:ring-1 focus:ring-red-200'
           : 'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400'
@@ -45,7 +51,13 @@ const FlexibleInput = ({
   );
 };
 
-export const SetCells = ({ setIndex, maxSets, isAvailable, sequence }) => {
+export const SetCells = ({
+  setIndex,
+  maxSets,
+  isAvailable,
+  sequence,
+  handleBlur,
+}) => {
   const { control } = useFormContext();
 
   // Convert 0-based setIndex to 1-based setNumber to match your data structure
@@ -61,6 +73,13 @@ export const SetCells = ({ setIndex, maxSets, isAvailable, sequence }) => {
             <FlexibleInput
               value={field.value}
               onChange={field.onChange}
+              onBlur={() => {
+                field.onBlur();
+                handleBlur({
+                  name: field.name,
+                  type: 'decimal',
+                });
+              }}
               disabled={!isAvailable}
               placeholder={isAvailable ? '' : '—'}
             />
@@ -75,6 +94,13 @@ export const SetCells = ({ setIndex, maxSets, isAvailable, sequence }) => {
             <FlexibleInput
               value={field.value}
               onChange={field.onChange}
+              onBlur={() => {
+                field.onBlur();
+                handleBlur({
+                  name: field.name,
+                  type: 'integer',
+                });
+              }}
               type='integer'
               disabled={!isAvailable}
               placeholder={isAvailable ? '' : '—'}

@@ -1,5 +1,1 @@
-export {
-  flattenSetLogsArray,
-  flattenSetLogs,
-  normalizeValues,
-} from './setLogUtils';
+export { sanitizeInputValue, shouldSaveField } from './setLogUtils';

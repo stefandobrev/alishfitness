@@ -1,34 +1,11 @@
-// Flatten nested structure into simple key-value pairs
-export const flattenSetLogsArray = (setLogsArray) => {
-  const flat = {};
-  setLogsArray.forEach(({ id, weight, reps, sequence, setNumber }) => {
-    const key = `${sequence}_${setNumber}`;
-    flat[key] = { id, weight, reps };
-  });
-  return flat;
+// Transforms set logs inputs into integers/decimals. Type is part of the input in onBlur
+export const sanitizeInputValue = (val, type) => {
+  if (val === null || val === '' || val === undefined) return null;
+  if (type === 'integer') return parseInt(val, 10) || 0;
+  return parseFloat(String(val).replace(',', '.')) || 0;
 };
 
-export const flattenSetLogs = (setLogData) => {
-  const flat = {};
-  for (const sequence in setLogData) {
-    const sets = setLogData[sequence].sets;
-    for (const setNumber in sets) {
-      const key = `${sequence}_${setNumber}`;
-      flat[key] = sets[setNumber];
-    }
-  }
-  return flat;
-};
-
-// Converts all fields to string.Initial empty set logs are null.
-export const normalizeValues = (obj) => {
-  const normalized = {};
-  for (const key in obj) {
-    normalized[key] = {};
-    for (const field in obj[key]) {
-      normalized[key][field] =
-        obj[key][field] === null ? '' : String(obj[key][field]);
-    }
-  }
-  return normalized;
+export const shouldSaveField = (currentValue, originalValue, type) => {
+  const sanitized = sanitizeInputValue(currentValue, type);
+  return sanitized !== originalValue;
 };

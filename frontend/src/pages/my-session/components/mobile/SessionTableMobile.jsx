@@ -1,7 +1,7 @@
 import { ActionButton, ButtonVariant } from '@/components/buttons';
 import { SetHeader, SetSubHeaders, SetCells } from '..';
 
-export const SessionTableMobile = ({ exercises, activeTab }) => {
+export const SessionTableMobile = ({ exercises, activeTab, handleBlur }) => {
   const maxSets = Math.max(...exercises.map((ex) => ex.sets));
 
   const openExercisePage = (muscleGroupSlug, exerciseSlug) => {
@@ -58,6 +58,7 @@ export const SessionTableMobile = ({ exercises, activeTab }) => {
                   customExercise={ex.customExerciseTitle}
                   exerciseId={ex.id}
                   sequence={ex.sequence}
+                  handleBlur={handleBlur}
                 />
               ))}
             </tr>
