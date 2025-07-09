@@ -44,7 +44,7 @@ const FlexibleInput = ({
       className={`w-full appearance-none rounded border px-2 py-2 text-center text-lg transition-all duration-200 [-moz-appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
         !disabled
           ? 'border-gray-300 bg-white text-gray-800 focus:border-red-500 focus:ring-1 focus:ring-red-200'
-          : 'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400'
+          : 'cursor-not-allowed border-gray-200 bg-gray-50 text-gray-400 opacity-70'
       }`}
       placeholder={placeholder}
     />

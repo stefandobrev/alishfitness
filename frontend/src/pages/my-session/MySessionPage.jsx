@@ -109,13 +109,23 @@ export const MySessionPage = () => {
 
       if (shouldSaveField(value, originalEntry[fieldType], type)) {
         const saveData = {
-          [`${sequence.toLowerCase()}_${setNumber}`]: {
+          [`${sequence}_${setNumber}`]: {
             id: originalEntry.id,
             [fieldType]: sanitizeInputValue(value, type),
           },
         };
         try {
           await saveSessionData(sessionLogData.id, saveData);
+
+          // Update the original value in sessionLogData
+          setSessionLogData((prev) => ({
+            ...prev,
+            setLogs: prev.setLogs.map((log) =>
+              log.id === originalEntry.id
+                ? { ...log, [fieldType]: sanitizeInputValue(value, type) }
+                : log,
+            ),
+          }));
         } catch (error) {
           toast.error('Failed to save changes');
         }
@@ -123,9 +133,8 @@ export const MySessionPage = () => {
     }
   };
 
-  // Complete button just changes status of session log
+  // Complete button just changes status of session log and adds created_at datetime
   const handleComplete = async () => {
-    // Add implementation for completing session
     setIsCompleting(true);
     try {
       await completeSession(sessionLogData.id, { status: 'completed' });
