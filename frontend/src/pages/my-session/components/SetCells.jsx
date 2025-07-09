@@ -53,6 +53,7 @@ const FlexibleInput = ({
 
 export const SetCells = ({
   setIndex,
+  customExercise,
   maxSets,
   isAvailable,
   sequence,
@@ -113,7 +114,7 @@ export const SetCells = ({
           isAvailable ? 'text-gray-800' : 'text-gray-400'
         } ${setIndex === maxSets - 1 ? 'border-r-0' : 'border-r'}`}
       >
-        {isAvailable ? '0 kg' : '—'}
+        {isAvailable && setNumber !== 1 && !customExercise ? '0 kg' : '—'}
       </td>
     </>
   );

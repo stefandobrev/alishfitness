@@ -117,12 +117,16 @@ export const SessionTableMobile = ({ exercises, activeTab, handleBlur }) => {
                 {ex.reps}
               </td>
               <td className='border-b border-gray-300 px-1 py-2'>
-                <ActionButton
-                  variant={ButtonVariant.GRAY_DARK}
-                  className='px-2 py-1 text-xs font-medium'
-                >
-                  View Trends
-                </ActionButton>
+                {ex.customExerciseTitle ? (
+                  '—'
+                ) : (
+                  <ActionButton
+                    variant={ButtonVariant.GRAY_DARK}
+                    className='px-2 py-1 text-xs font-medium'
+                  >
+                    View Trends
+                  </ActionButton>
+                )}
               </td>
             </tr>
           ))}

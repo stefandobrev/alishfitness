@@ -99,12 +99,16 @@ export const SessionTableDesktop = ({ exercises, handleBlur }) => {
                 />
               ))}
               <td className='border-b border-l border-gray-300 px-2 py-3'>
-                <ActionButton
-                  variant={ButtonVariant.GRAY_DARK}
-                  className='text-xs font-medium'
-                >
-                  View Trends
-                </ActionButton>
+                {ex.customExerciseTitle ? (
+                  '—'
+                ) : (
+                  <ActionButton
+                    variant={ButtonVariant.GRAY_DARK}
+                    className='px-2 py-1 text-xs font-medium'
+                  >
+                    View Trends
+                  </ActionButton>
+                )}
               </td>
             </tr>
           ))}
