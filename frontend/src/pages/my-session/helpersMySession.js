@@ -30,3 +30,10 @@ export const completeSession = async (sessionLogId, statusData) => {
   const data = await response.json();
   return data;
 };
+
+export const getExerciseTrends = async (exerciseId) => {
+  const response = await api(`session-logs/view-trends/${exerciseId}/`, 'GET');
+  if (!response.ok) throw new Error('Failed to fetch exercise trends data.');
+  const data = await response.json();
+  return data;
+};

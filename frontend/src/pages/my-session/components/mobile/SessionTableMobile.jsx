@@ -1,7 +1,12 @@
 import { ActionButton, ButtonVariant } from '@/components/buttons';
 import { SetHeader, SetSubHeaders, SetCells } from '..';
 
-export const SessionTableMobile = ({ exercises, activeTab, handleBlur }) => {
+export const SessionTableMobile = ({
+  exercises,
+  activeTab,
+  handleBlur,
+  handleViewTrendsModal,
+}) => {
   const maxSets = Math.max(...exercises.map((ex) => ex.sets));
 
   const openExercisePage = (muscleGroupSlug, exerciseSlug) => {
@@ -110,7 +115,7 @@ export const SessionTableMobile = ({ exercises, activeTab, handleBlur }) => {
                 }
               >
                 <div className='max-w-[180px]'>
-                  {ex.exerciseTitle || ex.customExerciseTitle}
+                  {ex.exerciseTitle || `${ex.customExerciseTitle}*`}
                 </div>
               </td>
               <td className='border-r border-b border-gray-300 px-1 py-2 text-sm font-semibold text-gray-800'>
@@ -123,6 +128,7 @@ export const SessionTableMobile = ({ exercises, activeTab, handleBlur }) => {
                   <ActionButton
                     variant={ButtonVariant.GRAY_DARK}
                     className='px-2 py-1 text-xs font-medium'
+                    onClick={() => handleViewTrendsModal(ex.id)}
                   >
                     View Trends
                   </ActionButton>

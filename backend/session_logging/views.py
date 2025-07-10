@@ -196,3 +196,14 @@ class SetLogsView(APIView):
             serializer.save()
 
         return Response({"message": "Set updated."}, status=status.HTTP_200_OK)
+    
+
+class ViewTrendsView(APIView):
+    """View for View Trends button"""
+
+    def get(self, request, id):
+        """ 
+        Get all exercises with this id for the particular user to prepare
+        the trend graphs.
+        """
+        return Response({"message:", f"Baaa4i kiko {id}"})

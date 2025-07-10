@@ -9,6 +9,7 @@ import {
   completeSession,
   fetchSessionData,
   saveSessionData,
+  getExerciseTrends,
 } from './helpersMySession';
 import { snakeToCamel } from '@/utils';
 import { Spinner } from '@/components/common';
@@ -27,9 +28,9 @@ import { sanitizeInputValue, shouldSaveField } from './utils';
 export const MySessionPage = () => {
   const { id: sessionId } = useParams();
   const [sessionLogData, setSessionLogData] = useState(null);
-
   const [isLoading, setIsLoading] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
+  const [isTrendsModalOpen, setIsTrendsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('inputs');
 
   const navigate = useNavigate();
@@ -133,6 +134,17 @@ export const MySessionPage = () => {
     }
   };
 
+  // View trends modal
+  const handleViewTrendsModal = async (exerciseId) => {
+    console.log({ exerciseId });
+    setIsTrendsModalOpen(true);
+    try {
+      const data = await getExerciseTrends(exerciseId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // Complete button just changes status of session log and adds created_at datetime
   const handleComplete = async () => {
     setIsCompleting(true);
@@ -190,11 +202,13 @@ export const MySessionPage = () => {
               exercises={exercises}
               activeTab={activeTab}
               handleBlur={handleBlur}
+              handleViewTrendsModal={handleViewTrendsModal}
             />
           ) : (
             <SessionTableDesktop
               exercises={exercises}
               handleBlur={handleBlur}
+              handleViewTrendsModal={handleViewTrendsModal}
             />
           )}
           <div className='mt-6 flex flex-col justify-center md:flex-row'>
