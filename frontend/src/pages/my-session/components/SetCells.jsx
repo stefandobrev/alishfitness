@@ -1,5 +1,6 @@
 import { Controller } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
+import { epleyFormula } from '../utils';
 
 const FlexibleInput = ({
   value,
@@ -59,10 +60,19 @@ export const SetCells = ({
   sequence,
   handleBlur,
 }) => {
-  const { control } = useFormContext();
+  const { control, getValues } = useFormContext();
 
   // Convert 0-based setIndex to 1-based setNumber to match your data structure
   const setNumber = setIndex + 1;
+
+  const prevWeightValue = getValues(
+    `setLogs.${sequence}.sets.${setNumber - 1}.weight`,
+  );
+  const prevRepValue = getValues(
+    `setLogs.${sequence}.sets.${setNumber - 1}.reps`,
+  );
+
+  const targetWeight = epleyFormula(prevWeightValue, prevRepValue);
 
   return (
     <>
@@ -114,7 +124,11 @@ export const SetCells = ({
           isAvailable ? 'text-gray-800' : 'text-gray-400'
         } ${setIndex === maxSets - 1 ? 'border-r-0' : 'border-r'}`}
       >
-        {isAvailable && setNumber !== 1 && !customExercise ? '0 kg' : '—'}
+        {isAvailable && setNumber !== 1 && !customExercise
+          ? targetWeight
+            ? `${targetWeight} kg`
+            : '—'
+          : '—'}
       </td>
     </>
   );
