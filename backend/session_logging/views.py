@@ -206,4 +206,32 @@ class ViewTrendsView(APIView):
         Get all exercises with this id for the particular user to prepare
         the trend graphs.
         """
-        return Response({"message:", f"Baaa4i kiko {id}"})
+        active_user = request.user
+
+        session_logs = SessionLog.objects.filter(
+            training_program__assigned_user=active_user,
+            set_logs__exercise_id = id,
+            status="completed"
+         ).distinct().order_by("completed_at")
+        
+        data = []
+        for session in session_logs:
+            sets = session.set_logs.filter(exercise_id = id)
+
+            if not sets or all((s.weight or 0) == 0 or (s.reps or 0) == 0 for s in sets):
+                continue
+
+            max_set = max(sets, key=lambda s: s.weight)
+            max_weight = max_set.weight 
+            reps_with_max = max_set.reps
+
+            total_volume = sum((s.weight) * (s.reps) for s in sets)
+
+            data.append({
+                "date": session.completed_at.date(),
+                "max_weight": float(max_weight),
+                "reps": reps_with_max,
+                "volume": float(total_volume),
+            })
+        
+        return Response(data)
