@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import { ActionButton, ButtonVariant } from '@/components/buttons';
 import { SetHeader, SetSubHeaders, SetCells } from '..';
 
@@ -7,10 +9,11 @@ export const SessionTableMobile = ({
   handleBlur,
   handleViewTrendsModal,
 }) => {
+  const navigate = useNavigate();
   const maxSets = Math.max(...exercises.map((ex) => ex.sets));
 
   const openExercisePage = (muscleGroupSlug, exerciseSlug) => {
-    window.open(`/exercises/${muscleGroupSlug}/${exerciseSlug}/`, '_blank');
+    navigate(`/exercises/${muscleGroupSlug}/${exerciseSlug}/`);
   };
 
   const renderInputsTab = () => (
