@@ -17,6 +17,8 @@ export default {
       addBase({
         ':root': {
           '--logored': theme('colors.logored.DEFAULT'),
+          '--logored-hover': theme('colors.logored.hover'),
+          '--logored-disabled': theme('colors.logored.disabled'),
         },
       });
     },

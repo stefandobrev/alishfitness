@@ -24,6 +24,7 @@ import {
 } from '@/components/buttons';
 import { manageSession } from '@/schemas';
 import { sanitizeInputValue, shouldSaveField } from './utils';
+import { ViewTrendsModal } from './components';
 
 export const MySessionPage = () => {
   const { id: sessionId } = useParams();
@@ -31,6 +32,8 @@ export const MySessionPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
   const [isTrendsModalOpen, setIsTrendsModalOpen] = useState(false);
+  const [trendsData, setTrendsData] = useState(null);
+  const [exerciseTitle, setExerciseTitle] = useState('');
   const [activeTab, setActiveTab] = useState('inputs');
 
   const navigate = useNavigate();
@@ -135,13 +138,15 @@ export const MySessionPage = () => {
   };
 
   // View trends modal
-  const handleViewTrendsModal = async (exerciseId) => {
-    console.log({ exerciseId });
+  const handleViewTrendsModal = async (exerciseId, exerciseTitle) => {
     setIsTrendsModalOpen(true);
     try {
       const data = await getExerciseTrends(exerciseId);
+      const transformedData = snakeToCamel(data);
+      setExerciseTitle(exerciseTitle);
+      setTrendsData(transformedData);
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
@@ -211,12 +216,12 @@ export const MySessionPage = () => {
               handleViewTrendsModal={handleViewTrendsModal}
             />
           )}
-          <div className='mt-6 flex flex-col justify-center md:flex-row'>
+          <div className='mt-4 flex flex-col justify-center md:flex-row'>
             {sessionLogData?.status !== 'completed' && (
               <ActionButton
                 onClick={handleComplete}
                 disabled={isCompleting}
-                className='mx-2 md:w-auto'
+                className='m-2 md:w-auto'
               >
                 {isCompleting ? 'Completing...' : 'Complete Session'}
               </ActionButton>
@@ -224,6 +229,14 @@ export const MySessionPage = () => {
           </div>
         </form>
       </FormProvider>
+
+      {isTrendsModalOpen && trendsData && (
+        <ViewTrendsModal
+          onClose={() => setIsTrendsModalOpen(false)}
+          heading={exerciseTitle}
+          trendsData={trendsData}
+        />
+      )}
     </>
   );
 };

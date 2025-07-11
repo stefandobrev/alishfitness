@@ -112,7 +112,9 @@ export const SessionTableDesktop = ({
                   <ActionButton
                     variant={ButtonVariant.GRAY_DARK}
                     className='px-2 py-1 text-xs font-medium'
-                    onClick={() => handleViewTrendsModal(ex.id)}
+                    onClick={() =>
+                      handleViewTrendsModal(ex.id, ex.exerciseTitle)
+                    }
                   >
                     View Trends
                   </ActionButton>
