@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 import { fetchExercise } from './helpersExerciseDetail';
 import { ToggleableMuscleView } from '@/components/muscleviews';
@@ -43,11 +44,20 @@ export const ExerciseDetailPage = () => {
     navigate(`/exercises/${svgId}`);
   };
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
+  const handleTabChange = (value) => {
+    if (value === 'back') {
+      navigate(-1, { replace: false });
+      return;
+    }
+    setActiveTab(value);
   };
 
   const tabs = [
+    {
+      label: <ArrowLeftIcon className='size-6' />,
+      value: 'back',
+      customWidth: 'w-12',
+    },
     { label: 'Exercise', value: 'exercise' },
     { label: 'Anatomy', value: 'anatomy' },
   ];
