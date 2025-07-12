@@ -156,6 +156,7 @@ export const MySessionPage = () => {
     try {
       await completeSession(sessionLogData.id, { status: 'completed' });
       toast.success('Session completed!');
+      navigate('/my-program');
     } catch (error) {
       toast.error('Failed to complete session.');
     } finally {
