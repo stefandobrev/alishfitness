@@ -27,10 +27,10 @@ export const ViewTrendsModal = ({ onClose, heading, trendsData }) => {
     reps: item.reps,
   }));
 
+  console.log({ trendsData });
+
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
-      console.log({ payload });
-
       // Get the reps from the first payload item
       const repsData = payload[0]?.payload?.reps;
 
@@ -101,7 +101,7 @@ export const ViewTrendsModal = ({ onClose, heading, trendsData }) => {
                   axisLine={{ stroke: colorScheme.grayBg }}
                   tickLine={{ stroke: colorScheme.grayBg }}
                   label={{
-                    value: 'Volume',
+                    value: 'Volume (kg)',
                     angle: 90,
                     position: 'insideRight',
                     style: { textAnchor: 'middle', fill: colorScheme.grayBg },
@@ -137,22 +137,22 @@ export const ViewTrendsModal = ({ onClose, heading, trendsData }) => {
           {/* Summary stats */}
           <div className='grid grid-cols-3 gap-4 p-2'>
             <div className='rounded-lg bg-gray-50 p-4 text-center'>
-              <div className='text-logored text-2xl font-bold'>
-                {Math.max(...trendsData.map((d) => d.maxWeight))}
+              <div className='text-logored font-bold'>
+                {Math.max(...trendsData.map((d) => d.maxWeight)) + ' kg'}
               </div>
               <div className='text-sm text-gray-600'>Peak Weight</div>
             </div>
             <div className='rounded-lg bg-gray-50 p-4 text-center'>
-              <div className='text-2xl font-bold text-gray-600'>
-                {Math.max(...trendsData.map((d) => d.volume))}
+              <div className='font-bold text-gray-600'>
+                {Math.max(...trendsData.map((d) => d.volume)) + ' kg'}
               </div>
               <div className='text-sm text-gray-600'>Peak Volume</div>
             </div>
             <div className='rounded-lg bg-gray-50 p-4 text-center'>
-              <div className='text-2xl font-bold text-black'>
-                {trendsData.length}
+              <div className='font-bold text-black'>{trendsData.length}</div>
+              <div className='text-sm text-gray-600'>
+                {trendsData.length === 1 ? 'Workout' : 'Workouts'}
               </div>
-              <div className='text-sm text-gray-600'>Workouts</div>
             </div>
           </div>
         </DialogPanel>
