@@ -1,0 +1,6060 @@
+[
+  {
+    "model": "user.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$5no4OR0CeNDbmsmuN7ngPy$p7yZSzYYipUoxeg0hqYEulVmZY1rMW7dc8lOJVoYZyA=",
+      "last_login": "2025-07-18T20:54:26.906Z",
+      "is_superuser": true,
+      "username": "stefonix26",
+      "first_name": "Super",
+      "last_name": "Stefi",
+      "email": "stefonix26@test.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-11-02T12:49:02Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 40,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$LFvYu0si2YZMpMOGcKIqXV$rMkVxMuCWrIzABphK8GyBePLL86VJ0Kv9QHh6gmrvQY=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "stefonix",
+      "first_name": "Stefi",
+      "last_name": "Stefito",
+      "email": "stefix@test.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-11-29T13:17:11Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 1,
+    "fields": {
+      "name": "Abdominals",
+      "slug": "abdominals"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 2,
+    "fields": {
+      "name": "Quadriceps",
+      "slug": "quadriceps"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 3,
+    "fields": {
+      "name": "Calves",
+      "slug": "calves"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 5,
+    "fields": {
+      "name": "Adductors",
+      "slug": "adductors"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 6,
+    "fields": {
+      "name": "Obliques",
+      "slug": "obliques"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 7,
+    "fields": {
+      "name": "Biceps",
+      "slug": "biceps"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 8,
+    "fields": {
+      "name": "Neck",
+      "slug": "neck"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 9,
+    "fields": {
+      "name": "Forearms",
+      "slug": "forearms"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 11,
+    "fields": {
+      "name": "Traps Upper",
+      "slug": "traps-upper"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 12,
+    "fields": {
+      "name": "Hamstrings",
+      "slug": "hamstrings"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 13,
+    "fields": {
+      "name": "Lats",
+      "slug": "lats"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 14,
+    "fields": {
+      "name": "Glutes",
+      "slug": "glutes"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 15,
+    "fields": {
+      "name": "Lowerback",
+      "slug": "lowerback"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 16,
+    "fields": {
+      "name": "Traps Middle Lower",
+      "slug": "traps-middle-lower"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 17,
+    "fields": {
+      "name": "Triceps",
+      "slug": "triceps"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 19,
+    "fields": {
+      "name": "Deltoid Lateral",
+      "slug": "deltoid-lateral"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 20,
+    "fields": {
+      "name": "Deltoid Anterior",
+      "slug": "deltoid-anterior"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 21,
+    "fields": {
+      "name": "Deltoid Posterior",
+      "slug": "deltoid-posterior"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 22,
+    "fields": {
+      "name": "Pectoralis Upper",
+      "slug": "pectoralis-upper"
+    }
+  },
+  {
+    "model": "exercise.musclegroup",
+    "pk": 23,
+    "fields": {
+      "name": "Pectoralis Middle Lower",
+      "slug": "pectoralis-middle-lower"
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 37,
+    "fields": {
+      "title": "Dumbbell Curl",
+      "slug": "dumbbell-curl",
+      "primary_group": 7,
+      "gif_link_front": "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-curl-front.mp4#t=0.1",
+      "gif_link_side": "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-curl-side.mp4#t=0.1",
+      "video_link": "https://youtu.be/lhpfN8DVQTE",
+      "created_at": "2025-02-06T09:05:30Z",
+      "updated_at": "2025-02-24T19:45:38.524Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 38,
+    "fields": {
+      "title": "Dumbbell Row Unilateral",
+      "slug": "dumbbell-row-unilateral",
+      "primary_group": 13,
+      "gif_link_front": "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-row-unilateral-front.mp4#t=0.1",
+      "gif_link_side": "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-row-unilateral-side.mp4#t=0.1",
+      "video_link": "https://youtu.be/H72k2iGxX_g",
+      "created_at": "2025-02-06T09:05:15Z",
+      "updated_at": "2025-02-24T19:45:38.540Z",
+      "secondary_groups": [16]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 39,
+    "fields": {
+      "title": "Pull Ups",
+      "slug": "pull-ups",
+      "primary_group": 13,
+      "gif_link_front": "https://media.musclewiki.com/media/uploads/videos/branded/male-bodyweight-pullup-front.mp4#t=0.1",
+      "gif_link_side": "https://media.musclewiki.com/media/uploads/videos/branded/male-bodyweight-pullup-side.mp4#t=0.1",
+      "video_link": "https://youtu.be/wo_gGRjVrrw",
+      "created_at": "2025-02-06T09:04:01Z",
+      "updated_at": "2025-02-24T19:45:38.545Z",
+      "secondary_groups": [7, 16]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 40,
+    "fields": {
+      "title": "Laying Leg Raises",
+      "slug": "laying-leg-raises",
+      "primary_group": 1,
+      "gif_link_front": "https://media.musclewiki.com/media/uploads/videos/branded/male-Bodyweight-laying-leg-raises-front.mp4#t=0.1",
+      "gif_link_side": "https://media.musclewiki.com/media/uploads/videos/branded/male-Bodyweight-laying-leg-raises-side.mp4#t=0.1",
+      "video_link": "https://youtu.be/K3hY5SEuWlw",
+      "created_at": "2025-02-06T09:05:09Z",
+      "updated_at": "2025-02-24T19:45:38.551Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 41,
+    "fields": {
+      "title": "Barbell Squat",
+      "slug": "barbell-squat",
+      "primary_group": 2,
+      "gif_link_front": "https://media.musclewiki.com/media/uploads/videos/branded/male-Barbell-barbell-squat-side.mp4#t=0.1",
+      "gif_link_side": "https://media.musclewiki.com/media/uploads/videos/branded/male-Barbell-barbell-squat-front.mp4#t=0.1",
+      "video_link": "https://youtu.be/UaoMSDN1j0A",
+      "created_at": "2025-02-06T09:05:39Z",
+      "updated_at": "2025-02-24T19:45:38.556Z",
+      "secondary_groups": [14, 15]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 42,
+    "fields": {
+      "title": "Dumbbell Goblet Squat",
+      "slug": "dumbbell-goblet-squat",
+      "primary_group": 2,
+      "gif_link_front": "https://media.musclewiki.com/media/uploads/videos/branded/male-dumbbell-goblet-squat-front.mp4#t=0.1",
+      "gif_link_side": "https://media.musclewiki.com/media/uploads/videos/branded/male-dumbbell-goblet-squat-side.mp4#t=0.1",
+      "video_link": "https://youtu.be/AVoaEg7NTFU",
+      "created_at": "2025-02-06T09:05:24Z",
+      "updated_at": "2025-05-13T13:07:55.957Z",
+      "secondary_groups": [14]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 43,
+    "fields": {
+      "title": "Machine Leg Extension",
+      "slug": "machine-leg-extension",
+      "primary_group": 2,
+      "gif_link_front": "https://media.musclewiki.com/media/uploads/videos/branded/male-machine-leg-extension-front.mp4#t=0.1",
+      "gif_link_side": "https://media.musclewiki.com/media/uploads/videos/branded/male-machine-leg-extension-side.mp4#t=0.1",
+      "video_link": "https://youtu.be/UaoMSDN1j0A",
+      "created_at": "2025-02-06T09:05:03Z",
+      "updated_at": "2025-02-24T19:45:38.566Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 149,
+    "fields": {
+      "title": "Test with New fields",
+      "slug": "test-with-new-fields",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-06T14:21:19.949Z",
+      "updated_at": "2025-03-15T11:11:36.525Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 150,
+    "fields": {
+      "title": "Test without second rest",
+      "slug": "test-without-second-rest",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-06T14:23:05.174Z",
+      "updated_at": "2025-02-24T19:45:38.584Z",
+      "secondary_groups": [1, 3, 19]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 151,
+    "fields": {
+      "title": "Second test with one reset",
+      "slug": "second-test-with-one-reset",
+      "primary_group": 21,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-06T14:23:21.387Z",
+      "updated_at": "2025-02-24T19:45:38.589Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 156,
+    "fields": {
+      "title": "AA test 12",
+      "slug": "aa-test-12",
+      "primary_group": 5,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-06T19:28:34.528Z",
+      "updated_at": "2025-05-27T10:16:48.721Z",
+      "secondary_groups": [7]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 160,
+    "fields": {
+      "title": "akak4",
+      "slug": "akak4",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-07T14:06:17.671Z",
+      "updated_at": "2025-02-24T19:45:38.612Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 161,
+    "fields": {
+      "title": "akak5",
+      "slug": "akak5",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-07T14:06:23.400Z",
+      "updated_at": "2025-02-24T19:45:38.617Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 163,
+    "fields": {
+      "title": "akak7",
+      "slug": "akak7",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-07T14:06:35.514Z",
+      "updated_at": "2025-02-24T19:45:38.626Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 164,
+    "fields": {
+      "title": "akak8",
+      "slug": "akak8",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-07T14:06:42.462Z",
+      "updated_at": "2025-02-24T19:45:38.630Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 165,
+    "fields": {
+      "title": "akak9",
+      "slug": "akak9",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-07T14:07:11.671Z",
+      "updated_at": "2025-02-24T19:45:38.635Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 168,
+    "fields": {
+      "title": "akak12",
+      "slug": "akak12",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-07T14:08:49.318Z",
+      "updated_at": "2025-02-24T19:45:38.648Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 170,
+    "fields": {
+      "title": "akak14",
+      "slug": "akak14",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-07T14:08:54.194Z",
+      "updated_at": "2025-02-24T19:45:38.657Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 171,
+    "fields": {
+      "title": "akak145",
+      "slug": "akak145",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-07T14:08:56.177Z",
+      "updated_at": "2025-02-24T19:45:38.662Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 173,
+    "fields": {
+      "title": "akak14555",
+      "slug": "akak14555",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-07T14:14:19.188Z",
+      "updated_at": "2025-02-24T19:45:38.671Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 174,
+    "fields": {
+      "title": "Tijani Babangida",
+      "slug": "tijani-babangida",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-08T16:39:39.023Z",
+      "updated_at": "2025-02-24T19:45:38.675Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 176,
+    "fields": {
+      "title": "New Exercises time",
+      "slug": "new-exercises-time",
+      "primary_group": 5,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-09T14:31:05.590Z",
+      "updated_at": "2025-03-15T10:57:57.471Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 177,
+    "fields": {
+      "title": "New title",
+      "slug": "new-title",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-09T18:51:58.720Z",
+      "updated_at": "2025-02-24T19:45:38.684Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 178,
+    "fields": {
+      "title": "Bachi Kiko",
+      "slug": "bachi-kiko",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-09T20:08:46.999Z",
+      "updated_at": "2025-07-11T16:33:53.639Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 180,
+    "fields": {
+      "title": "Squad Squady Title",
+      "slug": "squad-squady-title",
+      "primary_group": 23,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "http://localhost:3000/manage",
+      "created_at": "2025-02-11T14:28:06.235Z",
+      "updated_at": "2025-02-24T19:45:38.694Z",
+      "secondary_groups": [22]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 181,
+    "fields": {
+      "title": "An Exercise without a video",
+      "slug": "an-exercise-without-a-video",
+      "primary_group": 19,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "",
+      "created_at": "2025-02-13T19:26:22.865Z",
+      "updated_at": "2025-02-24T19:45:38.698Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 182,
+    "fields": {
+      "title": "TESTTTITLEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE",
+      "slug": "testttitleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "primary_group": 5,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "",
+      "created_at": "2025-02-14T19:55:37.095Z",
+      "updated_at": "2025-02-24T19:45:38.703Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 183,
+    "fields": {
+      "title": "React upgrade",
+      "slug": "react-upgrade",
+      "primary_group": 19,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "",
+      "created_at": "2025-02-17T08:42:30.247Z",
+      "updated_at": "2025-02-24T19:45:38.707Z",
+      "secondary_groups": [5, 6]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 184,
+    "fields": {
+      "title": "Slug Test Now",
+      "slug": "slug-test-now",
+      "primary_group": 8,
+      "gif_link_front": "http://localhost:3000/exercises/quadriceps",
+      "gif_link_side": "http://localhost:3000/exercises/quadricep",
+      "video_link": "",
+      "created_at": "2025-02-25T14:58:32.185Z",
+      "updated_at": "2025-02-25T14:58:32.185Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 185,
+    "fields": {
+      "title": "Secondary Groups Renamed Test",
+      "slug": "secondary-groups-renamed-test",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "",
+      "created_at": "2025-02-25T20:07:08.183Z",
+      "updated_at": "2025-02-25T20:07:08.183Z",
+      "secondary_groups": [7, 20]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 186,
+    "fields": {
+      "title": "Another Toast Test",
+      "slug": "another-toast-test",
+      "primary_group": 20,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "",
+      "created_at": "2025-02-26T08:29:38.717Z",
+      "updated_at": "2025-04-30T13:07:58.967Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 187,
+    "fields": {
+      "title": "Second Toast Test",
+      "slug": "second-toast-test",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "",
+      "created_at": "2025-02-26T08:29:59.580Z",
+      "updated_at": "2025-04-09T13:05:17.700Z",
+      "secondary_groups": [17, 19]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 188,
+    "fields": {
+      "title": "Server Test",
+      "slug": "server-test",
+      "primary_group": 5,
+      "gif_link_front": "http://localhost:3000/manage",
+      "gif_link_side": "http://localhost:3000/manag",
+      "video_link": "",
+      "created_at": "2025-03-07T10:34:18.490Z",
+      "updated_at": "2025-03-07T10:34:18.490Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 189,
+    "fields": {
+      "title": "Mobile Toast",
+      "slug": "mobile-toast",
+      "primary_group": 6,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-03-14T09:02:24.613Z",
+      "updated_at": "2025-03-14T09:02:24.613Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 190,
+    "fields": {
+      "title": "Refresh Key Test",
+      "slug": "refresh-key-test",
+      "primary_group": 20,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-03-15T10:37:01.847Z",
+      "updated_at": "2025-03-15T10:37:01.847Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 191,
+    "fields": {
+      "title": "Add exercise after refactor",
+      "slug": "add-exercise-after-refactor",
+      "primary_group": 23,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-03-15T11:21:08.589Z",
+      "updated_at": "2025-04-13T18:28:09.438Z",
+      "secondary_groups": [5, 22]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 193,
+    "fields": {
+      "title": "Another quick test 1",
+      "slug": "another-quick-test-1",
+      "primary_group": 5,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-07T20:21:24.742Z",
+      "updated_at": "2025-04-30T13:01:49.820Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 194,
+    "fields": {
+      "title": "Test New Refactor",
+      "slug": "test-new-refactor",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-08T19:27:13.028Z",
+      "updated_at": "2025-04-08T19:27:13.028Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 196,
+    "fields": {
+      "title": "Unique Test",
+      "slug": "unique-test",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-08T20:23:32.708Z",
+      "updated_at": "2025-04-08T20:23:51.488Z",
+      "secondary_groups": [23]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 197,
+    "fields": {
+      "title": "Lets Add Another",
+      "slug": "lets-add-another",
+      "primary_group": 5,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-08T20:26:49.805Z",
+      "updated_at": "2025-04-08T20:26:49.805Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 198,
+    "fields": {
+      "title": "Check The Loader",
+      "slug": "check-the-loader",
+      "primary_group": 5,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-08T20:30:37.868Z",
+      "updated_at": "2025-04-08T20:30:37.868Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 199,
+    "fields": {
+      "title": "Check for steps",
+      "slug": "check-for-steps",
+      "primary_group": 3,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-08T20:32:05.575Z",
+      "updated_at": "2025-04-08T20:32:05.575Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 200,
+    "fields": {
+      "title": "Test New New",
+      "slug": "test-new-new",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-09T08:22:38.826Z",
+      "updated_at": "2025-04-09T08:22:38.826Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 201,
+    "fields": {
+      "title": "New new",
+      "slug": "new-new",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-09T09:00:12.101Z",
+      "updated_at": "2025-04-09T09:00:12.101Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 202,
+    "fields": {
+      "title": "Lets do another test",
+      "slug": "lets-do-another-test",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-09T09:02:45.572Z",
+      "updated_at": "2025-04-09T09:03:12.204Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 203,
+    "fields": {
+      "title": "asfsafasf",
+      "slug": "asfsafasf",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-09T09:15:54.168Z",
+      "updated_at": "2025-04-09T09:15:54.168Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 204,
+    "fields": {
+      "title": "TitleNew Niu",
+      "slug": "titlenew-niu",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-09T09:28:19.211Z",
+      "updated_at": "2025-04-09T09:28:19.211Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 205,
+    "fields": {
+      "title": "safasfsaf",
+      "slug": "safasfsaf",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-09T09:51:52.060Z",
+      "updated_at": "2025-04-09T09:51:52.060Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 206,
+    "fields": {
+      "title": "QQQ",
+      "slug": "qqq",
+      "primary_group": 5,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-09T10:04:42.346Z",
+      "updated_at": "2025-04-09T10:04:42.346Z",
+      "secondary_groups": [7, 20]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 207,
+    "fields": {
+      "title": "Secondary Test",
+      "slug": "secondary-test",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-09T10:17:17.406Z",
+      "updated_at": "2025-04-09T12:59:45.397Z",
+      "secondary_groups": [7, 23]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 208,
+    "fields": {
+      "title": "Why the secondary groups are gone",
+      "slug": "why-the-secondary-groups-are-gone",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-09T10:23:02.827Z",
+      "updated_at": "2025-04-09T10:23:02.827Z",
+      "secondary_groups": [3, 5]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 209,
+    "fields": {
+      "title": "New new1",
+      "slug": "new-new1",
+      "primary_group": 5,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-09T12:26:59.694Z",
+      "updated_at": "2025-04-09T12:26:59.694Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 210,
+    "fields": {
+      "title": "SAkkkA",
+      "slug": "sakkk",
+      "primary_group": 5,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-09T13:10:47.660Z",
+      "updated_at": "2025-04-09T13:10:57.539Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 211,
+    "fields": {
+      "title": "Serializer Test With all",
+      "slug": "serializer-test-with-all",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-12T09:55:07.566Z",
+      "updated_at": "2025-04-12T09:55:07.566Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 212,
+    "fields": {
+      "title": "Refactor Exercise Serializer",
+      "slug": "refactor-exercise-serializer",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-15T13:36:35.761Z",
+      "updated_at": "2025-04-15T13:36:35.761Z",
+      "secondary_groups": [7]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 213,
+    "fields": {
+      "title": "Test Exercise Serializer Refactor2",
+      "slug": "test-exercise-serializer-refactor",
+      "primary_group": 5,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-15T14:12:01.725Z",
+      "updated_at": "2025-04-15T14:12:25.291Z",
+      "secondary_groups": [1, 7]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 214,
+    "fields": {
+      "title": "Loader Test",
+      "slug": "loader-test",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-24T09:33:48.312Z",
+      "updated_at": "2025-04-24T09:33:48.312Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 215,
+    "fields": {
+      "title": "Test Form Loader",
+      "slug": "test-form-loader",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-24T09:42:53.268Z",
+      "updated_at": "2025-04-24T09:42:53.268Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 216,
+    "fields": {
+      "title": "Test Loader 2",
+      "slug": "test-loader-2",
+      "primary_group": 20,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-24T09:44:11.637Z",
+      "updated_at": "2025-04-24T09:44:11.637Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 217,
+    "fields": {
+      "title": "Add Loader Test1",
+      "slug": "add-loader-test1",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-04-24T09:49:20.179Z",
+      "updated_at": "2025-05-20T16:02:14.702Z",
+      "secondary_groups": [7, 23]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 218,
+    "fields": {
+      "title": "SOSOSO",
+      "slug": "sososo",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-05-05T13:52:34.871Z",
+      "updated_at": "2025-05-05T13:52:34.871Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 219,
+    "fields": {
+      "title": "aKAKAKAKA",
+      "slug": "akakakaka",
+      "primary_group": 7,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-05-05T13:52:41.003Z",
+      "updated_at": "2025-05-05T13:52:41.003Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 220,
+    "fields": {
+      "title": "kikikikiki",
+      "slug": "kikikikiki",
+      "primary_group": 19,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-05-05T13:52:47.703Z",
+      "updated_at": "2025-05-05T13:52:47.703Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 221,
+    "fields": {
+      "title": "AA test 1234",
+      "slug": "aa-test-1234",
+      "primary_group": 1,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-05-13T12:07:22.484Z",
+      "updated_at": "2025-07-11T16:33:28.044Z",
+      "secondary_groups": [7, 23]
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 222,
+    "fields": {
+      "title": "Lack of steps",
+      "slug": "lack-of-steps",
+      "primary_group": 20,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-05-13T13:09:50.626Z",
+      "updated_at": "2025-05-13T13:17:14.061Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.exercise",
+    "pk": 223,
+    "fields": {
+      "title": "Switch from controller",
+      "slug": "switch-from-controller",
+      "primary_group": 17,
+      "gif_link_front": "http://localhost:3000/manage/exercises",
+      "gif_link_side": "http://localhost:3000/manage/exercise",
+      "video_link": "",
+      "created_at": "2025-05-15T08:55:14.763Z",
+      "updated_at": "2025-05-15T08:55:14.763Z",
+      "secondary_groups": []
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 56,
+    "fields": {
+      "exercise": 37,
+      "description": "Stand up straight with a dumbbell in each hand at arm's length.",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 57,
+    "fields": {
+      "exercise": 37,
+      "description": "Raise one dumbbell and twist your forearm until it is vertical and your palm faces the shoulder.",
+      "order": 2
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 58,
+    "fields": {
+      "exercise": 37,
+      "description": "Lower to original position and repeat with opposite arm",
+      "order": 3
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 59,
+    "fields": {
+      "exercise": 38,
+      "description": "Brace your off arm against something stable (bench, box). Stagger your stance so your leg on the side of your working arm is back.",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 60,
+    "fields": {
+      "exercise": 38,
+      "description": "Try to get your torso to parallel with the ground. That will extend your range of motion.",
+      "order": 2
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 61,
+    "fields": {
+      "exercise": 38,
+      "description": "Let your arm hang freely and then pull your elbow back. Imagine you've got a tennis ball in your armpit and squeeze it each rep.",
+      "order": 3
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 62,
+    "fields": {
+      "exercise": 39,
+      "description": "Grasp the bar with an overhand grip, arms and shoulders fully extended.",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 63,
+    "fields": {
+      "exercise": 39,
+      "description": "Pull your body up until your chin is above the bar.",
+      "order": 2
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 64,
+    "fields": {
+      "exercise": 39,
+      "description": "Lower your body back to starting position.",
+      "order": 3
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 65,
+    "fields": {
+      "exercise": 40,
+      "description": "Lay on your back with your arms palms down on either side.",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 66,
+    "fields": {
+      "exercise": 40,
+      "description": "Keep your legs together and as straight as possible.",
+      "order": 2
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 67,
+    "fields": {
+      "exercise": 40,
+      "description": "Slowly raise your legs to a 90░ angle, pause at this position, or as high as you can reach your legs, and then slowly lower your legs back down.",
+      "order": 3
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 68,
+    "fields": {
+      "exercise": 40,
+      "description": "Duration of these movements should be slow so that you do not utilize momentum, enabling you to get the most out of the exercise.",
+      "order": 4
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 69,
+    "fields": {
+      "exercise": 41,
+      "description": "Stand with your feet shoulder-width apart. Maintain the natural arch in your back, squeezing your shoulder blades and raising your chest.",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 70,
+    "fields": {
+      "exercise": 41,
+      "description": "Grip the bar across your shoulders and support it on your upper back. Unwrack the bar by straightening your legs, and take a step back.",
+      "order": 2
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 71,
+    "fields": {
+      "exercise": 41,
+      "description": "Bend your knees as you lower the weight without altering the form of your back until your hips are below your knees.",
+      "order": 3
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 72,
+    "fields": {
+      "exercise": 41,
+      "description": "Raise the bar back to starting position, lift with your legs and exhale at the top.",
+      "order": 4
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 76,
+    "fields": {
+      "exercise": 43,
+      "description": "Sit on the machine with your back against the cushion and adjust the machine you are using so that your knees are at a 90 degree angle at the starting position.",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 77,
+    "fields": {
+      "exercise": 43,
+      "description": "Raise the weight by extending your knees outward, then lower your leg to the starting position. Both movements should be done in a slow, controlled motion.",
+      "order": 2
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 216,
+    "fields": {
+      "exercise": 150,
+      "description": "Stepy step",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 222,
+    "fields": {
+      "exercise": 174,
+      "description": "Nigeria",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 225,
+    "fields": {
+      "exercise": 176,
+      "description": "It is a first",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 226,
+    "fields": {
+      "exercise": 177,
+      "description": "asfasf",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 227,
+    "fields": {
+      "exercise": 178,
+      "description": "asgsafsafa",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 228,
+    "fields": {
+      "exercise": 180,
+      "description": "Stepy step 1",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 229,
+    "fields": {
+      "exercise": 181,
+      "description": "No video",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 230,
+    "fields": {
+      "exercise": 183,
+      "description": "Testy test",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 231,
+    "fields": {
+      "exercise": 186,
+      "description": "Some step",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 232,
+    "fields": {
+      "exercise": 199,
+      "description": "Stepidy",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 234,
+    "fields": {
+      "exercise": 205,
+      "description": "",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 235,
+    "fields": {
+      "exercise": 212,
+      "description": "Refactor Exercise Serializer",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 236,
+    "fields": {
+      "exercise": 213,
+      "description": "Test Exercise Serializer Refactor",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 239,
+    "fields": {
+      "exercise": 156,
+      "description": "Stepy Step 12",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 243,
+    "fields": {
+      "exercise": 42,
+      "description": "Hold the weight tucked into your upper chest area, keeping your elbows in. Your feet should be slightly wider than shoulder width.",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 244,
+    "fields": {
+      "exercise": 42,
+      "description": "Sink down into the squat, keeping your elbows inside the track of your knees.",
+      "order": 2
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 245,
+    "fields": {
+      "exercise": 42,
+      "description": "Push through your heels while keeping your chest up and return to starting position.",
+      "order": 3
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 281,
+    "fields": {
+      "exercise": 221,
+      "description": "safhaskjfsaf",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercise.step",
+    "pk": 282,
+    "fields": {
+      "exercise": 221,
+      "description": "asfasfs",
+      "order": 2
+    }
+  },
+  {
+    "model": "exercise.mistake",
+    "pk": 60,
+    "fields": {
+      "exercise": 212,
+      "description": "Refactor Exercise Serializer"
+    }
+  },
+  {
+    "model": "exercise.mistake",
+    "pk": 61,
+    "fields": {
+      "exercise": 213,
+      "description": "Test Exercise Serializer Refactor"
+    }
+  },
+  {
+    "model": "exercise.mistake",
+    "pk": 62,
+    "fields": {
+      "exercise": 156,
+      "description": "Mistakey Mistake"
+    }
+  },
+  {
+    "model": "exercise.mistake",
+    "pk": 66,
+    "fields": {
+      "exercise": 42,
+      "description": "Not going low enough."
+    }
+  },
+  {
+    "model": "exercise.mistake",
+    "pk": 67,
+    "fields": {
+      "exercise": 42,
+      "description": "Collapsing your knees in."
+    }
+  },
+  {
+    "model": "exercise.mistake",
+    "pk": 68,
+    "fields": {
+      "exercise": 42,
+      "description": "Lifting your heels."
+    }
+  },
+  {
+    "model": "exercise.mistake",
+    "pk": 69,
+    "fields": {
+      "exercise": 178,
+      "description": "There is some mistake"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 1,
+    "fields": {
+      "program_title": "Program Name",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 1,
+      "activation_date": "2025-04-24",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 1
+        },
+        {
+          "order": 2,
+          "session_id": 2
+        }
+      ],
+      "created_at": "2025-04-22T12:29:12.760Z",
+      "updated_at": "2025-05-20T11:50:46.120Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 3,
+    "fields": {
+      "program_title": "New Program",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 1,
+      "activation_date": "2025-05-03",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 5
+        },
+        {
+          "order": 2,
+          "session_id": 6
+        }
+      ],
+      "created_at": "2025-04-22T13:31:26.863Z",
+      "updated_at": "2025-05-20T11:50:14.664Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 4,
+    "fields": {
+      "program_title": "Program Name",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 1,
+      "activation_date": "2025-04-23",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 7
+        },
+        {
+          "order": 2,
+          "session_id": 8
+        }
+      ],
+      "created_at": "2025-04-22T15:20:11.568Z",
+      "updated_at": "2025-05-20T11:50:38.873Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 5,
+    "fields": {
+      "program_title": "Program Program",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 1,
+      "activation_date": "2025-04-24",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 9
+        },
+        {
+          "order": 2,
+          "session_id": 10
+        },
+        {
+          "order": 3,
+          "session_id": 9
+        }
+      ],
+      "created_at": "2025-04-23T08:31:00.333Z",
+      "updated_at": "2025-05-20T11:50:49.757Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 6,
+    "fields": {
+      "program_title": "Program Program with swapped ids",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 1,
+      "activation_date": "2025-04-24",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 12
+        },
+        {
+          "order": 2,
+          "session_id": 11
+        },
+        {
+          "order": 3,
+          "session_id": 11
+        }
+      ],
+      "created_at": "2025-04-23T08:36:54.529Z",
+      "updated_at": "2025-05-20T11:50:53.547Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 7,
+    "fields": {
+      "program_title": "Program Program with swapped ids1",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 1,
+      "activation_date": "2025-04-24",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 13
+        },
+        {
+          "order": 2,
+          "session_id": 14
+        },
+        {
+          "order": 3,
+          "session_id": 13
+        }
+      ],
+      "created_at": "2025-04-23T08:58:00.545Z",
+      "updated_at": "2025-05-20T11:50:57.706Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 8,
+    "fields": {
+      "program_title": "Template Program",
+      "mode": "template",
+      "status": null,
+      "assigned_user": null,
+      "activation_date": null,
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 15
+        }
+      ],
+      "created_at": "2025-04-23T19:49:42.222Z",
+      "updated_at": "2025-04-23T19:49:42.225Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 9,
+    "fields": {
+      "program_title": "Program Test Loader and Toast",
+      "mode": "template",
+      "status": null,
+      "assigned_user": null,
+      "activation_date": null,
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 16
+        }
+      ],
+      "created_at": "2025-04-24T10:08:59.855Z",
+      "updated_at": "2025-04-24T10:08:59.865Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 10,
+    "fields": {
+      "program_title": "New Program For Reset",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 1,
+      "activation_date": "2025-04-24",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 17
+        },
+        {
+          "order": 2,
+          "session_id": 18
+        },
+        {
+          "order": 3,
+          "session_id": 17
+        }
+      ],
+      "created_at": "2025-04-24T10:12:33.949Z",
+      "updated_at": "2025-05-20T11:50:17.866Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 11,
+    "fields": {
+      "program_title": "Program After Reset",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 1,
+      "activation_date": "2025-04-25",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 19
+        }
+      ],
+      "created_at": "2025-04-24T10:13:02.162Z",
+      "updated_at": "2025-05-20T11:50:35.518Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 12,
+    "fields": {
+      "program_title": "Check Errors on Submit",
+      "mode": "template",
+      "status": null,
+      "assigned_user": null,
+      "activation_date": null,
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 20
+        }
+      ],
+      "created_at": "2025-04-24T10:16:29.406Z",
+      "updated_at": "2025-04-24T10:16:29.416Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 14,
+    "fields": {
+      "program_title": "Program",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 1,
+      "activation_date": "2025-04-24",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 22
+        },
+        {
+          "order": 2,
+          "session_id": 22
+        }
+      ],
+      "created_at": "2025-04-24T10:32:33.974Z",
+      "updated_at": "2025-05-20T11:50:31.796Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 15,
+    "fields": {
+      "program_title": "Program wiht multiple sessions",
+      "mode": "template",
+      "status": null,
+      "assigned_user": null,
+      "activation_date": null,
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 151
+        },
+        {
+          "order": 2,
+          "session_id": 170
+        },
+        {
+          "order": 3,
+          "session_id": 23
+        }
+      ],
+      "created_at": "2025-04-24T10:33:41.381Z",
+      "updated_at": "2025-06-30T13:56:05.182Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 17,
+    "fields": {
+      "program_title": "New Templ",
+      "mode": "template",
+      "status": null,
+      "assigned_user": null,
+      "activation_date": null,
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 27
+        }
+      ],
+      "created_at": "2025-04-24T10:38:56.268Z",
+      "updated_at": "2025-04-24T10:38:56.277Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 18,
+    "fields": {
+      "program_title": "Discarded Change Program",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 40,
+      "activation_date": "2025-05-05",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 28
+        },
+        {
+          "order": 2,
+          "session_id": 29
+        }
+      ],
+      "created_at": "2025-05-03T11:24:10.750Z",
+      "updated_at": "2025-05-20T11:50:06.785Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 19,
+    "fields": {
+      "program_title": "Stefi Program 6",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 1,
+      "activation_date": "2025-05-08",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 30
+        },
+        {
+          "order": 2,
+          "session_id": 31
+        },
+        {
+          "order": 3,
+          "session_id": 30
+        },
+        {
+          "order": 4,
+          "session_id": 30
+        }
+      ],
+      "created_at": "2025-05-03T14:20:12.148Z",
+      "updated_at": "2025-05-20T11:51:04.650Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 20,
+    "fields": {
+      "program_title": "Test Template",
+      "mode": "template",
+      "status": null,
+      "assigned_user": null,
+      "activation_date": null,
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 32
+        }
+      ],
+      "created_at": "2025-05-04T08:58:21.777Z",
+      "updated_at": "2025-05-04T08:58:21.788Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 26,
+    "fields": {
+      "program_title": "Correct sonsole",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 40,
+      "activation_date": "2025-05-05",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 38
+        }
+      ],
+      "created_at": "2025-05-05T09:57:34.013Z",
+      "updated_at": "2025-05-20T11:50:02.961Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 77,
+    "fields": {
+      "program_title": "AAAAAAAAAAAAAAAAAAAA",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 40,
+      "activation_date": "2025-05-05",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 89
+        }
+      ],
+      "created_at": "2025-05-05T18:52:02.290Z",
+      "updated_at": "2025-05-20T11:49:25.413Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 78,
+    "fields": {
+      "program_title": "BBBBBBBBBBBB",
+      "mode": "assigned",
+      "status": "scheduled",
+      "assigned_user": 40,
+      "activation_date": "2025-05-22",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 90
+        }
+      ],
+      "created_at": "2025-05-05T18:52:56.479Z",
+      "updated_at": "2025-05-20T11:49:42.214Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 79,
+    "fields": {
+      "program_title": "CCCCCCCCCCCCCCCCCC",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 40,
+      "activation_date": "2025-05-05",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 91
+        }
+      ],
+      "created_at": "2025-05-05T18:54:20.149Z",
+      "updated_at": "2025-05-20T11:49:45.245Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 80,
+    "fields": {
+      "program_title": "BBBBBBBBBB",
+      "mode": "assigned",
+      "status": "scheduled",
+      "assigned_user": 40,
+      "activation_date": "2025-05-10",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 92
+        }
+      ],
+      "created_at": "2025-05-09T22:20:49.596Z",
+      "updated_at": "2025-05-20T11:49:37.895Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 81,
+    "fields": {
+      "program_title": "QQQQQQQQQQQQ",
+      "mode": "assigned",
+      "status": "scheduled",
+      "assigned_user": 40,
+      "activation_date": "2025-05-10",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 93
+        }
+      ],
+      "created_at": "2025-05-09T22:22:52.310Z",
+      "updated_at": "2025-05-20T11:51:01.195Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 83,
+    "fields": {
+      "program_title": "AFASFASFASF",
+      "mode": "assigned",
+      "status": "scheduled",
+      "assigned_user": 40,
+      "activation_date": "2025-05-10",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 95
+        }
+      ],
+      "created_at": "2025-05-09T22:27:05.210Z",
+      "updated_at": "2025-05-20T11:49:30.933Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 84,
+    "fields": {
+      "program_title": "Kubarei6o",
+      "mode": "assigned",
+      "status": "scheduled",
+      "assigned_user": 40,
+      "activation_date": "2025-05-30",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 96
+        }
+      ],
+      "created_at": "2025-05-10T13:29:13.839Z",
+      "updated_at": "2025-05-20T11:50:10.775Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 85,
+    "fields": {
+      "program_title": "Class Basd Training Program Check",
+      "mode": "assigned",
+      "status": "scheduled",
+      "assigned_user": 1,
+      "activation_date": "2025-06-12",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 97
+        },
+        {
+          "order": 2,
+          "session_id": 98
+        },
+        {
+          "order": 3,
+          "session_id": 97
+        }
+      ],
+      "created_at": "2025-05-15T09:19:35.945Z",
+      "updated_at": "2025-05-20T11:49:59.242Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 87,
+    "fields": {
+      "program_title": "Program Name",
+      "mode": "template",
+      "status": null,
+      "assigned_user": null,
+      "activation_date": null,
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 100
+        }
+      ],
+      "created_at": "2025-05-18T20:31:12.127Z",
+      "updated_at": "2025-05-18T20:31:12.132Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 89,
+    "fields": {
+      "program_title": "Program changed Create to Assigned",
+      "mode": "assigned",
+      "status": "scheduled",
+      "assigned_user": 40,
+      "activation_date": "2025-05-23",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 103
+        }
+      ],
+      "created_at": "2025-05-20T11:46:02.371Z",
+      "updated_at": "2025-05-20T11:46:02.379Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 90,
+    "fields": {
+      "program_title": "Try out a new template",
+      "mode": "template",
+      "status": null,
+      "assigned_user": null,
+      "activation_date": null,
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 104
+        }
+      ],
+      "created_at": "2025-05-21T09:03:21.688Z",
+      "updated_at": "2025-05-21T09:03:21.696Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 91,
+    "fields": {
+      "program_title": "Test New Template",
+      "mode": "template",
+      "status": null,
+      "assigned_user": null,
+      "activation_date": null,
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 105
+        }
+      ],
+      "created_at": "2025-05-22T19:17:50.749Z",
+      "updated_at": "2025-05-22T19:17:50.759Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 92,
+    "fields": {
+      "program_title": "New Program Test after Edit",
+      "mode": "assigned",
+      "status": "scheduled",
+      "assigned_user": 40,
+      "activation_date": "2025-08-22",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 106
+        }
+      ],
+      "created_at": "2025-05-22T19:18:27.435Z",
+      "updated_at": "2025-05-22T19:18:27.437Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 93,
+    "fields": {
+      "program_title": "New Program",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 1,
+      "activation_date": "2025-05-03",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 107
+        },
+        {
+          "order": 2,
+          "session_id": 108
+        }
+      ],
+      "created_at": "2025-05-23T10:36:04.058Z",
+      "updated_at": "2025-05-23T10:36:04.064Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 95,
+    "fields": {
+      "program_title": "Test New Template 2",
+      "mode": "template",
+      "status": null,
+      "assigned_user": null,
+      "activation_date": null,
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 111
+        }
+      ],
+      "created_at": "2025-05-23T10:40:24.789Z",
+      "updated_at": "2025-05-23T10:40:24.798Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 99,
+    "fields": {
+      "program_title": "NewNew",
+      "mode": "assigned",
+      "status": "scheduled",
+      "assigned_user": 1,
+      "activation_date": "2025-08-15",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 115
+        }
+      ],
+      "created_at": "2025-05-23T15:19:18.901Z",
+      "updated_at": "2025-05-23T15:19:18.909Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 100,
+    "fields": {
+      "program_title": "Test Program after refactor",
+      "mode": "assigned",
+      "status": "scheduled",
+      "assigned_user": 1,
+      "activation_date": "2025-08-30",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 116
+        }
+      ],
+      "created_at": "2025-05-24T13:56:25.613Z",
+      "updated_at": "2025-05-24T13:56:25.625Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 102,
+    "fields": {
+      "program_title": "Check Errors on Submit 1",
+      "mode": "assigned",
+      "status": "scheduled",
+      "assigned_user": 1,
+      "activation_date": "2025-07-05",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 118
+        }
+      ],
+      "created_at": "2025-05-26T18:39:55.433Z",
+      "updated_at": "2025-05-26T18:39:55.437Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 103,
+    "fields": {
+      "program_title": "Create Program with new tempIds",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 1,
+      "activation_date": "2025-06-02",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 119
+        },
+        {
+          "order": 2,
+          "session_id": 157
+        }
+      ],
+      "created_at": "2025-05-26T19:03:13.260Z",
+      "updated_at": "2025-06-06T07:11:10.857Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 106,
+    "fields": {
+      "program_title": "Check Errors on Submit2",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 1,
+      "activation_date": "2025-06-11",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 122
+        }
+      ],
+      "created_at": "2025-05-26T19:53:26.023Z",
+      "updated_at": "2025-06-02T13:57:42.969Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 115,
+    "fields": {
+      "program_title": "Existing Program New",
+      "mode": "assigned",
+      "status": "archived",
+      "assigned_user": 1,
+      "activation_date": "2025-06-28",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 152
+        },
+        {
+          "order": 2,
+          "session_id": 153
+        }
+      ],
+      "created_at": "2025-06-02T09:19:29.861Z",
+      "updated_at": "2025-06-02T15:05:46.013Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 116,
+    "fields": {
+      "program_title": "Stefoni Training Program",
+      "mode": "assigned",
+      "status": "current",
+      "assigned_user": 40,
+      "activation_date": "2025-06-03",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 154
+        },
+        {
+          "order": 2,
+          "session_id": 155
+        },
+        {
+          "order": 3,
+          "session_id": 156
+        },
+        {
+          "order": 4,
+          "session_id": 155
+        }
+      ],
+      "created_at": "2025-06-03T12:31:44.497Z",
+      "updated_at": "2025-07-06T15:17:28.839Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 117,
+    "fields": {
+      "program_title": "Check session ids",
+      "mode": "assigned",
+      "status": "scheduled",
+      "assigned_user": 1,
+      "activation_date": "2025-06-28",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 183
+        },
+        {
+          "order": 2,
+          "session_id": 158
+        }
+      ],
+      "created_at": "2025-06-06T08:00:22.501Z",
+      "updated_at": "2025-07-04T13:25:58.262Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 125,
+    "fields": {
+      "program_title": "Test New Template",
+      "mode": "assigned",
+      "status": "current",
+      "assigned_user": 1,
+      "activation_date": "2025-06-14",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 169
+        }
+      ],
+      "created_at": "2025-06-13T22:03:16.415Z",
+      "updated_at": "2025-06-14T12:02:15.973Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 126,
+    "fields": {
+      "program_title": "July Program",
+      "mode": "assigned",
+      "status": "scheduled",
+      "assigned_user": 1,
+      "activation_date": "2025-08-22",
+      "schedule_data": [],
+      "created_at": "2025-07-04T13:14:46.275Z",
+      "updated_at": "2025-07-04T13:14:46.283Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 127,
+    "fields": {
+      "program_title": "Check Errors on Submit",
+      "mode": "assigned",
+      "status": "scheduled",
+      "assigned_user": 1,
+      "activation_date": "2025-07-26",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 185
+        },
+        {
+          "order": 2,
+          "session_id": 184
+        },
+        {
+          "order": 3,
+          "session_id": 186
+        }
+      ],
+      "created_at": "2025-07-04T13:29:28.585Z",
+      "updated_at": "2025-07-04T13:30:08.684Z"
+    }
+  },
+  {
+    "model": "training_program.trainingprogram",
+    "pk": 128,
+    "fields": {
+      "program_title": "NiuNiu",
+      "mode": "assigned",
+      "status": "scheduled",
+      "assigned_user": 1,
+      "activation_date": "2025-07-31",
+      "schedule_data": [
+        {
+          "order": 1,
+          "session_id": 187
+        },
+        {
+          "order": 2,
+          "session_id": 188
+        }
+      ],
+      "created_at": "2025-07-07T07:39:02.590Z",
+      "updated_at": "2025-07-07T07:39:02.599Z"
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 1,
+    "fields": {
+      "session_title": "First Session",
+      "program": 1
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 2,
+    "fields": {
+      "session_title": "Second Session",
+      "program": 1
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 5,
+    "fields": {
+      "session_title": "First Session",
+      "program": 3
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 6,
+    "fields": {
+      "session_title": "Second Session",
+      "program": 3
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 7,
+    "fields": {
+      "session_title": "First Session",
+      "program": 4
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 8,
+    "fields": {
+      "session_title": "First Session",
+      "program": 4
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 9,
+    "fields": {
+      "session_title": "First Session",
+      "program": 5
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 10,
+    "fields": {
+      "session_title": "Second Session",
+      "program": 5
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 11,
+    "fields": {
+      "session_title": "First Session",
+      "program": 6
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 12,
+    "fields": {
+      "session_title": "Second Session",
+      "program": 6
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 13,
+    "fields": {
+      "session_title": "First Session",
+      "program": 7
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 14,
+    "fields": {
+      "session_title": "Second Session",
+      "program": 7
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 15,
+    "fields": {
+      "session_title": "First Session",
+      "program": 8
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 16,
+    "fields": {
+      "session_title": "First Session",
+      "program": 9
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 17,
+    "fields": {
+      "session_title": "First Session",
+      "program": 10
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 18,
+    "fields": {
+      "session_title": "First Session",
+      "program": 10
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 19,
+    "fields": {
+      "session_title": "First Session",
+      "program": 11
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 20,
+    "fields": {
+      "session_title": "First Sess",
+      "program": 12
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 22,
+    "fields": {
+      "session_title": "Sess",
+      "program": 14
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 23,
+    "fields": {
+      "session_title": "Progrmam Session",
+      "program": 15
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 27,
+    "fields": {
+      "session_title": "Sess",
+      "program": 17
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 28,
+    "fields": {
+      "session_title": "Push",
+      "program": 18
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 29,
+    "fields": {
+      "session_title": "Pull",
+      "program": 18
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 30,
+    "fields": {
+      "session_title": "Push",
+      "program": 19
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 31,
+    "fields": {
+      "session_title": "Pull",
+      "program": 19
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 32,
+    "fields": {
+      "session_title": "Push",
+      "program": 20
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 38,
+    "fields": {
+      "session_title": "sdafasfsa",
+      "program": 26
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 89,
+    "fields": {
+      "session_title": "safafasfafs",
+      "program": 77
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 90,
+    "fields": {
+      "session_title": "safasfas",
+      "program": 78
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 91,
+    "fields": {
+      "session_title": "sfasfsa",
+      "program": 79
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 92,
+    "fields": {
+      "session_title": "afasfsa",
+      "program": 80
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 93,
+    "fields": {
+      "session_title": "asfasfsa",
+      "program": 81
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 95,
+    "fields": {
+      "session_title": "SSSSSSSSSSSSS",
+      "program": 83
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 96,
+    "fields": {
+      "session_title": "Popin",
+      "program": 84
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 97,
+    "fields": {
+      "session_title": "Push",
+      "program": 85
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 98,
+    "fields": {
+      "session_title": "Pull",
+      "program": 85
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 100,
+    "fields": {
+      "session_title": "aaaa",
+      "program": 87
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 103,
+    "fields": {
+      "session_title": "Push",
+      "program": 89
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 104,
+    "fields": {
+      "session_title": "Template session",
+      "program": 90
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 105,
+    "fields": {
+      "session_title": "Akkk",
+      "program": 91
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 106,
+    "fields": {
+      "session_title": "New New",
+      "program": 92
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 107,
+    "fields": {
+      "session_title": "First Session",
+      "program": 93
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 108,
+    "fields": {
+      "session_title": "Second Session",
+      "program": 93
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 111,
+    "fields": {
+      "session_title": "Akkk",
+      "program": 95
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 115,
+    "fields": {
+      "session_title": "asfasf",
+      "program": 99
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 116,
+    "fields": {
+      "session_title": "safasf",
+      "program": 100
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 118,
+    "fields": {
+      "session_title": "First Sess",
+      "program": 102
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 119,
+    "fields": {
+      "session_title": "Afsdfas",
+      "program": 103
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 122,
+    "fields": {
+      "session_title": "First Sess",
+      "program": 106
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 151,
+    "fields": {
+      "session_title": "New sess",
+      "program": 15
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 152,
+    "fields": {
+      "session_title": "asfasf",
+      "program": 115
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 153,
+    "fields": {
+      "session_title": "New sess",
+      "program": 115
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 154,
+    "fields": {
+      "session_title": "Legs",
+      "program": 116
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 155,
+    "fields": {
+      "session_title": "Chest",
+      "program": 116
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 156,
+    "fields": {
+      "session_title": "Arms",
+      "program": 116
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 157,
+    "fields": {
+      "session_title": "dgdsda",
+      "program": 103
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 158,
+    "fields": {
+      "session_title": "safasfas",
+      "program": 117
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 169,
+    "fields": {
+      "session_title": "Akkk",
+      "program": 125
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 170,
+    "fields": {
+      "session_title": "New one",
+      "program": 15
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 181,
+    "fields": {
+      "session_title": "Sess",
+      "program": 126
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 182,
+    "fields": {
+      "session_title": "BBB",
+      "program": 126
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 183,
+    "fields": {
+      "session_title": "Aaaa",
+      "program": 117
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 184,
+    "fields": {
+      "session_title": "First Sess",
+      "program": 127
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 185,
+    "fields": {
+      "session_title": "Sec Sess",
+      "program": 127
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 186,
+    "fields": {
+      "session_title": "Nova",
+      "program": 127
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 187,
+    "fields": {
+      "session_title": "234",
+      "program": 128
+    }
+  },
+  {
+    "model": "training_program.trainingsession",
+    "pk": 188,
+    "fields": {
+      "session_title": "afafasf",
+      "program": 128
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 1,
+    "fields": {
+      "session": 1,
+      "exercise": 40,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 2,
+    "fields": {
+      "session": 1,
+      "exercise": null,
+      "muscle_group": null,
+      "is_custom_muscle_group": true,
+      "custom_exercise_title": "Custom name",
+      "sequence": "B",
+      "sets": 3,
+      "reps": "3"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 3,
+    "fields": {
+      "session": 2,
+      "exercise": 37,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 7,
+    "fields": {
+      "session": 5,
+      "exercise": 40,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 8,
+    "fields": {
+      "session": 5,
+      "exercise": null,
+      "muscle_group": null,
+      "is_custom_muscle_group": true,
+      "custom_exercise_title": "Custom Exercise",
+      "sequence": "B",
+      "sets": 3,
+      "reps": "3"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 9,
+    "fields": {
+      "session": 6,
+      "exercise": 37,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 10,
+    "fields": {
+      "session": 7,
+      "exercise": 178,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 11,
+    "fields": {
+      "session": 8,
+      "exercise": 37,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 12,
+    "fields": {
+      "session": 9,
+      "exercise": 40,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 13,
+    "fields": {
+      "session": 9,
+      "exercise": null,
+      "muscle_group": null,
+      "is_custom_muscle_group": true,
+      "custom_exercise_title": "Custom Title",
+      "sequence": "B",
+      "sets": 3,
+      "reps": "10"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 14,
+    "fields": {
+      "session": 10,
+      "exercise": 37,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "10"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 15,
+    "fields": {
+      "session": 11,
+      "exercise": 40,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 16,
+    "fields": {
+      "session": 11,
+      "exercise": null,
+      "muscle_group": null,
+      "is_custom_muscle_group": true,
+      "custom_exercise_title": "Custom Title",
+      "sequence": "B",
+      "sets": 3,
+      "reps": "10"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 17,
+    "fields": {
+      "session": 12,
+      "exercise": 37,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "10"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 18,
+    "fields": {
+      "session": 13,
+      "exercise": 40,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 19,
+    "fields": {
+      "session": 13,
+      "exercise": null,
+      "muscle_group": null,
+      "is_custom_muscle_group": true,
+      "custom_exercise_title": "Custom Title",
+      "sequence": "B",
+      "sets": 3,
+      "reps": "10"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 20,
+    "fields": {
+      "session": 14,
+      "exercise": 37,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "10"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 21,
+    "fields": {
+      "session": 15,
+      "exercise": 178,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 22,
+    "fields": {
+      "session": 16,
+      "exercise": 217,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 23,
+    "fields": {
+      "session": 17,
+      "exercise": 40,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 24,
+    "fields": {
+      "session": 18,
+      "exercise": null,
+      "muscle_group": null,
+      "is_custom_muscle_group": true,
+      "custom_exercise_title": "Custom Title",
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 25,
+    "fields": {
+      "session": 19,
+      "exercise": 217,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 26,
+    "fields": {
+      "session": 20,
+      "exercise": 217,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 28,
+    "fields": {
+      "session": 22,
+      "exercise": 217,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 29,
+    "fields": {
+      "session": 23,
+      "exercise": 217,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 33,
+    "fields": {
+      "session": 27,
+      "exercise": 217,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 34,
+    "fields": {
+      "session": 28,
+      "exercise": 214,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 35,
+    "fields": {
+      "session": 29,
+      "exercise": 201,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "2"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 36,
+    "fields": {
+      "session": 30,
+      "exercise": 37,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "2"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 37,
+    "fields": {
+      "session": 31,
+      "exercise": null,
+      "muscle_group": null,
+      "is_custom_muscle_group": true,
+      "custom_exercise_title": "Custom Title",
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 38,
+    "fields": {
+      "session": 32,
+      "exercise": 178,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 44,
+    "fields": {
+      "session": 38,
+      "exercise": 177,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 95,
+    "fields": {
+      "session": 89,
+      "exercise": 217,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 96,
+    "fields": {
+      "session": 90,
+      "exercise": 156,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 97,
+    "fields": {
+      "session": 91,
+      "exercise": 156,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 98,
+    "fields": {
+      "session": 92,
+      "exercise": 217,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 99,
+    "fields": {
+      "session": 93,
+      "exercise": 178,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 101,
+    "fields": {
+      "session": 95,
+      "exercise": 156,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 102,
+    "fields": {
+      "session": 96,
+      "exercise": 156,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 103,
+    "fields": {
+      "session": 97,
+      "exercise": 198,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 104,
+    "fields": {
+      "session": 98,
+      "exercise": null,
+      "muscle_group": null,
+      "is_custom_muscle_group": true,
+      "custom_exercise_title": "Some title",
+      "sequence": "A",
+      "sets": 3,
+      "reps": "3"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 106,
+    "fields": {
+      "session": 100,
+      "exercise": 156,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 109,
+    "fields": {
+      "session": 103,
+      "exercise": 221,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 110,
+    "fields": {
+      "session": 104,
+      "exercise": 221,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 111,
+    "fields": {
+      "session": 105,
+      "exercise": 156,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 112,
+    "fields": {
+      "session": 106,
+      "exercise": 37,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 113,
+    "fields": {
+      "session": 107,
+      "exercise": 40,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 114,
+    "fields": {
+      "session": 107,
+      "exercise": null,
+      "muscle_group": null,
+      "is_custom_muscle_group": true,
+      "custom_exercise_title": "Custom Exercise",
+      "sequence": "B",
+      "sets": 3,
+      "reps": "3"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 115,
+    "fields": {
+      "session": 108,
+      "exercise": 37,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 119,
+    "fields": {
+      "session": 111,
+      "exercise": 156,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 123,
+    "fields": {
+      "session": 115,
+      "exercise": 217,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 124,
+    "fields": {
+      "session": 116,
+      "exercise": 221,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 126,
+    "fields": {
+      "session": 118,
+      "exercise": 217,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 127,
+    "fields": {
+      "session": 119,
+      "exercise": 186,
+      "muscle_group": 20,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 130,
+    "fields": {
+      "session": 122,
+      "exercise": 217,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 163,
+    "fields": {
+      "session": 151,
+      "exercise": 156,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 164,
+    "fields": {
+      "session": 151,
+      "exercise": null,
+      "muscle_group": null,
+      "is_custom_muscle_group": true,
+      "custom_exercise_title": "Custom Title",
+      "sequence": "B",
+      "sets": 3,
+      "reps": "2"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 165,
+    "fields": {
+      "session": 122,
+      "exercise": 199,
+      "muscle_group": 3,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "B",
+      "sets": 3,
+      "reps": "2"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 166,
+    "fields": {
+      "session": 152,
+      "exercise": 156,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 167,
+    "fields": {
+      "session": 153,
+      "exercise": 221,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 168,
+    "fields": {
+      "session": 154,
+      "exercise": 156,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 169,
+    "fields": {
+      "session": 154,
+      "exercise": 193,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "B",
+      "sets": 2,
+      "reps": "10"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 170,
+    "fields": {
+      "session": 154,
+      "exercise": 41,
+      "muscle_group": 2,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "C",
+      "sets": 3,
+      "reps": "5"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 171,
+    "fields": {
+      "session": 155,
+      "exercise": 180,
+      "muscle_group": 23,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 2,
+      "reps": "8"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 172,
+    "fields": {
+      "session": 155,
+      "exercise": 191,
+      "muscle_group": 23,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "B",
+      "sets": 2,
+      "reps": "9-12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 173,
+    "fields": {
+      "session": 156,
+      "exercise": 37,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "10-12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 174,
+    "fields": {
+      "session": 156,
+      "exercise": 223,
+      "muscle_group": 17,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "B",
+      "sets": 3,
+      "reps": "8"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 175,
+    "fields": {
+      "session": 157,
+      "exercise": 156,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "1"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 176,
+    "fields": {
+      "session": 158,
+      "exercise": 186,
+      "muscle_group": 20,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 187,
+    "fields": {
+      "session": 169,
+      "exercise": 156,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 188,
+    "fields": {
+      "session": 170,
+      "exercise": 221,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 189,
+    "fields": {
+      "session": 156,
+      "exercise": null,
+      "muscle_group": null,
+      "is_custom_muscle_group": true,
+      "custom_exercise_title": "This is a custom title",
+      "sequence": "C",
+      "sets": 3,
+      "reps": "5"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 190,
+    "fields": {
+      "session": 154,
+      "exercise": null,
+      "muscle_group": null,
+      "is_custom_muscle_group": true,
+      "custom_exercise_title": "A custom title",
+      "sequence": "D",
+      "sets": 3,
+      "reps": "14"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 191,
+    "fields": {
+      "session": 151,
+      "exercise": 221,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "C",
+      "sets": 3,
+      "reps": "15"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 202,
+    "fields": {
+      "session": 181,
+      "exercise": 217,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 203,
+    "fields": {
+      "session": 182,
+      "exercise": 221,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 204,
+    "fields": {
+      "session": 183,
+      "exercise": 156,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "2"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 205,
+    "fields": {
+      "session": 184,
+      "exercise": 217,
+      "muscle_group": 1,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 206,
+    "fields": {
+      "session": 185,
+      "exercise": 198,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "22"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 207,
+    "fields": {
+      "session": 186,
+      "exercise": 37,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "22"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 208,
+    "fields": {
+      "session": 155,
+      "exercise": 222,
+      "muscle_group": 20,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "C",
+      "sets": 3,
+      "reps": "2"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 209,
+    "fields": {
+      "session": 155,
+      "exercise": 37,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "D1",
+      "sets": 4,
+      "reps": "22"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 210,
+    "fields": {
+      "session": 155,
+      "exercise": 37,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "D2",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 211,
+    "fields": {
+      "session": 155,
+      "exercise": null,
+      "muscle_group": null,
+      "is_custom_muscle_group": true,
+      "custom_exercise_title": "Stefiiiiii",
+      "sequence": "D3",
+      "sets": 3,
+      "reps": "22"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 212,
+    "fields": {
+      "session": 155,
+      "exercise": 177,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "E",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 213,
+    "fields": {
+      "session": 187,
+      "exercise": 156,
+      "muscle_group": 5,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "12"
+    }
+  },
+  {
+    "model": "training_program.trainingexercise",
+    "pk": 214,
+    "fields": {
+      "session": 188,
+      "exercise": 177,
+      "muscle_group": 7,
+      "is_custom_muscle_group": false,
+      "custom_exercise_title": null,
+      "sequence": "A",
+      "sets": 3,
+      "reps": "22"
+    }
+  },
+  {
+    "model": "session_logging.sessionlog",
+    "pk": 4,
+    "fields": {
+      "training_program": 116,
+      "session": 154,
+      "order": 1,
+      "status": "completed",
+      "created_at": "2025-07-05T17:27:53.421Z",
+      "updated_at": "2025-07-05T17:27:58.170Z",
+      "completed_at": "2025-07-05T17:27:58.170Z"
+    }
+  },
+  {
+    "model": "session_logging.sessionlog",
+    "pk": 6,
+    "fields": {
+      "training_program": 116,
+      "session": 155,
+      "order": 2,
+      "status": "completed",
+      "created_at": "2025-07-06T11:17:19.198Z",
+      "updated_at": "2025-07-06T15:33:29.886Z",
+      "completed_at": "2025-07-06T15:33:29.886Z"
+    }
+  },
+  {
+    "model": "session_logging.sessionlog",
+    "pk": 8,
+    "fields": {
+      "training_program": 116,
+      "session": 156,
+      "order": 3,
+      "status": "completed",
+      "created_at": "2025-07-08T07:59:54.256Z",
+      "updated_at": "2025-07-08T20:11:26.045Z",
+      "completed_at": "2025-07-08T20:09:19.426Z"
+    }
+  },
+  {
+    "model": "session_logging.sessionlog",
+    "pk": 9,
+    "fields": {
+      "training_program": 116,
+      "session": 155,
+      "order": 4,
+      "status": "completed",
+      "created_at": "2025-07-09T08:04:18.986Z",
+      "updated_at": "2025-07-09T17:45:34.125Z",
+      "completed_at": "2025-07-09T17:45:34.125Z"
+    }
+  },
+  {
+    "model": "session_logging.sessionlog",
+    "pk": 10,
+    "fields": {
+      "training_program": 116,
+      "session": 154,
+      "order": 1,
+      "status": "completed",
+      "created_at": "2025-07-10T08:50:08.691Z",
+      "updated_at": "2025-07-10T10:55:09.118Z",
+      "completed_at": "2025-07-10T10:48:11.809Z"
+    }
+  },
+  {
+    "model": "session_logging.sessionlog",
+    "pk": 11,
+    "fields": {
+      "training_program": 116,
+      "session": 155,
+      "order": 2,
+      "status": "completed",
+      "created_at": "2025-07-11T06:31:42.570Z",
+      "updated_at": "2025-07-11T16:26:56.227Z",
+      "completed_at": "2025-07-11T11:23:01.309Z"
+    }
+  },
+  {
+    "model": "session_logging.sessionlog",
+    "pk": 12,
+    "fields": {
+      "training_program": 116,
+      "session": 156,
+      "order": 3,
+      "status": "completed",
+      "created_at": "2025-07-12T09:51:12.024Z",
+      "updated_at": "2025-07-12T11:08:24.580Z",
+      "completed_at": "2025-07-12T11:08:24.580Z"
+    }
+  },
+  {
+    "model": "session_logging.sessionlog",
+    "pk": 14,
+    "fields": {
+      "training_program": 116,
+      "session": 155,
+      "order": 4,
+      "status": "in_progress",
+      "created_at": "2025-07-18T20:54:01.729Z",
+      "updated_at": "2025-07-18T20:54:56.349Z",
+      "completed_at": null
+    }
+  },
+  {
+    "model": "session_logging.sessionlog",
+    "pk": 15,
+    "fields": {
+      "training_program": 116,
+      "session": 155,
+      "order": 4,
+      "status": "completed",
+      "created_at": "2025-07-22T19:51:43.213Z",
+      "updated_at": "2025-07-22T19:53:19.834Z",
+      "completed_at": "2025-07-22T19:53:19.834Z"
+    }
+  },
+  {
+    "model": "session_logging.sessionlog",
+    "pk": 16,
+    "fields": {
+      "training_program": 116,
+      "session": 154,
+      "order": 1,
+      "status": "completed",
+      "created_at": "2025-07-24T19:30:31.081Z",
+      "updated_at": "2025-07-24T19:31:16.604Z",
+      "completed_at": "2025-07-24T19:31:16.604Z"
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 27,
+    "fields": {
+      "session_log": 4,
+      "exercise": 168,
+      "set_number": 1,
+      "sequence": "A",
+      "weight": "12.00",
+      "reps": 14
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 28,
+    "fields": {
+      "session_log": 4,
+      "exercise": 168,
+      "set_number": 2,
+      "sequence": "A",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 29,
+    "fields": {
+      "session_log": 4,
+      "exercise": 168,
+      "set_number": 3,
+      "sequence": "A",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 30,
+    "fields": {
+      "session_log": 4,
+      "exercise": 169,
+      "set_number": 1,
+      "sequence": "B",
+      "weight": "12.00",
+      "reps": 14
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 31,
+    "fields": {
+      "session_log": 4,
+      "exercise": 169,
+      "set_number": 2,
+      "sequence": "B",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 32,
+    "fields": {
+      "session_log": 4,
+      "exercise": 170,
+      "set_number": 1,
+      "sequence": "C",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 33,
+    "fields": {
+      "session_log": 4,
+      "exercise": 170,
+      "set_number": 2,
+      "sequence": "C",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 34,
+    "fields": {
+      "session_log": 4,
+      "exercise": 170,
+      "set_number": 3,
+      "sequence": "C",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 35,
+    "fields": {
+      "session_log": 4,
+      "exercise": 190,
+      "set_number": 1,
+      "sequence": "D",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 36,
+    "fields": {
+      "session_log": 4,
+      "exercise": 190,
+      "set_number": 2,
+      "sequence": "D",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 37,
+    "fields": {
+      "session_log": 4,
+      "exercise": 190,
+      "set_number": 3,
+      "sequence": "D",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 42,
+    "fields": {
+      "session_log": 6,
+      "exercise": 171,
+      "set_number": 1,
+      "sequence": "A",
+      "weight": "22.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 43,
+    "fields": {
+      "session_log": 6,
+      "exercise": 171,
+      "set_number": 2,
+      "sequence": "A",
+      "weight": "22.00",
+      "reps": 1
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 44,
+    "fields": {
+      "session_log": 6,
+      "exercise": 172,
+      "set_number": 1,
+      "sequence": "B",
+      "weight": "12.00",
+      "reps": 22
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 45,
+    "fields": {
+      "session_log": 6,
+      "exercise": 172,
+      "set_number": 2,
+      "sequence": "B",
+      "weight": "12.50",
+      "reps": 5
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 55,
+    "fields": {
+      "session_log": 8,
+      "exercise": 173,
+      "set_number": 1,
+      "sequence": "A",
+      "weight": "22.50",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 56,
+    "fields": {
+      "session_log": 8,
+      "exercise": 173,
+      "set_number": 2,
+      "sequence": "A",
+      "weight": "22.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 57,
+    "fields": {
+      "session_log": 8,
+      "exercise": 173,
+      "set_number": 3,
+      "sequence": "A",
+      "weight": "12.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 58,
+    "fields": {
+      "session_log": 8,
+      "exercise": 174,
+      "set_number": 1,
+      "sequence": "B",
+      "weight": "12.50",
+      "reps": 13
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 59,
+    "fields": {
+      "session_log": 8,
+      "exercise": 174,
+      "set_number": 2,
+      "sequence": "B",
+      "weight": "10.50",
+      "reps": 22
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 60,
+    "fields": {
+      "session_log": 8,
+      "exercise": 174,
+      "set_number": 3,
+      "sequence": "B",
+      "weight": "12.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 61,
+    "fields": {
+      "session_log": 8,
+      "exercise": 189,
+      "set_number": 1,
+      "sequence": "C",
+      "weight": "22.50",
+      "reps": 13
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 62,
+    "fields": {
+      "session_log": 8,
+      "exercise": 189,
+      "set_number": 2,
+      "sequence": "C",
+      "weight": "12.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 63,
+    "fields": {
+      "session_log": 8,
+      "exercise": 189,
+      "set_number": 3,
+      "sequence": "C",
+      "weight": "12.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 64,
+    "fields": {
+      "session_log": 9,
+      "exercise": 171,
+      "set_number": 1,
+      "sequence": "A",
+      "weight": "22.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 65,
+    "fields": {
+      "session_log": 9,
+      "exercise": 171,
+      "set_number": 2,
+      "sequence": "A",
+      "weight": "1.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 66,
+    "fields": {
+      "session_log": 9,
+      "exercise": 172,
+      "set_number": 1,
+      "sequence": "B",
+      "weight": "21.50",
+      "reps": 9
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 67,
+    "fields": {
+      "session_log": 9,
+      "exercise": 172,
+      "set_number": 2,
+      "sequence": "B",
+      "weight": "22.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 68,
+    "fields": {
+      "session_log": 9,
+      "exercise": 208,
+      "set_number": 1,
+      "sequence": "C",
+      "weight": "19.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 69,
+    "fields": {
+      "session_log": 9,
+      "exercise": 208,
+      "set_number": 2,
+      "sequence": "C",
+      "weight": "8.00",
+      "reps": 8
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 70,
+    "fields": {
+      "session_log": 9,
+      "exercise": 208,
+      "set_number": 3,
+      "sequence": "C",
+      "weight": "8.00",
+      "reps": 8
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 71,
+    "fields": {
+      "session_log": 9,
+      "exercise": 209,
+      "set_number": 1,
+      "sequence": "D1",
+      "weight": "22.00",
+      "reps": 8
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 72,
+    "fields": {
+      "session_log": 9,
+      "exercise": 209,
+      "set_number": 2,
+      "sequence": "D1",
+      "weight": "22.00",
+      "reps": 8
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 73,
+    "fields": {
+      "session_log": 9,
+      "exercise": 209,
+      "set_number": 3,
+      "sequence": "D1",
+      "weight": "8.00",
+      "reps": 8
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 74,
+    "fields": {
+      "session_log": 9,
+      "exercise": 209,
+      "set_number": 4,
+      "sequence": "D1",
+      "weight": "8.00",
+      "reps": 8
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 75,
+    "fields": {
+      "session_log": 9,
+      "exercise": 210,
+      "set_number": 1,
+      "sequence": "D2",
+      "weight": "12.00",
+      "reps": 2
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 76,
+    "fields": {
+      "session_log": 9,
+      "exercise": 210,
+      "set_number": 2,
+      "sequence": "D2",
+      "weight": "10.60",
+      "reps": 8
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 77,
+    "fields": {
+      "session_log": 9,
+      "exercise": 210,
+      "set_number": 3,
+      "sequence": "D2",
+      "weight": "12.00",
+      "reps": 21
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 78,
+    "fields": {
+      "session_log": 9,
+      "exercise": 211,
+      "set_number": 1,
+      "sequence": "D3",
+      "weight": "9.00",
+      "reps": 21
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 79,
+    "fields": {
+      "session_log": 9,
+      "exercise": 211,
+      "set_number": 2,
+      "sequence": "D3",
+      "weight": "10.60",
+      "reps": 11
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 80,
+    "fields": {
+      "session_log": 9,
+      "exercise": 211,
+      "set_number": 3,
+      "sequence": "D3",
+      "weight": "13.00",
+      "reps": 22
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 81,
+    "fields": {
+      "session_log": 9,
+      "exercise": 212,
+      "set_number": 1,
+      "sequence": "E",
+      "weight": "1.00",
+      "reps": 22
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 82,
+    "fields": {
+      "session_log": 9,
+      "exercise": 212,
+      "set_number": 2,
+      "sequence": "E",
+      "weight": "10.60",
+      "reps": 11
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 83,
+    "fields": {
+      "session_log": 9,
+      "exercise": 212,
+      "set_number": 3,
+      "sequence": "E",
+      "weight": "22.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 84,
+    "fields": {
+      "session_log": 10,
+      "exercise": 168,
+      "set_number": 1,
+      "sequence": "A",
+      "weight": "90.00",
+      "reps": 3
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 85,
+    "fields": {
+      "session_log": 10,
+      "exercise": 168,
+      "set_number": 2,
+      "sequence": "A",
+      "weight": "92.00",
+      "reps": 2
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 86,
+    "fields": {
+      "session_log": 10,
+      "exercise": 168,
+      "set_number": 3,
+      "sequence": "A",
+      "weight": "91.00",
+      "reps": 1
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 87,
+    "fields": {
+      "session_log": 10,
+      "exercise": 169,
+      "set_number": 1,
+      "sequence": "B",
+      "weight": "22.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 88,
+    "fields": {
+      "session_log": 10,
+      "exercise": 169,
+      "set_number": 2,
+      "sequence": "B",
+      "weight": "23.00",
+      "reps": 10
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 89,
+    "fields": {
+      "session_log": 10,
+      "exercise": 170,
+      "set_number": 1,
+      "sequence": "C",
+      "weight": "22.00",
+      "reps": 5
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 90,
+    "fields": {
+      "session_log": 10,
+      "exercise": 170,
+      "set_number": 2,
+      "sequence": "C",
+      "weight": "22.00",
+      "reps": 6
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 91,
+    "fields": {
+      "session_log": 10,
+      "exercise": 170,
+      "set_number": 3,
+      "sequence": "C",
+      "weight": "26.00",
+      "reps": 4
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 92,
+    "fields": {
+      "session_log": 10,
+      "exercise": 190,
+      "set_number": 1,
+      "sequence": "D",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 93,
+    "fields": {
+      "session_log": 10,
+      "exercise": 190,
+      "set_number": 2,
+      "sequence": "D",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 94,
+    "fields": {
+      "session_log": 10,
+      "exercise": 190,
+      "set_number": 3,
+      "sequence": "D",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 95,
+    "fields": {
+      "session_log": 11,
+      "exercise": 171,
+      "set_number": 1,
+      "sequence": "A",
+      "weight": "22.00",
+      "reps": 10
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 96,
+    "fields": {
+      "session_log": 11,
+      "exercise": 171,
+      "set_number": 2,
+      "sequence": "A",
+      "weight": "23.00",
+      "reps": 8
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 97,
+    "fields": {
+      "session_log": 11,
+      "exercise": 172,
+      "set_number": 1,
+      "sequence": "B",
+      "weight": "12.00",
+      "reps": 66
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 98,
+    "fields": {
+      "session_log": 11,
+      "exercise": 172,
+      "set_number": 2,
+      "sequence": "B",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 99,
+    "fields": {
+      "session_log": 11,
+      "exercise": 208,
+      "set_number": 1,
+      "sequence": "C",
+      "weight": "22.00",
+      "reps": 10
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 100,
+    "fields": {
+      "session_log": 11,
+      "exercise": 208,
+      "set_number": 2,
+      "sequence": "C",
+      "weight": "23.00",
+      "reps": 6
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 101,
+    "fields": {
+      "session_log": 11,
+      "exercise": 208,
+      "set_number": 3,
+      "sequence": "C",
+      "weight": "22.00",
+      "reps": 6
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 102,
+    "fields": {
+      "session_log": 11,
+      "exercise": 209,
+      "set_number": 1,
+      "sequence": "D1",
+      "weight": "21.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 103,
+    "fields": {
+      "session_log": 11,
+      "exercise": 209,
+      "set_number": 2,
+      "sequence": "D1",
+      "weight": "28.00",
+      "reps": 10
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 104,
+    "fields": {
+      "session_log": 11,
+      "exercise": 209,
+      "set_number": 3,
+      "sequence": "D1",
+      "weight": "25.00",
+      "reps": 8
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 105,
+    "fields": {
+      "session_log": 11,
+      "exercise": 209,
+      "set_number": 4,
+      "sequence": "D1",
+      "weight": "21.00",
+      "reps": 6
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 106,
+    "fields": {
+      "session_log": 11,
+      "exercise": 210,
+      "set_number": 1,
+      "sequence": "D2",
+      "weight": "27.00",
+      "reps": 8
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 107,
+    "fields": {
+      "session_log": 11,
+      "exercise": 210,
+      "set_number": 2,
+      "sequence": "D2",
+      "weight": "29.00",
+      "reps": 8
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 108,
+    "fields": {
+      "session_log": 11,
+      "exercise": 210,
+      "set_number": 3,
+      "sequence": "D2",
+      "weight": "29.00",
+      "reps": 7
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 109,
+    "fields": {
+      "session_log": 11,
+      "exercise": 211,
+      "set_number": 1,
+      "sequence": "D3",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 110,
+    "fields": {
+      "session_log": 11,
+      "exercise": 211,
+      "set_number": 2,
+      "sequence": "D3",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 111,
+    "fields": {
+      "session_log": 11,
+      "exercise": 211,
+      "set_number": 3,
+      "sequence": "D3",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 112,
+    "fields": {
+      "session_log": 11,
+      "exercise": 212,
+      "set_number": 1,
+      "sequence": "E",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 113,
+    "fields": {
+      "session_log": 11,
+      "exercise": 212,
+      "set_number": 2,
+      "sequence": "E",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 114,
+    "fields": {
+      "session_log": 11,
+      "exercise": 212,
+      "set_number": 3,
+      "sequence": "E",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 115,
+    "fields": {
+      "session_log": 12,
+      "exercise": 173,
+      "set_number": 1,
+      "sequence": "A",
+      "weight": "12.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 116,
+    "fields": {
+      "session_log": 12,
+      "exercise": 173,
+      "set_number": 2,
+      "sequence": "A",
+      "weight": "13.00",
+      "reps": 10
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 117,
+    "fields": {
+      "session_log": 12,
+      "exercise": 173,
+      "set_number": 3,
+      "sequence": "A",
+      "weight": "15.00",
+      "reps": 8
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 118,
+    "fields": {
+      "session_log": 12,
+      "exercise": 174,
+      "set_number": 1,
+      "sequence": "B",
+      "weight": "20.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 119,
+    "fields": {
+      "session_log": 12,
+      "exercise": 174,
+      "set_number": 2,
+      "sequence": "B",
+      "weight": "25.00",
+      "reps": 10
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 120,
+    "fields": {
+      "session_log": 12,
+      "exercise": 174,
+      "set_number": 3,
+      "sequence": "B",
+      "weight": "27.50",
+      "reps": 9
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 121,
+    "fields": {
+      "session_log": 12,
+      "exercise": 189,
+      "set_number": 1,
+      "sequence": "C",
+      "weight": "18.00",
+      "reps": 10
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 122,
+    "fields": {
+      "session_log": 12,
+      "exercise": 189,
+      "set_number": 2,
+      "sequence": "C",
+      "weight": "20.00",
+      "reps": 11
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 123,
+    "fields": {
+      "session_log": 12,
+      "exercise": 189,
+      "set_number": 3,
+      "sequence": "C",
+      "weight": "21.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 144,
+    "fields": {
+      "session_log": 14,
+      "exercise": 171,
+      "set_number": 1,
+      "sequence": "A",
+      "weight": "12.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 145,
+    "fields": {
+      "session_log": 14,
+      "exercise": 171,
+      "set_number": 2,
+      "sequence": "A",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 146,
+    "fields": {
+      "session_log": 14,
+      "exercise": 172,
+      "set_number": 1,
+      "sequence": "B",
+      "weight": "2.00",
+      "reps": 2
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 147,
+    "fields": {
+      "session_log": 14,
+      "exercise": 172,
+      "set_number": 2,
+      "sequence": "B",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 148,
+    "fields": {
+      "session_log": 14,
+      "exercise": 208,
+      "set_number": 1,
+      "sequence": "C",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 149,
+    "fields": {
+      "session_log": 14,
+      "exercise": 208,
+      "set_number": 2,
+      "sequence": "C",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 150,
+    "fields": {
+      "session_log": 14,
+      "exercise": 208,
+      "set_number": 3,
+      "sequence": "C",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 151,
+    "fields": {
+      "session_log": 14,
+      "exercise": 209,
+      "set_number": 1,
+      "sequence": "D1",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 152,
+    "fields": {
+      "session_log": 14,
+      "exercise": 209,
+      "set_number": 2,
+      "sequence": "D1",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 153,
+    "fields": {
+      "session_log": 14,
+      "exercise": 209,
+      "set_number": 3,
+      "sequence": "D1",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 154,
+    "fields": {
+      "session_log": 14,
+      "exercise": 209,
+      "set_number": 4,
+      "sequence": "D1",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 155,
+    "fields": {
+      "session_log": 14,
+      "exercise": 210,
+      "set_number": 1,
+      "sequence": "D2",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 156,
+    "fields": {
+      "session_log": 14,
+      "exercise": 210,
+      "set_number": 2,
+      "sequence": "D2",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 157,
+    "fields": {
+      "session_log": 14,
+      "exercise": 210,
+      "set_number": 3,
+      "sequence": "D2",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 158,
+    "fields": {
+      "session_log": 14,
+      "exercise": 211,
+      "set_number": 1,
+      "sequence": "D3",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 159,
+    "fields": {
+      "session_log": 14,
+      "exercise": 211,
+      "set_number": 2,
+      "sequence": "D3",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 160,
+    "fields": {
+      "session_log": 14,
+      "exercise": 211,
+      "set_number": 3,
+      "sequence": "D3",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 161,
+    "fields": {
+      "session_log": 14,
+      "exercise": 212,
+      "set_number": 1,
+      "sequence": "E",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 162,
+    "fields": {
+      "session_log": 14,
+      "exercise": 212,
+      "set_number": 2,
+      "sequence": "E",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 163,
+    "fields": {
+      "session_log": 14,
+      "exercise": 212,
+      "set_number": 3,
+      "sequence": "E",
+      "weight": null,
+      "reps": null
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 164,
+    "fields": {
+      "session_log": 15,
+      "exercise": 171,
+      "set_number": 1,
+      "sequence": "A",
+      "weight": "30.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 165,
+    "fields": {
+      "session_log": 15,
+      "exercise": 171,
+      "set_number": 2,
+      "sequence": "A",
+      "weight": "34.00",
+      "reps": 8
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 166,
+    "fields": {
+      "session_log": 15,
+      "exercise": 172,
+      "set_number": 1,
+      "sequence": "B",
+      "weight": "23.00",
+      "reps": 10
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 167,
+    "fields": {
+      "session_log": 15,
+      "exercise": 172,
+      "set_number": 2,
+      "sequence": "B",
+      "weight": "25.00",
+      "reps": 8
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 168,
+    "fields": {
+      "session_log": 15,
+      "exercise": 208,
+      "set_number": 1,
+      "sequence": "C",
+      "weight": "20.00",
+      "reps": 3
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 169,
+    "fields": {
+      "session_log": 15,
+      "exercise": 208,
+      "set_number": 2,
+      "sequence": "C",
+      "weight": "20.00",
+      "reps": 4
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 170,
+    "fields": {
+      "session_log": 15,
+      "exercise": 208,
+      "set_number": 3,
+      "sequence": "C",
+      "weight": "21.00",
+      "reps": 2
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 171,
+    "fields": {
+      "session_log": 15,
+      "exercise": 209,
+      "set_number": 1,
+      "sequence": "D1",
+      "weight": "12.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 172,
+    "fields": {
+      "session_log": 15,
+      "exercise": 209,
+      "set_number": 2,
+      "sequence": "D1",
+      "weight": "12.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 173,
+    "fields": {
+      "session_log": 15,
+      "exercise": 209,
+      "set_number": 3,
+      "sequence": "D1",
+      "weight": "13.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 174,
+    "fields": {
+      "session_log": 15,
+      "exercise": 209,
+      "set_number": 4,
+      "sequence": "D1",
+      "weight": "13.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 175,
+    "fields": {
+      "session_log": 15,
+      "exercise": 210,
+      "set_number": 1,
+      "sequence": "D2",
+      "weight": "11.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 176,
+    "fields": {
+      "session_log": 15,
+      "exercise": 210,
+      "set_number": 2,
+      "sequence": "D2",
+      "weight": "12.00",
+      "reps": 11
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 177,
+    "fields": {
+      "session_log": 15,
+      "exercise": 210,
+      "set_number": 3,
+      "sequence": "D2",
+      "weight": "13.00",
+      "reps": 10
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 178,
+    "fields": {
+      "session_log": 15,
+      "exercise": 211,
+      "set_number": 1,
+      "sequence": "D3",
+      "weight": "45.00",
+      "reps": 20
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 179,
+    "fields": {
+      "session_log": 15,
+      "exercise": 211,
+      "set_number": 2,
+      "sequence": "D3",
+      "weight": "30.00",
+      "reps": 22
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 180,
+    "fields": {
+      "session_log": 15,
+      "exercise": 211,
+      "set_number": 3,
+      "sequence": "D3",
+      "weight": "30.00",
+      "reps": 22
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 181,
+    "fields": {
+      "session_log": 15,
+      "exercise": 212,
+      "set_number": 1,
+      "sequence": "E",
+      "weight": "50.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 182,
+    "fields": {
+      "session_log": 15,
+      "exercise": 212,
+      "set_number": 2,
+      "sequence": "E",
+      "weight": "56.00",
+      "reps": 11
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 183,
+    "fields": {
+      "session_log": 15,
+      "exercise": 212,
+      "set_number": 3,
+      "sequence": "E",
+      "weight": "61.00",
+      "reps": 10
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 184,
+    "fields": {
+      "session_log": 16,
+      "exercise": 168,
+      "set_number": 1,
+      "sequence": "A",
+      "weight": "50.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 185,
+    "fields": {
+      "session_log": 16,
+      "exercise": 168,
+      "set_number": 2,
+      "sequence": "A",
+      "weight": "55.00",
+      "reps": 11
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 186,
+    "fields": {
+      "session_log": 16,
+      "exercise": 168,
+      "set_number": 3,
+      "sequence": "A",
+      "weight": "60.00",
+      "reps": 8
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 187,
+    "fields": {
+      "session_log": 16,
+      "exercise": 169,
+      "set_number": 1,
+      "sequence": "B",
+      "weight": "12.00",
+      "reps": 12
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 188,
+    "fields": {
+      "session_log": 16,
+      "exercise": 169,
+      "set_number": 2,
+      "sequence": "B",
+      "weight": "13.00",
+      "reps": 11
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 189,
+    "fields": {
+      "session_log": 16,
+      "exercise": 170,
+      "set_number": 1,
+      "sequence": "C",
+      "weight": "10.00",
+      "reps": 7
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 190,
+    "fields": {
+      "session_log": 16,
+      "exercise": 170,
+      "set_number": 2,
+      "sequence": "C",
+      "weight": "10.00",
+      "reps": 6
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 191,
+    "fields": {
+      "session_log": 16,
+      "exercise": 170,
+      "set_number": 3,
+      "sequence": "C",
+      "weight": "10.00",
+      "reps": 5
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 192,
+    "fields": {
+      "session_log": 16,
+      "exercise": 190,
+      "set_number": 1,
+      "sequence": "D",
+      "weight": "14.00",
+      "reps": 14
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 193,
+    "fields": {
+      "session_log": 16,
+      "exercise": 190,
+      "set_number": 2,
+      "sequence": "D",
+      "weight": "14.00",
+      "reps": 14
+    }
+  },
+  {
+    "model": "session_logging.setlog",
+    "pk": 194,
+    "fields": {
+      "session_log": 16,
+      "exercise": 190,
+      "set_number": 3,
+      "sequence": "D",
+      "weight": "14.00",
+      "reps": 14
+    }
+  }
+]
