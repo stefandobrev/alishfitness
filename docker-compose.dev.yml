@@ -10,12 +10,38 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    environment:
+      - VITE_BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
 
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile.dev
     ports:
       - '8000:8000'
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+    environment:
+      - DEBUG=1
+      - DJANGO_SETTINGS_MODULE=backend.settings_dev
+
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: gymdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Graheca26@
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
 
   # docker compose up
   # docker-compose -f docker-compose.dev.yml -p alishfitness_dev up --build

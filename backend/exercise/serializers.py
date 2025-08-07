@@ -98,7 +98,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
             
             if invalid_groups:
                 raise serializers.ValidationError(
-                    {"secondary_groups": f"Secondary groups not found: {", ".join(invalid_groups)}"}
+                    {"secondary_groups": f"Secondary groups not found: {', '.join(invalid_groups)}"}
                 )
             
             data["secondary_groups"] = secondary_groups

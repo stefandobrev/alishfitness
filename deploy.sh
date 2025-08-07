@@ -2,6 +2,8 @@
 # Run this script from the project root folder (where requirements.txt is)
 # chmod +x deploy.sh - don't forget to run once per env
 
+#THIS IS NON-DOCKER SETUP - ONCE DOCKER FOR PRODUCTION IS READY INCLUDE DOCKER AND SSH
+
 if [ ! -f requirements.txt ]; then
   echo "Error: Run this script from the project root where requirements.txt is."
   exit 1

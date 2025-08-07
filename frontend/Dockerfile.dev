@@ -11,17 +11,11 @@ RUN npm install
 # Copy the rest of the app
 COPY . .
 
-# Build the React app
-RUN npm run build
-
-# Install a simple static server
-RUN npm install -g serve
-
 # Expose port for the static server
 EXPOSE 3000
 
 # Start the app using serve
-CMD ["serve", "-s", "build", "-l", "3000"]
+CMD ["npm", "run", "dev"]
 
 # docker build -t af-frontend .
 # docker run af-frontend
